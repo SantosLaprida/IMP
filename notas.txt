@@ -4,3 +4,7 @@ necesitas node primero que nada
 despues tenes que instalar react native globalmente --->    npm install -g expo-cli
 
 descargar expo client en el telefono para poder escanear el codigo y ver la app
+
+npm install @react-navigation/native
+
+npm install @react-navigation/stack
