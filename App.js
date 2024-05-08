@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Image } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, ImageBackground } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -32,7 +32,10 @@ function LoginScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+
+
+    <ImageBackground source={require('./assets/fondo.jpg')} style={styles.container}>
+      <View style={styles.container}>
     <View style={styles.container2}>
       <View >
         <Text  style={styles.text}>Welcome to the Internet Match Play</Text>
@@ -60,36 +63,32 @@ function LoginScreen({ navigation }) {
       <StatusBar style="auto" />
     </View>
     </View>
+    
+    </ImageBackground>
+    
   );
 }
 
 const styles = StyleSheet.create({
-
   container: {
-    height: '100vh',
-    width: '100vw',
-    backgroundImage: 'url("./assets/fondo.jpg")',
-    paddingBottom: 40,
-    paddingTop: 40,
-    backgroundSize: 'cover',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    
+    paddingBottom: 40,
+    paddingTop: 40,
   },
   container2: {
-    borderRadius: '10px',
+    borderRadius: 10,
     width: '90%',
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.788)',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-   
   },
   text:{
     color: 'white',
-    fontSize: '1.5rem',
+    fontSize: 20, // Changed from '1.5rem' to 20
     fontFamily: "Roboto",
     textAlign: 'center'
   },
@@ -101,7 +100,7 @@ const styles = StyleSheet.create({
     width: '80%',
     color: "white",
     padding: 10,
-    borderRadius: "10px",
+    borderRadius: 10, // Changed from "10px" to 10
     fontFamily: "Roboto",
   },
   loginText:{
@@ -114,9 +113,7 @@ const styles = StyleSheet.create({
     width: "80%",  
     marginTop: 10,
     backgroundColor: "black",
-    borderRadius: "10px",
+    borderRadius: 10, // Changed from "10px" to 10
     fontFamily: "Roboto",
   }
-
-
 });
