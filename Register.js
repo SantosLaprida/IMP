@@ -134,6 +134,12 @@ export default function Registro() {
         onChangeText={setPassword}
         secureTextEntry
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Repeat Password"       
+        onChangeText={setPassword}
+        secureTextEntry
+      />
     
       <View style={styles.btn}>
         <Button  title="Register" onPress={handleRegister} color={"green"} />
