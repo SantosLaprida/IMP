@@ -1,7 +1,7 @@
 
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, ImageBackground, Image } from 'react-native';
 
 export default function Registro() {
   const [email, setEmail] = useState('');
@@ -101,7 +101,10 @@ export default function Registro() {
     <View style={styles.container}>
     <View style={styles.container2}>
   
-
+    <Image
+    source={require('./assets/logo.png')}
+    style={styles.logo}
+  />
       <View>
         <Text  style={styles.text}>Welcome to the Internet Match Play</Text>
       </View>
@@ -112,12 +115,14 @@ export default function Registro() {
         placeholder="Name"
         value={firstName}
         onChangeText={setFirstName}
+        placeholderTextColor="white"
       />
       <TextInput
         style={styles.input}
         placeholder="Lastname"
         value={lastName}
         onChangeText={setLastName}
+        placeholderTextColor="white"
       />
       <TextInput
         style={styles.input}
@@ -126,6 +131,7 @@ export default function Registro() {
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
+        placeholderTextColor="white"
       />
       <TextInput
         style={styles.input}
@@ -133,15 +139,17 @@ export default function Registro() {
         value={password}
         onChangeText={setPassword}
         secureTextEntry
+        placeholderTextColor="white"
       />
       <TextInput
         style={styles.input}
-        placeholder="Repeat Password"       
+        placeholder="Repeat password"       
         onChangeText={setPassword}
         secureTextEntry
+        placeholderTextColor="white"
       />
     
-      <View style={styles.btn}>
+      <View style={{...styles.btn, marginTop: 30}}>
         <Button  title="Register" onPress={handleRegister} color={"green"} />
       </View>
       </View>
@@ -151,6 +159,11 @@ export default function Registro() {
 
 }
 const styles = StyleSheet.create({
+  logo:{
+    width: 100,
+    height: 100,
+    borderRadius: 20,   
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -159,26 +172,29 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   container2: {
-    borderRadius: 10,
+    borderRadius: 25,
     width: '90%',
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.788)',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: 30,
+    paddingTop: 0,
+    
   },
   text:{
     color: 'white',
     fontSize: 20, // Changed from '1.5rem' to 20
     fontFamily: "Roboto",
-    textAlign: 'center'
+    textAlign: 'center',
+    padding: 40,
   },
   input: {
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
+    width: 250,
     marginTop: 10,
-    width: '80%',
     color: "white",
     padding: 10,
     borderRadius: 10, // Changed from "10px" to 10
@@ -191,8 +207,8 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
   },
   btn:{
-    width: "80%",  
-    marginTop: 30,
+    width: 250,  
+    marginTop: 15,
     backgroundColor: "black",
     borderRadius: 15, // Changed from "10px" to 10
     fontFamily: "Roboto",

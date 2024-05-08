@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, ImageBackground } from 'react-native';
+import { StyleSheet, 
+      Text, View, TextInput, Button, ImageBackground, Image, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -37,6 +38,10 @@ function LoginScreen({ navigation }) {
     <ImageBackground source={require('./assets/fondo.jpg')} style={styles.container}>
       <View style={styles.container}>
     <View style={styles.container2}>
+    <Image
+    source={require('./assets/logo.png')}
+    style={styles.logo}
+  />
       <View >
         <Text  style={styles.text}>Welcome to the Internet Match Play</Text>
       </View>     
@@ -45,6 +50,7 @@ function LoginScreen({ navigation }) {
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
+        placeholderTextColor="white"
       />
       <TextInput
         style={styles.input}
@@ -52,11 +58,12 @@ function LoginScreen({ navigation }) {
         value={password}
         onChangeText={setPassword}
         secureTextEntry
+        placeholderTextColor="white"
       />
-      <View  style={{...styles.btn, marginTop: "2em"}}>
+      <View  style={{...styles.btn, marginTop: 30}}>
         <Button  title="Login" onPress={handleLogin} /> 
       </View>
-      <View  style={styles.btn}> 
+      <View   style={styles.btn}> 
         <Button  color={"green"}  title="Register" onPress={() => navigation.navigate('Registro')} />
       </View>
       
@@ -70,6 +77,11 @@ function LoginScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  logo:{
+    width: 100,
+    height: 100,
+    borderRadius: 20,   
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -78,26 +90,29 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   container2: {
-    borderRadius: 10,
+    borderRadius: 25,
     width: '90%',
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.788)',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: 30,
+    paddingTop: 0,
+    
   },
   text:{
     color: 'white',
     fontSize: 20, // Changed from '1.5rem' to 20
     fontFamily: "Roboto",
-    textAlign: 'center'
+    textAlign: 'center',
+    padding: 40,
   },
   input: {
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
+    width: 250,
     marginTop: 10,
-    width: '80%',
     color: "white",
     padding: 10,
     borderRadius: 10, // Changed from "10px" to 10
@@ -110,10 +125,10 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
   },
   btn:{
-    width: "80%",  
+    width: 250,  
     marginTop: 15,
     backgroundColor: "black",
-    borderRadius: 10, // Changed from "10px" to 10
+    borderRadius: 15, // Changed from "10px" to 10
     fontFamily: "Roboto",
   }
 });
