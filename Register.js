@@ -1,7 +1,7 @@
 
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, ImageBackground } from 'react-native';
 
 export default function Registro() {
   const [email, setEmail] = useState('');
@@ -94,21 +94,28 @@ export default function Registro() {
 
 
   return (
+
+    <ImageBackground source={require('./assets/fondo.jpg')} style={styles.container}>
+
+   
     <View style={styles.container}>
+    <View style={styles.container2}>
+  
+
       <View>
-        <Text>Welcome to the Internet Match Play</Text>
+        <Text  style={styles.text}>Welcome to the Internet Match Play</Text>
       </View>
 
-      <Text style={styles.loginText}>Registro</Text>
+    
       <TextInput
-        style={styles.input}
-        placeholder="Nombre"
+      style={{...styles.input, marginTop: "3em"}}
+        placeholder="Name"
         value={firstName}
         onChangeText={setFirstName}
       />
       <TextInput
         style={styles.input}
-        placeholder="Apellido"
+        placeholder="Lastname"
         value={lastName}
         onChangeText={setLastName}
       />
@@ -122,26 +129,43 @@ export default function Registro() {
       />
       <TextInput
         style={styles.input}
-        placeholder="Contraseña"
+        placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
     
-      <View style={{ marginTop: 10 }}>
-        <Button title="Registrarse" onPress={handleRegister} color="#841584" />
+      <View style={styles.btn}>
+        <Button  title="Register" onPress={handleRegister} color={"green"} />
       </View>
-
+      </View>
     </View>
+    </ImageBackground>
   );
 
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ADD8E6', // Light blue
     alignItems: 'center',
     justifyContent: 'center',
+    paddingBottom: 40,
+    paddingTop: 40,
+  },
+  container2: {
+    borderRadius: 10,
+    width: '90%',
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.788)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  text:{
+    color: 'white',
+    fontSize: 20, // Changed from '1.5rem' to 20
+    fontFamily: "Roboto",
+    textAlign: 'center'
   },
   input: {
     height: 40,
@@ -149,11 +173,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginTop: 10,
     width: '80%',
+    color: "white",
     padding: 10,
+    borderRadius: 10, // Changed from "10px" to 10
+    fontFamily: "Roboto",
   },
-  loginText: {
+  loginText:{
     fontWeight: 'bold',
     fontSize: 20,
-    color: '#333',
+    color: 'white',
+    fontFamily: "Roboto",
+  },
+  btn:{
+    width: "80%",  
+    marginTop: 30,
+    backgroundColor: "black",
+    borderRadius: 15, // Changed from "10px" to 10
+    fontFamily: "Roboto",
   }
 });

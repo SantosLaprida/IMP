@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   },
   btn:{
     width: "80%",  
-    marginTop: 10,
+    marginTop: 15,
     backgroundColor: "black",
     borderRadius: 10, // Changed from "10px" to 10
     fontFamily: "Roboto",
