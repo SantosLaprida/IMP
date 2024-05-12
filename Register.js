@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, ImageBackground, Image } from 'react-native';
 
-export default function Registro() {
+export default function Registro({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -100,22 +100,18 @@ export default function Registro() {
   return (
 
     <ImageBackground source={require('./assets/fondo.jpg')} style={styles.container}>
+  <View>  
+    <Button title="Back" onPress={() => navigation.navigate('loginScreen')}/>
+  </View>
 
-   
-    <View style={styles.container}>
+  <View style={styles.container}>
     <View style={styles.container2}>
-  
-    <Image
-    source={require('./assets/logo.png')}
-    style={styles.logo}
-  />
+      <Image source={require('./assets/logo.png')} style={styles.logo}/>
       <View>
-        <Text  style={styles.text}>Welcome to the Internet Match Play</Text>
+        <Text style={styles.text}>Welcome to the Internet Match Play</Text>
       </View>
-
-    
       <TextInput
-      style={{...styles.input, marginTop: "3em"}}
+        style={{...styles.input, marginTop: "3em"}}
         placeholder="Name"
         value={firstName}
         onChangeText={setFirstName}
@@ -154,13 +150,13 @@ export default function Registro() {
         placeholderTextColor="gray"
         autoCompleteType="off"
       />
-    
+
       <View style={{...styles.btn, marginTop: 30}}>
-        <Button  title="Register" onPress={handleRegister} color={"green"} />
-      </View>
+        <Button title="Register" onPress={handleRegister} color={"green"} />
       </View>
     </View>
-    </ImageBackground>
+  </View>
+</ImageBackground>
   );
 
 }
