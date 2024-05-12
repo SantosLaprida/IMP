@@ -77,6 +77,10 @@ export default function Registro() {
       // TAMBIEN QUE TE MUESTRE UN MENSAJE DE QUE TE REGISTRASTE CORRECTAMENTE O ALGO POR EL ESTILO
       // ########################################################################
       
+      //navigate to login page
+      navigation.navigate('Login');
+      
+
       console.log('User registered successfully');
     } else {
       
@@ -139,14 +143,16 @@ export default function Registro() {
         value={password}
         onChangeText={setPassword}
         secureTextEntry
-        placeholderTextColor="white"
+        placeholderTextColor="gray"
+        autoCompleteType="off"
       />
       <TextInput
         style={styles.input}
         placeholder="Repeat password"       
         onChangeText={setPassword}
         secureTextEntry
-        placeholderTextColor="white"
+        placeholderTextColor="gray"
+        autoCompleteType="off"
       />
     
       <View style={{...styles.btn, marginTop: 30}}>

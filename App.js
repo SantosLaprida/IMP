@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, 
-      Text, View, TextInput, Button, ImageBackground, Image, KeyboardAvoidingView, Platform } from 'react-native';
+      Text, View, TextInput, Button, ImageBackground, Image, 
+      KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
