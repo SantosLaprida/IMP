@@ -11,6 +11,10 @@ export default function LoginScreen({ navigation }) {
     return regex.test(email);
   };
 
+  const Prueba = () =>{
+    navigation.navigate('Home');
+  }
+
   const checkIfUserExists = async (email, password) => {
     try {
       const response = await fetch(`http://localhost:3000/users/login`, {
@@ -89,7 +93,7 @@ export default function LoginScreen({ navigation }) {
         placeholderTextColor="white"
       />
       <View  style={{...styles.btn, marginTop: 30}}>
-        <Button  title="Login" onPress={handleLogin} /> 
+        <Button  title="Login" onPress={Prueba} /> 
       </View>
       <View   style={styles.btn}> 
         <Button  color={"green"}  title="Register" onPress={() => navigation.navigate('Registro')} />
