@@ -100,8 +100,8 @@ export default function Registro({navigation}) {
   return (
 
     <ImageBackground source={require('./assets/fondo.jpg')} style={styles.container}>
-  <View>  
-    <Button title="Back" onPress={() => navigation.navigate('loginScreen')}/>
+  <View style={styles.btn}>  
+    <Button title="Go back" onPress={() => navigation.navigate('loginScreen')}/>
   </View>
 
   <View style={styles.container}>
