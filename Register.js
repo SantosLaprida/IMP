@@ -106,7 +106,7 @@ export default function Registro({navigation}) {
 
   <View style={styles.container}>
     <View style={styles.container2}>
-      <Image source={require('./assets/logo.png')} style={styles.logo}/>
+      <Image source={require('./assets/logo.png')} style={{...styles.logo, marginTop: 20}}/>
       <View>
         <Text style={styles.text}>Welcome to the Internet Match Play</Text>
       </View>
@@ -210,7 +210,6 @@ const styles = StyleSheet.create({
   },
   btn:{
     width: 250,  
-    marginTop: 15,
     backgroundColor: "black",
     borderRadius: 15, // Changed from "10px" to 10
     fontFamily: "Roboto",
