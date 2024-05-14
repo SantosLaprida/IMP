@@ -1,8 +1,9 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Button } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Button, TouchableOpacity } from 'react-native';
 
 const Players = () => {
 
+  const [equipo, setEquipo] = useState([]);
   const jugadores = [
     { id: 1, nombre: 'Jugador 1' },
     { id: 2, nombre: 'Jugador 2' },
@@ -20,36 +21,61 @@ const Players = () => {
     
     // ACA IRIA LA LOGICA PARA TRAER LOS JUGADORES DE LA BASE DE DATOS
   ];
+
+  const agregarJugadorAlEquipo = (jugador) => {
+    setEquipo([...equipo, jugador]);
+  };
+
+  const quitarJugadorDelEquipo = (jugadorId) => {
+    const nuevoEquipo = equipo.filter((jugador) => jugador.id !== jugadorId);
+    setEquipo(nuevoEquipo);
+  };
+
   return (
     <ImageBackground source={require('./assets/fondo.jpg')} style={styles.container}>
       <View style={styles.box}>
-      <Text style={{...styles.text, paddingBottom: 20, fontSize: 20}}>Players</Text>
-        <ScrollView>
-       
-        {jugadores.map(jugador => (
-          <View key={jugador.id} style={styles.jugadorItem}>
-            <Text>{jugador.nombre}</Text>
-          </View>
+      <Text style={{ ...styles.text, paddingBottom: 20, fontSize: 20 }}>Players</Text>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {jugadores.map((jugador) => (
+          <TouchableOpacity key={jugador.id} onPress={() => agregarJugadorAlEquipo(jugador)}>
+            <View style={styles.jugadorItem}>
+              <Text>{jugador.nombre}</Text>
+            </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
-  </View>
-  <View  style={styles.btn}>
-        <Button  title="Choose your players!"  /> 
+    </View>
+    <View style={styles.box}>
+      <Text style={{ ...styles.text, paddingBottom: 20, fontSize: 20 }}>Your team</Text>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {equipo.map((jugador) => (
+          <TouchableOpacity key={jugador.id} onPress={() => quitarJugadorDelEquipo(jugador.id)}>
+            <View style={styles.jugadorItem}>
+              <Text>{jugador.nombre}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
       </View>
-   </ImageBackground>
+    <View style={styles.btn}>
+      <Button title="Choose your players!" />
+    </View>
+  </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   box:{
-    marginBottom: 50,
+  
     borderWidth: 5, // ancho del borde
     borderColor: 'teal',
-    padding: 50,
+    paddingHorizontal: 50,
+    paddingVertical: 20,
     borderRadius: 30,
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.788)',
-    height: 500,
+    height: 300,
+    marginBottom: 25,
     
   },
   logo:{
