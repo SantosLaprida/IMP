@@ -1,25 +1,26 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Button } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Button, useAnimatedValue } from 'react-native';
+
+
+const getPlayers = async () => {
+  const response = await fetch('http://localhost:3000/players');
+  const data = await response.json();
+  return data;
+
+};
 
 const Players = () => {
+  const [players, setPlayers] = React.useState([]);
 
-  const jugadores = [
-    { id: 1, nombre: 'Jugador 1' },
-    { id: 2, nombre: 'Jugador 2' },
-    { id: 3, nombre: 'Jugador 3' },
-    { id: 4, nombre: 'Jugador 4' },
-    { id: 5, nombre: 'Jugador 5' },
-    { id: 6, nombre: 'Jugador 6' },
-    { id: 7, nombre: 'Jugador 7' },
-    { id: 8, nombre: 'Jugador 8' },
-    { id: 9, nombre: 'Jugador 9' },
-    { id: 10, nombre: 'Jugador 10' },
-    { id: 11, nombre: 'Jugador 11' },
-    { id: 12, nombre: 'Jugador 12' },
-    { id: 13, nombre: 'Jugador 13' },
-    
-    // ACA IRIA LA LOGICA PARA TRAER LOS JUGADORES DE LA BASE DE DATOS
-  ];
+  React.useEffect(() => {
+    getPlayers().then(data => setPlayers(data));
+  }, []);
+
+
+
+  const jugadores = players;
+
+  
   return (
     <ImageBackground source={require('./assets/fondo.jpg')} style={styles.container}>
       <View style={styles.box}>
