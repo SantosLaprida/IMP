@@ -1,34 +1,55 @@
-import React, { useState } from 'react';
+import { fetchPlayers } from './api';
+
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Button, TouchableOpacity } from 'react-native';
 
 const Players = () => {
 
   const [equipo, setEquipo] = useState([]);
-  const jugadores = [
-    { id: 1, nombre: 'Jugador 1' },
-    { id: 2, nombre: 'Jugador 2' },
-    { id: 3, nombre: 'Jugador 3' },
-    { id: 4, nombre: 'Jugador 4' },
-    { id: 5, nombre: 'Jugador 5' },
-    { id: 6, nombre: 'Jugador 6' },
-    { id: 7, nombre: 'Jugador 7' },
-    { id: 8, nombre: 'Jugador 8' },
-    { id: 9, nombre: 'Jugador 9' },
-    { id: 10, nombre: 'Jugador 10' },
-    { id: 11, nombre: 'Jugador 11' },
-    { id: 12, nombre: 'Jugador 12' },
-    { id: 13, nombre: 'Jugador 13' },
+  const [jugadores, setJugadores] = useState([]);
+
+  useEffect(() => {
+    const getPlayers = async () => {
+      const data = await fetchPlayers();
+      console.log(data);
+      setJugadores(data);
+      console.log(data);
+    };
+
+    getPlayers();
+  }, []);
+
+
+  // const jugadores = [
+  //   { id: 1, nombre: 'Jugador 1' },
+  //   { id: 2, nombre: 'Jugador 2' },
+  //   { id: 3, nombre: 'Jugador 3' },
+  //   { id: 4, nombre: 'Jugador 4' },
+  //   { id: 5, nombre: 'Jugador 5' },
+  //   { id: 6, nombre: 'Jugador 6' },
+  //   { id: 7, nombre: 'Jugador 7' },
+  //   { id: 8, nombre: 'Jugador 8' },
+  //   { id: 9, nombre: 'Jugador 9' },
+  //   { id: 10, nombre: 'Jugador 10' },
+  //   { id: 11, nombre: 'Jugador 11' },
+  //   { id: 12, nombre: 'Jugador 12' },
+  //   { id: 13, nombre: 'Jugador 13' },
     
     // ACA IRIA LA LOGICA PARA TRAER LOS JUGADORES DE LA BASE DE DATOS
-  ];
+  //];
 
   const agregarJugadorAlEquipo = (jugador) => {
-    setEquipo([...equipo, jugador]);
+    setEquipo((prevEquipo) => [...prevEquipo, jugador]);
+    setJugadores((prevJugadores) => prevJugadores.filter((j) => j.id_player !== jugador.id_player));
   };
 
-  const quitarJugadorDelEquipo = (jugadorId) => {
-    const nuevoEquipo = equipo.filter((jugador) => jugador.id !== jugadorId);
+  const quitarJugadorDelEquipo = (jugador) => {
+
+    const nuevoEquipo = equipo.filter((j) => j.id_player !== jugador.id_player);
+    
     setEquipo(nuevoEquipo);
+    setJugadores((prevJugadores) => [...prevJugadores, jugador]);
+    
   };
 
   return (
@@ -37,9 +58,9 @@ const Players = () => {
       <Text style={{ ...styles.text, paddingBottom: 20, fontSize: 20 }}>Players</Text>
       <ScrollView showsVerticalScrollIndicator={false}>
         {jugadores.map((jugador) => (
-          <TouchableOpacity key={jugador.id} onPress={() => agregarJugadorAlEquipo(jugador)}>
+          <TouchableOpacity key={jugador.id_player} onPress={() => agregarJugadorAlEquipo(jugador)}>
             <View style={styles.jugadorItem}>
-              <Text>{jugador.nombre}</Text>
+              <Text>{jugador.name}</Text>
             </View>
           </TouchableOpacity>
         ))}
@@ -49,9 +70,9 @@ const Players = () => {
       <Text style={{ ...styles.text, paddingBottom: 20, fontSize: 20 }}>Your team</Text>
       <ScrollView showsVerticalScrollIndicator={false}>
         {equipo.map((jugador) => (
-          <TouchableOpacity key={jugador.id} onPress={() => quitarJugadorDelEquipo(jugador.id)}>
+          <TouchableOpacity key={jugador.id_player} onPress={() => quitarJugadorDelEquipo(jugador)}>
             <View style={styles.jugadorItem}>
-              <Text>{jugador.nombre}</Text>
+              <Text>{jugador.name}</Text>
             </View>
           </TouchableOpacity>
         ))}

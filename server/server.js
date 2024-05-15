@@ -102,7 +102,24 @@ app.get('/users/email/:email', (req, res) => {
     });
   });
 
+/**
+ * Endpoint that fetches all players from the database.
+ * @param {object} req - The request object.
+ * @param {object} res - The response object, used to send responses back to the client.
+ */
+app.get('/players', (req, res) => {
+  // Declare the query.
+  const sql = 'SELECT id_player, name FROM I_Players';
 
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server error' });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+});
 
 const port = 3000;
 
