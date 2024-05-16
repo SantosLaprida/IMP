@@ -8,6 +8,7 @@ import Registro from './Register'; // Importa el componente Registro desde regis
 import Players from './Players';
 import LoginScreen from './loginScreen';
 import Home from './Home';
+import Matches from './Matches';
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,7 @@ export default function App() {
           <Stack.Screen options={{ headerShown: false }} name="Registro" component={Registro} />
           <Stack.Screen options={{ headerShown: false }} name="Home" component={Home} />
           <Stack.Screen options={{ headerShown: false }} name="Players" component={Players} />
+          <Stack.Screen options={{ headerShown: false }} name="Matches" component={Matches} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

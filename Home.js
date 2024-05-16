@@ -5,6 +5,9 @@ import { View, Text, StyleSheet, Image, ImageBackground, Button } from 'react-na
 const Home = ({ navigation }) => {
   return (
     <ImageBackground source={require('./assets/fondo.jpg')} style={styles.container}>
+      <View  style={{...styles.btn, marginBottom: 30}}>
+        <Button  title="See bracket" onPress={() => navigation.navigate('Matches')} /> 
+      </View>
       <View style={styles.box}>
         <Text style={{...styles.text, paddingBottom: 20, fontSize: 20}}>Upcoming Tournament</Text>
       <Image
@@ -15,7 +18,7 @@ const Home = ({ navigation }) => {
   <Text style={styles.text}>Ending date: 19/05/24</Text>
   </View>
   <View  style={styles.btn}>
-        <Button  title="participate" onPress={() => navigation.navigate('Players')} /> 
+        <Button  title="Participate" onPress={() => navigation.navigate('Players')} /> 
       </View>
    </ImageBackground>
   );
