@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, ImageBackground, Image, StatusBar } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { checkIfUserExists } from './api';
+//import { localStorage } from './Storage';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -16,9 +18,6 @@ export default function LoginScreen({ navigation }) {
   const Prueba = () =>{
     navigation.navigate('Home');
   }
-
-  
-
   const handleLogin = async () => {
 
     console.log(`Email: ${email}, Password: ${password}`);
@@ -33,9 +32,14 @@ export default function LoginScreen({ navigation }) {
       return;
     }
   
-    const loginSuccessful = await checkIfUserExists(email, password);
-    console.log(`Login successful: ${loginSuccessful}`);
-    navigation.navigate('Home');
+    const userData = await checkIfUserExists(email, password);
+    //console.log(`Login successful: ${!!userData}`);
+    
+    if(userData){
+      await AsyncStorage.setItem('user', JSON.stringify({last_name: userData.last_name, name: userData.name, id_member: userData.id_member}));
+      //console.log(userData);
+      navigation.navigate('Home');
+}
 
   };
 

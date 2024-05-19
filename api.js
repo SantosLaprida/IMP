@@ -37,9 +37,6 @@ export const fetchPlayers = async () => {
     }
 };
 
-
-
-
 export const checkIfUserExists = async (email, password) => {
     // Create fetch promises for both local and public IPs
     const localFetch = fetch(`${localIp}/users/login`, {
@@ -67,11 +64,10 @@ export const checkIfUserExists = async (email, password) => {
     try {
       // Use Promise.race to attempt both fetches concurrently and return the first successful one
       const data = await Promise.race([localFetch, publicFetch]);
-  
       if(data.message === 'Login successful') {
         alert('Login successful');
-        //navigation.navigate('Home');
-        return true;
+        return data.user;
+
       } else {
         alert('Login failed');
         return false;

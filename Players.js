@@ -1,5 +1,6 @@
 import { fetchPlayers } from './api';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Button, TouchableOpacity, TextInput } from 'react-native';
 
@@ -7,6 +8,7 @@ const Players = () => {
 
   const [equipo, setEquipo] = useState([]);
   const [jugadores, setJugadores] = useState([]);
+  const [originalJugadores, setOriginalJugadores] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
@@ -15,29 +17,12 @@ const Players = () => {
       // console.log(data);
       setJugadores(data);
       // console.log(data);
+      setOriginalJugadores(data);
     };
 
     getPlayers();
   }, []);
 
-
-  // const jugadores = [
-  //   { id: 1, nombre: 'Jugador 1' },
-  //   { id: 2, nombre: 'Jugador 2' },
-  //   { id: 3, nombre: 'Jugador 3' },
-  //   { id: 4, nombre: 'Jugador 4' },
-  //   { id: 5, nombre: 'Jugador 5' },
-  //   { id: 6, nombre: 'Jugador 6' },
-  //   { id: 7, nombre: 'Jugador 7' },
-  //   { id: 8, nombre: 'Jugador 8' },
-  //   { id: 9, nombre: 'Jugador 9' },
-  //   { id: 10, nombre: 'Jugador 10' },
-  //   { id: 11, nombre: 'Jugador 11' },
-  //   { id: 12, nombre: 'Jugador 12' },
-  //   { id: 13, nombre: 'Jugador 13' },
-    
-    // ACA IRIA LA LOGICA PARA TRAER LOS JUGADORES DE LA BASE DE DATOS
-  //];
 
   const agregarJugadorAlEquipo = (jugador) => {
 
@@ -45,6 +30,7 @@ const Players = () => {
       alert('You can only select a maximum of 8 players.');
       return;
     }
+    
     setEquipo((prevEquipo) => [...prevEquipo, jugador]);
     setJugadores((prevJugadores) => prevJugadores.filter((j) => j.id_player !== jugador.id_player));
   };
@@ -60,6 +46,20 @@ const Players = () => {
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
+
+  const handleFinish = async () => {
+
+    if (equipo.length < 8) {
+      alert('Please select at least 8 players');
+      return;
+    }
+
+    await AsyncStorage.setItem('equipo', JSON.stringify(equipo));
+    setEquipo([]);
+    setJugadores(originalJugadores);
+  }
+
+    
 
   const filteredJugadores = jugadores.filter((jugador) =>
     jugador.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -100,7 +100,9 @@ const Players = () => {
       </View>
     <View style={styles.btn}>
       <Button title="Choose your players!" />
+      
     </View>
+    <Button title="Finish" color={"green"} onPress={handleFinish}/>
   </ImageBackground>
   );
 };

@@ -36,6 +36,9 @@ db.connect((err) => {
 
 
 app.post('/users/login', (req, res) => {
+
+  console.log("inside login endpoint")
+
   const email = req.body.email;
   const password = req.body.password;
 
@@ -46,8 +49,11 @@ app.post('/users/login', (req, res) => {
       console.error(err);
       res.status(500).json({ message: 'Server error' });
     } else {
+
       if (results.length > 0) {
-        res.status(200).json({ message: 'Login successful' });
+        // Send back the first user found in the results
+        
+        res.status(200).json({ message: 'Login successful', user: results[0] });
       } else {
         res.status(401).json({ message: 'Login failed' });
       }

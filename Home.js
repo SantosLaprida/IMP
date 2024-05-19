@@ -1,10 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState} from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground, Button } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Home = ({ navigation }) => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const storedUser = await AsyncStorage.getItem('user');
+      if (storedUser !== null) {
+        setUser(JSON.parse(storedUser));
+      }
+    };
+  
+    loadUser();
+  }, []);
+
   return (
     <ImageBackground source={require('./assets/fondo.jpg')} style={styles.container}>
+      {user && <Text style={styles.userText}>Welcome, {user.name} {user.last_name} {user.id_member}</Text>}
       <View  style={{...styles.btn, marginBottom: 30}}>
         <Button  title="See bracket" onPress={() => navigation.navigate('Matches')} /> 
       </View>
@@ -41,7 +56,13 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 20, 
   },
-
+  userText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    marginTop: 10,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
