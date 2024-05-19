@@ -12,9 +12,9 @@ const Players = () => {
   useEffect(() => {
     const getPlayers = async () => {
       const data = await fetchPlayers();
-      console.log(data);
+      // console.log(data);
       setJugadores(data);
-      console.log(data);
+      // console.log(data);
     };
 
     getPlayers();
@@ -40,6 +40,11 @@ const Players = () => {
   //];
 
   const agregarJugadorAlEquipo = (jugador) => {
+
+    if (equipo.length >= 8) {
+      alert('You can only select a maximum of 8 players.');
+      return;
+    }
     setEquipo((prevEquipo) => [...prevEquipo, jugador]);
     setJugadores((prevJugadores) => prevJugadores.filter((j) => j.id_player !== jugador.id_player));
   };

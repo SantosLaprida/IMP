@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, ImageBackground, Image, StatusBar } from 'react-native';
 
+import { checkIfUserExists } from './api';
+
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,35 +17,7 @@ export default function LoginScreen({ navigation }) {
     navigation.navigate('Home');
   }
 
-  const checkIfUserExists = async (email, password) => {
-    try {
-      const response = await fetch(`http://localhost:3000/users/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
   
-      console.log('Response status:', response.status);
-
-      const data = await response.json();
-  
-      console.log('Response data:', data);
-
-      if(data.message === 'Login successful') {
-        //alert('Login successful');
-        navigation.navigate('Home');
-        return true;
-      } else {
-        alert('Login failed');
-        return false;
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      return false;
-    }
-  };
 
   const handleLogin = async () => {
 
@@ -61,6 +35,7 @@ export default function LoginScreen({ navigation }) {
   
     const loginSuccessful = await checkIfUserExists(email, password);
     console.log(`Login successful: ${loginSuccessful}`);
+    navigation.navigate('Home');
 
   };
 
@@ -93,7 +68,7 @@ export default function LoginScreen({ navigation }) {
         placeholderTextColor="white"
       />
       <View  style={{...styles.btn, marginTop: 30}}>
-        <Button  title="Login" onPress={Prueba} /> 
+        <Button  title="Login" onPress={handleLogin} /> 
       </View>
       <View   style={styles.btn}> 
         <Button  color={"green"}  title="Register" onPress={() => navigation.navigate('Registro')} />

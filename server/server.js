@@ -5,7 +5,12 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: '*', // Temporarily allow all origins for testing
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));

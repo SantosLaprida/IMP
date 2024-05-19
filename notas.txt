@@ -1,5 +1,8 @@
 
 
+npm install expo@~51.0.2
+
+
 necesitas node primero que nada
 despues tenes que instalar react native globalmente --->    npm install -g expo-cli
 
