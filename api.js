@@ -1,7 +1,7 @@
 // 10.0.0.112   my ip address
 // 192.168.0.14  car's ip address
 
-const localIp = 'http://192.168.0.14:3000'; // Car's IP
+const localIp = 'http://192.168.1.39:3000'; // Car's IP
 const publicIp = 'http://10.0.0.112:3000'; // Your IP
 
 function racePromisesIgnoreRejections(promises) {

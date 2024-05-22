@@ -15,9 +15,7 @@ export default function LoginScreen({ navigation }) {
     return regex.test(email);
   };
 
-  const Prueba = () =>{
-    navigation.navigate('Home');
-  }
+
   const handleLogin = async () => {
 
     console.log(`Email: ${email}, Password: ${password}`);
