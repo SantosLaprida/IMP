@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, ImageBackground, Image, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { checkIfUserExists } from './api';
+import { checkIfUserExists } from '../api';
 //import { localStorage } from './Storage';
 
-export default function LoginScreen({ navigation }) {
+export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -15,6 +15,11 @@ export default function LoginScreen({ navigation }) {
     return regex.test(email);
   };
 
+
+
+  const prueba = () =>{
+    navigation.navigate('Main');
+  }
 
   const handleLogin = async () => {
 
@@ -36,7 +41,7 @@ export default function LoginScreen({ navigation }) {
     if(userData){
       await AsyncStorage.setItem('user', JSON.stringify({last_name: userData.last_name, name: userData.name, id_member: userData.id_member}));
       //console.log(userData);
-      navigation.navigate('Home');
+      navigation.navigate('Main');
 }
 
   };
@@ -44,11 +49,11 @@ export default function LoginScreen({ navigation }) {
   return (
 
 
-    <ImageBackground source={require('./assets/fondo.jpg')} style={styles.container}>
+    <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
       <View style={styles.container}>
     <View style={styles.container2}>
     <Image
-    source={require('./assets/logo.png')}
+    source={require('../assets/logo.png')}
     style={styles.logo}
   />
       <View >
@@ -73,7 +78,7 @@ export default function LoginScreen({ navigation }) {
         <Button  title="Login" onPress={handleLogin} /> 
       </View>
       <View   style={styles.btn}> 
-        <Button  color={"green"}  title="Register" onPress={() => navigation.navigate('Registro')} />
+        <Button  color={"green"}  title="Register" onPress={() => navigation.navigate('Register')} />
       </View>
       <StatusBar style="auto" />
     </View>

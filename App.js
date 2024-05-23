@@ -1,34 +1,73 @@
-
-import React, { useState } from 'react';
-
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+// App.js
+import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Registro from './Register'; // Importa el componente Registro desde registro.js
-import Players from './Players';
-import LoginScreen from './loginScreen';
-import Home from './Home';
-import Matches from './Matches';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons'; 
 
-const Stack = createStackNavigator();
+// Importar pantallas
+import Home from './screens/Home';
+import Matches from './screens/Matches';
+import Players from './screens/Players';
+import Login from './auth/Login';
+import Register from './auth/Register';
 
-export default function App() {
+const AuthStack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+const MainStack = createStackNavigator();
 
-
+function AuthStackScreen() {
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen options={{ headerShown: false }} name="loginScreen" component={LoginScreen} />
-          <Stack.Screen options={{ headerShown: false }} name="Registro" component={Registro} />
-          <Stack.Screen options={{ headerShown: false }} name="Home" component={Home} />
-          <Stack.Screen options={{ headerShown: false }} name="Players" component={Players} />
-          <Stack.Screen options={{ headerShown: false }} name="Matches" component={Matches} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <AuthStack.Navigator>
+      <AuthStack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+      <AuthStack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+    </AuthStack.Navigator>
   );
 }
 
+function TabNavigator() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Home"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          if (route.name === 'Home') {
+            iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Matches') {
+            iconName = focused ? 'list' : 'list-outline';
+          } else if (route.name === 'Players') {
+            iconName = focused ? 'settings' : 'settings-outline';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarStyle: {
+          paddingBottom: 10,
+          paddingTop: 10,
+          paddingHorizontal: 10,
+        },
+      })}
+    >
+      <Tab.Screen   options={{ headerShown: false }}  name="Home" component={Home} />
+      <Tab.Screen   options={{ headerShown: false }}  name="Matches" component={Matches} />
+      <Tab.Screen   options={{ headerShown: false }}  name="Players" component={Players} />
+    </Tab.Navigator>
+  );
+}
 
+function MainStackScreen() {
+  return (
+    <MainStack.Navigator screenOptions={{ headerShown: false }}>
+      <MainStack.Screen name="Auth" component={AuthStackScreen} />
+      <MainStack.Screen name="Main" component={TabNavigator} />
+    </MainStack.Navigator>
+  );
+}
 
+export default function App() {
+  return (
+    <NavigationContainer>
+      <MainStackScreen />
+    </NavigationContainer>
+  );
+}

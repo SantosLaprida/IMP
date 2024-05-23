@@ -1,4 +1,4 @@
-import { fetchPlayers } from './api';
+import { fetchPlayers } from '../api';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
@@ -66,7 +66,7 @@ const Players = () => {
   );
 
   return (
-    <ImageBackground source={require('./assets/fondo.jpg')} style={styles.container}>
+    <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
       <View style={styles.box}>
       <Text style={{ ...styles.text, paddingBottom: 20, fontSize: 20 }}>Players</Text>
       <TextInput

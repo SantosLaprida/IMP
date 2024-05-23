@@ -18,7 +18,7 @@ const Home = ({ navigation }) => {
   }, []);
 
   return (
-    <ImageBackground source={require('./assets/fondo.jpg')} style={styles.container}>
+    <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
       {user && <Text style={styles.userText}>Welcome, {user.name} {user.last_name} {user.id_member}</Text>}
       <View  style={{...styles.btn, marginBottom: 30}}>
         <Button  title="See bracket" onPress={() => navigation.navigate('Matches')} /> 
@@ -26,7 +26,7 @@ const Home = ({ navigation }) => {
       <View style={styles.box}>
         <Text style={{...styles.text, paddingBottom: 20, fontSize: 20}}>Upcoming Tournament</Text>
       <Image
-    source={require('./assets/Golf-PGA.webp')}
+    source={require('../assets/Golf-PGA.webp')}
     style={styles.logo}
   />
   <Text style={{...styles.text, marginTop: 20}}>Starting date: 16/05/24</Text>

@@ -4,13 +4,13 @@ import { View, Text, StyleSheet, Image, ImageBackground, Button } from 'react-na
 
 const Matches = ({ navigation }) => {
   return (
-    <ImageBackground source={require('./assets/fondo.jpg')} style={styles.container}>
+    <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
           <Text style={{...styles.text, fontSize: 20, marginTop: 15}}>Current Matches</Text>
       <View style={{...styles.box, marginTop: 15}}>
         <View style={styles.player}>
             <Text style={{...styles.text, marginBottom: 10}}>Player 1</Text>
             <Image
-                source={require('./assets/logo.png')}
+                source={require('../assets/logo.png')}
                 style={styles.logo}
             />
              <Text style={{...styles.text, marginTop: 5}}>3up</Text>
@@ -22,7 +22,7 @@ const Matches = ({ navigation }) => {
         <View style={styles.player}>
             <Text style={{...styles.text, marginBottom: 10}}>Player 1</Text>
             <Image
-                source={require('./assets/logo.png')}
+                source={require('../assets/logo.png')}
                 style={styles.logo}
             />
              <Text style={{...styles.text, marginTop: 5}}>3d</Text>

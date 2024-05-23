@@ -1,7 +1,7 @@
 // 10.0.0.112   my ip address
 // 192.168.0.14  car's ip address
 
-const localIp = 'http://192.168.1.39:3000'; // Car's IP
+const localIp = 'http://192.168.1.43:3000'; // Car's IP
 const publicIp = 'http://10.0.0.112:3000'; // Your IP
 
 function racePromisesIgnoreRejections(promises) {
@@ -16,6 +16,7 @@ function racePromisesIgnoreRejections(promises) {
 
 
 export const fetchPlayers = async () => {
+  console.log("hola")
     // Create fetch promises for both local and public IPs
     const localFetch = fetch(`${localIp}/players`).then(response => {
         if (!response.ok) throw new Error('Local API failed');
