@@ -132,8 +132,43 @@ app.get('/players', (req, res) => {
   });
 });
 
+/**
+ * Endpoint that inserts a new team in the database with the userID.
+ * @param {object} req - The request object, containing parameters.
+ * @param {object} res - The response object, used to send responses back to the client.
+ */
+app.post('/teams', (req, res) => {
+
+  console.log(req.body); // Log the request body
+
+  const { userId: { userId, team } } = req.body;
+
+  console.log(userId);
+  console.log(team);
+  
+
+  team.forEach(element => {
+    // Declare the query.
+    const sql = 'INSERT INTO I_Apuestas (id_member, id_player) VALUES (?, ?)';
+    db.query(sql, [userId, element], (err, results) => {
+      if (err) {
+
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+      }
+    });
+  });
+  // Send a response back to the client after all players have been inserted
+  res.status(200).json({ message: 'Team stored' });
+});
+
+
+
+
 const port = 3000;
 
 app.listen(port, () => {
     console.log(`Server started on http://localhost:${port}`);
 });
+
+

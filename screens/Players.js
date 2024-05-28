@@ -1,4 +1,4 @@
-import { fetchPlayers } from '../api';
+import { fetchPlayers, storeTeam } from '../api';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
@@ -24,6 +24,7 @@ const Players = () => {
   }, []);
 
 
+
   const agregarJugadorAlEquipo = (jugador) => {
 
     if (equipo.length >= 8) {
@@ -47,6 +48,19 @@ const Players = () => {
     setSearchTerm(event.target.value);
   };
 
+  const retrieveUser = async () => {
+    try {
+      const userName = await AsyncStorage.getItem('user');
+      if (userName !== null) {
+        //setUser(JSON.parse(userName));
+        return JSON.parse(userName).id_member;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
   const handleFinish = async () => {
 
     if (equipo.length < 8) {
@@ -54,7 +68,29 @@ const Players = () => {
       return;
     }
 
+    const userId = await retrieveUser();
+
+    const playersIds = equipo.map((jugador) => jugador.id_player);
+
+    try {
+      await storeTeam({ userId, team: playersIds });
+      console.log('Team stored successfully');
+    } catch (error) {
+      console.error('Failed to store team:', error);
+    }
+    
+    // for(let i = 0 ; i < equipo.length; i++){
+    //   console.log(equipo[i].name + " " + equipo[i].id_player + " Chosen by user: " + userId);
+    // }
+
     await AsyncStorage.setItem('equipo', JSON.stringify(equipo));
+
+    // retrieved_equipo = await AsyncStorage.getItem('equipo');
+    // retrieved_equipo = JSON.parse(retrieved_equipo);
+    // for(let i = 0; i < retrieved_equipo.length; i++){
+    //   console.log(retrieved_equipo[i].name + " " + retrieved_equipo[i].id_player);
+    // }
+
     setEquipo([]);
     setJugadores(originalJugadores);
   }
