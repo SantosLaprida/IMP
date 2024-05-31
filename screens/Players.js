@@ -69,7 +69,6 @@ const Players = () => {
     }
 
     const userId = await retrieveUser();
-
     const playersIds = equipo.map((jugador) => jugador.id_player);
 
     try {
@@ -78,18 +77,8 @@ const Players = () => {
     } catch (error) {
       console.error('Failed to store team:', error);
     }
-    
-    // for(let i = 0 ; i < equipo.length; i++){
-    //   console.log(equipo[i].name + " " + equipo[i].id_player + " Chosen by user: " + userId);
-    // }
 
     await AsyncStorage.setItem('equipo', JSON.stringify(equipo));
-
-    // retrieved_equipo = await AsyncStorage.getItem('equipo');
-    // retrieved_equipo = JSON.parse(retrieved_equipo);
-    // for(let i = 0; i < retrieved_equipo.length; i++){
-    //   console.log(retrieved_equipo[i].name + " " + retrieved_equipo[i].id_player);
-    // }
 
     setEquipo([]);
     setJugadores(originalJugadores);

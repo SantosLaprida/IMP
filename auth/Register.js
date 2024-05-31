@@ -1,4 +1,4 @@
-
+import { checkIfEmailExists } from '../api';
 
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, ImageBackground, Image } from 'react-native';
@@ -15,16 +15,6 @@ export default function Register({navigation}) {
     return regex.test(email);
   };
 
-  const checkIfEmailExists = async (email) => {
-    try {
-      const response = await fetch(`http://localhost:3000/users/email/${email}`);
-      const data = await response.text();
-      return data === 'Email is taken';
-    } catch (error) {
-      console.error('Error:', error);
-      return false;
-    }
-  };
 
   const handleRegister = async () => {
     console.log(`Email: ${email}, Password: ${password}, First Name: ${firstName}, Last Name: ${lastName}`);

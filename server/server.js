@@ -119,18 +119,23 @@ app.get('/users/email/:email', (req, res) => {
  * @param {object} res - The response object, used to send responses back to the client.
  */
 app.get('/players', (req, res) => {
+
+  console.log("Inside players endpoint")
+
   // Declare the query.
   const sql = 'SELECT id_player, name FROM I_Players';
 
   db.query(sql, (err, results) => {
     if (err) {
       console.error(err);
-      res.status(500).json({ message: 'Server error' });
+      res.status(500).json({ message: 'Server error', error: err.message });
     } else {
       res.status(200).json(results);
     }
   });
 });
+
+
 
 /**
  * Endpoint that inserts a new team in the database with the userID.
@@ -145,25 +150,38 @@ app.post('/teams', (req, res) => {
 
   console.log(userId);
   console.log(team);
-  
 
-  team.forEach(element => {
-    // Declare the query.
-    const sql = 'INSERT INTO I_Apuestas (id_member, id_player) VALUES (?, ?)';
-    db.query(sql, [userId, element], (err, results) => {
-      if (err) {
+  // Check if a team already exists for the user
+  const checkSql = 'SELECT * FROM I_Apuestas WHERE id_member = ?';
+  db.query(checkSql, [userId], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server error' });
 
-        console.error(err);
-        res.status(500).json({ message: 'Server error' });
-      }
-    });
+      console.log("results length")
+      console.log(results.length);
+
+    } else if (results.length > 0) {
+      // If a team already exists, send a response indicating this
+      res.status(409).json({ message: 'Team already stored for this user' });
+    } else {
+      // If no team exists, proceed with storing the team
+      team.forEach(element => {
+        // Declare the query.
+        const sql = 'INSERT INTO I_Apuestas (id_member, id_player) VALUES (?, ?)';
+        db.query(sql, [userId, element], (err, results) => {
+          if (err) {
+            console.error(err);
+            res.status(500).json({ message: 'Server error' });
+          }
+        });
+      });
+
+      // Send a response back to the client after all players have been inserted
+      res.status(200).json({ message: 'Team stored' });
+    }
   });
-  // Send a response back to the client after all players have been inserted
-  res.status(200).json({ message: 'Team stored' });
 });
-
-
-
 
 const port = 3000;
 
