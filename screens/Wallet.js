@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacit
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const Home = ({ navigation }) => {
+const Wallet = ({ navigation }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -18,28 +18,25 @@ const Home = ({ navigation }) => {
   }, []);
 
   return (
-    <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
+    <View  style={styles.container}>
     <View style={styles.row}>
-    <Text style={styles.text}>Home</Text>
-    <Image
-    source={require('../assets/logo.png')}
-    style={styles.logo}
-  />
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tournaments')}>
-          <Text style={styles.buttonText}>Tournaments</Text>
+    <Text style={styles.text}>Wallet</Text>
+   
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
+          <Text style={styles.buttonText}>Deposit</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Bets')}>
-          <Text style={styles.buttonText}>Bets</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
+          <Text style={styles.buttonText}>Withdrawl</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Wallet')}>
-          <Text style={styles.buttonText}>Wallet</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
+          <Text style={styles.buttonText}>Movements</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Settings')}>
-          <Text style={styles.buttonText}>Settings</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
+          <Text style={styles.buttonText}>Balance</Text>
         </TouchableOpacity>
       </View>
-   </ImageBackground>
+   </View>
   );
 };
 
@@ -90,4 +87,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default Home;
+export default Wallet;
