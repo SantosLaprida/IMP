@@ -183,6 +183,32 @@ app.post('/teams', (req, res) => {
   });
 });
 
+
+/**
+ * Endpoint that fetches a given user_id team.
+ * @param {object} req - The request object.
+ * @param {object} res - The response object, used to send responses back to the client.
+ */
+app.get('/getTeam/:userId', (req, res) => {
+
+
+  console.log("Inside getTeam");
+  
+  const userId = req.params.userId;
+
+  // Declare the query.
+  const sql = 'SELECT * FROM I_Apuestas WHERE id_member = ?';
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server error', error: err.message });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+});
+
 const port = 3000;
 
 app.listen(port, () => {
