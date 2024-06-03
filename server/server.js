@@ -37,7 +37,7 @@ db.connect((err) => {
 
 app.post('/users/login', (req, res) => {
 
-  console.log("inside login endpoint")
+  //console.log("inside login endpoint")
 
   const email = req.body.email;
   const password = req.body.password;
@@ -123,7 +123,7 @@ app.get('/players', (req, res) => {
   console.log("Inside players endpoint")
 
   // Declare the query.
-  const sql = 'SELECT id_player, name FROM I_Players';
+  const sql = 'SELECT id_player, name, ranking FROM I_Players';
 
   db.query(sql, (err, results) => {
     if (err) {
@@ -148,8 +148,8 @@ app.post('/teams', (req, res) => {
 
   const { userId: { userId, team } } = req.body;
 
-  console.log(userId);
-  console.log(team);
+  // console.log(userId);
+  // console.log(team);
 
   // Check if a team already exists for the user
   const checkSql = 'SELECT * FROM I_Apuestas WHERE id_member = ?';
@@ -158,8 +158,8 @@ app.post('/teams', (req, res) => {
       console.error(err);
       res.status(500).json({ message: 'Server error' });
 
-      console.log("results length")
-      console.log(results.length);
+      // console.log("results length")
+      // console.log(results.length);
 
     } else if (results.length > 0) {
       // If a team already exists, send a response indicating this
@@ -192,7 +192,7 @@ app.post('/teams', (req, res) => {
 app.get('/getTeam/:userId', (req, res) => {
 
 
-  console.log("Inside getTeam");
+  // console.log("Inside getTeam");
   
   const userId = req.params.userId;
 

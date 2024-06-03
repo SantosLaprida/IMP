@@ -14,7 +14,7 @@ const Players = () => {
   useEffect(() => {
     const getPlayers = async () => {
       const data = await fetchPlayers();
-      console.log(data);
+      //console.log(data);
       setJugadores(data);
       // console.log(data);
       setOriginalJugadores(data);
@@ -86,7 +86,8 @@ const Players = () => {
     
 
   const filteredJugadores = jugadores.filter((jugador) =>
-    jugador.name.toLowerCase().includes(searchTerm.toLowerCase())
+    jugador.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    jugador.ranking.toString().includes(searchTerm)
   );
 
   return (
@@ -103,9 +104,10 @@ const Players = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         {filteredJugadores.map((jugador) => (
           <TouchableOpacity key={jugador.id_player} onPress={() => agregarJugadorAlEquipo(jugador)}>
-            <View style={styles.jugadorItem}>
-              <Text>{jugador.name}</Text>
-            </View>
+            <View style={{...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text>{jugador.name}</Text>
+            <Text>{jugador.ranking}</Text>
+          </View>
           </TouchableOpacity>
         ))}
       </ScrollView>

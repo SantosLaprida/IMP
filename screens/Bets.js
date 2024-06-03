@@ -6,8 +6,6 @@ import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Button, Tou
 
 const Bets = ({ navigation }) => {
 
-  
-
   const [equipo, setEquipo] = useState([]);
   const [jugadores, setJugadores] = useState([]);
   const [originalJugadores, setOriginalJugadores] = useState([]);
@@ -34,6 +32,11 @@ const Bets = ({ navigation }) => {
       const allPlayers = await fetchPlayers();
 
       const team = await retrieveTeam(userId);
+
+      if (team.length === 0) {
+        return;
+      }
+
       const team_ids = team.map((player) => player.id_player);
       const final_team = get_name_by_id(allPlayers, team_ids);
 
