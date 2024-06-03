@@ -114,7 +114,15 @@ const Bets = ({ navigation }) => {
   return (
     <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
     <View style={styles.box}>
-      <Text style={{ ...styles.text, paddingBottom: 20, fontSize: 20 }}>Your team</Text>
+      <Text style={{ ...styles.text, paddingBottom: 20, fontSize: 20 }}>Your bet</Text>
+      <Image
+    source={require('../assets/Golf-PGA.webp')}
+    style={styles.logo}
+  />
+    <TouchableOpacity style={{...styles.button, width: 200, padding: 5, marginTop: 35}} onPress={() => navigation.navigate('Matches')}>
+          <Text style={{...styles.buttonText, fontSize: 15}}>See more</Text>
+        </TouchableOpacity>
+
       <ScrollView showsVerticalScrollIndicator={false}>
       
       {finalTeam.map((name, index) => (
@@ -126,6 +134,11 @@ const Bets = ({ navigation }) => {
       </View>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Players')}>
           <Text style={styles.buttonText}>Edit your team</Text>
+          
+        </TouchableOpacity>
+        <TouchableOpacity style={{...styles.button, backgroundColor: "rgb(24, 24, 150)"}} onPress={() => navigation.navigate('Tournaments')}>
+          <Text style={styles.buttonText}>Create new bet</Text>
+          
         </TouchableOpacity>
   
 
@@ -135,7 +148,7 @@ const Bets = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   box:{
-    width: 300,
+    width: 350,
     borderWidth: 5, // ancho del borde
     borderColor: 'teal',
     paddingHorizontal: 50,
@@ -143,7 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.788)',
-    height: 300,
+    height: 400,
     marginBottom: 25,
     
   },

@@ -18,7 +18,8 @@ const Wallet = ({ navigation }) => {
   }, []);
 
   return (
-    <View  style={styles.container}>
+    
+    <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
     <View style={styles.row}>
     <Text style={styles.text}>Wallet</Text>
    
@@ -36,7 +37,8 @@ const Wallet = ({ navigation }) => {
           <Text style={styles.buttonText}>Balance</Text>
         </TouchableOpacity>
       </View>
-   </View>
+ 
+   </ImageBackground>
   );
 };
 

@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; 
 
+
 // Importar pantallas
 import Home from './screens/Home';
 import Matches from './screens/Matches';
@@ -15,6 +16,7 @@ import Tournaments from './screens/Tournaments';
 import Bets from './screens/Bets';
 import Wallet from './screens/Wallet';
 import Settings from './screens/Settings';
+
 
 const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();

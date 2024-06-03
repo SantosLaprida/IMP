@@ -93,15 +93,19 @@ const Players = () => {
   return (
     <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
       <View style={styles.box}>
-      <Text style={{ ...styles.text, paddingBottom: 20, fontSize: 20 }}>Players</Text>
+      <Text style={{ ...styles.text, paddingBottom: 10, fontSize: 20 }}>Choose your players</Text>
       <TextInput
-        style={{ height: 40, width: '100%', borderColor: 'gray', borderWidth: 1, marginBottom: 20, color: 'white'}}
+        style={styles.input}
         onChangeText={text => setSearchTerm(text)}
         value={searchTerm}
         placeholder="Search players"
         placeholderTextColor="white"
       />
-      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.itemTitle}>
+            <Text style={styles.text}>Player</Text>
+            <Text style={styles.text}>Ranking</Text>
+          </View>
+      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         {filteredJugadores.map((jugador) => (
           <TouchableOpacity key={jugador.id_player} onPress={() => agregarJugadorAlEquipo(jugador)}>
             <View style={{...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -112,9 +116,9 @@ const Players = () => {
         ))}
       </ScrollView>
     </View>
-    <View style={styles.box}>
-      <Text style={{ ...styles.text, paddingBottom: 20, fontSize: 20 }}>Your team</Text>
-      <ScrollView showsVerticalScrollIndicator={false}>
+    <View style={{...styles.box, height: 250}}>
+      <Text style={{ ...styles.text, paddingBottom: 10, fontSize: 20 }}>Your team</Text>
+      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         {equipo.map((jugador) => (
           <TouchableOpacity key={jugador.id_player} onPress={() => quitarJugadorDelEquipo(jugador)}>
             <View style={styles.jugadorItem}>
@@ -124,18 +128,15 @@ const Players = () => {
         ))}
       </ScrollView>
       </View>
-    <View style={styles.btn}>
-      <Button title="Choose your players!" />
-      
-    </View>
-    <Button title="Finish" color={"green"} onPress={handleFinish}/>
+      <TouchableOpacity style={styles.button} onPress={handleFinish}>
+          <Text style={styles.buttonText}>Place my bet</Text>
+        </TouchableOpacity>
   </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   box:{
-  
     borderWidth: 5, // ancho del borde
     borderColor: 'teal',
     paddingHorizontal: 50,
@@ -143,9 +144,15 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.788)',
-    height: 300,
-    marginBottom: 25,
-    
+    height: 400,
+    marginBottom: 25, 
+  },
+  itemTitle:{
+    borderRadius: 5,
+    width: 250,
+    flexDirection: 'row', 
+    justifyContent: 'space-between',
+    marginVertical: 10
   },
   logo:{
     width: 200,
@@ -153,11 +160,12 @@ const styles = StyleSheet.create({
     borderRadius: 20, 
   },
   jugadorItem: {
-    padding: 10,
+    padding: 5,
+    paddingHorizontal: 10,
     marginBottom: 10,
     backgroundColor: '#f0f0f0',
     borderRadius: 5,
-    width: 200
+    width: 250
   },
   container: {
     flex: 1,
@@ -176,6 +184,30 @@ const styles = StyleSheet.create({
     width: 300,  
     borderRadius: 20, // Changed from "10px" to 10
     fontFamily: "Roboto",
+  },
+  scroll:{
+    width: 250,
+   
+  },
+  input:{
+    width: 250, 
+    borderColor: 'white', 
+    borderWidth: 1, 
+    padding: 5,
+    color: 'white',
+    borderRadius: 5,
+    height: 30
+  },
+  button: {
+    backgroundColor: 'teal',
+    padding: 8,
+    borderRadius: 10,
+    width: 350, // Adjust the width as needed
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 20,
   },
   
 });
