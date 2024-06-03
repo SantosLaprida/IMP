@@ -1,7 +1,7 @@
 // 10.0.0.112   my ip address
 // 192.168.0.14  car's ip address
 
-const publicIp = 'http://192.168.1.42:3000'; // Your IP
+const publicIp = 'http://192.168.1.174:3000'; // Your IP
 
 // function racePromisesIgnoreRejections(promises) {
 //     let indexPromises = promises.map((p, index) => p.catch(() => { throw index; }));
@@ -36,6 +36,7 @@ export const checkIfEmailExists = async (email) => {
       if (!response.ok) throw new Error('Public API failed');
       
       const data = await response.json();
+      console.log(data);
       return data;
   
     } catch (error) {
@@ -110,3 +111,36 @@ export const checkIfUserExists = async (email, password) => {
       return false;
     }
   };
+
+
+  export const retrieveTeam = async (userId) => {
+
+    console.log("Inside getTeam in api");
+    console.log(userId);
+    console.log(`${publicIp}/getTeam/${userId}`);
+
+    try {
+      const response = await fetch(`${publicIp}/getTeam/${userId}`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error:', error);
+      return false;
+    }
+  };
+
+
+  export const get_name_by_id = (players, ids) => {
+
+    result = {};
+
+    for(let i = 0; i < ids.length; i++) {
+    
+      const player = players.find((player) => player.id_player === ids[i]);
+      result[ids[i]] = player.name;
+
+    }
+    return result;
+
+}
+  

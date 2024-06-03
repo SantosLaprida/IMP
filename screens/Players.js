@@ -14,7 +14,7 @@ const Players = () => {
   useEffect(() => {
     const getPlayers = async () => {
       const data = await fetchPlayers();
-      // console.log(data);
+      console.log(data);
       setJugadores(data);
       // console.log(data);
       setOriginalJugadores(data);
@@ -22,7 +22,6 @@ const Players = () => {
 
     getPlayers();
   }, []);
-
 
 
   const agregarJugadorAlEquipo = (jugador) => {

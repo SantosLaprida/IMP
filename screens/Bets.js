@@ -1,4 +1,4 @@
-import { fetchPlayers, storeTeam } from '../api';
+import { fetchPlayers, retrieveTeam, storeTeam, get_name_by_id } from '../api';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
@@ -6,47 +6,65 @@ import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Button, Tou
 
 const Bets = ({ navigation }) => {
 
+  
+
   const [equipo, setEquipo] = useState([]);
   const [jugadores, setJugadores] = useState([]);
   const [originalJugadores, setOriginalJugadores] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [team, setTeam] = useState([]);
+
+  const [finalTeam, setFinalTeam] = useState([]);
 
   useEffect(() => {
-    const getPlayers = async () => {
-      const data = await fetchPlayers();
-      // console.log(data);
-      setJugadores(data);
-      // console.log(data);
-      setOriginalJugadores(data);
-    };
 
-    getPlayers();
+    // const getPlayers = async () => {
+    //   const data = await fetchPlayers();
+    //   console.log(data);
+    //   setJugadores(data);
+    //   console.log(data);
+    //   setOriginalJugadores(data);
+    // };
+
+    // getPlayers();
+
+    const getTeam = async () => {
+
+      const userId = await retrieveUser();
+      const allPlayers = await fetchPlayers();
+
+      const team = await retrieveTeam(userId);
+      const team_ids = team.map((player) => player.id_player);
+      const final_team = get_name_by_id(allPlayers, team_ids);
+
+      setFinalTeam(Object.values(final_team));
+      
+    };
+      getTeam();
   }, []);
 
+  // const agregarJugadorAlEquipo = (jugador) => {
 
-
-  const agregarJugadorAlEquipo = (jugador) => {
-
-    if (equipo.length >= 8) {
-      alert('You can only select a maximum of 8 players.');
-      return;
-    }
+  //   if (equipo.length >= 8) {
+  //     alert('You can only select a maximum of 8 players.');
+  //     return;
+  //   }
     
-    setEquipo((prevEquipo) => [...prevEquipo, jugador]);
-    setJugadores((prevJugadores) => prevJugadores.filter((j) => j.id_player !== jugador.id_player));
-  };
+  //   setEquipo((prevEquipo) => [...prevEquipo, jugador]);
+  //   setJugadores((prevJugadores) => prevJugadores.filter((j) => j.id_player !== jugador.id_player));
+  // };
 
-  const quitarJugadorDelEquipo = (jugador) => {
+  // const quitarJugadorDelEquipo = (jugador) => {
 
-    const nuevoEquipo = equipo.filter((j) => j.id_player !== jugador.id_player);
-    setEquipo(nuevoEquipo);
-    setJugadores((prevJugadores) => [...prevJugadores, jugador]);
+  //   const nuevoEquipo = equipo.filter((j) => j.id_player !== jugador.id_player);
+  //   setEquipo(nuevoEquipo);
+  //   setJugadores((prevJugadores) => [...prevJugadores, jugador]);
     
-  };
+  // };
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
+  // const handleSearch = (event) => {
+  //   setSearchTerm(event.target.value);
+  // };
 
   const retrieveUser = async () => {
     try {
@@ -61,28 +79,28 @@ const Bets = ({ navigation }) => {
   };
 
 
-  const handleFinish = async () => {
+  // const handleFinish = async () => {
 
-    if (equipo.length < 8) {
-      alert('Please select at least 8 players');
-      return;
-    }
+  //   if (equipo.length < 8) {
+  //     alert('Please select at least 8 players');
+  //     return;
+  //   }
 
-    const userId = await retrieveUser();
-    const playersIds = equipo.map((jugador) => jugador.id_player);
+  //   const userId = await retrieveUser();
+  //   const playersIds = equipo.map((jugador) => jugador.id_player);
 
-    try {
-      await storeTeam({ userId, team: playersIds });
-      console.log('Team stored successfully');
-    } catch (error) {
-      console.error('Failed to store team:', error);
-    }
+  //   try {
+  //     await storeTeam({ userId, team: playersIds });
+  //     console.log('Team stored successfully');
+  //   } catch (error) {
+  //     console.error('Failed to store team:', error);
+  //   }
 
-    await AsyncStorage.setItem('equipo', JSON.stringify(equipo));
+  //   await AsyncStorage.setItem('equipo', JSON.stringify(equipo));
 
-    setEquipo([]);
-    setJugadores(originalJugadores);
-  }
+  //   setEquipo([]);
+  //   setJugadores(originalJugadores);
+  // }
 
     
 
@@ -92,27 +110,22 @@ const Bets = ({ navigation }) => {
 
   return (
     <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
-      
-
     <View style={styles.box}>
       <Text style={{ ...styles.text, paddingBottom: 20, fontSize: 20 }}>Your team</Text>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {equipo.map((jugador) => (
-          <TouchableOpacity key={jugador.id_player} onPress={() => quitarJugadorDelEquipo(jugador)}>
-            <View style={styles.jugadorItem}>
-              
-              <Text>{jugador.name}</Text>
-              
-            </View>
-           
-          </TouchableOpacity>
-        ))}
+      
+      {finalTeam.map((name, index) => (
+        <View key={index} style={styles.jugadorItem}>
+          <Text>{name}</Text>
+        </View>
+      ))}
       </ScrollView>
       </View>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Players')}>
           <Text style={styles.buttonText}>Edit your team</Text>
         </TouchableOpacity>
   
+
   </ImageBackground>
   );
 };
