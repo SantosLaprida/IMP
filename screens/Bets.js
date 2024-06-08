@@ -119,9 +119,11 @@ const Bets = ({ navigation }) => {
     source={require('../assets/Golf-PGA.webp')}
     style={styles.logo}
   />
-    <TouchableOpacity style={{...styles.button, width: 200, padding: 5, marginTop: 35}} onPress={() => navigation.navigate('Matches')}>
-          <Text style={{...styles.buttonText, fontSize: 15}}>See more</Text>
+    <TouchableOpacity style={{...styles.button, width: 200, padding: 5, marginTop: 20, marginBottom: 20}} onPress={() => navigation.navigate('Matches')}>
+          <Text style={{...styles.buttonText, fontSize: 15}}>See games live</Text>
         </TouchableOpacity>
+      
+
 
       <ScrollView showsVerticalScrollIndicator={false}>
       
@@ -133,13 +135,10 @@ const Bets = ({ navigation }) => {
       </ScrollView>
       </View>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Players')}>
-          <Text style={styles.buttonText}>Edit your team</Text>
+          <Text style={styles.buttonText}>Edit my team</Text>
           
         </TouchableOpacity>
-        <TouchableOpacity style={{...styles.button, backgroundColor: "rgb(24, 24, 150)"}} onPress={() => navigation.navigate('Tournaments')}>
-          <Text style={styles.buttonText}>Create new bet</Text>
-          
-        </TouchableOpacity>
+    
   
 
   </ImageBackground>
@@ -156,17 +155,17 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.788)',
-    height: 400,
+    height: 550,
     marginBottom: 25,
     
   },
   logo:{
-    width: 200,
-    height: 200,
+    width: 100,
+    height: 100,
     borderRadius: 20, 
   },
   jugadorItem: {
-    padding: 10,
+    padding: 5,
     marginBottom: 10,
     backgroundColor: '#f0f0f0',
     borderRadius: 5,
