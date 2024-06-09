@@ -6,7 +6,7 @@ const Matches = ({ navigation }) => {
   return (
     <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
 
-<TouchableOpacity style={{...styles.button, backgroundColor: "green", marginTop: 15}} onPress={() => navigation.navigate('Tournaments')}>
+<TouchableOpacity style={{...styles.button, backgroundColor: "green", marginTop: 15}} onPress={() => navigation.navigate('Bets')}>
           <Text style={styles.buttonText}>Back</Text>
         </TouchableOpacity>
 
