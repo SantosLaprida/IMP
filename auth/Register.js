@@ -1,7 +1,7 @@
 import { checkIfEmailExists } from '../api';
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ImageBackground, Image } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, ImageBackground, Image, TouchableOpacity } from 'react-native';
 
 export default function Register({navigation}) {
   const [email, setEmail] = useState('');
@@ -90,9 +90,11 @@ export default function Register({navigation}) {
   return (
 
     <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
-  <View>  
-    <Button title="Back" onPress={() => navigation.navigate('Login')}/>
-  </View>
+
+  <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.buttonText}>Back</Text>
+          
+        </TouchableOpacity>
 
   <View style={styles.container}>
     <View style={styles.container2}>
@@ -204,5 +206,19 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     borderRadius: 15, // Changed from "10px" to 10
     fontFamily: "Roboto",
-  }
+  },
+
+  button: {
+    backgroundColor: 'green',
+    padding: 10,
+    margin: 10,
+    borderRadius: 10,
+    width: 300, // Adjust the width as needed
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 20,
+
+  },
 });

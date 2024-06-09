@@ -1,7 +1,7 @@
 // 10.0.0.112   my ip address
 // 192.168.0.14  car's ip address
 
-const publicIp = 'http://192.168.1.42:3000'; // Your IP
+const publicIp = 'http://192.168.1.40:3000'; // Your IP
 
 // function racePromisesIgnoreRejections(promises) {
 //     let indexPromises = promises.map((p, index) => p.catch(() => { throw index; }));

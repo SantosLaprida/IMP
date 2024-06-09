@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Button, TouchableOpacity, TextInput } from 'react-native';
 
-const Players = () => {
+const Players = ({navigation}) => {
 
   const [equipo, setEquipo] = useState([]);
   const [jugadores, setJugadores] = useState([]);
@@ -92,6 +92,10 @@ const Players = () => {
 
   return (
     <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
+
+<TouchableOpacity style={{...styles.button, marginBottom: 10, backgroundColor: "green"}} onPress={() => navigation.navigate('Tournaments')}>
+          <Text style={styles.buttonText}>Back</Text>
+        </TouchableOpacity>
       <View style={styles.box}>
       <Text style={{ ...styles.text, paddingBottom: 10, fontSize: 20 }}>Choose your players</Text>
       <TextInput

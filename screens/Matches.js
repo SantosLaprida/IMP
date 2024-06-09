@@ -1,11 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ImageBackground, Button } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 
 
 const Matches = ({ navigation }) => {
   return (
     <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
-          <Text style={{...styles.text, fontSize: 20, marginTop: 15}}>Current Matches</Text>
+
+<TouchableOpacity style={{...styles.button, backgroundColor: "green", marginTop: 15}} onPress={() => navigation.navigate('Tournaments')}>
+          <Text style={styles.buttonText}>Back</Text>
+        </TouchableOpacity>
+
       <View style={{...styles.box, marginTop: 15}}>
         <View style={styles.player}>
             <Text style={{...styles.text, marginBottom: 10}}>Player 1</Text>
@@ -77,7 +81,18 @@ const styles = StyleSheet.create({
   },
   player:{
     marginHorizontal: 14
-  }
+  },
+  button: {
+    backgroundColor: 'teal',
+    padding: 8,
+    borderRadius: 10,
+    width: 350, // Adjust the width as needed
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 20,
+  },
 });
 
 export default Matches;
