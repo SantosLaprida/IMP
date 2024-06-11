@@ -1,0 +1,24 @@
+{
+	"table": "I_Torneos",
+	"rows":
+	[
+		{
+			"id_torneo": 1,
+			"name": "Charles Schwab Challenge",
+			"fecha": "2024-05-23",
+			"activo": 0
+		},
+		{
+			"id_torneo": 2,
+			"name": "RBC Canadian Open",
+			"fecha": "2024-05-30",
+			"activo": 0
+		},
+		{
+			"id_torneo": 3,
+			"name": "The Memorial Tournament",
+			"fecha": "2024-06-06",
+			"activo": 0
+		}
+	]
+}

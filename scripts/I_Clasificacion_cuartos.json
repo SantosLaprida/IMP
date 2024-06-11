@@ -1,0 +1,534 @@
+{
+	"table": "I_Clasificacion_cuartos",
+	"rows":
+	[
+		{
+			"id_member": 15,
+			"id_player": 10
+		},
+		{
+			"id_member": 15,
+			"id_player": 27
+		},
+		{
+			"id_member": 39,
+			"id_player": 2
+		},
+		{
+			"id_member": 39,
+			"id_player": 21
+		},
+		{
+			"id_member": 73,
+			"id_player": 10
+		},
+		{
+			"id_member": 73,
+			"id_player": 21
+		},
+		{
+			"id_member": 78,
+			"id_player": 1
+		},
+		{
+			"id_member": 78,
+			"id_player": 27
+		},
+		{
+			"id_member": 88,
+			"id_player": 5
+		},
+		{
+			"id_member": 88,
+			"id_player": 27
+		},
+		{
+			"id_member": 89,
+			"id_player": 20
+		},
+		{
+			"id_member": 89,
+			"id_player": 10
+		},
+		{
+			"id_member": 99,
+			"id_player": 27
+		},
+		{
+			"id_member": 99,
+			"id_player": 10
+		},
+		{
+			"id_member": 127,
+			"id_player": 1
+		},
+		{
+			"id_member": 127,
+			"id_player": 10
+		},
+		{
+			"id_member": 129,
+			"id_player": 27
+		},
+		{
+			"id_member": 129,
+			"id_player": 20
+		},
+		{
+			"id_member": 129,
+			"id_player": 40
+		},
+		{
+			"id_member": 138,
+			"id_player": 2
+		},
+		{
+			"id_member": 138,
+			"id_player": 21
+		},
+		{
+			"id_member": 140,
+			"id_player": 21
+		},
+		{
+			"id_member": 140,
+			"id_player": 27
+		},
+		{
+			"id_member": 158,
+			"id_player": 20
+		},
+		{
+			"id_member": 158,
+			"id_player": 21
+		},
+		{
+			"id_member": 160,
+			"id_player": 40
+		},
+		{
+			"id_member": 160,
+			"id_player": 2
+		},
+		{
+			"id_member": 163,
+			"id_player": 21
+		},
+		{
+			"id_member": 163,
+			"id_player": 40
+		},
+		{
+			"id_member": 180,
+			"id_player": 40
+		},
+		{
+			"id_member": 180,
+			"id_player": 5
+		},
+		{
+			"id_member": 181,
+			"id_player": 2
+		},
+		{
+			"id_member": 181,
+			"id_player": 10
+		},
+		{
+			"id_member": 184,
+			"id_player": 10
+		},
+		{
+			"id_member": 184,
+			"id_player": 20
+		},
+		{
+			"id_member": 195,
+			"id_player": 1
+		},
+		{
+			"id_member": 195,
+			"id_player": 21
+		},
+		{
+			"id_member": 204,
+			"id_player": 27
+		},
+		{
+			"id_member": 204,
+			"id_player": 21
+		},
+		{
+			"id_member": 205,
+			"id_player": 40
+		},
+		{
+			"id_member": 205,
+			"id_player": 27
+		},
+		{
+			"id_member": 220,
+			"id_player": 27
+		},
+		{
+			"id_member": 220,
+			"id_player": 21
+		},
+		{
+			"id_member": 235,
+			"id_player": 2
+		},
+		{
+			"id_member": 235,
+			"id_player": 27
+		},
+		{
+			"id_member": 252,
+			"id_player": 40
+		},
+		{
+			"id_member": 252,
+			"id_player": 5
+		},
+		{
+			"id_member": 257,
+			"id_player": 10
+		},
+		{
+			"id_member": 257,
+			"id_player": 21
+		},
+		{
+			"id_member": 272,
+			"id_player": 10
+		},
+		{
+			"id_member": 272,
+			"id_player": 2
+		},
+		{
+			"id_member": 278,
+			"id_player": 2
+		},
+		{
+			"id_member": 278,
+			"id_player": 21
+		},
+		{
+			"id_member": 293,
+			"id_player": 21
+		},
+		{
+			"id_member": 293,
+			"id_player": 10
+		},
+		{
+			"id_member": 304,
+			"id_player": 1
+		},
+		{
+			"id_member": 304,
+			"id_player": 21
+		},
+		{
+			"id_member": 304,
+			"id_player": 40
+		},
+		{
+			"id_member": 321,
+			"id_player": 20
+		},
+		{
+			"id_member": 321,
+			"id_player": 5
+		},
+		{
+			"id_member": 334,
+			"id_player": 1
+		},
+		{
+			"id_member": 334,
+			"id_player": 21
+		},
+		{
+			"id_member": 339,
+			"id_player": 20
+		},
+		{
+			"id_member": 339,
+			"id_player": 10
+		},
+		{
+			"id_member": 351,
+			"id_player": 10
+		},
+		{
+			"id_member": 351,
+			"id_player": 20
+		},
+		{
+			"id_member": 356,
+			"id_player": 40
+		},
+		{
+			"id_member": 356,
+			"id_player": 2
+		},
+		{
+			"id_member": 424,
+			"id_player": 21
+		},
+		{
+			"id_member": 424,
+			"id_player": 5
+		},
+		{
+			"id_member": 425,
+			"id_player": 20
+		},
+		{
+			"id_member": 425,
+			"id_player": 2
+		},
+		{
+			"id_member": 428,
+			"id_player": 10
+		},
+		{
+			"id_member": 428,
+			"id_player": 1
+		},
+		{
+			"id_member": 438,
+			"id_player": 40
+		},
+		{
+			"id_member": 438,
+			"id_player": 5
+		},
+		{
+			"id_member": 517,
+			"id_player": 5
+		},
+		{
+			"id_member": 517,
+			"id_player": 20
+		},
+		{
+			"id_member": 517,
+			"id_player": 1
+		},
+		{
+			"id_member": 530,
+			"id_player": 5
+		},
+		{
+			"id_member": 530,
+			"id_player": 27
+		},
+		{
+			"id_member": 535,
+			"id_player": 5
+		},
+		{
+			"id_member": 535,
+			"id_player": 27
+		},
+		{
+			"id_member": 571,
+			"id_player": 21
+		},
+		{
+			"id_member": 571,
+			"id_player": 5
+		},
+		{
+			"id_member": 580,
+			"id_player": 5
+		},
+		{
+			"id_member": 580,
+			"id_player": 20
+		},
+		{
+			"id_member": 591,
+			"id_player": 27
+		},
+		{
+			"id_member": 591,
+			"id_player": 10
+		},
+		{
+			"id_member": 619,
+			"id_player": 40
+		},
+		{
+			"id_member": 619,
+			"id_player": 5
+		},
+		{
+			"id_member": 652,
+			"id_player": 5
+		},
+		{
+			"id_member": 652,
+			"id_player": 21
+		},
+		{
+			"id_member": 682,
+			"id_player": 10
+		},
+		{
+			"id_member": 682,
+			"id_player": 27
+		},
+		{
+			"id_member": 682,
+			"id_player": 5
+		},
+		{
+			"id_member": 696,
+			"id_player": 20
+		},
+		{
+			"id_member": 696,
+			"id_player": 40
+		},
+		{
+			"id_member": 762,
+			"id_player": 1
+		},
+		{
+			"id_member": 762,
+			"id_player": 27
+		},
+		{
+			"id_member": 790,
+			"id_player": 1
+		},
+		{
+			"id_member": 790,
+			"id_player": 27
+		},
+		{
+			"id_member": 792,
+			"id_player": 21
+		},
+		{
+			"id_member": 792,
+			"id_player": 1
+		},
+		{
+			"id_member": 800,
+			"id_player": 2
+		},
+		{
+			"id_member": 800,
+			"id_player": 5
+		},
+		{
+			"id_member": 806,
+			"id_player": 10
+		},
+		{
+			"id_member": 806,
+			"id_player": 1
+		},
+		{
+			"id_member": 812,
+			"id_player": 1
+		},
+		{
+			"id_member": 812,
+			"id_player": 20
+		},
+		{
+			"id_member": 822,
+			"id_player": 5
+		},
+		{
+			"id_member": 822,
+			"id_player": 40
+		},
+		{
+			"id_member": 829,
+			"id_player": 40
+		},
+		{
+			"id_member": 829,
+			"id_player": 21
+		},
+		{
+			"id_member": 840,
+			"id_player": 2
+		},
+		{
+			"id_member": 840,
+			"id_player": 1
+		},
+		{
+			"id_member": 845,
+			"id_player": 27
+		},
+		{
+			"id_member": 845,
+			"id_player": 20
+		},
+		{
+			"id_member": 864,
+			"id_player": 2
+		},
+		{
+			"id_member": 864,
+			"id_player": 1
+		},
+		{
+			"id_member": 883,
+			"id_player": 2
+		},
+		{
+			"id_member": 883,
+			"id_player": 27
+		},
+		{
+			"id_member": 898,
+			"id_player": 1
+		},
+		{
+			"id_member": 898,
+			"id_player": 5
+		},
+		{
+			"id_member": 921,
+			"id_player": 1
+		},
+		{
+			"id_member": 921,
+			"id_player": 10
+		},
+		{
+			"id_member": 924,
+			"id_player": 5
+		},
+		{
+			"id_member": 924,
+			"id_player": 40
+		},
+		{
+			"id_member": 939,
+			"id_player": 21
+		},
+		{
+			"id_member": 939,
+			"id_player": 1
+		},
+		{
+			"id_member": 954,
+			"id_player": 20
+		},
+		{
+			"id_member": 954,
+			"id_player": 40
+		}
+	]
+}
