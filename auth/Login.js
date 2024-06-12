@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, ImageBackground, Image, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { checkIfUserExists } from '../api';
+// import { checkIfUserExists } from '../api';
 //import { localStorage } from './Storage';
+
+import { checkIfUserExistsAPI } from '../api';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
@@ -15,11 +17,9 @@ export default function Login({ navigation }) {
     return regex.test(email);
   };
 
-
-
-  const prueba = () =>{
-    navigation.navigate('Main');
-  }
+  // const prueba = () =>{
+  //   navigation.navigate('Main');
+  // }
 
   const handleLogin = async () => {
 
@@ -35,7 +35,7 @@ export default function Login({ navigation }) {
       return;
     }
   
-    const userData = await checkIfUserExists(email, password);
+    const userData = await checkIfUserExistsAPI(email, password);
     //console.log(`Login successful: ${!!userData}`);
     
     if(userData){
@@ -47,8 +47,6 @@ export default function Login({ navigation }) {
   };
 
   return (
-
-
     <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
       <View style={styles.container}>
     <View style={styles.container2}>

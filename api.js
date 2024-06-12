@@ -1,6 +1,9 @@
 // 10.0.0.112   my ip address
 // 192.168.0.14  car's ip address
 
+import { checkIfEmailExists } from './server/firestoreFunctions';
+import { checkIfUserExists } from './server/firestoreFunctions';
+
 const publicIp = 'http://192.168.1.40:3000'; // Your IP
 
 // function racePromisesIgnoreRejections(promises) {
@@ -14,16 +17,78 @@ const publicIp = 'http://192.168.1.40:3000'; // Your IP
 //   }
 
 
-export const checkIfEmailExists = async (email) => {
+export const checkIfEmailExistsAPI = async (email) => {
+
+  console.log("Inside checkIfEmailExistsAPI in api.js");
+
   try {
-    const response = await fetch(`${publicIp}/users/email/${email}`);
-    const data = await response.text();
-    return data === 'Email is taken';
+    const emailExists = await checkIfEmailExists(email);
+    return emailExists ? 'Email is taken' : 'Email is available';
   } catch (error) {
     console.error('Error:', error);
+    return 'Error checking email';
+  }
+};
+
+
+
+export const checkIfUserExistsAPI = async (email, password) => {
+  console.log("Inside checkIfUserExistsAPI in api.js");
+
+  try {
+    const userData = await checkIfUserExists(email, password);
+    if (userData) {
+      alert('Login successful');
+      return userData;
+    } else {
+      alert('Login failed');
+      return false;
+    }
+  } catch (error) {
+    console.error('Error in checkIfUserExistsAPI:', error);
     return false;
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export const checkIfEmailExists = async (email) => {
+//   try {
+//     const response = await fetch(`${publicIp}/users/email/${email}`);
+//     const data = await response.text();
+//     return data === 'Email is taken';
+//   } catch (error) {
+//     console.error('Error:', error);
+//     return false;
+//   }
+// };
 
 
 
@@ -45,34 +110,34 @@ export const checkIfEmailExists = async (email) => {
     }
   };
 
-export const checkIfUserExists = async (email, password) => {
+// export const checkIfUserExists = async (email, password) => {
 
-  try {
-    const response = await fetch(`${publicIp}/users/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+//   try {
+//     const response = await fetch(`${publicIp}/users/login`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({ email, password }),
+//     });
 
-    if (!response.ok) throw new Error('Public API failed');
+//     if (!response.ok) throw new Error('Public API failed');
     
-    const data = await response.json();
+//     const data = await response.json();
 
-    if(data.message === 'Login successful') {
-      alert('Login successful');
-      return data.user;
-    } else {
-      alert('Login failed');
-      return false;
-    }
+//     if(data.message === 'Login successful') {
+//       alert('Login successful');
+//       return data.user;
+//     } else {
+//       alert('Login failed');
+//       return false;
+//     }
 
-  } catch (error) {
-    console.error('Public API call failed:', error);
-    return false;
-  }
-};
+//   } catch (error) {
+//     console.error('Public API call failed:', error);
+//     return false;
+//   }
+// };
 
 
   /**

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1030174523087",
+    "project_id": "internetmatchplay",
+    "storage_bucket": "internetmatchplay.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1030174523087:android:1befa5cc28b9155d8981ba",
+        "android_client_info": {
+          "package_name": "com.IMPprototype.IMPprototype"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9E6EaVDAdphmKG0XgReDwJS_nOArAVX4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
