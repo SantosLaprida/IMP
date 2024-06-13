@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Home = ({ navigation }) => {
   const [user, setUser] = useState(null);
@@ -18,11 +18,13 @@ const Home = ({ navigation }) => {
   }, []);
 
   return (
-    <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
+    <LinearGradient
+    colors={['#0d1825', '#2e4857']}
+    style={styles.container}>
     <View style={styles.row}>
-    <Text style={styles.text}>Home</Text>
+  
     <Image
-    source={require('../assets/logo.png')}
+    source={require('../assets/logo-golf.png')}
     style={styles.logo}
   />
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tournaments')}>
@@ -39,7 +41,7 @@ const Home = ({ navigation }) => {
           <Text style={styles.buttonText}>Settings</Text>
         </TouchableOpacity>
       </View>
-   </ImageBackground>
+   </LinearGradient>
   );
 };
 
@@ -47,7 +49,7 @@ const Home = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   row:{
-    backgroundColor: "rgba(0, 0, 0, 0.788)",
+    backgroundColor: "transparent",
     padding: 20,
     paddingVertical: 40,
     borderRadius: 25,
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: 'transparent',
     justifyContent: "center"
     
   },
@@ -81,11 +83,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
   },
-  logo:{
-    width: 100,
-    height: 100,
-    borderRadius: 20,   
-    marginBottom: 30
+  logo: {
+    width: 250,
+    height: 250,
   },
 });
 
