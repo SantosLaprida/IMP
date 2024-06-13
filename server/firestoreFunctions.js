@@ -1,7 +1,45 @@
 // server/firestoreFunctions.js
 
 import { collection, getDocs, query, where, doc, setDoc } from 'firebase/firestore';
-import { firestore } from './firebaseConfig';
+import { firestore, auth } from './firebaseConfig';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+
+
+export const registerUser = async (email, password) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    console.log('User registered:', userCredential.user);
+    return userCredential.user;
+  } catch (error) {
+    console.error('Error registering user:', error.code, error.message);
+    throw error;
+  }
+};
+
+
+export const loginUser = async (email, password) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    console.log('User logged in:', userCredential.user);
+    return userCredential.user;
+  } catch (error) {
+    console.error('Error logging in user:', error.code, error.message);
+    throw error;
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const checkIfEmailExists = async (email) => {
 
@@ -14,6 +52,7 @@ const checkIfEmailExists = async (email) => {
 };
 
 const checkIfUserExists = async (email, password) => {
+  
   console.log("Inside checkIfUserExists in firestoreFunctions.js");
   console.log(`Checking user with email: ${email} and password: ${password}`);
 

@@ -1,4 +1,4 @@
-import { checkIfEmailExists } from '../api';
+import { registerUserAPI } from '../api';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { useState, useEffect } from 'react';
@@ -9,7 +9,6 @@ export default function Register({navigation}) {
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-
   const [confirmPassword, setConfirmPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [confirmSecureTextEntry, setConfirmSecureTextEntry] = useState(true);
@@ -22,14 +21,10 @@ export default function Register({navigation}) {
     setConfirmSecureTextEntry(!confirmSecureTextEntry);
   };
 
-
-
-
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
-
 
   const handleRegister = async () => {
     console.log(`Email: ${email}, Password: ${password}, First Name: ${firstName}, Last Name: ${lastName}`);
@@ -54,69 +49,22 @@ export default function Register({navigation}) {
       return;
     }
 
-    const emailExists = await checkIfEmailExists(email);
-
-  if (emailExists) {
-    // The email is taken. Show an error message or do something else.
-    alert('The email is taken.');
-  } else {
-    // The email is available. Proceed with the registration process.
-    //console.log('The email is available. Proceeding with registration...');
-
-    const user = {
-      email: email,
-      password: password,
-      firstName: firstName,
-      lastName: lastName,
-    };
-
-    // Send a POST request to the server to register the user.
-    fetch('http://localhost:3000/users/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(user)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.message === 'User registered successfully') {
-
-      // ########################################################################
-      // CAR: ACA INSERTA EL CODIGO PARA QUE TE MANDE A UNA NUEVA PAGINA Y 
-      // TAMBIEN QUE TE MUESTRE UN MENSAJE DE QUE TE REGISTRASTE CORRECTAMENTE O ALGO POR EL ESTILO
-      // ########################################################################
-      
-      //navigate to login page
-      navigation.navigate('Login');
-      
-
-      console.log('User registered successfully');
-    } else {
-      
-      console.error('Error:', data.error);
+    try {
+      const user = await registerUserAPI(email.toLowerCase(), password);
+      if (user) {
+        alert('Registration successful');
+        navigation.navigate('Login');
+      }
+    } catch (error) {
+      alert(`Registration failed: ${error.message}`);
     }
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
-
-
-    }
-
-  }
-
+  };
 
   return (
 
     <LinearGradient
     colors={['#0d1825', '#2e4857']}
     style={styles.container}>
-
- 
-
-    
-
   <View style={styles.container}>
     <View style={styles.container2}>
     <Image
@@ -192,8 +140,8 @@ export default function Register({navigation}) {
   </View>
 </LinearGradient>
   );
-
 }
+
 const styles = StyleSheet.create({
   logo: {
     width: 200,
@@ -253,4 +201,4 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: "Roboto",
   },
-});
+}); 

@@ -3,6 +3,7 @@
 
 import { checkIfEmailExists } from './server/firestoreFunctions';
 import { checkIfUserExists } from './server/firestoreFunctions';
+import { registerUser, loginUser } from './server/firestoreFunctions';
 
 const publicIp = 'http://192.168.1.40:3000'; // Your IP
 
@@ -15,6 +16,28 @@ const publicIp = 'http://192.168.1.40:3000'; // Your IP
 //       return p.catch(() => racePromisesIgnoreRejections(promises));
 //     });
 //   }
+
+export const registerUserAPI = async (email, password) => {
+  try {
+    const user = await registerUser(email, password);
+    return user;
+  } catch (error) {
+    console.error('Error in registerUserAPI:', error);
+    throw error;
+  }
+};
+
+
+export const loginUserAPI = async (email, password) => {
+  try {
+    const user = await loginUser(email, password);
+    return user;
+  } catch (error) {
+    console.error('Error in loginUserAPI:', error);
+    throw error;
+  }
+};
+
 
 
 export const checkIfEmailExistsAPI = async (email) => {
@@ -29,7 +52,6 @@ export const checkIfEmailExistsAPI = async (email) => {
     return 'Error checking email';
   }
 };
-
 
 
 export const checkIfUserExistsAPI = async (email, password) => {
@@ -49,6 +71,22 @@ export const checkIfUserExistsAPI = async (email, password) => {
     return false;
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

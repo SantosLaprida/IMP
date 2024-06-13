@@ -4,10 +4,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-// import { checkIfUserExists } from '../api';
-//import { localStorage } from './Storage';
+import { loginUserAPI } from '../api';
 
-import { checkIfUserExistsAPI } from '../api';
+//import { checkIfUserExistsAPI } from '../api';
+// import { checkIfUserExists } from '../api';
+//import { localStorage } from './Storage'; 
+
+
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
@@ -25,9 +28,6 @@ export default function Login({ navigation }) {
     return regex.test(email);
   };
 
-  // const prueba = () =>{
-  //   navigation.navigate('Main');
-  // }
 
   const handleLogin = async () => {
 
@@ -43,16 +43,19 @@ export default function Login({ navigation }) {
       return;
     }
   
-    const userData = await checkIfUserExistsAPI(email, password);
-    //console.log(`Login successful: ${!!userData}`);
-    
-    if(userData){
-      await AsyncStorage.setItem('user', JSON.stringify({last_name: userData.last_name, name: userData.name, id_member: userData.id_member}));
-      //console.log(userData);
-      navigation.navigate('Main');
-}
-
+    try {
+      const userData = await loginUserAPI(email.toLowerCase(), password);
+      if (userData) {
+        await AsyncStorage.setItem('user', JSON.stringify({ uid: userData.uid, email: userData.email }));
+        console.log('Login successful');
+        navigation.navigate('Main');
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+      alert('Login failed');
+    }
   };
+
 
   return (
 
