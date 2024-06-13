@@ -24,7 +24,7 @@ const Home = ({ navigation }) => {
     <View style={styles.row}>
   
     <Image
-    source={require('../assets/logo-golf.png')}
+    source={require('../assets/images/logo-golf.png')}
     style={styles.logo}
   />
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tournaments')}>
@@ -72,20 +72,23 @@ const styles = StyleSheet.create({
     
   },
   button: {
-    backgroundColor: 'teal',
+    backgroundColor: 'rgba(226, 202, 64, 0.438)',
     padding: 20,
     margin: 10,
     borderRadius: 10,
-    width: 300, // Adjust the width as needed
+    width: 300, 
     alignItems: 'center',
+    borderWidth: 1, 
+    borderColor: 'black', 
   },
   buttonText: {
     color: 'white',
     fontSize: 20,
   },
   logo: {
-    width: 250,
-    height: 250,
+    width: 300,
+    height: 150,
+    marginBottom: 30,
   },
 });
 

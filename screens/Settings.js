@@ -20,7 +20,7 @@ const Settings = ({ navigation }) => {
  
 
   return (
-    <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
+    <ImageBackground source={require('../assets/images/fondo.jpg')} style={styles.container}>
     <View style={styles.row}>
     <Text style={styles.text}>Settings</Text>
         <TouchableOpacity style={styles.button}>

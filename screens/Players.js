@@ -91,7 +91,7 @@ const Players = ({navigation}) => {
   );
 
   return (
-    <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
+    <ImageBackground source={require('../assets/images/fondo.jpg')} style={styles.container}>
 
 <TouchableOpacity style={{...styles.button, marginBottom: 10, backgroundColor: "green"}} onPress={() => navigation.navigate('Tournaments')}>
           <Text style={styles.buttonText}>Back</Text>

@@ -1,19 +1,23 @@
 .cla{
-    color:rgba(0, 0, 0, 0.788)
+    color:rgba(0, 0, 0, 0.384)
 }
 
 .green{
-    color: rgb(17, 173, 17);
+    color: rgba(17, 173, 17, 0.438);
 }
 .blue{
-    color: rgb(24, 24, 150);
+    color: rgba(24, 24, 150, 0.425);
 }
 .gold{
-    color: rgb(182, 157, 17);
+    color: rgba(226, 202, 64, 0.438);
 }
 .asd{
     color: #0d1825;
 }
 .ddd{
     color: #2e4857;
+}
+
+.white{
+    color: rgba(255, 255, 255, 0.466);
 }
