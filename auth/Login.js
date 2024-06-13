@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, ImageBackground, Image, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from 'expo-linear-gradient';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // import { checkIfUserExists } from '../api';
 //import { localStorage } from './Storage';
@@ -10,6 +12,12 @@ import { checkIfUserExistsAPI } from '../api';
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+  const toggleSecureTextEntry = () => {
+    setSecureTextEntry(!secureTextEntry);
+  };
 
 
   const validateEmail = (email) => {
@@ -47,16 +55,20 @@ export default function Login({ navigation }) {
   };
 
   return (
-    <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
+
+      <LinearGradient
+        colors={['#0d1825', '#2e4857']}
+        style={styles.container}>
       <View style={styles.container}>
     <View style={styles.container2}>
     <Image
-    source={require('../assets/logo.png')}
+    source={require('../assets/logo-golf.png')}
     style={styles.logo}
   />
       <View >
         <Text  style={styles.text}>Welcome to the Internet Match Play</Text>
       </View>     
+      <View style={styles.passwordContainer}>
       <TextInput
         style={{...styles.input, marginTop: "3em"}}
         placeholder="Email"
@@ -64,83 +76,93 @@ export default function Login({ navigation }) {
         onChangeText={setEmail}
         placeholderTextColor="white"
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        placeholderTextColor="white"
-      />
-      <View  style={{...styles.btn, marginTop: 30}}>
-        <Button  title="Login" onPress={handleLogin} /> 
       </View>
-      <View   style={styles.btn}> 
-        <Button  color={"green"}  title="Register" onPress={() => navigation.navigate('Register')} />
+    <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={secureTextEntry}
+              placeholderTextColor="white"
+            />
+            <TouchableOpacity onPress={toggleSecureTextEntry} style={styles.icon}>
+              <Icon name={secureTextEntry ? 'eye-off' : 'eye'} size={24} color="white" />
+            </TouchableOpacity>
+          </View>
+          <View style={{ ...styles.btn, marginTop: 30 }}>
+            <Button color={""} title="Login" onPress={handleLogin} />
+          </View>
+          <View style={styles.btn}>
+            <Button color={"green"} title="Create account" onPress={() => navigation.navigate('Register')} />
+          </View>
+          <StatusBar style="auto" />
+        </View>
       </View>
-      <StatusBar style="auto" />
-    </View>
-    </View>
-    </ImageBackground>
+    </LinearGradient>
+   
+   
     
   );
 }
 
 const styles = StyleSheet.create({
-    logo:{
-        width: 100,
-        height: 100,
-        borderRadius: 20,   
-      },
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingBottom: 40,
-        paddingTop: 40,
-        size: 100,
-      },
-      container2: {
-        borderRadius: 25,
-        width: '90%',
-        flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, 0.788)',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 30,
-        paddingTop: 0,
-        
-      },
-      text:{
-        color: 'white',
-        fontSize: 20, // Changed from '1.5rem' to 20
-        fontFamily: "Roboto",
-        textAlign: 'center',
-        padding: 40,
-      },
-      input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        width: 250,
-        marginTop: 10,
-        color: "white",
-        padding: 10,
-        borderRadius: 10, // Changed from "10px" to 10
-        fontFamily: "Roboto",
-      },
-      btn:{
-        width: 250,  
-        marginTop: 15,
-        backgroundColor: "black",
-        borderRadius: 15, // Changed from "10px" to 10
-        fontFamily: "Roboto",
-      },
-      loginText:{
-        fontWeight: 'bold',
-        fontSize: 20,
-        color: 'white',
-        fontFamily: "Roboto",
-      },
-
+  logo: {
+    width: 250,
+    height: 250,
+  },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  container2: {
+    borderRadius: 25,
+    width: '90%',
+    flex: 1,
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  text: {
+    color: 'white',
+    fontSize: 25,
+    fontFamily: "Roboto",
+    textAlign: 'center',
+    padding: 10,
+    marginBottom: 30,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 10,
+    width: 300,
+    marginTop: 10,
+  },
+  input: {
+    flex: 1,
+    color: 'white',
+    padding: 10,
+    fontSize: 16,
+  },
+  icon: {
+    padding: 10,
+  },
+  btn: {
+    width: 300,
+    marginTop: 15,
+    height: 45,
+    backgroundColor: "black",
+    borderRadius: 15,
+    fontFamily: "Roboto",
+  },
+  loginText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: 'white',
+    fontFamily: "Roboto",
+  },
 });
