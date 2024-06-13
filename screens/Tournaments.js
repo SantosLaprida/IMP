@@ -1,6 +1,7 @@
 import React, { useEffect, useState} from 'react';
-import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
 const Tournaments = ({ navigation }) => {
@@ -18,12 +19,14 @@ const Tournaments = ({ navigation }) => {
   }, []);
 
   return (
-    <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
+    <LinearGradient
+    colors={['#0d1825', '#2e4857']}
+    style={styles.container}>
       
       <View style={styles.box}>
-        <Text style={{...styles.text, paddingBottom: 20, fontSize: 20}}>Upcoming Tournament</Text>
+        <Text style={{...styles.text, paddingBottom: 20, fontSize: 20}}>Tournament of the week</Text>
       <Image
-    source={require('../assets/Golf-PGA.webp')}
+    source={require('../assets/images/Golf-PGA.webp')}
     style={styles.logo}
   />
   <Text style={{...styles.text, marginTop: 20}}>Starting date: 16/05/24</Text>
@@ -35,7 +38,7 @@ const Tournaments = ({ navigation }) => {
   <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
           <Text style={styles.buttonText}>ICP Calendar 2024</Text>
         </TouchableOpacity>
-   </ImageBackground>
+        </LinearGradient>
   );
 };
 
@@ -44,12 +47,9 @@ const Tournaments = ({ navigation }) => {
 const styles = StyleSheet.create({
   box:{
     marginBottom: 50,
-    borderWidth: 5, // ancho del borde
-    borderColor: 'teal',
     padding: 50,
-    borderRadius: 30,
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.788)'
+    backgroundColor: 'transparent'
   },
   logo:{
     width: 200,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: 'transparent',
     justifyContent: "center"
     
   },
@@ -69,14 +69,17 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontWeight: "800",
     color: "white",
+    fontFamily: 'Roboto' 
   },
   button: {
-    backgroundColor: 'teal',
-    padding: 15,
+    backgroundColor: 'rgba(226, 202, 64, 0.438)',
+    padding: 20,
     margin: 10,
     borderRadius: 10,
-    width: 300, // Adjust the width as needed
+    width: 300, 
     alignItems: 'center',
+    borderWidth: 1, 
+    borderColor: 'black', 
   },
   buttonText: {
     color: 'white',

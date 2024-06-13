@@ -18,9 +18,13 @@ import Wallet from './screens/Wallet';
 import Settings from './screens/Settings';
 
 
+
 const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const MainStack = createStackNavigator();
+
+const HomeStack = createStackNavigator();
+
 
 function AuthStackScreen() {
   return (
@@ -30,6 +34,28 @@ function AuthStackScreen() {
     </AuthStack.Navigator>
   );
 }
+
+
+
+function TournamentsStackScreen() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="Tournaments" component={Tournaments} options={{ headerShown: false }} />
+      <HomeStack.Screen name="Players" component={Players} options={{ headerShown: false }} />
+    </HomeStack.Navigator>
+  );
+}
+
+function BetStackScreen() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="Bets" component={Bets} options={{ headerShown: false }} />
+      <HomeStack.Screen name="Matches" component={Matches} options={{ headerShown: false }} />
+    </HomeStack.Navigator>
+  );
+}
+
+
 
 function TabNavigator() {
   return (
@@ -41,14 +67,12 @@ function TabNavigator() {
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Tournaments') {
-            iconName = focused ? 'trophy' : 'trophy-outline'; // Cambia a un icono de trofeo
+            iconName = focused ? 'trophy' : 'trophy-outline';
           } else if (route.name === 'Bets') {
-            iconName = focused ? 'cash' : 'cash-outline'; // Cambia a un icono de dinero
-          } 
-          else if (route.name === 'Wallet') {
-            iconName = focused ? 'wallet' : 'wallet-outline'; // Cambia a un icono de dinero
-          }
-          else if (route.name === 'Settings') {
+            iconName = focused ? 'cash' : 'cash-outline';
+          } else if (route.name === 'Wallet') {
+            iconName = focused ? 'wallet' : 'wallet-outline';
+          } else if (route.name === 'Settings') {
             iconName = focused ? 'settings' : 'settings-outline';
           }
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -57,19 +81,19 @@ function TabNavigator() {
           paddingBottom: 10,
           paddingTop: 10,
           paddingHorizontal: 10,
-          height: 65, // Ajusta esta altura según tus necesidades
+          height: 65,
         },
         tabBarIconStyle: {
-          fontSize: 15, // Aumenta el tamaño de los iconos
+          fontSize: 15,
         },
         tabBarLabelStyle: {
-          fontSize: 10, // Ajusta el tamaño de la etiqueta del tab
+          fontSize: 10,
         },
       })}
     >
       <Tab.Screen options={{ headerShown: false }} name="Home" component={Home} />
-      <Tab.Screen options={{ headerShown: false }} name="Tournaments" component={Tournaments} />
-      <Tab.Screen options={{ headerShown: false }} name="Bets" component={Bets} />
+      <Tab.Screen options={{ headerShown: false }} name="Tournaments" component={TournamentsStackScreen} />
+      <Tab.Screen options={{ headerShown: false }} name="Bets" component={BetStackScreen} />
       <Tab.Screen options={{ headerShown: false }} name="Wallet" component={Wallet} />
       <Tab.Screen options={{ headerShown: false }} name="Settings" component={Settings} />
     </Tab.Navigator>
@@ -81,8 +105,6 @@ function MainStackScreen() {
     <MainStack.Navigator screenOptions={{ headerShown: false }}>
       <MainStack.Screen name="Auth" component={AuthStackScreen} />
       <MainStack.Screen name="Main" component={TabNavigator} />
-      <MainStack.Screen name="Matches" component={Matches} />
-      <MainStack.Screen name="Players" component={Players} />
     </MainStack.Navigator>
   );
 }

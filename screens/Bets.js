@@ -112,11 +112,11 @@ const Bets = ({ navigation }) => {
   );
 
   return (
-    <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
+    <ImageBackground source={require('../assets/images/fondo.jpg')} style={styles.container}>
     <View style={styles.box}>
       <Text style={{ ...styles.text, paddingBottom: 20, fontSize: 20 }}>Your bet</Text>
       <Image
-    source={require('../assets/Golf-PGA.webp')}
+    source={require('../assets/images/Golf-PGA.webp')}
     style={styles.logo}
   />
     <TouchableOpacity style={{...styles.button, width: 200, padding: 5, marginTop: 20, marginBottom: 20}} onPress={() => navigation.navigate('Matches')}>

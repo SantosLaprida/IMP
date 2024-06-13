@@ -65,7 +65,7 @@ export default function Login({ navigation }) {
       <View style={styles.container}>
     <View style={styles.container2}>
     <Image
-    source={require('../assets/logo-golf.png')}
+    source={require('../assets/images/logo-golf.png')}
     style={styles.logo}
   />
       <View >
@@ -73,7 +73,7 @@ export default function Login({ navigation }) {
       </View>     
       <View style={styles.passwordContainer}>
       <TextInput
-        style={{...styles.input, marginTop: "3em"}}
+        style={styles.input}
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
@@ -111,8 +111,9 @@ export default function Login({ navigation }) {
 
 const styles = StyleSheet.create({
   logo: {
-    width: 250,
-    height: 250,
+    width: 300,
+    height: 150,
+    marginBottom: 20,
   },
   container: {
     flex: 1,

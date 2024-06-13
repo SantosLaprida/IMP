@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacit
 
 const Matches = ({ navigation }) => {
   return (
-    <ImageBackground source={require('../assets/fondo.jpg')} style={styles.container}>
+    <ImageBackground source={require('../assets/images/fondo.jpg')} style={styles.container}>
 
 <TouchableOpacity style={{...styles.button, backgroundColor: "green", marginTop: 15}} onPress={() => navigation.navigate('Bets')}>
           <Text style={styles.buttonText}>Back</Text>
@@ -14,7 +14,7 @@ const Matches = ({ navigation }) => {
         <View style={styles.player}>
             <Text style={{...styles.text, marginBottom: 10}}>Player 1</Text>
             <Image
-                source={require('../assets/logo.png')}
+                source={require('../assets/images/logo.png')}
                 style={styles.logo}
             />
              <Text style={{...styles.text, marginTop: 5}}>3up</Text>
@@ -26,7 +26,7 @@ const Matches = ({ navigation }) => {
         <View style={styles.player}>
             <Text style={{...styles.text, marginBottom: 10}}>Player 1</Text>
             <Image
-                source={require('../assets/logo.png')}
+                source={require('../assets/images/logo.png')}
                 style={styles.logo}
             />
              <Text style={{...styles.text, marginTop: 5}}>3d</Text>
