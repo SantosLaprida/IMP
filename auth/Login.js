@@ -10,8 +10,6 @@ import { loginUserAPI } from '../api';
 // import { checkIfUserExists } from '../api';
 //import { localStorage } from './Storage'; 
 
-
-
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -99,6 +97,9 @@ export default function Login({ navigation }) {
           <View style={styles.btn}>
             <Button color={"green"} title="Create account" onPress={() => navigation.navigate('Register')} />
           </View>
+          <TouchableOpacity onPress={() => navigation.navigate('PasswordReset')}>
+            <Text style={styles.linkText}>Forgot Password?</Text>
+          </TouchableOpacity>
           <StatusBar style="auto" />
         </View>
       </View>
@@ -162,6 +163,10 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     borderRadius: 15,
     fontFamily: "Roboto",
+  },
+  linkText: {
+    color: 'white',
+    marginTop: 10,
   },
   loginText: {
     fontWeight: 'bold',

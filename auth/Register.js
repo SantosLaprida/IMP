@@ -50,13 +50,13 @@ export default function Register({navigation}) {
     }
 
     try {
-      const user = await registerUserAPI(email.toLowerCase(), password);
+      const user = await registerUserAPI(email.toLowerCase(), password, firstName, lastName);
       if (user) {
         alert('Registration successful');
         navigation.navigate('Login');
       }
     } catch (error) {
-      alert(`Registration failed: ${error.message}`);
+      alert('Registration failed');
     }
   };
 

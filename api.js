@@ -4,6 +4,7 @@
 import { checkIfEmailExists } from './server/firestoreFunctions';
 import { checkIfUserExists } from './server/firestoreFunctions';
 import { registerUser, loginUser } from './server/firestoreFunctions';
+import { sendPasswordReset } from './server/firestoreFunctions';
 
 const publicIp = 'http://192.168.1.40:3000'; // Your IP
 
@@ -17,16 +18,15 @@ const publicIp = 'http://192.168.1.40:3000'; // Your IP
 //     });
 //   }
 
-export const registerUserAPI = async (email, password) => {
+export const registerUserAPI = async (email, password, firstName, lastName) => {
   try {
-    const user = await registerUser(email, password);
+    const user = await registerUser(email, password, firstName, lastName);
     return user;
   } catch (error) {
     console.error('Error in registerUserAPI:', error);
     throw error;
   }
 };
-
 
 export const loginUserAPI = async (email, password) => {
   try {
@@ -37,6 +37,71 @@ export const loginUserAPI = async (email, password) => {
     throw error;
   }
 };
+
+export const sendPasswordResetAPI = async (email) => {
+  try {
+    await sendPasswordReset(email);
+    return 'Password reset email sent';
+  } catch (error) {
+    console.error('Error in sendPasswordResetAPI:', error);
+    throw error;
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

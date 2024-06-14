@@ -16,6 +16,7 @@ import Tournaments from './screens/Tournaments';
 import Bets from './screens/Bets';
 import Wallet from './screens/Wallet';
 import Settings from './screens/Settings';
+import PasswordReset from './screens/PasswordReset';
 
 
 
@@ -31,6 +32,7 @@ function AuthStackScreen() {
     <AuthStack.Navigator>
       <AuthStack.Screen name="Login" component={Login} options={{ headerShown: false }} />
       <AuthStack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+      <AuthStack.Screen name="PasswordReset" component={PasswordReset} options={{ headerShown: false }} />
     </AuthStack.Navigator>
   );
 }
