@@ -14,9 +14,7 @@ const Players = ({navigation}) => {
   useEffect(() => {
     const getPlayers = async () => {
       const data = await fetchPlayers();
-      //console.log(data);
       setJugadores(data);
-      // console.log(data);
       setOriginalJugadores(data);
     };
 
@@ -25,12 +23,10 @@ const Players = ({navigation}) => {
 
 
   const agregarJugadorAlEquipo = (jugador) => {
-
     if (equipo.length >= 8) {
       alert('You can only select a maximum of 8 players.');
       return;
     }
-    
     setEquipo((prevEquipo) => [...prevEquipo, jugador]);
     setJugadores((prevJugadores) => prevJugadores.filter((j) => j.id_player !== jugador.id_player));
   };
@@ -82,8 +78,6 @@ const Players = ({navigation}) => {
     setEquipo([]);
     setJugadores(originalJugadores);
   }
-
-    
 
   const filteredJugadores = jugadores.filter((jugador) =>
     jugador.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

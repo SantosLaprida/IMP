@@ -60,55 +60,76 @@ export const sendPasswordReset = async (email) => {
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-const checkIfEmailExists = async (email) => {
-
-
-  console.log("Inside checkIfEmailExists in firestoreFunctions.js");
-
-  const q = query(collection(firestore, 'I_Members'), where('email', '==', email));
-  const querySnapshot = await getDocs(q);
-  return !querySnapshot.empty;
-};
-
-const checkIfUserExists = async (email, password) => {
-  
-  console.log("Inside checkIfUserExists in firestoreFunctions.js");
-  console.log(`Checking user with email: ${email} and password: ${password}`);
-
+export const fetchPlayers = async () => {
   try {
-    const q = query(collection(firestore, 'I_Members'), where('email', '==', email), where('password', '==', password));
-    const querySnapshot = await getDocs(q);
-
-    if (!querySnapshot.empty) {
-      const userDoc = querySnapshot.docs[0];
-      console.log('User found:', userDoc.data());
-      return userDoc.data();
-    } else {
-      console.log('No user found with the provided credentials.');
-      return false;
-    }
+    const querySnapshot = await getDocs(collection(firestore, 'I_Players'));
+    const playersData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    return playersData;
   } catch (error) {
-    console.error('Error checking user existence:', error);
-    return false;
+    console.error('Error fetching players:', error);
+    throw error;
   }
 };
 
-const addUser = async (user) => {
-  const userRef = doc(collection(firestore, 'I_Members'));
-  await setDoc(userRef, user);
+
+export const storeTeam = async (userId, team) => {
+  try {
+    const userRef = doc(firestore, 'Teams', userId);
+    await setDoc(userRef, { team });
+    console.log('Team stored successfully');
+  } catch (error) {
+    console.error('Error storing team:', error);
+    throw error;
+  }
 };
 
-export { checkIfEmailExists, checkIfUserExists, addUser };
+
+
+
+
+
+
+
+
+
+
+
+// const checkIfEmailExists = async (email) => {
+
+
+//   console.log("Inside checkIfEmailExists in firestoreFunctions.js");
+
+//   const q = query(collection(firestore, 'I_Members'), where('email', '==', email));
+//   const querySnapshot = await getDocs(q);
+//   return !querySnapshot.empty;
+// };
+
+// const checkIfUserExists = async (email, password) => {
+  
+//   console.log("Inside checkIfUserExists in firestoreFunctions.js");
+//   console.log(`Checking user with email: ${email} and password: ${password}`);
+
+//   try {
+//     const q = query(collection(firestore, 'I_Members'), where('email', '==', email), where('password', '==', password));
+//     const querySnapshot = await getDocs(q);
+
+//     if (!querySnapshot.empty) {
+//       const userDoc = querySnapshot.docs[0];
+//       console.log('User found:', userDoc.data());
+//       return userDoc.data();
+//     } else {
+//       console.log('No user found with the provided credentials.');
+//       return false;
+//     }
+//   } catch (error) {
+//     console.error('Error checking user existence:', error);
+//     return false;
+//   }
+// };
+
+// const addUser = async (user) => {
+//   const userRef = doc(collection(firestore, 'I_Members'));
+//   await setDoc(userRef, user);
+// };
+
+// export { checkIfEmailExists, checkIfUserExists, addUser };

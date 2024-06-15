@@ -5,6 +5,7 @@ import { checkIfEmailExists } from './server/firestoreFunctions';
 import { checkIfUserExists } from './server/firestoreFunctions';
 import { registerUser, loginUser } from './server/firestoreFunctions';
 import { sendPasswordReset } from './server/firestoreFunctions';
+import { fetchPlayers as fetchPlayersFromFirestore, storeTeam as storeTeamInFirestore } from './server/firestoreFunctions';
 
 const publicIp = 'http://192.168.1.40:3000'; // Your IP
 
@@ -49,6 +50,25 @@ export const sendPasswordResetAPI = async (email) => {
 };
 
 
+export const fetchPlayers = async () => {
+  try {
+    const players = await fetchPlayersFromFirestore();
+    return players;
+  } catch (error) {
+    console.error('Error fetching players:', error);
+    throw error;
+  }
+};
+
+
+export const storeTeam = async (userId, team) => {
+  try {
+    await storeTeamInFirestore(userId, team);
+  } catch (error) {
+    console.error('Error storing team:', error);
+    throw error;
+  }
+};
 
 
 
@@ -196,22 +216,22 @@ export const checkIfUserExistsAPI = async (email, password) => {
 
 
 
-  export const fetchPlayers = async () => {
+  // export const fetchPlayers = async () => {
   
-    try {
-      const response = await fetch(`${publicIp}/players`);
+  //   try {
+  //     const response = await fetch(`${publicIp}/players`);
   
-      if (!response.ok) throw new Error('Public API failed');
+  //     if (!response.ok) throw new Error('Public API failed');
       
-      const data = await response.json();
-      console.log(data);
-      return data;
+  //     const data = await response.json();
+  //     console.log(data);
+  //     return data;
   
-    } catch (error) {
-      console.error('Public API call failed:', error);
-      throw error;
-    }
-  };
+  //   } catch (error) {
+  //     console.error('Public API call failed:', error);
+  //     throw error;
+  //   }
+  // };
 
 // export const checkIfUserExists = async (email, password) => {
 
@@ -248,67 +268,67 @@ export const checkIfUserExistsAPI = async (email, password) => {
    * @param {Array} equipo - The team selected by the user and the user ID
    * @returns {Promise} - The response from the server
    */
-  export const storeTeam = async (userId, equipo) => {
+//   export const storeTeam = async (userId, equipo) => {
 
-    try {
-      const response = await fetch(`${publicIp}/teams`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId, equipo }),
-      });
+//     try {
+//       const response = await fetch(`${publicIp}/teams`, {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ userId, equipo }),
+//       });
   
-      const data = await response.json();
+//       const data = await response.json();
   
-      if(response.status === 409) {
-        alert('Team already stored for this user');
-        return false;
-      } else if (!response.ok) {
-        throw new Error('Public API failed');
-      } else if(data.message === 'Team stored') {
-        alert('Team stored');
-        return data;
-      } else {
-        alert('Team not stored');
-        return false;
-      }
+//       if(response.status === 409) {
+//         alert('Team already stored for this user');
+//         return false;
+//       } else if (!response.ok) {
+//         throw new Error('Public API failed');
+//       } else if(data.message === 'Team stored') {
+//         alert('Team stored');
+//         return data;
+//       } else {
+//         alert('Team not stored');
+//         return false;
+//       }
   
-    } catch (error) {
-      console.error('Public API call failed:', error);
-      return false;
-    }
-  };
+//     } catch (error) {
+//       console.error('Public API call failed:', error);
+//       return false;
+//     }
+//   };
 
 
-  export const retrieveTeam = async (userId) => {
+//   export const retrieveTeam = async (userId) => {
 
-    console.log("Inside getTeam in api");
-    console.log(userId);
-    console.log(`${publicIp}/getTeam/${userId}`);
+//     console.log("Inside getTeam in api");
+//     console.log(userId);
+//     console.log(`${publicIp}/getTeam/${userId}`);
 
-    try {
-      const response = await fetch(`${publicIp}/getTeam/${userId}`);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error:', error);
-      return false;
-    }
-  };
+//     try {
+//       const response = await fetch(`${publicIp}/getTeam/${userId}`);
+//       const data = await response.json();
+//       return data;
+//     } catch (error) {
+//       console.error('Error:', error);
+//       return false;
+//     }
+//   };
 
 
-  export const get_name_by_id = (players, ids) => {
+//   export const get_name_by_id = (players, ids) => {
 
-    result = {};
+//     result = {};
 
-    for(let i = 0; i < ids.length; i++) {
+//     for(let i = 0; i < ids.length; i++) {
     
-      const player = players.find((player) => player.id_player === ids[i]);
-      result[ids[i]] = player.name;
+//       const player = players.find((player) => player.id_player === ids[i]);
+//       result[ids[i]] = player.name;
 
-    }
-    return result;
+//     }
+//     return result;
 
-}
+// }
   
