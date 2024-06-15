@@ -1,73 +1,35 @@
-import { fetchPlayers, retrieveTeam, storeTeam, get_name_by_id } from '../api';
+import { fetchPlayers, retrieveTeam, storeTeam, get_name_by_id, fetchTeamAPI } from '../api';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Button, TouchableOpacity, TextInput } from 'react-native';
 
 const Bets = ({ navigation }) => {
-
-  const [equipo, setEquipo] = useState([]);
-  const [jugadores, setJugadores] = useState([]);
-  const [originalJugadores, setOriginalJugadores] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [team, setTeam] = useState([]);
-
   const [finalTeam, setFinalTeam] = useState([]);
 
   useEffect(() => {
-
-    // const getPlayers = async () => {
-    //   const data = await fetchPlayers();
-    //   console.log(data);
-    //   setJugadores(data);
-    //   console.log(data);
-    //   setOriginalJugadores(data);
-    // };
-
-    // getPlayers();
-
     const getTeam = async () => {
+      try {
+        const userId = await retrieveUser();
+        const allPlayers = await fetchPlayers();
 
-      const userId = await retrieveUser();
-      const allPlayers = await fetchPlayers();
+        const team = await fetchTeamAPI(userId);
 
-      const team = await retrieveTeam(userId);
+        if (team.length === 0) {
+          return;
+        }
 
-      if (team.length === 0) {
-        return;
+        const team_ids = team.map((player) => player.id_player);
+        const final_team = get_name_by_id(allPlayers, team_ids);
+
+        setFinalTeam(Object.values(final_team));
+      } catch (error) {
+        console.error('Error fetching team:', error);
       }
-
-      const team_ids = team.map((player) => player.id_player);
-      const final_team = get_name_by_id(allPlayers, team_ids);
-
-      setFinalTeam(Object.values(final_team));
-      
     };
-      getTeam();
+
+    getTeam();
   }, []);
-
-  // const agregarJugadorAlEquipo = (jugador) => {
-
-  //   if (equipo.length >= 8) {
-  //     alert('You can only select a maximum of 8 players.');
-  //     return;
-  //   }
-    
-  //   setEquipo((prevEquipo) => [...prevEquipo, jugador]);
-  //   setJugadores((prevJugadores) => prevJugadores.filter((j) => j.id_player !== jugador.id_player));
-  // };
-
-  // const quitarJugadorDelEquipo = (jugador) => {
-
-  //   const nuevoEquipo = equipo.filter((j) => j.id_player !== jugador.id_player);
-  //   setEquipo(nuevoEquipo);
-  //   setJugadores((prevJugadores) => [...prevJugadores, jugador]);
-    
-  // };
-
-  // const handleSearch = (event) => {
-  //   setSearchTerm(event.target.value);
-  // };
 
   const retrieveUser = async () => {
     try {
@@ -81,35 +43,9 @@ const Bets = ({ navigation }) => {
     }
   };
 
-
-  // const handleFinish = async () => {
-
-  //   if (equipo.length < 8) {
-  //     alert('Please select at least 8 players');
-  //     return;
-  //   }
-
-  //   const userId = await retrieveUser();
-  //   const playersIds = equipo.map((jugador) => jugador.id_player);
-
-  //   try {
-  //     await storeTeam({ userId, team: playersIds });
-  //     console.log('Team stored successfully');
-  //   } catch (error) {
-  //     console.error('Failed to store team:', error);
-  //   }
-
-  //   await AsyncStorage.setItem('equipo', JSON.stringify(equipo));
-
-  //   setEquipo([]);
-  //   setJugadores(originalJugadores);
-  // }
-
-    
-
-  const filteredJugadores = jugadores.filter((jugador) =>
-    jugador.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredJugadores = jugadores.filter((jugador) =>
+  //   jugador.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   return (
     <ImageBackground source={require('../assets/images/fondo.jpg')} style={styles.container}>

@@ -5,7 +5,8 @@ import { checkIfEmailExists } from './server/firestoreFunctions';
 import { checkIfUserExists } from './server/firestoreFunctions';
 import { registerUser, loginUser } from './server/firestoreFunctions';
 import { sendPasswordReset } from './server/firestoreFunctions';
-import { fetchPlayers as fetchPlayersFromFirestore, storeTeam as storeTeamInFirestore } from './server/firestoreFunctions';
+//import { fetchPlayers as fetchPlayersFromFirestore, storeTeam as storeTeamInFirestore } from './server/firestoreFunctions';
+import { fetchPlayersFromFirestore, storeTeamInFirestore, fetchTeamFromFirestore } from './server/firestoreFunctions';
 
 const publicIp = 'http://192.168.1.40:3000'; // Your IP
 
@@ -70,9 +71,28 @@ export const storeTeam = async (userId, team) => {
   }
 };
 
+export const fetchTeamAPI = async (userId) => {
+  try {
+    const team = await fetchTeamFromFirestore(userId);
+    return team;
+  } catch (error) {
+    console.error('Error fetching team:', error);
+    throw error;
+  }
+};
 
+export const get_name_by_id = (players, ids) => {
+  const result = {};
 
+  ids.forEach(id => {
+    const player = players.find(player => player.id_player === id);
+    if (player) {
+      result[id] = player.name;
+    }
+  });
 
+  return result;
+};
 
 
 

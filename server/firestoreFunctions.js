@@ -1,9 +1,8 @@
 // server/firestoreFunctions.js
 
-import { collection, getDocs, query, where, doc, setDoc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, query, where, doc, setDoc, getDoc, addDoc } from 'firebase/firestore';
 import { firestore, auth } from './firebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
-
 
 export const registerUser = async (email, password, firstName, lastName) => {
   try {
@@ -83,11 +82,49 @@ export const storeTeam = async (userId, team) => {
   }
 };
 
+export const fetchPlayersFromFirestore = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(firestore, 'I_Players'));
+    const playersData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    return playersData;
+  } catch (error) {
+    console.error('Error fetching players:', error);
+    throw error;
+  }
+};
+
+
+export const storeTeamInFirestore = async (userId, team) => {
+  try {
+    const teamCollection = collection(firestore, 'I_Apuestas');
+
+    for (const playerId of team) {
+      await addDoc(teamCollection, {
+        id_member: userId,
+        id_player: playerId
+      });
+    }
+
+    console.log('Team stored successfully');
+  } catch (error) {
+    console.error('Error storing team:', error);
+    throw error;
+  }
+};
 
 
 
-
-
+export const fetchTeamFromFirestore = async (userId) => {
+  try {
+    const teamQuery = query(collection(firestore, 'I_Apuestas'), where('id_member', '==', userId));
+    const querySnapshot = await getDocs(teamQuery);
+    const teamData = querySnapshot.docs.map(doc => doc.data());
+    return teamData;
+  } catch (error) {
+    console.error('Error fetching team:', error);
+    throw error;
+  }
+};
 
 
 

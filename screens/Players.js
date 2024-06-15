@@ -45,10 +45,9 @@ const Players = ({navigation}) => {
 
   const retrieveUser = async () => {
     try {
-      const userName = await AsyncStorage.getItem('user');
-      if (userName !== null) {
-        //setUser(JSON.parse(userName));
-        return JSON.parse(userName).id_member;
+      const user = await AsyncStorage.getItem('user');
+      if (user !== null) {
+        return JSON.parse(user).uid; // Use the UID instead of id_member
       }
     } catch (error) {
       console.error(error);
@@ -64,10 +63,13 @@ const Players = ({navigation}) => {
     }
 
     const userId = await retrieveUser();
+    console.log('User ID:', userId);
+    
     const playersIds = equipo.map((jugador) => jugador.id_player);
+    console.log('Team:', playersIds);
 
     try {
-      await storeTeam({ userId, team: playersIds });
+      await storeTeam( userId, playersIds );
       console.log('Team stored successfully');
     } catch (error) {
       console.error('Failed to store team:', error);
