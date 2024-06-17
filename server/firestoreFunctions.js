@@ -101,7 +101,7 @@ export const storeTeamInFirestore = async (userId, team) => {
     for (const playerId of team) {
       await addDoc(teamCollection, {
         id_member: userId,
-        id_player: playerId
+        id_player: playerId,
       });
     }
 
@@ -111,8 +111,6 @@ export const storeTeamInFirestore = async (userId, team) => {
     throw error;
   }
 };
-
-
 
 export const fetchTeamFromFirestore = async (userId) => {
   try {
@@ -125,6 +123,43 @@ export const fetchTeamFromFirestore = async (userId) => {
     throw error;
   }
 };
+
+export const getUserById = async (uid) => {
+  try {
+    const userDoc = await getDoc(doc(firestore, 'I_Members', uid));
+    if (userDoc.exists()) {
+      return userDoc.data();
+    } else {
+      console.log('No such user!');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error getting user:', error);
+    return null;
+  }
+};
+
+export const getPlayerName = async (id_player) => {
+  try {
+    const playerQuery = query(collection(firestore, 'I_Players'), where('id_player', '==', id_player));
+    const playerQuerySnapshot = await getDocs(playerQuery);
+    if (!playerQuerySnapshot.empty) {
+      const playerDoc = playerQuerySnapshot.docs[0];
+      console.log(playerDoc.data());
+      return playerDoc.data().name;
+    } else {
+      console.log('No such player!');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error getting player:', error);
+    return null;
+  }
+};
+
+
+
+
 
 
 

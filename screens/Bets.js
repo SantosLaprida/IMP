@@ -1,6 +1,7 @@
 import { fetchPlayers, retrieveTeam, storeTeam, get_name_by_id, fetchTeamAPI } from '../api';
+import { getPlayerName } from '../server/firestoreFunctions';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { auth } from '../server/firebaseConfig';
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Button, TouchableOpacity, TextInput } from 'react-native';
 
@@ -9,43 +10,19 @@ const Bets = ({ navigation }) => {
 
   useEffect(() => {
     const getTeam = async () => {
-      try {
-        const userId = await retrieveUser();
-        const allPlayers = await fetchPlayers();
-
-        const team = await fetchTeamAPI(userId);
-
-        if (team.length === 0) {
-          return;
-        }
-
-        const team_ids = team.map((player) => player.id_player);
-        const final_team = get_name_by_id(allPlayers, team_ids);
-
-        setFinalTeam(Object.values(final_team));
-      } catch (error) {
-        console.error('Error fetching team:', error);
+      const user = auth.currentUser;
+      if (user) {
+        const userId = user.uid;
+        const teamData = await fetchTeamAPI(userId);
+        const playerNamesPromises = teamData.map(player => getPlayerName(player.id_player));
+        const playerNames = await Promise.all(playerNamesPromises);
+        setFinalTeam(playerNames);
       }
     };
 
     getTeam();
+
   }, []);
-
-  const retrieveUser = async () => {
-    try {
-      const userName = await AsyncStorage.getItem('user');
-      if (userName !== null) {
-        //setUser(JSON.parse(userName));
-        return JSON.parse(userName).id_member;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // const filteredJugadores = jugadores.filter((jugador) =>
-  //   jugador.name.toLowerCase().includes(searchTerm.toLowerCase())
-  // );
 
   return (
     <ImageBackground source={require('../assets/images/fondo.jpg')} style={styles.container}>
@@ -58,16 +35,16 @@ const Bets = ({ navigation }) => {
     <TouchableOpacity style={{...styles.button, width: 200, padding: 5, marginTop: 20, marginBottom: 20}} onPress={() => navigation.navigate('Matches')}>
           <Text style={{...styles.buttonText, fontSize: 15}}>See games live</Text>
         </TouchableOpacity>
-      
-
-
       <ScrollView showsVerticalScrollIndicator={false}>
-      
-      {finalTeam.map((name, index) => (
-        <View key={index} style={styles.jugadorItem}>
+      {finalTeam.length > 0 ? (
+        finalTeam.map((name, index) => (
+          <View key={index} style={styles.jugadorItem}>
           <Text>{name}</Text>
         </View>
-      ))}
+        ))
+      ) : (
+        <Text style={styles.text}>No players selected yet.</Text>
+      )}
       </ScrollView>
       </View>
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Players')}>

@@ -61,7 +61,6 @@ export const fetchPlayers = async () => {
   }
 };
 
-
 export const storeTeam = async (userId, team) => {
   try {
     await storeTeamInFirestore(userId, team);
@@ -74,6 +73,7 @@ export const storeTeam = async (userId, team) => {
 export const fetchTeamAPI = async (userId) => {
   try {
     const team = await fetchTeamFromFirestore(userId);
+    console.log(team);
     return team;
   } catch (error) {
     console.error('Error fetching team:', error);

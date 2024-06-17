@@ -54,7 +54,6 @@ const Players = ({navigation}) => {
     }
   };
 
-
   const handleFinish = async () => {
 
     if (equipo.length < 8) {
