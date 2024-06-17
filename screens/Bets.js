@@ -9,6 +9,7 @@ const Bets = ({ navigation }) => {
   const [finalTeam, setFinalTeam] = useState([]);
 
   useEffect(() => {
+
     const getTeam = async () => {
       const user = auth.currentUser;
       if (user) {
@@ -47,10 +48,13 @@ const Bets = ({ navigation }) => {
       )}
       </ScrollView>
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Players')}>
-          <Text style={styles.buttonText}>Edit my team</Text>
-          
-        </TouchableOpacity>
+      <TouchableOpacity 
+        style={styles.button} 
+        onPress={() => navigation.navigate('Players')}>
+        <Text style={styles.buttonText}>
+          {finalTeam.length > 0 ? 'Edit my team' : 'Select players'}
+        </Text>
+</TouchableOpacity>
     
   
 
