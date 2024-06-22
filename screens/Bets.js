@@ -4,6 +4,7 @@ import { getPlayerName } from '../server/firestoreFunctions';
 import { auth } from '../server/firebaseConfig';
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Button, TouchableOpacity, TextInput } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Bets = ({ navigation }) => {
   const [finalTeam, setFinalTeam] = useState([]);
@@ -26,7 +27,9 @@ const Bets = ({ navigation }) => {
   }, []);
 
   return (
-    <ImageBackground source={require('../assets/images/fondo.jpg')} style={styles.container}>
+    <LinearGradient
+    colors={['#0d1825', '#2e4857']}
+    style={styles.container}>
     <View style={styles.box}>
       <Text style={{ ...styles.text, paddingBottom: 20, fontSize: 20 }}>Your bet</Text>
       <Image
@@ -55,10 +58,7 @@ const Bets = ({ navigation }) => {
           {finalTeam.length > 0 ? 'Edit my team' : 'Select players'}
         </Text>
 </TouchableOpacity>
-    
-  
-
-  </ImageBackground>
+</LinearGradient>
   );
 };
 
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   button: {
-    backgroundColor: 'teal',
+    backgroundColor: 'rgba(226, 202, 64, 0.438)',
     padding: 15,
     margin: 10,
     borderRadius: 10,

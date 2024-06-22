@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Wallet = ({ navigation }) => {
   const [user, setUser] = useState(null);
@@ -19,9 +19,14 @@ const Wallet = ({ navigation }) => {
 
   return (
     
-    <ImageBackground source={require('../assets/images/fondo.jpg')} style={styles.container}>
+    <LinearGradient
+    colors={['#0d1825', '#2e4857']}
+    style={styles.container}> 
     <View style={styles.row}>
-    <Text style={styles.text}>Wallet</Text>
+    <Image
+    source={require('../assets/images/logo-golf.png')}
+    style={styles.logo}
+  />
    
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
           <Text style={styles.buttonText}>Deposit</Text>
@@ -38,7 +43,7 @@ const Wallet = ({ navigation }) => {
         </TouchableOpacity>
       </View>
  
-   </ImageBackground>
+      </LinearGradient>
   );
 };
 
@@ -46,7 +51,7 @@ const Wallet = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   row:{
-    backgroundColor: "rgba(0, 0, 0, 0.788)",
+    backgroundColor: "transparent",
     padding: 20,
     paddingVertical: 40,
     borderRadius: 25,
@@ -69,7 +74,7 @@ const styles = StyleSheet.create({
     
   },
   button: {
-    backgroundColor: 'teal',
+    backgroundColor: 'rgba(226, 202, 64, 0.438)',
     padding: 20,
     margin: 10,
     borderRadius: 10,
@@ -80,11 +85,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
   },
-  logo:{
-    width: 100,
-    height: 100,
-    borderRadius: 20,   
-    marginBottom: 30
+  logo: {
+    width: 300,
+    height: 150,
+    marginBottom: 30,
   },
 });
 

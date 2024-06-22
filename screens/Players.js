@@ -2,7 +2,8 @@ import { fetchPlayers, storeTeam } from '../api';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Button, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Players = ({navigation}) => {
 
@@ -86,9 +87,11 @@ const Players = ({navigation}) => {
   );
 
   return (
-    <ImageBackground source={require('../assets/images/fondo.jpg')} style={styles.container}>
+    <LinearGradient
+    colors={['#0d1825', '#2e4857']}
+    style={styles.container}>
 
-<TouchableOpacity style={{...styles.button, marginBottom: 10, backgroundColor: "green"}} onPress={() => navigation.navigate('Tournaments')}>
+<TouchableOpacity style={{...styles.button, marginBottom: 20}} onPress={() => navigation.navigate('Tournaments')}>
           <Text style={styles.buttonText}>Back</Text>
         </TouchableOpacity>
       <View style={styles.box}>
@@ -115,7 +118,7 @@ const Players = ({navigation}) => {
         ))}
       </ScrollView>
     </View>
-    <View style={{...styles.box, height: 250}}>
+    <View style={{...styles.box, height: 200}}>
       <Text style={{ ...styles.text, paddingBottom: 10, fontSize: 20 }}>Your team</Text>
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         {equipo.map((jugador) => (
@@ -130,7 +133,7 @@ const Players = ({navigation}) => {
       <TouchableOpacity style={styles.button} onPress={handleFinish}>
           <Text style={styles.buttonText}>Place my bet</Text>
         </TouchableOpacity>
-  </ImageBackground>
+        </LinearGradient>
   );
 };
 
@@ -143,8 +146,8 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.788)',
-    height: 400,
-    marginBottom: 25, 
+    height: 380,
+    marginBottom: 10, 
   },
   itemTitle:{
     borderRadius: 5,
@@ -198,11 +201,12 @@ const styles = StyleSheet.create({
     height: 30
   },
   button: {
-    backgroundColor: 'teal',
-    padding: 8,
+    backgroundColor: 'rgba(226, 202, 64, 0.438)',
+    padding: 6,
     borderRadius: 10,
     width: 350, // Adjust the width as needed
     alignItems: 'center',
+    marginVertical: 10,
   },
   buttonText: {
     color: 'white',

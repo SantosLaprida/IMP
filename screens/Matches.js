@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
-
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Matches = ({ navigation }) => {
   return (
-    <ImageBackground source={require('../assets/images/fondo.jpg')} style={styles.container}>
+    <LinearGradient
+    colors={['#0d1825', '#2e4857']}
+    style={styles.container}>  
 
-<TouchableOpacity style={{...styles.button, backgroundColor: "green", marginTop: 15}} onPress={() => navigation.navigate('Bets')}>
+<TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Bets')}>
           <Text style={styles.buttonText}>Back</Text>
         </TouchableOpacity>
 
@@ -42,7 +44,7 @@ const Matches = ({ navigation }) => {
        <View style={styles.box}>
        
        </View>
-   </ImageBackground>
+       </LinearGradient>
   );    
 };
 
@@ -50,7 +52,7 @@ const Matches = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   box:{
-    marginBottom: 25,
+    marginBottom: 15,
     flex: 1,
     flexDirection: "row",
     borderWidth: 5, // ancho del borde
@@ -83,11 +85,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 14
   },
   button: {
-    backgroundColor: 'teal',
-    padding: 8,
+    backgroundColor: 'rgba(226, 202, 64, 0.438)',
+    padding: 6,
     borderRadius: 10,
     width: 350, // Adjust the width as needed
     alignItems: 'center',
+    marginTop: 20,
   },
   buttonText: {
     color: 'white',
