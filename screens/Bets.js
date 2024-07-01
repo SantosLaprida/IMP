@@ -36,7 +36,7 @@ const Bets = ({ navigation }) => {
     source={require('../assets/images/Golf-PGA.webp')}
     style={styles.logo}
   />
-    <TouchableOpacity style={{...styles.button, width: 200, padding: 5, marginTop: 20, marginBottom: 20}} onPress={() => navigation.navigate('Matches')}>
+    <TouchableOpacity style={{...styles.button, width: 200, padding: 5, marginTop: 20, marginBottom: 20}} onPress={() => navigation.navigate('QuarterFinals')}>
           <Text style={{...styles.buttonText, fontSize: 15}}>See games live</Text>
         </TouchableOpacity>
       <ScrollView showsVerticalScrollIndicator={false}>

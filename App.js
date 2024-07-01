@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 // Importar pantallas
 import Home from './screens/Home';
-import Matches from './screens/Matches';
+import QuarterFinals from './screens/QuarterFinals';
 import Players from './screens/Players';
 import Login from './auth/Login';
 import Register from './auth/Register';
@@ -17,6 +17,8 @@ import Bets from './screens/Bets';
 import Wallet from './screens/Wallet';
 import Settings from './screens/Settings';
 import PasswordReset from './screens/PasswordReset';
+import SemiFinals from './screens/SemiFinals';
+import Finals from './screens/Finals';
 
 
 
@@ -52,7 +54,9 @@ function BetStackScreen() {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen name="Bets" component={Bets} options={{ headerShown: false }} />
-      <HomeStack.Screen name="Matches" component={Matches} options={{ headerShown: false }} />
+      <HomeStack.Screen name="QuarterFinals" component={QuarterFinals} options={{ headerShown: false }} />
+      <HomeStack.Screen name="SemiFinals" component={SemiFinals} options={{ headerShown: false }} />
+      <HomeStack.Screen name="Finals" component={Finals} options={{ headerShown: false }} />
     </HomeStack.Navigator>
   );
 }
