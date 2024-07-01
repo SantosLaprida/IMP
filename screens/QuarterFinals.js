@@ -6,11 +6,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const QuarterFinals = ({ navigation }) => {
 
-  let qualifiers  = fetchQuarterQualifiers();
-
-  console.log(qualifiers);
-
-
   return (
     <LinearGradient
     colors={['#0d1825', '#2e4857']}

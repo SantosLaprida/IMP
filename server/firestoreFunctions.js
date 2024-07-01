@@ -168,15 +168,14 @@ export const fetchQuarterQualifiers = async () => {
       }))
       .sort((a, b) => a.orden - b.orden);
 
-    const playerNames = await Promise.all(
-      sortedPlayerData.map(async ({ id_player }) => {
+    const playerDetails = await Promise.all(
+      sortedPlayerData.map(async ({ id_player, orden }) => {
         const name = await getPlayerName(id_player);
-        return name; 
+        return { id_player, name, orden }; 
       })
     );
 
-    
-    return playerNames.filter(name => name !== null);
+    return playerDetails.filter(({ name }) => name !== null);
   } catch (error) {
     console.error('Error fetching qualifiers:', error);
     throw error;

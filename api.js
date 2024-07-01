@@ -8,17 +8,7 @@ import { sendPasswordReset } from './server/firestoreFunctions';
 //import { fetchPlayers as fetchPlayersFromFirestore, storeTeam as storeTeamInFirestore } from './server/firestoreFunctions';
 import { fetchPlayersFromFirestore, storeTeamInFirestore, fetchTeamFromFirestore } from './server/firestoreFunctions';
 
-const publicIp = 'http://192.168.1.40:3000'; // Your IP
-
-// function racePromisesIgnoreRejections(promises) {
-//     let indexPromises = promises.map((p, index) => p.catch(() => { throw index; }));
-//     let indexRace = Promise.race(indexPromises);
-//     return indexRace.then(index => {
-//       let p = promises[index];
-//       promises.splice(index, 1);
-//       return p.catch(() => racePromisesIgnoreRejections(promises));
-//     });
-//   }
+const publicIp = 'http://192.168.1.40:3000'; 
 
 export const registerUserAPI = async (email, password, firstName, lastName) => {
   try {
@@ -49,7 +39,6 @@ export const sendPasswordResetAPI = async (email) => {
     throw error;
   }
 };
-
 
 export const fetchPlayers = async () => {
   try {
