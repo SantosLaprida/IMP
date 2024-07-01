@@ -145,7 +145,7 @@ export const getPlayerName = async (id_player) => {
     const playerQuerySnapshot = await getDocs(playerQuery);
     if (!playerQuerySnapshot.empty) {
       const playerDoc = playerQuerySnapshot.docs[0];
-      console.log(playerDoc.data());
+      //console.log(playerDoc.data());
       return playerDoc.data().name;
     } else {
       console.log('No such player!');
@@ -158,9 +158,19 @@ export const getPlayerName = async (id_player) => {
 };
 
 
-
-
-
+export const fetchQuarterQualifiers = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(firestore, 'I_Cuartos'));
+    const playerData = querySnapshot.docs.map(doc => ({
+      id_player: doc.data().id_player,
+      order: doc.data().order
+    }));
+    return playerData;
+  } catch (error) {
+    console.error('Error fetching qualifiers:', error);
+    throw error;
+  }
+};
 
 
 
