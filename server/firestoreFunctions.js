@@ -161,11 +161,22 @@ export const getPlayerName = async (id_player) => {
 export const fetchQuarterQualifiers = async () => {
   try {
     const querySnapshot = await getDocs(collection(firestore, 'I_Cuartos'));
-    const playerData = querySnapshot.docs.map(doc => ({
-      id_player: doc.data().id_player,
-      order: doc.data().order
-    }));
-    return playerData;
+    const sortedPlayerData = querySnapshot.docs
+      .map(doc => ({
+        id_player: doc.data().id_player,
+        orden: doc.data().orden
+      }))
+      .sort((a, b) => a.orden - b.orden);
+
+    const playerNames = await Promise.all(
+      sortedPlayerData.map(async ({ id_player }) => {
+        const name = await getPlayerName(id_player);
+        return name; 
+      })
+    );
+
+    
+    return playerNames.filter(name => name !== null);
   } catch (error) {
     console.error('Error fetching qualifiers:', error);
     throw error;

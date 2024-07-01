@@ -1,8 +1,16 @@
+import { fetchQuarterQualifiers } from '../server/firestoreFunctions';
+
 import React from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const QuarterFinals = ({ navigation }) => {
+
+  let qualifiers  = fetchQuarterQualifiers();
+
+  console.log(qualifiers);
+
+
   return (
     <LinearGradient
     colors={['#0d1825', '#2e4857']}
