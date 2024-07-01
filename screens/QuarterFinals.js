@@ -1,10 +1,30 @@
 import { fetchQuarterQualifiers } from '../server/firestoreFunctions';
+import React, { useState, useEffect } from 'react';
 
-import React from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const QuarterFinals = ({ navigation }) => {
+
+  const [names, setNames] = useState([]);
+
+  const fetchQualifiers = async () => {
+    try {
+      const qualifiers = await fetchQuarterQualifiers();
+      const names = qualifiers.map(qualifier => qualifier.name);
+      setNames(names);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchQualifiers();
+  }, []);
+
+  
+
+
 
   return (
     <LinearGradient
@@ -16,36 +36,93 @@ const QuarterFinals = ({ navigation }) => {
         </TouchableOpacity>
 
       <View style={{...styles.box, marginTop: 15}}>
-        <View style={styles.player}>
-            <Text style={{...styles.text, marginBottom: 10}}>Player 1</Text>
+      <View style={styles.player}>
+            <Text style={{...styles.text, marginBottom: 10}}>{names[0]}</Text>
             <Image
-                source={require('../assets/images/logo.png')}
-                style={styles.logo}
+              source={require('../assets/images/logo.png')}
+              style={styles.logo}
             />
-             <Text style={{...styles.text, marginTop: 5}}>3up</Text>
-        </View>
+            <Text style={{...styles.text, marginTop: 5}}>3up</Text>
+          </View>
         <View style={styles.player}>
             <Text style={styles.text}>VS</Text>
         
         </View>
         <View style={styles.player}>
-            <Text style={{...styles.text, marginBottom: 10}}>Player 1</Text>
+            <Text style={{...styles.text, marginBottom: 10}}>{names[7]}</Text>
             <Image
-                source={require('../assets/images/logo.png')}
-                style={styles.logo}
+              source={require('../assets/images/logo.png')}
+              style={styles.logo}
             />
-             <Text style={{...styles.text, marginTop: 5}}>3d</Text>
-        </View>
+            <Text style={{...styles.text, marginTop: 5}}>3d</Text>
+          </View>
        
       </View>
       <View style={styles.box}>
-       
+      <View style={styles.player}>
+            <Text style={{...styles.text, marginBottom: 10}}>{names[1]}</Text>
+            <Image
+              source={require('../assets/images/logo.png')}
+              style={styles.logo}
+            />
+            <Text style={{...styles.text, marginTop: 5}}>3up</Text>
+          </View>
+        <View style={styles.player}>
+            <Text style={styles.text}>VS</Text>
+        
+        </View>
+        <View style={styles.player}>
+            <Text style={{...styles.text, marginBottom: 10}}>{names[6]}</Text>
+            <Image
+              source={require('../assets/images/logo.png')}
+              style={styles.logo}
+            />
+            <Text style={{...styles.text, marginTop: 5}}>3d</Text>
+          </View>
        </View>
        <View style={styles.box}>
-       
+       <View style={styles.player}>
+            <Text style={{...styles.text, marginBottom: 10}}>{names[2]}</Text>
+            <Image
+              source={require('../assets/images/logo.png')}
+              style={styles.logo}
+            />
+            <Text style={{...styles.text, marginTop: 5}}>3up</Text>
+          </View>
+        <View style={styles.player}>
+            <Text style={styles.text}>VS</Text>
+        
+        </View>
+        <View style={styles.player}>
+            <Text style={{...styles.text, marginBottom: 10}}>{names[5]}</Text>
+            <Image
+              source={require('../assets/images/logo.png')}
+              style={styles.logo}
+            />
+            <Text style={{...styles.text, marginTop: 5}}>3d</Text>
+          </View>
        </View>
        <View style={styles.box}>
-       
+       <View style={styles.player}>
+            <Text style={{...styles.text, marginBottom: 10}}>{names[3]}</Text>
+            <Image
+              source={require('../assets/images/logo.png')}
+              style={styles.logo}
+            />
+            <Text style={{...styles.text, marginTop: 5}}>3up</Text>
+          </View>
+        <View style={styles.player}>
+            <Text style={styles.text}>VS</Text>
+        
+        </View>
+        <View style={styles.player}>
+            <Text style={{...styles.text, marginBottom: 10}}>{names[4]}</Text>
+            <Image
+              source={require('../assets/images/logo.png')}
+              style={styles.logo}
+            />
+            <Text style={{...styles.text, marginTop: 5}}>3d</Text>
+          </View>
        </View>
        </LinearGradient>
   );    
