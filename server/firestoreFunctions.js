@@ -182,6 +182,35 @@ export const fetchQuarterQualifiers = async () => {
   }
 };
 
+export const fetchScoreSheet = async (id_player) => {
+  try {
+    const querySnapshot = await getDocs(collection(firestore, 'I_Cuartos'), where('id_player', '==', id_player));
+    let scoreData = {};
+    querySnapshot.docs.forEach(doc => {
+      const data = doc.data();
+      for (const key in data) {
+        if (/^H(1[0-8]|[1-9])$/.test(key)) {
+          scoreData[key] = data[key];
+        }
+      }
+    });
+    return scoreData;
+  } catch (error) {
+    console.error('Error fetching score sheet:', error);
+    throw error;
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
 
 
 

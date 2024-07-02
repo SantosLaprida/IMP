@@ -5,6 +5,8 @@ import { checkIfEmailExists } from './server/firestoreFunctions';
 import { checkIfUserExists } from './server/firestoreFunctions';
 import { registerUser, loginUser } from './server/firestoreFunctions';
 import { sendPasswordReset } from './server/firestoreFunctions';
+import { fetchScoreSheet } from './server/firestoreFunctions';
+
 //import { fetchPlayers as fetchPlayersFromFirestore, storeTeam as storeTeamInFirestore } from './server/firestoreFunctions';
 import { fetchPlayersFromFirestore, storeTeamInFirestore, fetchTeamFromFirestore } from './server/firestoreFunctions';
 
@@ -82,6 +84,18 @@ export const get_name_by_id = (players, ids) => {
 
   return result;
 };
+
+
+export const getScoreSheet = async (id_player) => {
+
+  try {
+    const scoreSheet = await fetchScoreSheet(id_player);
+    return scoreSheet;
+  } catch (error) {
+    console.error('Error fetching score sheet:', error);
+    throw error;
+  }
+}
 
 
 
