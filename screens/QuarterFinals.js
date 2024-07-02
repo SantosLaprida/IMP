@@ -23,13 +23,16 @@ const QuarterFinals = ({ navigation }) => {
       const ids = qualifiers.map(qualifier => qualifier.id_player);
       setNames(names);
       setIds(ids)
+      compareFirstMatch(ids)
+      console.log(ids, "aca estoy")
     } catch (error) {
       console.error(error);
     }
   };
 
-  const compareFirstMatch = async () =>{
+  const compareFirstMatch = async (ids) =>{
     try {
+      console.log(ids[0], ids[7], "IDS DEL PARTIDO 1")
       const results = await compareScores(ids[0], ids[7])
       if (results === null){
         return
@@ -84,20 +87,6 @@ const QuarterFinals = ({ navigation }) => {
     fetchQualifiers();
   }, []);
 
-  useEffect(() => {
-    compareFirstMatch();
-  }, []);
-  useEffect(() => {
-    compareSecondMatch();
-  }, []);
-
-  useEffect(() => {
-    compareThirdMatch();
-  }, []);
-
-  useEffect(() => {
-    compareFourthMatch();
-  }, []);
 
 
 
