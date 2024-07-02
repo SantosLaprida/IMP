@@ -1,10 +1,18 @@
 import { fetchQuarterQualifiers } from '../server/firestoreFunctions';
 import React, { useState, useEffect } from 'react';
+import { compareScores } from './QuarterUtils'
 
 import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const QuarterFinals = ({ navigation }) => {
+
+  const [ids, setIds] = useState([])
+
+  const [results1, setResults1] = useState([])
+  const [results2, setResults2] = useState([])
+  const [results3, setResults3] = useState([])
+  const [results4, setResults4] = useState([])
 
   const [names, setNames] = useState([]);
 
@@ -12,15 +20,88 @@ const QuarterFinals = ({ navigation }) => {
     try {
       const qualifiers = await fetchQuarterQualifiers();
       const names = qualifiers.map(qualifier => qualifier.name);
+      const ids = qualifiers.map(qualifier => qualifier.id_player);
       setNames(names);
+      setIds(ids)
     } catch (error) {
       console.error(error);
     }
   };
 
+  const compareFirstMatch = async () =>{
+    try {
+      const results = await compareScores(ids[0], ids[7])
+      if (results === null){
+        return
+      }
+      setResults1(results)
+      console.log(results, "1")
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+  const compareSecondMatch = async () =>{
+    try {
+      const results = await compareScores(ids[1], ids[6])
+      if (results === null){
+        return
+      }
+      setResults2(results)
+       console.log(results, "2")
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const compareThirdMatch = async () =>{
+    try {
+      const results = await compareScores(ids[2], ids[5])
+      if (results === null){
+        return
+      }
+      setResults3(results)
+       console.log(results, "3")
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const compareFourthMatch = async () =>{
+    try {
+      const results = await compareScores(ids[3], ids[4])
+      if (results === null){
+        return
+      }
+      setResults4(results)
+       console.log(results, "4")
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   useEffect(() => {
     fetchQualifiers();
   }, []);
+
+  useEffect(() => {
+    compareFirstMatch();
+  }, []);
+  useEffect(() => {
+    compareSecondMatch();
+  }, []);
+
+  useEffect(() => {
+    compareThirdMatch();
+  }, []);
+
+  useEffect(() => {
+    compareFourthMatch();
+  }, []);
+
+
+
+ 
 
   return (
     <LinearGradient
