@@ -22,10 +22,6 @@ const QuarterFinals = ({ navigation }) => {
     fetchQualifiers();
   }, []);
 
-  
-
-
-
   return (
     <LinearGradient
     colors={['#0d1825', '#2e4857']}
