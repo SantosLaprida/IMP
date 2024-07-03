@@ -7,13 +7,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const QuarterFinals = ({ navigation }) => {
 
-  const [ids, setIds] = useState([])
-
-  const [results1, setResults1] = useState([])
-  const [results2, setResults2] = useState([])
-  const [results3, setResults3] = useState([])
-  const [results4, setResults4] = useState([])
-
+  const [ids, setIds] = useState([]);
+  const [results1, setResults1] = useState([]);
+  const [results2, setResults2] = useState([]);
+  const [results3, setResults3] = useState([]);
+  const [results4, setResults4] = useState([]);
   const [names, setNames] = useState([]);
 
   const fetchQualifiers = async () => {
@@ -21,76 +19,99 @@ const QuarterFinals = ({ navigation }) => {
       const qualifiers = await fetchQuarterQualifiers();
       const names = qualifiers.map(qualifier => qualifier.name);
       const ids = qualifiers.map(qualifier => qualifier.id_player);
+      console.log('Fetched IDs:', ids); // Log fetched IDs
       setNames(names);
-      setIds(ids)
-      compareFirstMatch(ids)
-      console.log(ids, "aca estoy")
+      setIds(ids);
+      await compareMatches(ids); // Compare matches after IDs are set
     } catch (error) {
       console.error(error);
     }
   };
 
-  const compareFirstMatch = async (ids) =>{
-    try {
-      console.log(ids[0], ids[7], "IDS DEL PARTIDO 1")
-      const results = await compareScores(ids[0], ids[7])
-      if (results === null){
-        return
-      }
-      setResults1(results)
-      console.log(results, "1")
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  
-  const compareSecondMatch = async () =>{
-    try {
-      const results = await compareScores(ids[1], ids[6])
-      if (results === null){
-        return
-      }
-      setResults2(results)
-       console.log(results, "2")
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const compareMatches = async (ids) => {
+    await Promise.all([
+      compareFirstMatch(ids),
+      compareSecondMatch(ids),
+      compareThirdMatch(ids),
+      compareFourthMatch(ids)
+    ]);
+  };
 
-  const compareThirdMatch = async () =>{
+  const compareFirstMatch = async (ids) => {
     try {
-      const results = await compareScores(ids[2], ids[5])
-      if (results === null){
-        return
+      if (ids[0] === undefined || ids[7] === undefined) {
+        console.error('Invalid player IDs for first match:', ids[0], ids[7]);
+        return;
       }
-      setResults3(results)
-       console.log(results, "3")
+      console.log(ids[0], ids[7], "IDS DEL PARTIDO 1");
+      const results = await compareScores(ids[0], ids[7]);
+      if (results === null) {
+        return;
+      }
+      setResults1(results);
+      console.log(results, "1");
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
-  const compareFourthMatch = async () =>{
+  const compareSecondMatch = async (ids) => {
     try {
-      const results = await compareScores(ids[3], ids[4])
-      if (results === null){
-        return
+      if (ids[1] === undefined || ids[6] === undefined) {
+        console.error('Invalid player IDs for second match:', ids[1], ids[6]);
+        return;
       }
-      setResults4(results)
-       console.log(results, "4")
+      console.log(ids[1], ids[6], "IDS DEL PARTIDO 2");
+      const results = await compareScores(ids[1], ids[6]);
+      if (results === null) {
+        return;
+      }
+      setResults2(results);
+      console.log(results, "2");
     } catch (error) {
       console.error(error);
     }
-  }
+  };
+
+  const compareThirdMatch = async (ids) => {
+    try {
+      if (ids[2] === undefined || ids[5] === undefined) {
+        console.error('Invalid player IDs for third match:', ids[2], ids[5]);
+        return;
+      }
+      console.log(ids[2], ids[5], "IDS DEL PARTIDO 3");
+      const results = await compareScores(ids[2], ids[5]);
+      if (results === null) {
+        return;
+      }
+      setResults3(results);
+      console.log(results, "3");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const compareFourthMatch = async (ids) => {
+    try {
+      if (ids[3] === undefined || ids[4] === undefined) {
+        console.error('Invalid player IDs for fourth match:', ids[3], ids[4]);
+        return;
+      }
+      console.log(ids[3], ids[4], "IDS DEL PARTIDO 4");
+      const results = await compareScores(ids[3], ids[4]);
+      if (results === null) {
+        return;
+      }
+      setResults4(results);
+      console.log(results, "4");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     fetchQualifiers();
   }, []);
-
-
-
-
- 
 
   return (
     <LinearGradient
