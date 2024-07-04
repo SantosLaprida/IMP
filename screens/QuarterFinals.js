@@ -1,9 +1,10 @@
 import { fetchQuarterQualifiers } from '../server/firestoreFunctions';
 import React, { useState, useEffect } from 'react';
-import { compareScores } from './QuarterUtils'
+import { compareScores, showResults } from './QuarterUtils'
 
 import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { set } from 'firebase/database';
 
 const QuarterFinals = ({ navigation }) => {
 
@@ -43,20 +44,14 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for first match:', ids[0], ids[7]);
         return;
       }
-      // console.log(ids[0], ids[7], "IDS DEL PARTIDO 1");
       const results = await compareScores(ids[0], ids[7]);
       if (results === null) {
+        setResults1(null);
         return;
       }
-      const text = results.result;
-      if (text === 0){ 
-        text = "All Square"
-      }
 
-
-      setResults1(text);
+      setResults1(results);
       
-      // console.log(results, "1");
     } catch (error) {
       console.error(error);
     }
@@ -68,18 +63,16 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for second match:', ids[1], ids[6]);
         return;
       }
-      // console.log(ids[1], ids[6], "IDS DEL PARTIDO 2");
       const results = await compareScores(ids[1], ids[6]);
       if (results === null) {
         return;
       }
 
-      const text = results.result;
+      let text = results.result;
       if (text === 0){ 
         text = "All Square"
       }
       setResults2(text, results.currentHole);
-      // console.log(results, "2");
     } catch (error) {
       console.error(error);
     }
@@ -91,19 +84,17 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for third match:', ids[2], ids[5]);
         return;
       }
-      // console.log(ids[2], ids[5], "IDS DEL PARTIDO 3");
       const results = await compareScores(ids[2], ids[5]);
       if (results === null) {
         return;
       }
 
-      const text = results.result;
+      let text = results.result;
       if (text === 0){ 
         text = "All Square"
       }
       setResults3(text, results.currentHole);
 
-      // console.log(results, "3");
     } catch (error) {
       console.error(error);
     }
@@ -115,17 +106,15 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for fourth match:', ids[3], ids[4]);
         return;
       }
-      // console.log(ids[3], ids[4], "IDS DEL PARTIDO 4");
       const results = await compareScores(ids[3], ids[4]);
       if (results === null) {
         return;
       }
-      const text = results.result;
+      let text = results.result;
       if (text === 0){ 
         text = "All Square"
       }
       setResults4(text, results.currentHole);
-      // console.log(results, "4");
     } catch (error) {
       console.error(error);
     }
@@ -135,108 +124,105 @@ const QuarterFinals = ({ navigation }) => {
     fetchQualifiers();
   }, []);
 
-
-
   return (
     <LinearGradient
-    colors={['#0d1825', '#2e4857']}
-    style={styles.container}>  
-
-<TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Bets')}>
-          <Text style={styles.buttonText}>Back</Text>
-        </TouchableOpacity>
-
-      <View style={{...styles.box, marginTop: 15}}>
-      <View style={styles.player}>
-            <Text style={{...styles.text, marginBottom: 10}}>{names[0]}</Text>
-            <Image
-              source={require('../assets/images/logo.png')}
-              style={styles.logo}
-            />
-            <Text style={{...styles.text, marginTop: 5}}>{results1}</Text>
-          </View>
+      colors={['#0d1825', '#2e4857']}
+      style={styles.container}
+    >  
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Bets')}>
+        <Text style={styles.buttonText}>Back</Text>
+      </TouchableOpacity>
+  
+      <View style={{ ...styles.box, marginTop: 15 }}>
         <View style={styles.player}>
-            <Text style={styles.text}>VS</Text>
-        
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[0]}</Text>
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={styles.logo}
+          />
+          <Text style={{ ...styles.text, marginTop: 5 }}>{showResults(results1, names[0], names[7])}</Text>
         </View>
         <View style={styles.player}>
-            <Text style={{...styles.text, marginBottom: 10}}>{names[7]}</Text>
-            <Image
-              source={require('../assets/images/logo.png')}
-              style={styles.logo}
-            />
-            <Text style={{...styles.text, marginTop: 5}}>3d</Text>
-          </View>
-       
+          <Text style={styles.text}>VS</Text>
+        </View>
+        <View style={styles.player}>
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[7]}</Text>
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={styles.logo}
+          />
+          {/* <Text style={{ ...styles.text, marginTop: 5 }}>3d</Text> */}
+        </View>
       </View>
+  
       <View style={styles.box}>
-      <View style={styles.player}>
-            <Text style={{...styles.text, marginBottom: 10}}>{names[1]}</Text>
-            <Image
-              source={require('../assets/images/logo.png')}
-              style={styles.logo}
-            />
-            <Text style={{...styles.text, marginTop: 5}}>{results2}</Text>
-          </View>
         <View style={styles.player}>
-            <Text style={styles.text}>VS</Text>
-        
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[1]}</Text>
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={styles.logo}
+          />
+          <Text style={{ ...styles.text, marginTop: 5 }}>{results2}</Text>
         </View>
         <View style={styles.player}>
-            <Text style={{...styles.text, marginBottom: 10}}>{names[6]}</Text>
-            <Image
-              source={require('../assets/images/logo.png')}
-              style={styles.logo}
-            />
-            <Text style={{...styles.text, marginTop: 5}}>3d</Text>
-          </View>
-       </View>
-       <View style={styles.box}>
-       <View style={styles.player}>
-            <Text style={{...styles.text, marginBottom: 10}}>{names[2]}</Text>
-            <Image
-              source={require('../assets/images/logo.png')}
-              style={styles.logo}
-            />
-            <Text style={{...styles.text, marginTop: 5}}>{results3}</Text>
-          </View>
-        <View style={styles.player}>
-            <Text style={styles.text}>VS</Text>
-        
+          <Text style={styles.text}>VS</Text>
         </View>
         <View style={styles.player}>
-            <Text style={{...styles.text, marginBottom: 10}}>{names[5]}</Text>
-            <Image
-              source={require('../assets/images/logo.png')}
-              style={styles.logo}
-            />
-            <Text style={{...styles.text, marginTop: 5}}>3d</Text>
-          </View>
-       </View>
-       <View style={styles.box}>
-       <View style={styles.player}>
-            <Text style={{...styles.text, marginBottom: 10}}>{names[3]}</Text>
-            <Image
-              source={require('../assets/images/logo.png')}
-              style={styles.logo}
-            />
-            <Text style={{...styles.text, marginTop: 5}}>{results4}</Text>
-          </View>
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[6]}</Text>
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={styles.logo}
+          />
+          {/* <Text style={{ ...styles.text, marginTop: 5 }}>3d</Text> */}
+        </View>
+      </View>
+  
+      <View style={styles.box}>
         <View style={styles.player}>
-            <Text style={styles.text}>VS</Text>
-        
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[2]}</Text>
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={styles.logo}
+          />
+          <Text style={{ ...styles.text, marginTop: 5 }}>{results3}</Text>
         </View>
         <View style={styles.player}>
-            <Text style={{...styles.text, marginBottom: 10}}>{names[4]}</Text>
-            <Image
-              source={require('../assets/images/logo.png')}
-              style={styles.logo}
-            />
-            <Text style={{...styles.text, marginTop: 5}}>3d</Text>
-          </View>
-       </View>
-       </LinearGradient>
-  );    
+          <Text style={styles.text}>VS</Text>
+        </View>
+        <View style={styles.player}>
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[5]}</Text>
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={styles.logo}
+          />
+          {/* <Text style={{ ...styles.text, marginTop: 5 }}>3d</Text> */}
+        </View>
+      </View>
+  
+      <View style={styles.box}>
+        <View style={styles.player}>
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[3]}</Text>
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={styles.logo}
+          />
+          <Text style={{ ...styles.text, marginTop: 5 }}>{results4}</Text>
+        </View>
+        <View style={styles.player}>
+          <Text style={styles.text}>VS</Text>
+        </View>
+        <View style={styles.player}>
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[4]}</Text>
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={styles.logo}
+          />
+          {/* <Text style={{ ...styles.text, marginTop: 5 }}>3d</Text> */}
+        </View>
+      </View>
+    </LinearGradient>
+  );
+   
 };
 
 

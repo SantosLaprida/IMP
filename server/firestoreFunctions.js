@@ -200,8 +200,6 @@ export const fetchScoreSheet = async (id_player) => {
     });
 
     const name = await getPlayerName(id_player);
-    console.log('Score sheet:', scoreData, 'for player:', name);
-
     return scoreData;
   } catch (error) {
     console.error('Error fetching score sheet:', error);
