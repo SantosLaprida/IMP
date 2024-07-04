@@ -118,6 +118,11 @@ const QuarterFinals = ({ navigation }) => {
 
 
   const displayResultsLeft = (results) => {
+
+    if (!results.stillPlaying){
+      return '';
+    }
+
     if (results.result < 0){
       return -1 * results.result + 'UP';
     }
@@ -125,11 +130,31 @@ const QuarterFinals = ({ navigation }) => {
   }
 
   const displayResultsRight = (results) => {
+
+    
+    if (!results.stillPlaying){
+      return '';
+    }
+
     if (results.result > 0){
       return results.result + 'UP';
     }
     return '';
   }
+
+
+  const displayMiddle = (results, name1, name2) => {
+    if (results.stillPlaying){
+      return 'Thru ' + results.holesPlayed;
+    }
+    if (results.result > 0){
+      return name2 + ' Won';
+    }
+    if (results.result < 0){
+      return name1 + ' Won';
+    }    
+  }
+
 
 
   return (
@@ -151,7 +176,7 @@ const QuarterFinals = ({ navigation }) => {
           <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsLeft(results1)}</Text>
         </View>
         <View style={styles.player}>
-          <Text style={styles.text}>VS</Text>
+          <Text style={styles.text}>{displayMiddle(results1, names[0], names[7])}</Text>
         </View>
         <View style={styles.player}>
           <Text style={{ ...styles.text, marginBottom: 10 }}>{names[7]}</Text>
@@ -173,7 +198,7 @@ const QuarterFinals = ({ navigation }) => {
           <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsLeft(results2)}</Text>
         </View>
         <View style={styles.player}>
-          <Text style={styles.text}>VS</Text>
+          <Text style={styles.text}>{displayMiddle(results2, names[1], names[6])}</Text>
         </View>
         <View style={styles.player}>
           <Text style={{ ...styles.text, marginBottom: 10 }}>{names[6]}</Text>
@@ -195,7 +220,7 @@ const QuarterFinals = ({ navigation }) => {
           <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsLeft(results3)}</Text>
         </View>
         <View style={styles.player}>
-          <Text style={styles.text}>VS</Text>
+          <Text style={styles.text}>{displayMiddle(results3, names[2], names[5])}</Text>
         </View>
         <View style={styles.player}>
           <Text style={{ ...styles.text, marginBottom: 10 }}>{names[5]}</Text>
@@ -217,7 +242,7 @@ const QuarterFinals = ({ navigation }) => {
           <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsLeft(results4)}</Text>
         </View>
         <View style={styles.player}>
-          <Text style={styles.text}>VS</Text>
+          <Text style={styles.text}>{displayMiddle(results4, names[3], names[4])}</Text>
         </View>
         <View style={styles.player}>
           <Text style={{ ...styles.text, marginBottom: 10 }}>{names[4]}</Text>
