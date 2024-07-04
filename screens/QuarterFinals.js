@@ -117,6 +117,21 @@ const QuarterFinals = ({ navigation }) => {
   }
 
 
+  const displayResultsLeft = (results) => {
+    if (results.result < 0){
+      return -1 * results.result + 'UP';
+    }
+    return '';
+  }
+
+  const displayResultsRight = (results) => {
+    if (results.result > 0){
+      return results.result + 'UP';
+    }
+    return '';
+  }
+
+
   return (
     <LinearGradient
       colors={['#0d1825', '#2e4857']}
@@ -133,7 +148,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResults(results1, names[0], names[7])}</Text>
+          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsLeft(results1)}</Text>
         </View>
         <View style={styles.player}>
           <Text style={styles.text}>VS</Text>
@@ -144,7 +159,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          {/* <Text style={{ ...styles.text, marginTop: 5 }}>3d</Text> */}
+          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsRight(results1)}</Text>
         </View>
       </View>
   
@@ -155,7 +170,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResults(results2, names[1], names[6])}</Text>
+          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsLeft(results2)}</Text>
         </View>
         <View style={styles.player}>
           <Text style={styles.text}>VS</Text>
@@ -166,7 +181,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          {/* <Text style={{ ...styles.text, marginTop: 5 }}>3d</Text> */}
+          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsRight(results2)}</Text>
         </View>
       </View>
   
@@ -177,7 +192,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResults(results3, names[2], names[5])}</Text>
+          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsLeft(results3)}</Text>
         </View>
         <View style={styles.player}>
           <Text style={styles.text}>VS</Text>
@@ -188,7 +203,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          {/* <Text style={{ ...styles.text, marginTop: 5 }}>3d</Text> */}
+          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsRight(results3)}</Text>
         </View>
       </View>
   
@@ -199,7 +214,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResults(results4, names[3], names[4])}</Text>
+          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsLeft(results4)}</Text>
         </View>
         <View style={styles.player}>
           <Text style={styles.text}>VS</Text>
@@ -210,7 +225,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          {/* <Text style={{ ...styles.text, marginTop: 5 }}>3d</Text> */}
+          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsRight(results4)}</Text>
         </View>
       </View>
     </LinearGradient>
