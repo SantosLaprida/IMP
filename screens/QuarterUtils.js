@@ -20,18 +20,22 @@ export const compareScores = async (id_player1, id_player2) => {
         const score2 = scoreSheet2[`H${score.currentHole}`];
 
         if (score1 === 0 || score2 === 0) {
-            score.currentHole++;
+            score.currentHole++; 
             continue;
         }
         if (score1 < score2) {
             score.result--;
-            break;
+            score.currentHole++;
+            continue;
 
         } else if (score1 > score2) {
             score.result++;
-            break;
+            score.currentHole++;
+            continue;
         }
+
         score.currentHole++;
     }
+    console.log('Match result:', score.result, 'at hole:', score.currentHole);
     return score;
 }

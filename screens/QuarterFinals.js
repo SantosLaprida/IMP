@@ -19,10 +19,10 @@ const QuarterFinals = ({ navigation }) => {
       const qualifiers = await fetchQuarterQualifiers();
       const names = qualifiers.map(qualifier => qualifier.name);
       const ids = qualifiers.map(qualifier => qualifier.id_player);
-      console.log('Fetched IDs:', ids); // Log fetched IDs
+      console.log('Fetched IDs:', ids); 
       setNames(names);
       setIds(ids);
-      await compareMatches(ids); // Compare matches after IDs are set
+      await compareMatches(ids); 
     } catch (error) {
       console.error(error);
     }
@@ -43,13 +43,20 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for first match:', ids[0], ids[7]);
         return;
       }
-      console.log(ids[0], ids[7], "IDS DEL PARTIDO 1");
+      // console.log(ids[0], ids[7], "IDS DEL PARTIDO 1");
       const results = await compareScores(ids[0], ids[7]);
       if (results === null) {
         return;
       }
-      setResults1(results);
-      console.log(results, "1");
+      const text = results.result;
+      if (text === 0){ 
+        text = "All Square"
+      }
+
+
+      setResults1(text);
+      
+      // console.log(results, "1");
     } catch (error) {
       console.error(error);
     }
@@ -61,13 +68,18 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for second match:', ids[1], ids[6]);
         return;
       }
-      console.log(ids[1], ids[6], "IDS DEL PARTIDO 2");
+      // console.log(ids[1], ids[6], "IDS DEL PARTIDO 2");
       const results = await compareScores(ids[1], ids[6]);
       if (results === null) {
         return;
       }
-      setResults2(results);
-      console.log(results, "2");
+
+      const text = results.result;
+      if (text === 0){ 
+        text = "All Square"
+      }
+      setResults2(text, results.currentHole);
+      // console.log(results, "2");
     } catch (error) {
       console.error(error);
     }
@@ -79,13 +91,19 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for third match:', ids[2], ids[5]);
         return;
       }
-      console.log(ids[2], ids[5], "IDS DEL PARTIDO 3");
+      // console.log(ids[2], ids[5], "IDS DEL PARTIDO 3");
       const results = await compareScores(ids[2], ids[5]);
       if (results === null) {
         return;
       }
-      setResults3(results);
-      console.log(results, "3");
+
+      const text = results.result;
+      if (text === 0){ 
+        text = "All Square"
+      }
+      setResults3(text, results.currentHole);
+
+      // console.log(results, "3");
     } catch (error) {
       console.error(error);
     }
@@ -97,13 +115,17 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for fourth match:', ids[3], ids[4]);
         return;
       }
-      console.log(ids[3], ids[4], "IDS DEL PARTIDO 4");
+      // console.log(ids[3], ids[4], "IDS DEL PARTIDO 4");
       const results = await compareScores(ids[3], ids[4]);
       if (results === null) {
         return;
       }
-      setResults4(results);
-      console.log(results, "4");
+      const text = results.result;
+      if (text === 0){ 
+        text = "All Square"
+      }
+      setResults4(text, results.currentHole);
+      // console.log(results, "4");
     } catch (error) {
       console.error(error);
     }
@@ -112,6 +134,8 @@ const QuarterFinals = ({ navigation }) => {
   useEffect(() => {
     fetchQualifiers();
   }, []);
+
+
 
   return (
     <LinearGradient
@@ -129,7 +153,7 @@ const QuarterFinals = ({ navigation }) => {
               source={require('../assets/images/logo.png')}
               style={styles.logo}
             />
-            <Text style={{...styles.text, marginTop: 5}}>3up</Text>
+            <Text style={{...styles.text, marginTop: 5}}>{results1}</Text>
           </View>
         <View style={styles.player}>
             <Text style={styles.text}>VS</Text>
@@ -152,7 +176,7 @@ const QuarterFinals = ({ navigation }) => {
               source={require('../assets/images/logo.png')}
               style={styles.logo}
             />
-            <Text style={{...styles.text, marginTop: 5}}>3up</Text>
+            <Text style={{...styles.text, marginTop: 5}}>{results2}</Text>
           </View>
         <View style={styles.player}>
             <Text style={styles.text}>VS</Text>
@@ -174,7 +198,7 @@ const QuarterFinals = ({ navigation }) => {
               source={require('../assets/images/logo.png')}
               style={styles.logo}
             />
-            <Text style={{...styles.text, marginTop: 5}}>3up</Text>
+            <Text style={{...styles.text, marginTop: 5}}>{results3}</Text>
           </View>
         <View style={styles.player}>
             <Text style={styles.text}>VS</Text>
@@ -196,7 +220,7 @@ const QuarterFinals = ({ navigation }) => {
               source={require('../assets/images/logo.png')}
               style={styles.logo}
             />
-            <Text style={{...styles.text, marginTop: 5}}>3up</Text>
+            <Text style={{...styles.text, marginTop: 5}}>{results4}</Text>
           </View>
         <View style={styles.player}>
             <Text style={styles.text}>VS</Text>
