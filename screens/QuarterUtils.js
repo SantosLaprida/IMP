@@ -4,6 +4,7 @@ import { getScoreSheet } from '../api';
 import { getPlayerName } from '../server/firestoreFunctions';
 
 export const compareScores = async (id_player1, id_player2) => {
+    
     const scoreSheet1 = await getScoreSheet(id_player1);
     const scoreSheet2 = await getScoreSheet(id_player2);
 
@@ -13,8 +14,6 @@ export const compareScores = async (id_player1, id_player2) => {
         holesRemaining: 18,
         result: 0,
         stillPlaying: true,
-        player1: getPlayerName(id_player1),
-        player2: getPlayerName(id_player2)
     };
 
     if (scoreSheet1 === null || scoreSheet2 === null) {
@@ -59,6 +58,7 @@ export const compareScores = async (id_player1, id_player2) => {
     if (score.holesPlayed === 18) {
         score.stillPlaying = false;
     }
+
     return score;
 }
 
@@ -66,8 +66,10 @@ export const compareScores = async (id_player1, id_player2) => {
 
 export const showResults = (results, player_name1, player_name2) => {
 
+    console.log(player_name1, player_name2);
+
     if (results === null) {
-        return '';
+        return '';  
     }
 
     if (results.stillPlaying) {

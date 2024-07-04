@@ -67,12 +67,7 @@ const QuarterFinals = ({ navigation }) => {
       if (results === null) {
         return;
       }
-
-      let text = results.result;
-      if (text === 0){ 
-        text = "All Square"
-      }
-      setResults2(text, results.currentHole);
+      setResults2(results);
     } catch (error) {
       console.error(error);
     }
@@ -89,11 +84,7 @@ const QuarterFinals = ({ navigation }) => {
         return;
       }
 
-      let text = results.result;
-      if (text === 0){ 
-        text = "All Square"
-      }
-      setResults3(text, results.currentHole);
+      setResults3(results);
 
     } catch (error) {
       console.error(error);
@@ -110,11 +101,7 @@ const QuarterFinals = ({ navigation }) => {
       if (results === null) {
         return;
       }
-      let text = results.result;
-      if (text === 0){ 
-        text = "All Square"
-      }
-      setResults4(text, results.currentHole);
+      setResults4(results);
     } catch (error) {
       console.error(error);
     }
@@ -123,6 +110,12 @@ const QuarterFinals = ({ navigation }) => {
   useEffect(() => {
     fetchQualifiers();
   }, []);
+
+
+  const displayResults = (results, name1, name2) => {
+    return showResults(results, name1, name2);
+  }
+
 
   return (
     <LinearGradient
@@ -140,7 +133,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5 }}>{showResults(results1, names[0], names[7])}</Text>
+          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResults(results1, names[0], names[7])}</Text>
         </View>
         <View style={styles.player}>
           <Text style={styles.text}>VS</Text>
@@ -162,7 +155,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5 }}>{results2}</Text>
+          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResults(results2, names[1], names[6])}</Text>
         </View>
         <View style={styles.player}>
           <Text style={styles.text}>VS</Text>
@@ -184,7 +177,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5 }}>{results3}</Text>
+          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResults(results3, names[2], names[5])}</Text>
         </View>
         <View style={styles.player}>
           <Text style={styles.text}>VS</Text>
@@ -206,7 +199,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5 }}>{results4}</Text>
+          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResults(results4, names[3], names[4])}</Text>
         </View>
         <View style={styles.player}>
           <Text style={styles.text}>VS</Text>
