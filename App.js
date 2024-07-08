@@ -16,7 +16,7 @@ import Tournaments from './screens/Tournaments';
 import Bets from './screens/Bets';
 import Wallet from './screens/Wallet';
 import Settings from './screens/Settings';
-import PasswordReset from './screens/PasswordReset';
+import PasswordReset from './auth/PasswordReset';
 import SemiFinals from './screens/SemiFinals';
 import Finals from './screens/Finals';
 
