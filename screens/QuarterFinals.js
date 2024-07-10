@@ -102,28 +102,28 @@ const QuarterFinals = ({ navigation }) => {
 
   const displayResultsLeft = (results) => {
     if (!results) {
-      return 'Loading...';
+      return null;
     }
     if (!results.stillPlaying) {
-      return '';
+      return null;
     }
     if (results.result < 0) {
       return -1 * results.result + 'UP';
     }
-    return '';
+    return null;
   };
 
   const displayResultsRight = (results) => {
     if (!results) {
-      return 'Loading...';
+      return null;
     }
     if (!results.stillPlaying) {
-      return '';
+      return null;
     }
     if (results.result > 0) {
       return results.result + 'UP';
     }
-    return '';
+    return null;
   };
 
   const displayMiddle = (results, name1, name2) => {
@@ -157,7 +157,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsLeft(results1)}</Text>
+          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsLeft(results1)}</Text>
         </View>
         <View style={styles.middle}>
           <Text style={styles.text}>{displayMiddle(results1, names[0], names[7])}</Text>
@@ -168,7 +168,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsRight(results1)}</Text>
+          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsRight(results1)}</Text>
         </View>
       </View>
   
@@ -179,7 +179,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5 }}>{displayResultsLeft(results2)}</Text>
+          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsLeft(results2)}</Text>
         </View>
         <View style={styles.middle}>
           <Text style={styles.text}>{displayMiddle(results2, names[1], names[6])}</Text>
@@ -190,7 +190,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5 }}>{displayResultsRight(results2)}</Text>
+          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsRight(results2)}</Text>
         </View>
       </View>
   
@@ -201,7 +201,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsLeft(results3)}</Text>
+          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsLeft(results3)}</Text>
         </View>
         <View style={styles.middle}>
           <Text style={styles.text}>{displayMiddle(results3, names[2], names[5])}</Text>
@@ -212,7 +212,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsRight(results3)}</Text>
+          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsRight(results3)}</Text>
         </View>
       </View>
   
@@ -223,7 +223,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5, backgroundColor: "red" }}>{displayResultsLeft(results4)}</Text>
+          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsLeft(results4)}</Text>
         </View>
         <View style={styles.middle}>
           <Text style={styles.text}>{displayMiddle(results4, names[3], names[4])}</Text>
@@ -234,7 +234,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5 }}>{displayResultsRight(results4)}</Text>
+          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsRight(results4)}</Text>
         </View>
       </View>
     </LinearGradient>
