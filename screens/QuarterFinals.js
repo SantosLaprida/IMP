@@ -171,28 +171,30 @@ const QuarterFinals = ({ navigation }) => {
           <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsRight(results1)}</Text>
         </View>
       </View>
-  
+
       <View style={styles.box}>
         <View style={styles.player}>
-          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[1]}</Text>
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[3]}</Text>
           <Image
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsLeft(results2)}</Text>
+          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsLeft(results4)}</Text>
         </View>
         <View style={styles.middle}>
-          <Text style={styles.text}>{displayMiddle(results2, names[1], names[6])}</Text>
+          <Text style={styles.text}>{displayMiddle(results4, names[3], names[4])}</Text>
         </View>
         <View style={styles.player}>
-          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[6]}</Text>
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[4]}</Text>
           <Image
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsRight(results2)}</Text>
+          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsRight(results4)}</Text>
         </View>
       </View>
+  
+    
   
       <View style={styles.box}>
         <View style={styles.player}>
@@ -215,28 +217,30 @@ const QuarterFinals = ({ navigation }) => {
           <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsRight(results3)}</Text>
         </View>
       </View>
-  
+
       <View style={styles.box}>
         <View style={styles.player}>
-          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[3]}</Text>
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[1]}</Text>
           <Image
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsLeft(results4)}</Text>
+          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsLeft(results2)}</Text>
         </View>
         <View style={styles.middle}>
-          <Text style={styles.text}>{displayMiddle(results4, names[3], names[4])}</Text>
+          <Text style={styles.text}>{displayMiddle(results2, names[1], names[6])}</Text>
         </View>
         <View style={styles.player}>
-          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[4]}</Text>
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[6]}</Text>
           <Image
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsRight(results4)}</Text>
+          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsRight(results2)}</Text>
         </View>
       </View>
+  
+     
     </LinearGradient>
   );
 };
