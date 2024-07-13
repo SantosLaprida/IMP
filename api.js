@@ -86,10 +86,10 @@ export const get_name_by_id = (players, ids) => {
 };
 
 
-export const getScoreSheet = async (id_player) => {
+export const getScoreSheet = async (id_player, collectionName) => {
 
   try {
-    const scoreSheet = await fetchScoreSheet(id_player);
+    const scoreSheet = await fetchScoreSheet(id_player, collectionName);
     return scoreSheet;
   } catch (error) {
     console.error('Error fetching score sheet:', error);

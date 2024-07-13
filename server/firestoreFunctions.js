@@ -185,9 +185,34 @@ export const fetchQuarterQualifiers = async () => {
   }
 };
 
-export const fetchScoreSheet = async (id_player) => {
+export const fetchSemiQualifiers = async () => {
   try {
-    const scoreQuery = query(collection(firestore, 'I_Cuartos'), where('id_player', '==', id_player));
+    const querySnapshot = await getDocs(collection(firestore, 'I_Semifinales'));
+    const sortedPlayerData = querySnapshot.docs
+      .map(doc => ({
+        id_player: doc.data().id_player,
+        orden: doc.data().orden
+      }))
+      .sort((a, b) => a.orden - b.orden);
+
+    const playerDetails = await Promise.all(
+      sortedPlayerData.map(async ({ id_player, orden }) => {
+        const name = await getPlayerName(id_player);
+        return { id_player, name, orden }; 
+      })
+    );
+
+    return playerDetails.filter(({ name }) => name !== null);
+  } catch (error) {
+    console.error('Error fetching qualifiers:', error);
+    throw error;
+  }
+};
+
+
+export const fetchScoreSheet = async (id_player, collectionName) => {
+  try {
+    const scoreQuery = query(collection(firestore, collectionName), where('id_player', '==', id_player));
     const querySnapshot = await getDocs(scoreQuery);
     let scoreData = {};
     querySnapshot.docs.forEach(doc => {

@@ -1,4 +1,4 @@
-import { fetchQuarterQualifiers } from '../server/firestoreFunctions';
+import { fetchSemiQualifiers } from '../server/firestoreFunctions';
 import React, { useState, useEffect } from 'react';
 import { compareScores, showResults } from './QuarterUtils'
 
@@ -10,18 +10,20 @@ const SemiFinals = ({ navigation }) => {
   const [ids, setIds] = useState(Array(8).fill(null)); // Marcar posición con null
   const [results1, setResults1] = useState(null);
   const [results2, setResults2] = useState(null);
-  const [results3, setResults3] = useState(null);
-  const [results4, setResults4] = useState(null);
+  // const [results3, setResults3] = useState(null);
+  // const [results4, setResults4] = useState(null);
   const [names, setNames] = useState(Array(8).fill('Loading...')); // Marcar posición con 'Loading...'
 
   const fetchQualifiers = async () => {
     try {
-      const qualifiers = await fetchQuarterQualifiers();
+      const qualifiers = await fetchSemiQualifiers();
       const names = qualifiers.map(qualifier => qualifier.name);
       const ids = qualifiers.map(qualifier => qualifier.id_player);
       console.log('Fetched IDs:', ids); 
       setNames(names);
       setIds(ids);
+      console.log("NAMES", names);
+      console.log("IDS", ids);
       await compareMatches(ids); 
     } catch (error) {
       console.error(error);
@@ -29,65 +31,72 @@ const SemiFinals = ({ navigation }) => {
   };
 
   const compareMatches = async (ids) => {
+    console.log('Comparing matches:', ids);
     await Promise.all([
       compareFirstMatch(ids),
       compareSecondMatch(ids),
-      compareThirdMatch(ids),
-      compareFourthMatch(ids)
+      // compareThirdMatch(ids),
+      // compareFourthMatch(ids)
     ]);
   };
 
   const compareFirstMatch = async (ids) => {
     try {
       if (ids[0] === null || ids[7] === null) {
-        console.error('Invalid player IDs for first match:', ids[0], ids[7]);
+        console.error('Invalid player IDs for first match:', ids[0], ids[3]);
         return;
       }
-      const results = await compareScores(ids[0], ids[7]);
+      const collectionName = 'I_Semifinales';
+      const results = await compareScores(ids[0], ids[3], collectionName);
       setResults1(results);
+      console.log(results, "RESULTS FIRST MATCH");
     } catch (error) {
       console.error(error);
     }
+    
   };
 
   const compareSecondMatch = async (ids) => {
     try {
       if (ids[1] === null || ids[6] === null) {
-        console.error('Invalid player IDs for second match:', ids[1], ids[6]);
+        console.error('Invalid player IDs for second match:', ids[1], ids[2]);
         return;
       }
-      const results = await compareScores(ids[1], ids[6]);
+      const collectionName = 'I_Semifinales';
+      const results = await compareScores(ids[1], ids[2], collectionName);
       setResults2(results);
+      console.log(results, "RESULTS SECOND MATCH");
     } catch (error) {
       console.error(error);
     }
+    
   };
 
-  const compareThirdMatch = async (ids) => {
-    try {
-      if (ids[2] === null || ids[5] === null) {
-        console.error('Invalid player IDs for third match:', ids[2], ids[5]);
-        return;
-      }
-      const results = await compareScores(ids[2], ids[5]);
-      setResults3(results);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const compareThirdMatch = async (ids) => {
+  //   try {
+  //     if (ids[2] === null || ids[5] === null) {
+  //       console.error('Invalid player IDs for third match:', ids[2], ids[5]);
+  //       return;
+  //     }
+  //     const results = await compareScores(ids[2], ids[5]);
+  //     setResults3(results);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
-  const compareFourthMatch = async (ids) => {
-    try {
-      if (ids[3] === null || ids[4] === null) {
-        console.error('Invalid player IDs for fourth match:', ids[3], ids[4]);
-        return;
-      }
-      const results = await compareScores(ids[3], ids[4]);
-      setResults4(results);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const compareFourthMatch = async (ids) => {
+  //   try {
+  //     if (ids[3] === null || ids[4] === null) {
+  //       console.error('Invalid player IDs for fourth match:', ids[3], ids[4]);
+  //       return;
+  //     }
+  //     const results = await compareScores(ids[3], ids[4]);
+  //     setResults4(results);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useEffect(() => {
     fetchQualifiers();
@@ -163,7 +172,7 @@ const SemiFinals = ({ navigation }) => {
           <Text style={styles.text}>{displayMiddle(results1, names[0], names[7])}</Text>
         </View>
         <View style={styles.player}>
-          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[7]}</Text>
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[3]}</Text>
           <Image
             source={require('../assets/images/logo.png')}
             style={styles.logo}
@@ -185,7 +194,7 @@ const SemiFinals = ({ navigation }) => {
           <Text style={styles.text}>{displayMiddle(results2, names[1], names[6])}</Text>
         </View>
         <View style={styles.player}>
-          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[6]}</Text>
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[2]}</Text>
           <Image
             source={require('../assets/images/logo.png')}
             style={styles.logo}

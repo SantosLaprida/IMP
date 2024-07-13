@@ -3,10 +3,10 @@ import { get } from 'firebase/database';
 import { getScoreSheet } from '../api';
 import { getPlayerName } from '../server/firestoreFunctions';
 
-export const compareScores = async (id_player1, id_player2) => {
+export const compareScores = async (id_player1, id_player2, collection) => {
 
-    const scoreSheet1 = await getScoreSheet(id_player1);
-    const scoreSheet2 = await getScoreSheet(id_player2);
+    const scoreSheet1 = await getScoreSheet(id_player1, collection);
+    const scoreSheet2 = await getScoreSheet(id_player2, collection);
 
     let score = {
         currentHole: 1,

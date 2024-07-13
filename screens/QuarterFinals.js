@@ -43,7 +43,8 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for first match:', ids[0], ids[7]);
         return;
       }
-      const results = await compareScores(ids[0], ids[7]);
+      const collection = 'I_Cuartos';
+      const results = await compareScores(ids[0], ids[7], collection);
       setResults1(results);
     } catch (error) {
       console.error(error);
@@ -56,7 +57,8 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for second match:', ids[1], ids[6]);
         return;
       }
-      const results = await compareScores(ids[1], ids[6]);
+      const collection = 'I_Cuartos';
+      const results = await compareScores(ids[1], ids[6], collection);
       setResults2(results);
     } catch (error) {
       console.error(error);
@@ -69,7 +71,8 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for third match:', ids[2], ids[5]);
         return;
       }
-      const results = await compareScores(ids[2], ids[5]);
+      const collection = 'I_Cuartos';
+      const results = await compareScores(ids[2], ids[5], collection);
       setResults3(results);
     } catch (error) {
       console.error(error);
@@ -82,7 +85,8 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for fourth match:', ids[3], ids[4]);
         return;
       }
-      const results = await compareScores(ids[3], ids[4]);
+      const collection = 'I_Cuartos';
+      const results = await compareScores(ids[3], ids[4], collection);
       setResults4(results);
     } catch (error) {
       console.error(error);
