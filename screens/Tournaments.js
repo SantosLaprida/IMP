@@ -7,17 +7,27 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 
 const Tournaments = ({ navigation }) => {
-  const [user, setUser] = useState(null);
+  
+  const [start, setStart] = useState(null)
+  const [end, setEnd] = useState(null)
+  const [logo, setLogo] = useState(null)
+  const [name, setName] = useState(null)
+  
 
   useEffect(() => {
     const getTournamentData = async () => {
       try{
         const torneo = await fetchTournament();
         
-        const name = torneo[0].name;
-        const start_date = torneo[0].start_date;
-        const finish_date = torneo[0].finish_date;
-        const logo = torneo[0].logo;
+        let name = torneo[0].name;
+        let start_date = torneo[0].start_date;
+        let finish_date = torneo[0].finish_date;
+        let logo = torneo[0].logo;
+
+        setName(name)
+        setStart(start_date)
+        setEnd(finish_date)
+        setLogo(logo)
 
 
       } catch (error) {
@@ -30,24 +40,19 @@ const Tournaments = ({ navigation }) => {
   }, []);
 
 
-  const getTournamentData = async () => {
-    const torneo = await fetchTournament();
-    return torneo;
-  };
-
   return (
     <LinearGradient
     colors={['#0d1825', '#2e4857']}
     style={styles.container}>
       
       <View style={styles.box}>
-        <Text style={{...styles.text, paddingBottom: 20, fontSize: 20}}>Tournament of the week</Text>
-      <Image
-    source={require('../assets/images/Golf-PGA.webp')}
-    style={styles.logo}
-  />
-  <Text style={{...styles.text, marginTop: 20}}>Starting date: 16/05/24</Text>
-  <Text style={styles.text}>Ending date: 19/05/24</Text>
+        <Text style={{...styles.text, paddingBottom: 20, fontSize: 20}}>{name}</Text>
+        <Image
+        source={{ uri: logo }}
+        style={styles.logo}
+      />
+  <Text style={{...styles.text, marginTop: 20}}>{start}</Text>
+  <Text style={styles.text}>{end}</Text>
   <TouchableOpacity style={{...styles.button, width: 250, marginTop: 30, padding: 10}} onPress={() => navigation.navigate('Players')}>
           <Text style={styles.buttonText}>Participate</Text>
         </TouchableOpacity>
@@ -72,6 +77,8 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 20, 
+    backgroundColor: "white",
+    padding: 5,
   },
  
   container: {
