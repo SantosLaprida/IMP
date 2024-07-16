@@ -73,19 +73,26 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto' 
   },
   button: {
-    backgroundColor: 'rgba(226, 202, 64, 0.438)',
-    padding: 20,
+    backgroundColor: 'rgba(212, 188, 50, 0.76)',
+    padding: 15,
     margin: 10,
     borderRadius: 10,
-    width: 300, 
+    width: 300,
     alignItems: 'center',
-    borderWidth: 1, 
-    borderColor: 'black', 
+    borderWidth: 1,
+    borderColor: 'transparent',
+    // Sombra para iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.80,
+    shadowRadius: 3.84,
+    // Sombra para Android
+    elevation: 30,
   },
   buttonText: {
-    color: 'white',
+    color: '#15303F',
     fontSize: 20,
-
+    fontWeight: '600',
   },
 });
 
