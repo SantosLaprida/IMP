@@ -52,6 +52,7 @@ const Players = ({ navigation }) => {
   };
 
   const handleFinish = async () => {
+    
     if (equipo.length < 8) {
       alert('Please select at least 8 players');
       return;

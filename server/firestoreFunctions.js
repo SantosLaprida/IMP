@@ -27,6 +27,8 @@ export const restoreI_Players = async (players) => {
 };
 
 
+
+
 export const registerUser = async (email, password, firstName, lastName) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -252,6 +254,22 @@ export const fetchScoreSheet = async (id_player, collectionName) => {
     return scoreData;
   } catch (error) {
     console.error('Error fetching score sheet:', error);
+    throw error;
+  }
+};
+
+
+export const fetchTournament = async () => {
+  try {
+    const q = query(collection(firestore, 'I_Torneos'), where("activo", "==", 1));
+    const querySnapshot = await getDocs(q);
+    const activeTournamentsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+    
+
+    return activeTournamentsData;
+  } catch (error) {
+    console.error('Error fetching active tournament:', error);
     throw error;
   }
 };

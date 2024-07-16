@@ -1,3 +1,4 @@
+import { fetchTournament } from '../server/firestoreFunctions';
 
 import React, { useEffect, useState} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
@@ -9,15 +10,30 @@ const Tournaments = ({ navigation }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const loadUser = async () => {
-      const storedUser = await AsyncStorage.getItem('user');
-      if (storedUser !== null) {
-        setUser(JSON.parse(storedUser));
+    const getTournamentData = async () => {
+      try{
+        const torneo = await fetchTournament();
+        
+        const name = torneo[0].name;
+        const start_date = torneo[0].start_date;
+        const finish_date = torneo[0].finish_date;
+        const logo = torneo[0].logo;
+
+
+      } catch (error) {
+        console.error(error);
       }
     };
-  
-    loadUser();
+
+    getTournamentData();
+    
   }, []);
+
+
+  const getTournamentData = async () => {
+    const torneo = await fetchTournament();
+    return torneo;
+  };
 
   return (
     <LinearGradient
