@@ -68,6 +68,7 @@ const Bets = ({ navigation }) => {
           setModalVisible(!modalVisible);
         }}
       >
+         
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Select Stage</Text>
@@ -80,12 +81,14 @@ const Bets = ({ navigation }) => {
             <TouchableOpacity style={styles.modalButton} onPress={() => handleNavigate('Finals')}>
               <Text style={styles.buttonText}>Finals</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ ...styles.button, marginTop: 20 }} onPress={() => setModalVisible(false)}>
+            <TouchableOpacity style={{ ...styles.modalButton, backgroundColor: "#2296F3" }} onPress={() => setModalVisible(false)}>
               <Text style={styles.buttonText}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>
+      
       </Modal>
+
     </LinearGradient>
   );
 };
@@ -171,17 +174,28 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modalText: {
+    color: '#15303F',
     fontSize: 20,
     marginBottom: 15,
     textAlign: 'center',
+    fontWeight: "600"
   },
   modalButton: {
-    backgroundColor: 'teal',
+    backgroundColor: 'rgba(212, 188, 50, 0.76)',
     padding: 10,
-    marginTop: 10,
+    margin: 7,
     borderRadius: 10,
     width: 200,
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'transparent',
+    // Sombra para iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.80,
+    shadowRadius: 3.84,
+    // Sombra para Android
+    elevation: 30,
   },
 });
 

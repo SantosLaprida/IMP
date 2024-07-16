@@ -67,6 +67,7 @@ const Players = ({ navigation }) => {
     try {
       await storeTeam(userId, playersIds);
       console.log('Team stored successfully');
+      alert("Bet placed succesfully")
     } catch (error) {
       console.error('Failed to store team:', error);
     }

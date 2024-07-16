@@ -150,7 +150,7 @@ const QuarterFinals = ({ navigation }) => {
       colors={['#0d1825', '#2e4857']}
       style={styles.container}
     >  
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Bets')}>
+      <TouchableOpacity style={styles.back} onPress={() => navigation.navigate('Bets')}>
         <Text style={styles.buttonText}>Back</Text>
       </TouchableOpacity>
   
@@ -282,6 +282,23 @@ const styles = StyleSheet.create({
   middle: {
     flex: 1,
     alignItems: "center",
+  },
+  back:{
+    backgroundColor: '#2296F3',
+    padding: 5,
+    marginTop: 8,
+    borderRadius: 10,
+    width: 350,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'transparent',
+    // Sombra para iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.80,
+    shadowRadius: 3.84,
+    // Sombra para Android
+    elevation: 30,
   },
   button: {
     backgroundColor: 'rgba(212, 188, 50, 0.76)',

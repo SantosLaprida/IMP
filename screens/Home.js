@@ -1,7 +1,8 @@
 import React, { useEffect, useState} from 'react';
-import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import globalStyles from "../styles/styles"
 
 const Home = ({ navigation }) => {
   const [user, setUser] = useState(null);
@@ -20,85 +21,30 @@ const Home = ({ navigation }) => {
   return (
     <LinearGradient
     colors={['#0d1825', '#2e4857']}
-    style={styles.container}>
-    <View style={styles.row}>
+    style={globalStyles.container}>
+    <View style={globalStyles.row}>
   
     <Image
     source={require('../assets/images/logo-golf.png')}
-    style={styles.logo}
+    style={globalStyles.logo}
   />
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tournaments')}>
-          <Text style={styles.buttonText}>Tournaments</Text>
+        <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate('Tournaments')}>
+          <Text style={globalStyles.buttonText}>Tournaments</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Bets')}>
-          <Text style={styles.buttonText}>Bets</Text>
+        <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate('Bets')}>
+          <Text style={globalStyles.buttonText}>Bets</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Wallet')}>
-          <Text style={styles.buttonText}>Wallet</Text>
+        <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate('Wallet')}>
+          <Text style={globalStyles.buttonText}>Wallet</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Settings')}>
-          <Text style={styles.buttonText}>Settings</Text>
+        <TouchableOpacity style={globalStyles.button} onPress={() => navigation.navigate('Settings')}>
+          <Text style={globalStyles.buttonText}>Settings</Text>
         </TouchableOpacity>
       </View>
    </LinearGradient>
   );
 };
-
-
-
-const styles = StyleSheet.create({
-  row:{
-    backgroundColor: "transparent",
-    padding: 20,
-    paddingVertical: 40,
-    borderRadius: 25,
-    paddingTop: 60,
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 30,
-    textAlign: "center",
-    fontWeight: "700",
-    color: "white",
-    paddingBottom: 20
-  },
- 
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    justifyContent: "center"
-    
-  },
-  button: {
-    backgroundColor: 'rgba(212, 188, 50, 0.76)',
-    padding: 15,
-    margin: 10,
-    borderRadius: 10,
-    width: 300,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'transparent',
-    // Sombra para iOS
-    shadowColor: '#000',
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.80,
-    shadowRadius: 3.84,
-    // Sombra para Android
-    elevation: 30,
-  },
-  buttonText: {
-    color: '#15303F',
-    fontSize: 20,
-    fontWeight: '600',
-  },
-  logo: {
-    width: 300,
-    height: 150,
-    marginBottom: 30,
-  },
-});
 
 
 export default Home;
