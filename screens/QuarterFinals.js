@@ -43,8 +43,8 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for first match:', ids[0], ids[7]);
         return;
       }
-      const collection = 'I_Cuartos';
-      const results = await compareScores(ids[0], ids[7], collection);
+      const collectionName = 'I_Cuartos';
+      const results = await compareScores(ids[0], ids[7], collectionName);
       setResults1(results);
     } catch (error) {
       console.error(error);
@@ -57,8 +57,8 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for second match:', ids[1], ids[6]);
         return;
       }
-      const collection = 'I_Cuartos';
-      const results = await compareScores(ids[1], ids[6], collection);
+      const collectionName = 'I_Cuartos';
+      const results = await compareScores(ids[1], ids[6], collectionName);
       setResults2(results);
     } catch (error) {
       console.error(error);
@@ -71,8 +71,8 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for third match:', ids[2], ids[5]);
         return;
       }
-      const collection = 'I_Cuartos';
-      const results = await compareScores(ids[2], ids[5], collection);
+      const collectionName = 'I_Cuartos';
+      const results = await compareScores(ids[2], ids[5], collectionName);
       setResults3(results);
     } catch (error) {
       console.error(error);
@@ -85,8 +85,8 @@ const QuarterFinals = ({ navigation }) => {
         console.error('Invalid player IDs for fourth match:', ids[3], ids[4]);
         return;
       }
-      const collection = 'I_Cuartos';
-      const results = await compareScores(ids[3], ids[4], collection);
+      const collectionName = 'I_Cuartos';
+      const results = await compareScores(ids[3], ids[4], collectionName);
       setResults4(results);
     } catch (error) {
       console.error(error);
@@ -197,9 +197,6 @@ const QuarterFinals = ({ navigation }) => {
           <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsRight(results4)}</Text>
         </View>
       </View>
-  
-    
-  
       <View style={styles.box}>
         <View style={styles.player}>
           <Text style={{ ...styles.text, marginBottom: 10 }}>{names[2]}</Text>

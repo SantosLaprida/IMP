@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer');
 const scrape = async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await page.goto('https://www.europeantour.com/dpworld-tour/genesis-scottish-open-2024/leaderboard');
+  await page.goto('https://www.pgatour.com/tournaments/2024/the-open-championship/R2024100');
 
   // Espera a que los elementos estén presentes
   await page.waitForSelector('.leaderboard__name');

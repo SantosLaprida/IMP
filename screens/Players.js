@@ -117,7 +117,7 @@ const Players = ({ navigation }) => {
             <TouchableOpacity key={jugador.id_player} onPress={() => agregarJugadorAlEquipo(jugador)}>
               <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
                 <Text>{jugador.name}</Text>
-                <Text>{jugador.ranking}</Text>
+                <Text>{jugador.rank}</Text>
               </View>
             </TouchableOpacity>
           ))}
