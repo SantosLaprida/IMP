@@ -95,6 +95,7 @@ function TabNavigator() {
         tabBarLabelStyle: {
           fontSize: 10,
         },
+        
       })}
     >
       <Tab.Screen options={{ headerShown: false }} name="Home" component={Home} />
