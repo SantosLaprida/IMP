@@ -1,7 +1,7 @@
 // server/firestoreFunctions.js
 
-import { collection, deleteDoc, getDocs, query, where, doc, setDoc, getDoc, addDoc, getFirestore } from 'firebase/firestore';
-import { auth } from './firebaseConfig';
+import { collection, deleteDoc, updateDoc, getDocs, query, where, doc, setDoc, getDoc, addDoc, getFirestore } from 'firebase/firestore';
+import { auth, db } from './firebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 
 const firestore = getFirestore();
@@ -108,7 +108,8 @@ export const storeTeam = async (userId, team) => {
 
 export const fetchPlayersFromFirestore = async () => {
   try {
-    const querySnapshot = await getDocs(collection(firestore, 'I_Players'));
+    const querySnapshot = await getDocs(collection(firestore, 'I_Torneos', 
+                                                  'The_Open_Championship_2024', 'I_Players'));
     const playersData = querySnapshot.docs.map(doc => {
       const data = doc.data();  // Get the data without adding the Firestore id
       return { id_player: doc.id, ...data };  // Use id_player as the primary identifier
@@ -271,5 +272,53 @@ export const fetchTournament = async () => {
     console.error('Error fetching active tournament:', error);
     throw error;
   }
+};
+
+export const createI_Cuartos = async () => {
+  try {
+    const collectionRef = collection(firestore, 'I_Torneos', 'The_Open_Championship_2024', 'I_Cuartos');
+
+    for (let i = 1; i <= 8; i++) {
+      const cuartoData = {
+        H1: 0, H2: 0, H3: 0, H4: 0, H5: 0, H6: 0,
+        H7: 0, H8: 0, H9: 0, H10: 0, H11: 0, H12: 0,
+        H13: 0, H14: 0, H15: 0, H16: 0, H17: 0, H18: 0,
+        id_player: 0,
+        orden: 0
+      };
+      await addDoc(collectionRef, cuartoData);
+    }
+    console.log('I_Cuartos created successfully.');
+  } catch (error) {
+    console.error('Error creating I_Cuartos:', error);
+  }
+};
+
+export const updateI_Players = async () => {
+  try {
+    const collectionRef = collection(firestore, 'I_Torneos', 'The_Open_Championship_2024', 'I_Players');
+    const querySnapshot = await getDocs(collectionRef);
+
+    for (const docSnap of querySnapshot.docs) {
+      const playerName = docSnap.id;
+      const playerRef = doc(firestore, 'I_Torneos', 'The_Open_Championship_2024', 'I_Players', playerName);
+      
+      const updatedData = {
+        name: playerName,
+        id_player: generateAutoId()
+      };
+
+      await updateDoc(playerRef, updatedData);
+    }
+    
+    console.log('I_Players updated successfully.');
+  } catch (error) {
+    console.error('Error updating I_Players:', error);
+  }
+};
+
+// Function to generate an auto-generated ID
+const generateAutoId = () => {
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 };
 
