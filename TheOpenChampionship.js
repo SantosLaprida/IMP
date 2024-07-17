@@ -165,7 +165,7 @@ export const getPlayers = async () => {
     return players;
   };
   
-restoreI_Players(players);
+// restoreI_Players(players);
 
 //node TheOpenChampionship.js
   

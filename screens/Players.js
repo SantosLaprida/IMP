@@ -1,4 +1,5 @@
 import { fetchPlayers, storeTeam, fetchTeamAPI } from '../api';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../server/firebaseConfig';
 import React, { useState, useEffect } from 'react';
@@ -33,7 +34,7 @@ const Players = ({ navigation }) => {
         console.error('Error fetching data:', error);
       }
     };
-
+    
     fetchData();
   }, []);
 
