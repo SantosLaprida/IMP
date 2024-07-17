@@ -14,9 +14,9 @@ const Home = ({ navigation }) => {
         setUser(JSON.parse(storedUser));
       }
     };
-  
     loadUser();
   }, []);
+
 
   return (
     <LinearGradient

@@ -94,7 +94,7 @@ const Players = ({ navigation }) => {
   const filteredJugadores = jugadores.filter((jugador) =>
     !teamPlayerIds.has(jugador.id_player) && 
     (jugador.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    jugador.ranking.toString().includes(searchTerm))
+    jugador.rank.toString().includes(searchTerm))
   );
 
   return (
