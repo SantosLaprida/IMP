@@ -7,11 +7,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { set } from 'firebase/database';
 
 const SemiFinals = ({ navigation }) => {
-  const [ids, setIds] = useState(Array(8).fill(null)); // Marcar posición con null
+  const [ids, setIds] = useState(Array(8).fill(null)); 
   const [results1, setResults1] = useState(null);
   const [results2, setResults2] = useState(null);
-  // const [results3, setResults3] = useState(null);
-  // const [results4, setResults4] = useState(null);
   const [names, setNames] = useState(Array(8).fill('Loading...')); // Marcar posición con 'Loading...'
 
   const fetchQualifiers = async () => {
