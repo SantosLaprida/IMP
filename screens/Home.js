@@ -130,12 +130,12 @@ const Home = ({ navigation }) => {
       </ScrollView>
 
       <View style={styles.btnCont}>
-      <TouchableOpacity style={{...styles.button, marginTop: 45}} onPress={() => navigation.navigate('')}>
-          <Text style={[styles.buttonText, styles.customFont]}>Available Tournaments</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={{...styles.button, backgroundColor: "#008001"}} onPress={() => navigation.navigate('')}>
           <Text style={[styles.buttonText, styles.customFont]}>Create Bet!</Text>
         </TouchableOpacity> 
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
+          <Text style={[styles.buttonText, styles.customFont]}>See Tournaments</Text>
+        </TouchableOpacity>
         </View>
     </View>
     
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#2296F3',
     padding: 5,
     borderRadius: 10,
-    width: 300,
+    width: 150,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#233742',
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
 },
   buttonText: {
     color: 'black',
-    fontSize: 20, 
+    fontSize: 15, 
   },
   divider: {
     height: 2, // altura de la línea
@@ -247,7 +247,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'grey',
     paddingTop: 15,
-    
   },
   tournamentData: {
     flex: 3,
@@ -270,7 +269,10 @@ const styles = StyleSheet.create({
   },
   btnCont:{
     alignItems: "center",
-    paddingBottom: 40,
+    paddingBottom: 20,
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 30,
   }
 });
 

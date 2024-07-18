@@ -1,8 +1,5 @@
 // 10.0.0.112   my ip address
 // 192.168.0.14  car's ip address
-
-import { checkIfEmailExists } from './server/firestoreFunctions';
-import { checkIfUserExists } from './server/firestoreFunctions';
 import { registerUser, loginUser } from './server/firestoreFunctions';
 import { sendPasswordReset } from './server/firestoreFunctions';
 import { fetchScoreSheet } from './server/firestoreFunctions';
