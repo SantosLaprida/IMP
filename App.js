@@ -4,6 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; 
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 
 // Importar pantallas
@@ -64,6 +66,14 @@ function BetStackScreen() {
 
 
 function TabNavigator() {
+  const [fontsLoaded] = useFonts({
+    'kanit-bold': require('./assets/fonts/kanit/Kanit-Bold.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -84,18 +94,16 @@ function TabNavigator() {
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarStyle: {
-          paddingBottom: 10,
+          paddingBottom: 20,
           paddingTop: 10,
-          paddingHorizontal: 10,
-          height: 65,
-        },
-        tabBarIconStyle: {
-          fontSize: 15,
+          height: 80,
+          backgroundColor: "black",
+          borderColor: "transparent"
         },
         tabBarLabelStyle: {
           fontSize: 10,
+          fontFamily: 'kanit-bold',
         },
-        
       })}
     >
       <Tab.Screen options={{ headerShown: false }} name="Home" component={Home} />

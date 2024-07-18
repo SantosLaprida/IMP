@@ -15,9 +15,25 @@
     color: #0d1825;
 }
 .ddd{
-    color: #2e4857;
+    color: #233742;
 }
 
 .white{
     color: rgba(255, 255, 255, 0.466);
+}
+
+.Darkgold{
+    color: rgba(153, 136, 40, 0.336);
+}
+
+.lightBlue{
+    color: #2296F3;
+}
+
+.lightWhite{
+    color: rgba(216, 203, 132, 0.664);
+}
+
+.green{
+    color: #008001;
 }
