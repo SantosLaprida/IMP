@@ -1,4 +1,4 @@
-import { fetchQuarterQualifiers } from '../server/firestoreFunctions';
+import { fetchQuarterQualifiers, fetchTournament } from '../server/firestoreFunctions';
 import React, { useState, useEffect } from 'react';
 import { compareScores, showResults } from './QuarterUtils'
 
@@ -15,11 +15,12 @@ const QuarterFinals = ({ navigation }) => {
   const [names, setNames] = useState(Array(8).fill('Loading...')); // Marcar posición con 'Loading...'
 
   const fetchQualifiers = async () => {
+
     try {
-      const qualifiers = await fetchQuarterQualifiers();
+      const tournamentId = await getTournamentName();
+      const qualifiers = await fetchQuarterQualifiers(tournamentId);
       const names = qualifiers.map(qualifier => qualifier.name);
       const ids = qualifiers.map(qualifier => qualifier.id_player);
-      console.log('Fetched IDs:', ids); 
       setNames(names);
       setIds(ids);
       await compareMatches(ids); 
@@ -28,6 +29,17 @@ const QuarterFinals = ({ navigation }) => {
     }
   };
 
+  const getTournamentName = async () => {
+    try {
+      const tournament = await fetchTournament();
+      return tournament[0].id;
+    } catch (error) {
+      console.error('Error fetching tournament data:', error);
+      throw error;
+    }
+  };
+
+  
   const compareMatches = async (ids) => {
     await Promise.all([
       compareFirstMatch(ids),
@@ -44,7 +56,8 @@ const QuarterFinals = ({ navigation }) => {
         return;
       }
       const collectionName = 'I_Cuartos';
-      const results = await compareScores(ids[0], ids[7], collectionName);
+      const tournamentName = await getTournamentName();
+      const results = await compareScores(ids[0], ids[7], tournamentName, collectionName);
       setResults1(results);
     } catch (error) {
       console.error(error);
@@ -58,7 +71,8 @@ const QuarterFinals = ({ navigation }) => {
         return;
       }
       const collectionName = 'I_Cuartos';
-      const results = await compareScores(ids[1], ids[6], collectionName);
+      const tournamentName = await getTournamentName();
+      const results = await compareScores(ids[1], ids[6], tournamentName, collectionName);
       setResults2(results);
     } catch (error) {
       console.error(error);
@@ -72,7 +86,8 @@ const QuarterFinals = ({ navigation }) => {
         return;
       }
       const collectionName = 'I_Cuartos';
-      const results = await compareScores(ids[2], ids[5], collectionName);
+      const tournamentName = await getTournamentName();
+      const results = await compareScores(ids[2], ids[5], tournamentName, collectionName);
       setResults3(results);
     } catch (error) {
       console.error(error);
@@ -86,7 +101,8 @@ const QuarterFinals = ({ navigation }) => {
         return;
       }
       const collectionName = 'I_Cuartos';
-      const results = await compareScores(ids[3], ids[4], collectionName);
+      const tournamentName = await getTournamentName();
+      const results = await compareScores(ids[3], ids[4], tournamentName, collectionName);
       setResults4(results);
     } catch (error) {
       console.error(error);

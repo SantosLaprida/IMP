@@ -1,7 +1,8 @@
 import { fetchSemiQualifiers } from '../server/firestoreFunctions';
-import React, { useState, useEffect } from 'react';
+import { semisExistsAPI } from '../api';
 import { compareScores, showResults } from './QuarterUtils'
 
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { set } from 'firebase/database';
@@ -20,8 +21,6 @@ const SemiFinals = ({ navigation }) => {
       console.log('Fetched IDs:', ids); 
       setNames(names);
       setIds(ids);
-      console.log("NAMES", names);
-      console.log("IDS", ids);
       await compareMatches(ids); 
     } catch (error) {
       console.error(error);
@@ -33,8 +32,6 @@ const SemiFinals = ({ navigation }) => {
     await Promise.all([
       compareFirstMatch(ids),
       compareSecondMatch(ids),
-      // compareThirdMatch(ids),
-      // compareFourthMatch(ids)
     ]);
   };
 
@@ -69,32 +66,6 @@ const SemiFinals = ({ navigation }) => {
     }
     
   };
-
-  // const compareThirdMatch = async (ids) => {
-  //   try {
-  //     if (ids[2] === null || ids[5] === null) {
-  //       console.error('Invalid player IDs for third match:', ids[2], ids[5]);
-  //       return;
-  //     }
-  //     const results = await compareScores(ids[2], ids[5]);
-  //     setResults3(results);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // const compareFourthMatch = async (ids) => {
-  //   try {
-  //     if (ids[3] === null || ids[4] === null) {
-  //       console.error('Invalid player IDs for fourth match:', ids[3], ids[4]);
-  //       return;
-  //     }
-  //     const results = await compareScores(ids[3], ids[4]);
-  //     setResults4(results);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   useEffect(() => {
     fetchQualifiers();

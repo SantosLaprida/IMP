@@ -187,24 +187,18 @@ export const getPlayerName = async (id_player) => {
 };
 
 
-export const fetchQuarterQualifiers = async () => {
+export const fetchQuarterQualifiers = async (tournamentName) => {
   try {
-    const querySnapshot = await getDocs(collection(firestore, 'I_Cuartos'));
+    const querySnapshot = await getDocs(collection(firestore, 'I_Torneos', tournamentName, 'I_Cuartos'));
     const sortedPlayerData = querySnapshot.docs
       .map(doc => ({
         id_player: doc.data().id_player,
+        name: doc.data().name,
         orden: doc.data().orden
       }))
       .sort((a, b) => a.orden - b.orden);
 
-    const playerDetails = await Promise.all(
-      sortedPlayerData.map(async ({ id_player, orden }) => {
-        const name = await getPlayerName(id_player);
-        return { id_player, name, orden }; 
-      })
-    );
-
-    return playerDetails.filter(({ name }) => name !== null);
+    return sortedPlayerData.filter(({ name }) => name !== null);
   } catch (error) {
     console.error('Error fetching qualifiers:', error);
     throw error;
@@ -236,9 +230,15 @@ export const fetchSemiQualifiers = async () => {
 };
 
 
-export const fetchScoreSheet = async (id_player, collectionName) => {
+export const fetchScoreSheet = async (id_player, tournamentName, collectionName) => {
+
+  console.log(id_player, 'id_player');
+  console.log(tournamentName, 'tournamentName');
+  console.log(collectionName, 'collectionName');
+
+
   try {
-    const scoreQuery = query(collection(firestore, collectionName), where('id_player', '==', id_player));
+    const scoreQuery = query(collection(firestore, 'I_Torneos', tournamentName, collectionName), where('id_player', '==', id_player));
     const querySnapshot = await getDocs(scoreQuery);
     let scoreData = {};
     querySnapshot.docs.forEach(doc => {
@@ -264,8 +264,6 @@ export const fetchTournament = async () => {
     const q = query(collection(firestore, 'I_Torneos'), where("activo", "==", 1));
     const querySnapshot = await getDocs(q);
     const activeTournamentsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-    
 
     return activeTournamentsData;
   } catch (error) {
@@ -320,5 +318,15 @@ export const updateI_Players = async () => {
 // Function to generate an auto-generated ID
 const generateAutoId = () => {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+};
+
+export const checkIfSemisExist = async (tournamentId) => {
+  try {
+    const querySnapshot = await getDocs(collection(firestore, 'I_Torneos', tournamentId, 'I_Semifinales'));
+    return !querySnapshot.empty;
+  } catch (error) {
+    console.error('Error checking semifinals:', error);
+    throw error;
+  }
 };
 

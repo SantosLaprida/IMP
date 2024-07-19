@@ -3,6 +3,7 @@
 import { registerUser, loginUser } from './server/firestoreFunctions';
 import { sendPasswordReset } from './server/firestoreFunctions';
 import { fetchScoreSheet } from './server/firestoreFunctions';
+import { checkIfSemisExist } from './server/firestoreFunctions';
 
 //import { fetchPlayers as fetchPlayersFromFirestore, storeTeam as storeTeamInFirestore } from './server/firestoreFunctions';
 import { fetchPlayersFromFirestore, storeTeamInFirestore, fetchTeamFromFirestore } from './server/firestoreFunctions';
@@ -83,16 +84,33 @@ export const get_name_by_id = (players, ids) => {
 };
 
 
-export const getScoreSheet = async (id_player, collectionName) => {
+export const getScoreSheet = async (id_player, tournamentName, collectionName) => {
 
   try {
-    const scoreSheet = await fetchScoreSheet(id_player, collectionName);
+    const scoreSheet = await fetchScoreSheet(id_player, tournamentName, collectionName);
     return scoreSheet;
   } catch (error) {
     console.error('Error fetching score sheet:', error);
     throw error;
   }
 }
+
+
+export const semisExistsAPI = async (tournamentId) => {
+
+  try {
+    const semisExist = await checkIfSemisExist(tournamentId);
+    if (semisExist) {
+      return false;
+    }
+    return true;
+
+  } catch (error) {
+    console.error('Error checking if semis exist:', error);
+    throw error;
+  }
+
+};
 
 
 
