@@ -1,4 +1,4 @@
-import { fetchSemiQualifiers } from '../server/firestoreFunctions';
+import { createI_Semifinales, fetchTournament, fetchSemiQualifiers } from '../server/firestoreFunctions';
 import { semisExistsAPI } from '../api';
 import { compareScores, showResults } from './QuarterUtils'
 
@@ -8,22 +8,33 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { set } from 'firebase/database';
 
 const SemiFinals = ({ navigation }) => {
-  const [ids, setIds] = useState(Array(8).fill(null)); 
+  const [ids, setIds] = useState(Array(4).fill(null)); 
   const [results1, setResults1] = useState(null);
   const [results2, setResults2] = useState(null);
-  const [names, setNames] = useState(Array(8).fill('Loading...')); // Marcar posición con 'Loading...'
+  const [names, setNames] = useState(Array(4).fill('Loading...')); // Marcar posición con 'Loading...'
 
   const fetchQualifiers = async () => {
+
     try {
-      const qualifiers = await fetchSemiQualifiers();
+      const tournamentId = await getTournamentId();
+      const qualifiers = await fetchSemiQualifiers(tournamentId);
       const names = qualifiers.map(qualifier => qualifier.name);
       const ids = qualifiers.map(qualifier => qualifier.id_player);
-      console.log('Fetched IDs:', ids); 
       setNames(names);
       setIds(ids);
       await compareMatches(ids); 
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const getTournamentId = async () => {
+    try {
+      const tournament = await fetchTournament();
+      return tournament[0].id;
+    } catch (error) {
+      console.error('Error fetching tournament data:', error);
+      throw error;
     }
   };
 
@@ -42,7 +53,8 @@ const SemiFinals = ({ navigation }) => {
         return;
       }
       const collectionName = 'I_Semifinales';
-      const results = await compareScores(ids[0], ids[3], collectionName);
+      const tournamentId = await getTournamentId();
+      const results = await compareScores(ids[0], ids[3], tournamentId, collectionName);
       setResults1(results);
       console.log(results, "RESULTS FIRST MATCH");
     } catch (error) {
@@ -58,7 +70,8 @@ const SemiFinals = ({ navigation }) => {
         return;
       }
       const collectionName = 'I_Semifinales';
-      const results = await compareScores(ids[1], ids[2], collectionName);
+      const tournamentId = await getTournamentId();
+      const results = await compareScores(ids[1], ids[2], tournamentId, collectionName);
       setResults2(results);
       console.log(results, "RESULTS SECOND MATCH");
     } catch (error) {
@@ -68,6 +81,16 @@ const SemiFinals = ({ navigation }) => {
   };
 
   useEffect(() => {
+    
+    const processSemis = async () => {
+      const tournament = await fetchTournament();
+      const tournamentId = tournament[0].id;
+      const semisExist = await semisExistsAPI(tournamentId);
+      if (!semisExist) {
+        await createI_Semifinales(tournamentId);
+      }
+    };
+    processSemis();
     fetchQualifiers();
   }, []);
 
@@ -138,7 +161,7 @@ const SemiFinals = ({ navigation }) => {
           <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsLeft(results1)}</Text>
         </View>
         <View style={styles.middle}>
-          <Text style={styles.text}>{displayMiddle(results1, names[0], names[7])}</Text>
+          <Text style={styles.text}>{displayMiddle(results1, names[0], names[3])}</Text>
         </View>
         <View style={styles.player}>
           <Text style={{ ...styles.text, marginBottom: 10 }}>{names[3]}</Text>
@@ -160,7 +183,7 @@ const SemiFinals = ({ navigation }) => {
           <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsLeft(results2)}</Text>
         </View>
         <View style={styles.middle}>
-          <Text style={styles.text}>{displayMiddle(results2, names[1], names[6])}</Text>
+          <Text style={styles.text}>{displayMiddle(results2, names[1], names[2])}</Text>
         </View>
         <View style={styles.player}>
           <Text style={{ ...styles.text, marginBottom: 10 }}>{names[2]}</Text>

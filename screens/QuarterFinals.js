@@ -56,8 +56,8 @@ const QuarterFinals = ({ navigation }) => {
         return;
       }
       const collectionName = 'I_Cuartos';
-      const tournamentName = await getTournamentName();
-      const results = await compareScores(ids[0], ids[7], tournamentName, collectionName);
+      const tournamentId = await getTournamentName();
+      const results = await compareScores(ids[0], ids[7], tournamentId, collectionName);
       setResults1(results);
     } catch (error) {
       console.error(error);
@@ -71,8 +71,8 @@ const QuarterFinals = ({ navigation }) => {
         return;
       }
       const collectionName = 'I_Cuartos';
-      const tournamentName = await getTournamentName();
-      const results = await compareScores(ids[1], ids[6], tournamentName, collectionName);
+      const tournamentId = await getTournamentName();
+      const results = await compareScores(ids[1], ids[6], tournamentId, collectionName);
       setResults2(results);
     } catch (error) {
       console.error(error);
@@ -86,8 +86,8 @@ const QuarterFinals = ({ navigation }) => {
         return;
       }
       const collectionName = 'I_Cuartos';
-      const tournamentName = await getTournamentName();
-      const results = await compareScores(ids[2], ids[5], tournamentName, collectionName);
+      const tournamentId = await getTournamentName();
+      const results = await compareScores(ids[2], ids[5], tournamentId, collectionName);
       setResults3(results);
     } catch (error) {
       console.error(error);
@@ -101,8 +101,8 @@ const QuarterFinals = ({ navigation }) => {
         return;
       }
       const collectionName = 'I_Cuartos';
-      const tournamentName = await getTournamentName();
-      const results = await compareScores(ids[3], ids[4], tournamentName, collectionName);
+      const tournamentId = await getTournamentName();
+      const results = await compareScores(ids[3], ids[4], tournamentId, collectionName);
       setResults4(results);
     } catch (error) {
       console.error(error);

@@ -109,8 +109,9 @@ export const semisExistsAPI = async (tournamentId) => {
     console.error('Error checking if semis exist:', error);
     throw error;
   }
-
 };
+
+export const fetchSemiQualifiers = async (tournamentId) => {};
 
 
 

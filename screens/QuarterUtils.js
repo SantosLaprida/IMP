@@ -8,6 +8,9 @@ export const compareScores = async (id_player1, id_player2, tournamentName, coll
     const scoreSheet1 = await getScoreSheet(id_player1, tournamentName, collectionName);
     const scoreSheet2 = await getScoreSheet(id_player2, tournamentName, collectionName);
 
+    const name1 = await getPlayerName(id_player1, tournamentName);
+    const name2 = await getPlayerName(id_player2, tournamentName);
+
     let score = {
         currentHole: 1,
         holesPlayed: 0,
@@ -59,10 +62,25 @@ export const compareScores = async (id_player1, id_player2, tournamentName, coll
         score.stillPlaying = false;
     }
 
+    if (score.result === 0 && score.stillPlaying === false) {
+        for (let i = 1; i <= 18; i++) {
+            const score1 = scoreSheet1[`H${i}`];
+            const score2 = scoreSheet2[`H${i}`];
+
+            if (score1 < score2) {
+                score.result--;
+                return score;
+            }
+            if (score1 > score2) {
+                score.result++;
+                return score;
+            }
+        }
+    }
+
+    console.log('returning score for ', name1, ' and ', name2, score);
     return score;
 }
-
-
 
 export const showResults = (results, player_name1, player_name2) => {
 
@@ -91,12 +109,10 @@ export const showResults = (results, player_name1, player_name2) => {
         }
 
         if (results.result > 0) {
-            //onst name = getPlayerName(results.player2);
             return `${player_name1} won by a difference of ${results.result} holes`;
         }
 
         if (results.result < 0) {
-            //const name = getPlayerName(results.player1);
             return `${player_name2} won by a difference of ${results.result * - 1} holes`;
         }
     }

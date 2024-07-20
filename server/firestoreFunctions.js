@@ -168,9 +168,9 @@ export const getUserById = async (uid) => {
   }
 };
 
-export const getPlayerName = async (id_player) => {
+export const getPlayerName = async (id_player, tournamentId) => {
   try {
-    const playerQuery = query(collection(firestore, 'I_Players'), where('id_player', '==', id_player));
+    const playerQuery = query(collection(firestore, 'I_Torneos', tournamentId, 'I_Players'), where('id_player', '==', id_player));
     const playerQuerySnapshot = await getDocs(playerQuery);
     if (!playerQuerySnapshot.empty) {
       const playerDoc = playerQuerySnapshot.docs[0];
@@ -205,29 +205,23 @@ export const fetchQuarterQualifiers = async (tournamentName) => {
   }
 };
 
-export const fetchSemiQualifiers = async () => {
+export const fetchSemiQualifiers = async (tournamentId) => {
   try {
-    const querySnapshot = await getDocs(collection(firestore, 'I_Semifinales'));
+    const querySnapshot = await getDocs(collection(firestore, 'I_Torneos', tournamentId, 'I_Semifinales'));
     const sortedPlayerData = querySnapshot.docs
       .map(doc => ({
         id_player: doc.data().id_player,
+        name: doc.data().name,
         orden: doc.data().orden
       }))
       .sort((a, b) => a.orden - b.orden);
 
-    const playerDetails = await Promise.all(
-      sortedPlayerData.map(async ({ id_player, orden }) => {
-        const name = await getPlayerName(id_player);
-        return { id_player, name, orden }; 
-      })
-    );
-
-    return playerDetails.filter(({ name }) => name !== null);
-  } catch (error) {
-    console.error('Error fetching qualifiers:', error);
-    throw error;
-  }
-};
+      return sortedPlayerData.filter(({ name }) => name !== null);
+    } catch (error) {
+      console.error('Error fetching qualifiers:', error);
+      throw error;
+    }
+  };
 
 
 export const fetchScoreSheet = async (id_player, tournamentName, collectionName) => {
@@ -235,7 +229,6 @@ export const fetchScoreSheet = async (id_player, tournamentName, collectionName)
   console.log(id_player, 'id_player');
   console.log(tournamentName, 'tournamentName');
   console.log(collectionName, 'collectionName');
-
 
   try {
     const scoreQuery = query(collection(firestore, 'I_Torneos', tournamentName, collectionName), where('id_player', '==', id_player));
@@ -250,7 +243,7 @@ export const fetchScoreSheet = async (id_player, tournamentName, collectionName)
       }
     });
 
-    const name = await getPlayerName(id_player);
+    const name = await getPlayerName(id_player, tournamentName);
     return scoreData;
   } catch (error) {
     console.error('Error fetching score sheet:', error);
@@ -292,6 +285,28 @@ export const createI_Cuartos = async () => {
   }
 };
 
+export const createI_Semifinales = async (tournamentId) => {
+
+  try {
+    const collectionRef = collection(firestore, 'I_Torneos', tournamentId, 'I_Semifinales');
+
+    for (let i = 1; i <= 4; i++) {
+      const cuartoData = {
+        H1: 0, H2: 0, H3: 0, H4: 0, H5: 0, H6: 0,
+        H7: 0, H8: 0, H9: 0, H10: 0, H11: 0, H12: 0,
+        H13: 0, H14: 0, H15: 0, H16: 0, H17: 0, H18: 0,
+        id_player: 0,
+        orden: 0,
+        name: 0
+      };
+      await addDoc(collectionRef, cuartoData);
+    }
+    console.log('I_Semifinales created successfully.');
+  } catch (error) {
+    console.error('Error creating I_Semifinales:', error);
+  }
+};
+
 export const updateI_Players = async () => {
   try {
     const collectionRef = collection(firestore, 'I_Torneos', 'The_Open_Championship_2024', 'I_Players');
@@ -320,10 +335,12 @@ const generateAutoId = () => {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 };
 
+
+
 export const checkIfSemisExist = async (tournamentId) => {
   try {
     const querySnapshot = await getDocs(collection(firestore, 'I_Torneos', tournamentId, 'I_Semifinales'));
-    return !querySnapshot.empty;
+    return querySnapshot.empty;
   } catch (error) {
     console.error('Error checking semifinals:', error);
     throw error;
