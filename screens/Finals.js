@@ -1,25 +1,27 @@
-import { fetchQuarterQualifiers } from '../server/firestoreFunctions';
+import { fetchQuarterQualifiers, fetchTournament } from '../server/firestoreFunctions';
 import React, { useState, useEffect } from 'react';
-import { compareScores, showResults } from './QuarterUtils'
+import { compareScores, showResults } from './QuarterUtils';
+import { fetchFinalsQualifiers } from '../server/finalsUtils/finalsUtils';
 
 import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { set } from 'firebase/database';
 
+
 const Finals = ({ navigation }) => {
-  const [ids, setIds] = useState(Array(8).fill(null)); // Marcar posición con null
+  const [ids, setIds] = useState(Array(2).fill(null)); // Marcar posición con null
   const [results1, setResults1] = useState(null);
-  const [results2, setResults2] = useState(null);
-  const [results3, setResults3] = useState(null);
-  const [results4, setResults4] = useState(null);
-  const [names, setNames] = useState(Array(8).fill('Loading...')); // Marcar posición con 'Loading...'
+  const [names, setNames] = useState(Array(2).fill('Loading...')); // Marcar posición con 'Loading...'
 
   const fetchQualifiers = async () => {
     try {
-      const qualifiers = await fetchQuarterQualifiers();
+      const tournamentId = await getTournamentId();
+      const qualifiers = await fetchFinalsQualifiers(tournamentId);
+      console.log(qualifiers, 'INSIDE FINALS.JS');
       const names = qualifiers.map(qualifier => qualifier.name);
       const ids = qualifiers.map(qualifier => qualifier.id_player);
-      console.log('Fetched IDs:', ids); 
+      console.log(names, 'INSIDE FINALS.JS');
+      console.log(ids, 'INSIDE FINALS.JS');
       setNames(names);
       setIds(ids);
       await compareMatches(ids); 
@@ -28,62 +30,32 @@ const Finals = ({ navigation }) => {
     }
   };
 
+  const getTournamentId = async () => {
+    try {
+      const tournament = await fetchTournament();
+      return tournament[0].id;
+    } catch (error) {
+      console.error('Error fetching tournament data:', error);
+      throw error;
+    }
+  };
+
   const compareMatches = async (ids) => {
     await Promise.all([
       compareFirstMatch(ids),
-      compareSecondMatch(ids),
-      compareThirdMatch(ids),
-      compareFourthMatch(ids)
     ]);
   };
 
   const compareFirstMatch = async (ids) => {
     try {
-      if (ids[0] === null || ids[7] === null) {
-        console.error('Invalid player IDs for first match:', ids[0], ids[7]);
+      if (ids[0] === null || ids[1] === null) {
+        console.error('Invalid player IDs for first match:', ids[0], ids[1]);
         return;
       }
-      const results = await compareScores(ids[0], ids[7]);
+      const tournamentId = await getTournamentId();
+      const collectionName = 'I_Finales';
+      const results = await compareScores(ids[0], ids[1], tournamentId, collectionName);
       setResults1(results);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const compareSecondMatch = async (ids) => {
-    try {
-      if (ids[1] === null || ids[6] === null) {
-        console.error('Invalid player IDs for second match:', ids[1], ids[6]);
-        return;
-      }
-      const results = await compareScores(ids[1], ids[6]);
-      setResults2(results);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const compareThirdMatch = async (ids) => {
-    try {
-      if (ids[2] === null || ids[5] === null) {
-        console.error('Invalid player IDs for third match:', ids[2], ids[5]);
-        return;
-      }
-      const results = await compareScores(ids[2], ids[5]);
-      setResults3(results);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const compareFourthMatch = async (ids) => {
-    try {
-      if (ids[3] === null || ids[4] === null) {
-        console.error('Invalid player IDs for fourth match:', ids[3], ids[4]);
-        return;
-      }
-      const results = await compareScores(ids[3], ids[4]);
-      setResults4(results);
     } catch (error) {
       console.error(error);
     }
@@ -160,10 +132,10 @@ const Finals = ({ navigation }) => {
           <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsLeft(results1)}</Text>
         </View>
         <View style={styles.middle}>
-          <Text style={styles.text}>{displayMiddle(results1, names[0], names[7])}</Text>
+          <Text style={styles.text}>{displayMiddle(results1, names[0], names[1])}</Text>
         </View>
         <View style={styles.player}>
-          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[7]}</Text>
+          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[1]}</Text>
           <Image
             source={require('../assets/images/logo.png')}
             style={styles.logo}

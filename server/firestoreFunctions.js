@@ -174,7 +174,6 @@ export const getPlayerName = async (id_player, tournamentId) => {
     const playerQuerySnapshot = await getDocs(playerQuery);
     if (!playerQuerySnapshot.empty) {
       const playerDoc = playerQuerySnapshot.docs[0];
-      //console.log(playerDoc.data());
       return playerDoc.data().name;
     } else {
       console.log('No such player!');
@@ -226,9 +225,9 @@ export const fetchSemiQualifiers = async (tournamentId) => {
 
 export const fetchScoreSheet = async (id_player, tournamentName, collectionName) => {
 
-  console.log(id_player, 'id_player');
-  console.log(tournamentName, 'tournamentName');
-  console.log(collectionName, 'collectionName');
+  console.log(id_player, 'id_player INSIDE FETCH SCORE SHEET');
+  console.log(tournamentName, 'tournamentName INSIDE FETCH SCORE SHEET');
+  console.log(collectionName, 'collectionName INSIDE FETCH SCORE SHEET');
 
   try {
     const scoreQuery = query(collection(firestore, 'I_Torneos', tournamentName, collectionName), where('id_player', '==', id_player));

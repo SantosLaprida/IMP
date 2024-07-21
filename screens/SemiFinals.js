@@ -48,15 +48,14 @@ const SemiFinals = ({ navigation }) => {
 
   const compareFirstMatch = async (ids) => {
     try {
-      if (ids[0] === null || ids[7] === null) {
+      if (ids[0] === null || ids[3] === null) {
         console.error('Invalid player IDs for first match:', ids[0], ids[3]);
         return;
       }
-      const collectionName = 'I_Semifinales';
       const tournamentId = await getTournamentId();
+      const collectionName = 'I_Semifinales';
       const results = await compareScores(ids[0], ids[3], tournamentId, collectionName);
       setResults1(results);
-      console.log(results, "RESULTS FIRST MATCH");
     } catch (error) {
       console.error(error);
     }
@@ -65,7 +64,7 @@ const SemiFinals = ({ navigation }) => {
 
   const compareSecondMatch = async (ids) => {
     try {
-      if (ids[1] === null || ids[6] === null) {
+      if (ids[1] === null || ids[2] === null) {
         console.error('Invalid player IDs for second match:', ids[1], ids[2]);
         return;
       }
@@ -73,7 +72,6 @@ const SemiFinals = ({ navigation }) => {
       const tournamentId = await getTournamentId();
       const results = await compareScores(ids[1], ids[2], tournamentId, collectionName);
       setResults2(results);
-      console.log(results, "RESULTS SECOND MATCH");
     } catch (error) {
       console.error(error);
     }
@@ -82,15 +80,17 @@ const SemiFinals = ({ navigation }) => {
 
   useEffect(() => {
     
-    const processSemis = async () => {
-      const tournament = await fetchTournament();
-      const tournamentId = tournament[0].id;
-      const semisExist = await semisExistsAPI(tournamentId);
-      if (!semisExist) {
-        await createI_Semifinales(tournamentId);
-      }
-    };
-    processSemis();
+    // const processSemis = async () => {
+    //   const tournament = await fetchTournament();
+    //   const tournamentId = tournament[0].id;
+    //   const semisExist = await semisExistsAPI(tournamentId);
+    //   if (!semisExist) {
+    //     await createI_Semifinales(tournamentId);
+    //   }
+    // };
+    // processSemis();
+
+
     fetchQualifiers();
   }, []);
 

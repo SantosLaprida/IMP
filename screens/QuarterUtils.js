@@ -2,6 +2,7 @@
 import { get } from 'firebase/database';
 import { getScoreSheet } from '../api';
 import { getPlayerName } from '../server/firestoreFunctions';
+import { processSemis } from '../server/semisUtils/semisUtils';
 
 export const compareScores = async (id_player1, id_player2, tournamentName, collectionName) => {
 
@@ -69,22 +70,35 @@ export const compareScores = async (id_player1, id_player2, tournamentName, coll
 
             if (score1 < score2) {
                 score.result--;
-                return score;
+                break;
             }
             if (score1 > score2) {
                 score.result++;
-                return score;
+                break;
             }
+
         }
     }
 
-    console.log('returning score for ', name1, ' and ', name2, score);
+    if (score.stillPlaying === false) {
+        // If the game is over, then we can store the result in firebase
+        if (collectionName === 'I_Cuartos') {
+            // Call a function yet to be created that is going to be in a file inside server directory, inside quarterUtils directory
+            // We will need to pass the tournamentName, the id of the two players, and the result of the game
+        }else if (collectionName === 'I_Semifinales') {
+            // Call a function yet to be created that is going to be in a file inside server directory, inside semisUtils directory
+            // We will need to pass the tournamentName, the id of the two players, and the result of the game
+
+            await processSemis(tournamentName, id_player1, id_player2, score.result);
+
+        }
+
+    }
+
     return score;
 }
 
 export const showResults = (results, player_name1, player_name2) => {
-
-    console.log(player_name1, player_name2);
 
     if (results === null) {
         return '';  

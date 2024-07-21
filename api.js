@@ -111,7 +111,7 @@ export const semisExistsAPI = async (tournamentId) => {
   }
 };
 
-export const fetchSemiQualifiers = async (tournamentId) => {};
+
 
 
 
