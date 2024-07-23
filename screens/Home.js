@@ -8,9 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 
-
 const Home = ({ navigation }) => {
-  
 
   const [fontsLoaded] = useFonts({
     'kanitBold': require('../assets/fonts/kanit/Kanit-Bold.ttf'),

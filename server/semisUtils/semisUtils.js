@@ -4,19 +4,6 @@ const firestore = getFirestore();
 
 export const processSemis = async (tournamentId, id_player1, id_player2, result) => {
 
-    // This function first checks if there is a collection called I_Semis_resultados in firestore, 
-    // the path is I_Torneos, then the tournamentId, then I_Semis_resultados. If there is no such collection, 
-    // then we simply create the collection I_Semis_resultados with two documents, Match1 and Match2
-    // Now we check which player we are going to store, if its 1 or 2, for that, we check result: 
-    // if result is negative, then we know we are going to store the player 1 (id_player1). 
-    // So we call getPlayerName and we will get an array with the name and the orden. 
-    // If the orden that we get is 1 or 4, we store it in Match one, and we store the name, id_player. 
-    // Else, we store it in Match two.
-
-    // If result is positive, then we know we are going to store the player 2 (id_player2).
-
-    // If the collection already exists, we return for now
-
     try {
         const semisCollectionRef = collection(firestore, 'I_Torneos', tournamentId, 'I_Semis_resultados');
         const semisSnapshot = await getDocs(semisCollectionRef);
@@ -45,24 +32,26 @@ export const processSemis = async (tournamentId, id_player1, id_player2, result)
         console.log(`Player ${playerName} stored in ${matchDocId}`);
 
         const finalesCollectionRef = collection(firestore, 'I_Torneos', tournamentId, 'I_Finales');
-        const playerFinaleDoc = {
-            id_player: playerId,
-            name: playerName,
-            H1: 0, H2: 0, H3: 0, H4: 0, H5: 0, H6: 0, H7: 0, H8: 0, H9: 0,
-            H10: 0, H11: 0, H12: 0, H13: 0, H14: 0, H15: 0, H16: 0, H17: 0, H18: 0
-        };
+        const finalesSnapshot = await getDocs(finalesCollectionRef);
 
-        await addDoc(finalesCollectionRef, playerFinaleDoc);
-
-        console.log(`Finale document created for player ${playerName}`);
-
-
+        if (finalesSnapshot.empty) {
+            const playerFinaleDoc = {
+                id_player: playerId,
+                name: playerName,
+                H1: 0, H2: 0, H3: 0, H4: 0, H5: 0, H6: 0, H7: 0, H8: 0, H9: 0,
+                H10: 0, H11: 0, H12: 0, H13: 0, H14: 0, H15: 0, H16: 0, H17: 0, H18: 0
+            };
+            await addDoc(finalesCollectionRef, playerFinaleDoc);
+            console.log(`Finale document created for player ${playerName}`);
+        } else {
+            console.log('Finales collection already exists, doing nothing.');
+        }
     } catch (error) {
         console.error('Error processing semifinals:', error);
     }
-
-
 };
+
+
 
 const getPlayerName = async (id_player, tournamentId) => {
 

@@ -6,21 +6,54 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswor
 
 const firestore = getFirestore();
 
-export const createI_Players = async (players) => {
+export const createTournament = async (tournamentId, name, start_date, finish_date, logo, players) => {
+  
+  console.log(players);
+
+  // if (!Array.isArray(players)) {
+  //   throw new TypeError("The 'players' parameter must be an array");
+  // }
+
+  const tournamentRef = doc(firestore, 'I_Torneos', tournamentId);
+  await setDoc(tournamentRef, {
+    activo: 1,
+    start_date: start_date,
+    finish_date: finish_date,
+    logo: logo,
+    name: name
+  });
+
+  const collectionRef = collection(firestore, 'I_Torneos', tournamentId, 'I_Players');
+
+  for (const player of players) {
+    if (player.name && player.rank !== undefined) {
+      const docRef = doc(collectionRef, player.name);
+      await setDoc(docRef, {
+        id_player: generateAutoId(),
+        name: player.name,
+        rank: player.rank,
+      });
+    } else {
+      console.error('Invalid player object', player);
+    }
+  }
+};
+
+
+export const createI_Players = async (tournamentId, players) => {
   if (!Array.isArray(players)) {
     throw new TypeError("The 'players' parameter must be an array");
   }
 
-  // Reference to the I_Players collection inside The_Open_Championship_2024 document of I_Torneos collection
-  const collectionRef = collection(firestore, 'I_Torneos', 'The_Open_Championship_2024', 'I_Players');
+  const collectionRef = collection(firestore, 'I_Torneos', tournamentId, 'I_Players');
 
   for (const player of players) {
     if (player.name && player.rank !== undefined) {
-      // Use player's name as the document ID
+
       const docRef = doc(collectionRef, player.name);
       await setDoc(docRef, {
         rank: player.rank,
-        id_player: docRef.id, // Use the auto-generated ID
+        id_player: docRef.id, 
       });
     } else {
       console.error('Invalid player object', player);
