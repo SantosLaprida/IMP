@@ -119,8 +119,6 @@ const styles = StyleSheet.create({
     width: 250,
     height: 150,
     marginBottom: 20,
-    borderRadius: 15,
-    borderWidth: 2,
     backgroundColor: "transparent",
   },
   container: {
@@ -131,7 +129,6 @@ const styles = StyleSheet.create({
   },
   container2: {
     borderRadius: 10,
-    width: '90%',
     alignItems: 'center',
     padding: 20,
     height: "52%", 

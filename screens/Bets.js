@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: 300,
-    backgroundColor: 'rgb(241, 228, 151)',
+    backgroundColor: 'rgb(255, 252, 241)',
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
@@ -192,20 +192,21 @@ const styles = StyleSheet.create({
     fontWeight: "500"
   },
   modalButton: {
-    backgroundColor: '#1f3a5c',
-    padding: 10,
-    margin: 10,
+    backgroundColor: '#17628b34',
+    padding: 7,
+    margin: 5,
     borderRadius: 10,
     width: 200, 
     alignItems: 'center',
+    borderWidth: 1,
     borderColor: '#17628b94',
     borderBottomWidth: 7, 
     borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
   },
   modalT:{
-    color: 'white',
-    fontWeight: "600",
-    fontSize: 15,
+    color: '#1f3a5c',
+    fontSize: 17,
+    fontWeight: "600"
   },
   modalTDisabled:{
     color: 'white',
@@ -255,6 +256,7 @@ const styles = StyleSheet.create({
     width: 300, 
     borderColor: "#1f3a5c",
     borderWidth: 2, // Elevación para la sombra
+    justifyContent: "center"
   },
   betText:{
     color: 'white',
@@ -267,7 +269,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
     marginHorizontal: 15,
-    marginTop: 11,
   }
 });
 

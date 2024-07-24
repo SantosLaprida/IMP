@@ -44,14 +44,6 @@ function AuthStackScreen() {
 
 
 
-function TournamentsStackScreen() {
-  return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen name="Tournaments" component={Tournaments} options={{ headerShown: false }} />
-      <HomeStack.Screen name="Players" component={Players} options={{ headerShown: false }} />
-    </HomeStack.Navigator>
-  );
-}
 
 function BetStackScreen() {
   return (
@@ -60,6 +52,7 @@ function BetStackScreen() {
       <HomeStack.Screen name="QuarterFinals" component={QuarterFinals} options={{ headerShown: false }} />
       <HomeStack.Screen name="SemiFinals" component={SemiFinals} options={{ headerShown: false }} />
       <HomeStack.Screen name="Finals" component={Finals} options={{ headerShown: false }} />
+      <HomeStack.Screen name="Players" component={Players} options={{ headerShown: false }} />
     </HomeStack.Navigator>
   );
 }
@@ -70,7 +63,8 @@ function CustomTabBarButton({ children, onPress, isFocused }) {
     <TouchableOpacity
       onPress={onPress}
       style={{
-        backgroundColor: isFocused ? '#1f3a5c' : 'rgb(255, 252, 241)', // cambiar color si está enfocado
+        backgroundColor: isFocused ? 'black' : 'black',
+        borderColor: isFocused ? '#2296F3' : 'grey',
         height: 90,
         justifyContent: 'center',
         alignItems: 'center',
@@ -79,8 +73,8 @@ function CustomTabBarButton({ children, onPress, isFocused }) {
         width: 90,
         position: "relative",
         top: -30,
-        borderWidth: 5,
-        borderColor: "black"
+        borderWidth: 4,
+       
       }}
     >
       {children}
@@ -136,7 +130,7 @@ function TabNavigator() {
       })}
     >
       <Tab.Screen options={{ headerShown: false }} name="Home" component={Home} />
-      <Tab.Screen options={{ headerShown: false }} name="Tournaments" component={TournamentsStackScreen} />
+      <Tab.Screen options={{ headerShown: false }} name="Tournaments" component={Tournaments} />
       <Tab.Screen 
         options={{
           headerShown: false,
@@ -145,8 +139,8 @@ function TabNavigator() {
           ),
           tabBarIcon: ({ focused, color, size }) => (
             <>
-              <Ionicons name="cash" size={32} color={focused ? 'rgb(255, 252, 241)' : '#1f3a5c'} />
-              <Text style={{ color: focused ? 'rgb(255, 252, 241)' : '#1f3a5c', fontFamily: 'kanit-bold', fontSize: 13 }}>Bet</Text>
+              <Ionicons name="cash" size={32} color={focused ? '#2296F3' : 'grey'} />
+              <Text style={{ color: focused ? '#2296F3' : 'grey', fontFamily: 'kanit-bold', fontSize: 13 }}>Bet</Text>
             </>
           ),
           tabBarLabel: () => null, // eliminar etiqueta predeterminada

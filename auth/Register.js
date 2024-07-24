@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
   },
   container2: {
     borderRadius: 10,
-    width: '90%',
     alignItems: 'center',
     padding: 20,
     height: "68%",

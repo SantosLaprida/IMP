@@ -98,18 +98,19 @@ const Players = ({ navigation }) => {
   );
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={{ ...styles.button, marginBottom: 20 }} onPress={() => navigation.navigate('Tournaments')}>
-        <Text style={styles.buttonText}>Back</Text>
-      </TouchableOpacity>
+    <LinearGradient
+    colors={['#1f3a5c', 'white']}
+    locations={[0, 0.5]}
+    style={styles.container}>
+ 
       <View style={styles.box}>
-        <Text style={{ ...styles.text, paddingBottom: 10, fontSize: 20 }}>Choose your players</Text>
+        <Text style={{ ...styles.text, fontSize: 15, marginTop: -5, paddingBottom: 10 }}>Choose 8 players</Text>
         <TextInput
           style={styles.input}
           onChangeText={text => setSearchTerm(text)}
           value={searchTerm}
           placeholder="Search players"
-          placeholderTextColor="white"
+          placeholderTextColor="#1f3a5c"
         />
         <View style={styles.itemTitle}>
           <Text style={styles.text}>Player</Text>
@@ -119,43 +120,58 @@ const Players = ({ navigation }) => {
           {filteredJugadores.map((jugador) => (
             <TouchableOpacity key={jugador.id_player} onPress={() => agregarJugadorAlEquipo(jugador)}>
               <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text>{jugador.name}</Text>
-                <Text>{jugador.rank}</Text>
+                <Text style={{...styles.text, fontSize: 11}}>{jugador.name}</Text>
+                <Text style={{...styles.text, fontSize: 11}}>{jugador.rank}</Text>
               </View>
             </TouchableOpacity>
           ))}
         </ScrollView>
       </View>
-      <View style={{ ...styles.box, height: 200 }}>
-        <Text style={{ ...styles.text, paddingBottom: 10, fontSize: 20 }}>Your team</Text>
+      <View style={{ ...styles.box, height: 250 }}>
+        
         <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+        <View style={styles.itemTitle}>
+          <Text style={styles.text}>Your team</Text>
+          <Text style={styles.text}>{"N° of players: " + equipo.length}</Text>
+         
+        </View>
           {equipo.map((jugador) => (
             <TouchableOpacity key={jugador.id_player} onPress={() => quitarJugadorDelEquipo(jugador)}>
-              <View style={styles.jugadorItem}>
-                <Text>{jugador.name}</Text>
+              <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={{...styles.text, fontSize: 11}} >{jugador.name}</Text>
+                <Text style={{...styles.text, fontSize: 11}}>{jugador.rank}</Text>
               </View>
             </TouchableOpacity>
           ))}
         </ScrollView>
       </View>
+      <View style={styles.btns}>
       <TouchableOpacity style={styles.button} onPress={handleFinish}>
         <Text style={styles.buttonText}>Place my bet</Text>
       </TouchableOpacity>
-    </View>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Bets')}>
+        <Text style={styles.buttonText}>Cancel</Text>
+      </TouchableOpacity>
+      </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   box: {
-    borderWidth: 5,
-    borderColor: 'teal',
     paddingHorizontal: 50,
     paddingVertical: 20,
-    borderRadius: 30,
+    borderRadius: 15,
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.788)',
-    height: 380,
+    backgroundColor: 'rgb(255, 252, 241)',
+    height: 350,
     marginBottom: 10,
+    shadowColor: '#000', // Color de la sombra
+    shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
+    shadowOpacity: 0.3, // Opacidad de la sombra
+    shadowRadius: 6, // Radio de la sombra
+    // Para Android
+    elevation: 10, // Elevación para la sombra
   },
   itemTitle: {
     borderRadius: 5,
@@ -172,10 +188,10 @@ const styles = StyleSheet.create({
   jugadorItem: {
     padding: 5,
     paddingHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 5,
     backgroundColor: '#f0f0f0',
     borderRadius: 5,
-    width: 250
+    width: 250,
   },
   container: {
     flex: 1,
@@ -184,10 +200,10 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   text: {
-    fontSize: 15,
+    fontSize: 13,
     textAlign: "left",
     fontWeight: "700",
-    color: "white",
+    color: "#1f3a5c",
   },
   btn: {
     width: 300,
@@ -199,7 +215,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: 250,
-    borderColor: 'white',
+    borderColor: '#1f3a5c',
     borderWidth: 1,
     padding: 5,
     color: 'white',
@@ -207,27 +223,25 @@ const styles = StyleSheet.create({
     height: 30
   },
   button: {
-    backgroundColor: 'rgba(212, 188, 50, 0.76)',
-    padding: 15,
+    backgroundColor: '#17628b34',
+    padding: 8,
     margin: 10,
     borderRadius: 10,
-    width: 300,
+    width: 170, 
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'transparent',
-    // Sombra para iOS
-    shadowColor: '#000',
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.80,
-    shadowRadius: 3.84,
-    // Sombra para Android
-    elevation: 30,
+    borderColor: '#17628b94',
+    borderBottomWidth: 7, 
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
   },
   buttonText: {
-    color: '#15303F',
-    fontSize: 20,
-    fontWeight: '600',
+    color: '#1f3a5c',
+    fontSize: 18,
+    fontWeight: "500"
   },
+  btns:{
+    flexDirection: "row"
+  }
 });
 
 export default Players;
