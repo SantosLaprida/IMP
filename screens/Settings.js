@@ -1,9 +1,12 @@
 import React, { useEffect, useState} from 'react';
-import { View, Text, StyleSheet, Image, ImageBackground, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 const Settings = ({ navigation }) => {
+
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -17,32 +20,34 @@ const Settings = ({ navigation }) => {
     loadUser();
   }, []);
 
- 
-
   return (
     <LinearGradient
-    colors={['#0d1825', '#2e4857']}
-    style={styles.container}> 
-    <View style={styles.row}>
-    <Image
-    source={require('../assets/images/logo-golf.png')}
+    colors={['#1f3a5c', 'white']}
+    locations={[0, 0.5]}
+    style={styles.container}>
+
+<Image
+    source={require('../assets/images/IMP-02.png')}
     style={styles.logo}
   />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Account</Text>
+    <View style={styles.row}>
+  
+
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
+          <Text style={styles.buttonText}>About us</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
           <Text style={styles.buttonText}>Support</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>About us</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} >
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
           <Text style={styles.buttonText}>Rules of play</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
+          <Text style={styles.buttonText}>Log out</Text>
+        </TouchableOpacity>
       </View>
-      </LinearGradient>
+   </LinearGradient>
   );
 };
 
@@ -50,7 +55,14 @@ const Settings = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   row:{
-    backgroundColor: "transparent",
+    backgroundColor: 'rgb(255, 252, 241)',
+    marginTop: 0,
+    shadowColor: '#000', // Color de la sombra
+    shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
+    shadowOpacity: 0.3, // Opacidad de la sombra
+    shadowRadius: 6, // Radio de la sombra
+    // Para Android
+    elevation: 10, // Elevación para la sombra
     padding: 20,
     paddingVertical: 40,
     borderRadius: 25,
@@ -68,34 +80,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: 'rgb(241, 228, 151)',
     justifyContent: "center"
     
   },
   button: {
-    backgroundColor: 'rgba(212, 188, 50, 0.76)',
-    padding: 15,
+    backgroundColor: '#17628b34',
+    padding: 10,
     margin: 10,
     borderRadius: 10,
-    width: 300,
+    width: 300, 
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'transparent',
-    // Sombra para iOS
-    shadowColor: '#000',
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.80,
-    shadowRadius: 3.84,
-    // Sombra para Android
-    elevation: 30,
+    borderColor: '#17628b94',
+    borderBottomWidth: 7, 
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
   },
   buttonText: {
-    color: '#15303F',
-    fontSize: 20,
-    fontWeight: '600',
+    color: '#1f3a5c',
+    fontSize: 18,
+    fontWeight: "500"
   },
   logo: {
-    width: 300,
+    width: 250,
     height: 150,
     marginBottom: 30,
   },

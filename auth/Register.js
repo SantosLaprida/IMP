@@ -63,16 +63,17 @@ export default function Register({navigation}) {
   return (
 
     <LinearGradient
-    colors={['#0d1825', '#2e4857']}
+    colors={['#1f3a5c', 'white']}
+    locations={[0, 0.5]}
     style={styles.container}>
-  <View style={styles.container}>
-    <View style={styles.container2}>
-    <Image
-    source={require('../assets/images/logo-golf.png')}
+ <Image
+    source={require('../assets/images/IMP-02.png')}
     style={styles.logo}
-  />
+  /> 
+    <View style={styles.container2}>
+  
       <View>
-        <Text style={styles.text}>Welcome to the Internet Match Play</Text>
+        <Text style={styles.text}>Create account</Text>
       </View>
       <View style={styles.passwordContainer}>
       <TextInput
@@ -80,7 +81,7 @@ export default function Register({navigation}) {
         placeholder="Name"
         value={firstName}
         onChangeText={setFirstName}
-        placeholderTextColor="white"
+        placeholderTextColor="#28486e6b"
       />
       </View>
        <View style={styles.passwordContainer}>
@@ -89,7 +90,7 @@ export default function Register({navigation}) {
         placeholder="Lastname"
         value={lastName}
         onChangeText={setLastName}
-        placeholderTextColor="white"
+        placeholderTextColor="#28486e6b"
       />
       </View>
         <View style={styles.passwordContainer}>
@@ -100,7 +101,7 @@ export default function Register({navigation}) {
         onChangeText={setEmail}
         keyboardType="email-address"
         autoCapitalize="none"
-        placeholderTextColor="white"
+        placeholderTextColor="#28486e6b"
       />
       </View>
      <View style={styles.passwordContainer}>
@@ -110,10 +111,10 @@ export default function Register({navigation}) {
               value={password}
               onChangeText={setPassword}
               secureTextEntry={secureTextEntry}
-              placeholderTextColor="white"
+              placeholderTextColor="#28486e6b"
             />
             <TouchableOpacity onPress={toggleSecureTextEntry} style={styles.icon}>
-              <Icon name={secureTextEntry ? 'eye-off' : 'eye'} size={24} color="white" />
+              <Icon name={secureTextEntry ? 'eye-off' : 'eye'} size={24} color="#1f3a5c" />
             </TouchableOpacity>
           </View>
           <View style={styles.passwordContainer}>
@@ -123,28 +124,26 @@ export default function Register({navigation}) {
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               secureTextEntry={confirmSecureTextEntry}
-              placeholderTextColor="white"
+              placeholderTextColor="#28486e6b"
             />
             <TouchableOpacity onPress={toggleConfirmSecureTextEntry} style={styles.icon}>
-              <Icon name={confirmSecureTextEntry ? 'eye-off' : 'eye'} size={24} color="white" />
+              <Icon name={confirmSecureTextEntry ? 'eye-off' : 'eye'} size={24} color="#1f3a5c" />
             </TouchableOpacity>
           </View>
-
-      <View style={{...styles.btn, marginTop: 30}}>
-        <Button title="Register" onPress={handleRegister} color={"green"} />
-      </View>
-      <View style={styles.btn}>
-            <Button color={""} title="Back" onPress={() => navigation.navigate('Login')} />
-          </View>
+      <TouchableOpacity style={{...styles.button, marginTop: 20}} onPress={handleRegister}>
+          <Text style={styles.buttonText}>Register</Text>
+        </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.buttonText}>Back</Text>
+        </TouchableOpacity>
     </View>
-  </View>
 </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   logo: {
-    width: 300,
+    width: 250,
     height: 150,
     marginBottom: 20,
   },
@@ -152,49 +151,72 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgb(241, 228, 151)',
   },
   container2: {
-    borderRadius: 25,
+    borderRadius: 10,
     width: '90%',
-    flex: 1,
-    backgroundColor: 'transparent',
     alignItems: 'center',
-    justifyContent: 'center',
     padding: 20,
+    height: "68%",
+    backgroundColor: 'rgb(255, 252, 241)',
+    marginTop: 0,
+    shadowColor: '#000', // Color de la sombra
+    shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
+    shadowOpacity: 0.3, // Opacidad de la sombra
+    shadowRadius: 6, // Radio de la sombra
+    // Para Android
+    elevation: 10, // Elevación para la sombra
+    
   },
   text: {
-    color: 'white',
-    fontSize: 25,
-    fontFamily: "Roboto",
-    textAlign: 'center',
+    color: '#1f3a5c',
+    fontSize: 20,
+  
     padding: 10,
-    marginBottom: 20
+    marginBottom: 10,
+    fontWeight: "700"
   },
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: 'gray',
-    borderWidth: 1,
+    borderColor: '#1f3a5c',
+    borderWidth: 1.5,
     borderRadius: 10,
     width: 300,
     marginTop: 10,
   },
   input: {
     flex: 1,
-    color: 'white',
+    color: '#1f3a5c',
+    fontWeight: "500",
     padding: 10,
     fontSize: 16,
   },
   icon: {
     padding: 10,
   },
-  btn: {
-    width: 300,
-    marginTop: 15,
-    height: 45,
-    backgroundColor: "black",
-    borderRadius: 15,
-    fontFamily: "Roboto",
+  button: {
+    backgroundColor: '#17628b34',
+    padding: 6,
+    margin: 5,
+    borderRadius: 10,
+    width: 300, 
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#17628b94',
+    borderBottomWidth: 7, 
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
+  },
+  buttonText: {
+    color: '#1f3a5c',
+    fontSize: 17,
+    fontWeight: "500"
+  },
+  linkText: {
+    color: '#1f3a5c',
+    marginTop: 10,
+    fontWeight: "500"
   },
   loginText: {
     fontWeight: 'bold',
@@ -202,4 +224,4 @@ const styles = StyleSheet.create({
     color: 'white',
     fontFamily: "Roboto",
   },
-}); 
+});

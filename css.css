@@ -1,9 +1,9 @@
 .cla{
-    color:rgba(0, 0, 0, 0.384)
+    color:rgba(0, 0, 0, 0.849)
 }
 
 .green{
-    color: rgba(17, 173, 17, 0.438);
+    color: rgb(15, 114, 11);
 }
 .blue{
     color: rgb(10, 10, 71);
@@ -12,14 +12,14 @@
     color: rgba(212, 188, 50, 0.76);
 }
 .asd{
-    color: #0d1825;
+    color: #1f3a5c;
 }
 .ddd{
-    color: #233742;
+    color: #17628b34;
 }
 
 .white{
-    color: rgba(255, 255, 255, 0.466);
+    color: rgba(80, 78, 78, 0.363);
 }
 
 .Darkgold{
@@ -31,9 +31,14 @@
 }
 
 .lightWhite{
-    color: rgba(216, 203, 132, 0.664);
+    color: rgb(255, 252, 241);
 }
 
 .green{
-    color: #008001;
+    color: #cca1293f;
+}
+
+
+.darkerWhite{
+    color: #28486e6b;
 }

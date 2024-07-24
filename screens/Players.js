@@ -98,7 +98,7 @@ const Players = ({ navigation }) => {
   );
 
   return (
-    <LinearGradient colors={['#0d1825', '#2e4857']} style={styles.container}>
+    <View style={styles.container}>
       <TouchableOpacity style={{ ...styles.button, marginBottom: 20 }} onPress={() => navigation.navigate('Tournaments')}>
         <Text style={styles.buttonText}>Back</Text>
       </TouchableOpacity>
@@ -141,7 +141,7 @@ const Players = ({ navigation }) => {
       <TouchableOpacity style={styles.button} onPress={handleFinish}>
         <Text style={styles.buttonText}>Place my bet</Text>
       </TouchableOpacity>
-    </LinearGradient>
+    </View>
   );
 };
 
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: 'rgba(216, 203, 132, 0.664)',
     justifyContent: "center"
   },
   text: {

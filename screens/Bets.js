@@ -1,31 +1,24 @@
-import { fetchPlayers, retrieveTeam, storeTeam, get_name_by_id, fetchTeamAPI } from '../api';
-import { getPlayerName } from '../server/firestoreFunctions';
+import { fetchTournament } from '../server/firestoreFunctions';
 
-import { auth } from '../server/firebaseConfig';
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, ImageBackground, Image, Button, TouchableOpacity, Modal } from 'react-native';
+import React, { useEffect, useState} from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
-const Bets = ({ navigation }) => {
-  const [finalTeam, setFinalTeam] = useState([]);
+
+const Tournaments = ({ navigation }) => {
+  
+  const [start, setStart] = useState(null)
+  const [end, setEnd] = useState(null)
+  const [logo, setLogo] = useState(null)
+  const [name, setName] = useState(null)
+  
   const [modalVisible, setModalVisible] = useState(false);
 
-  useEffect(() => {
-    const getTeam = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        const userId = user.uid;
-        const teamData = await fetchTeamAPI(userId);
-        const playerNamesPromises = teamData.map(player => getPlayerName(player.id_player));
-        const playerNames = await Promise.all(playerNamesPromises);
-        setFinalTeam(playerNames);
-      }
-    };
-
-    getTeam();
-  }, []);
-
-  const handleSeeGamesLive = () => {
+  const handleGameMode = () => {
     setModalVisible(true);
   };
 
@@ -34,31 +27,83 @@ const Bets = ({ navigation }) => {
     navigation.navigate(screen);
   };
 
+  useEffect(() => {
+    const getTournamentData = async () => {
+      try{
+        const torneo = await fetchTournament();
+        
+        let name = torneo[0].name;
+        let start_date = torneo[0].start_date;
+        let finish_date = torneo[0].finish_date;
+        let logo = torneo[0].logo;
+
+        setName(name)
+        setStart(start_date)
+        setEnd(finish_date)
+        setLogo(logo)
+
+
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getTournamentData();
+    
+  }, []);
+
+
   return (
-    <LinearGradient colors={['#0d1825', '#2e4857']} style={styles.container}>
+    <LinearGradient
+    colors={['#1f3a5c', 'white']}
+    locations={[0, 0.5]}
+    style={styles.container}>
+    
       <View style={styles.box}>
-        <Text style={{ ...styles.text, paddingBottom: 20, fontSize: 20 }}>Your bet</Text>
-        <Image source={require('../assets/images/Golf-PGA.webp')} style={styles.logo} />
-        <TouchableOpacity style={{ ...styles.button, width: 200, padding: 5, marginTop: 20, marginBottom: 20 }} onPress={handleSeeGamesLive}>
-          <Text style={{ ...styles.buttonText, fontSize: 15 }}>See games live</Text>
+      <Text style={{ ...styles.text, fontSize: 25 }}>
+        Tournament of the week
+      </Text>
+        <Text style={{ ...styles.text, paddingBottom: 10, fontSize: 18, marginTop: 15 }}>
+          {name}
+        </Text>
+        <Image
+          source={{ uri: logo }}
+          style={styles.logo}
+        />
+        <View>
+        <Text style={{ ...styles.text, marginTop: 20 }}>
+          {"Starting date: " + start}
+        </Text>
+        <Text style={{...styles.text}}>
+          {"Finish date: " + end}
+        </Text>
+        </View>
+        <TouchableOpacity 
+          style={{ ...styles.button, marginTop: 30 }} 
+          onPress={handleGameMode}
+        >
+          <Text style={styles.buttonText}>Participate</Text>
         </TouchableOpacity>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {finalTeam.length > 0 ? (
-            finalTeam.map((name, index) => (
-              <View key={index} style={styles.jugadorItem}>
-                <Text>{name}</Text>
-              </View>
-            ))
-          ) : (
-            <Text style={styles.text}>No players selected yet.</Text>
-          )}
+      </View>
+
+      <View style={{ ...styles.box, height: 250 }}>
+        <Text style={{ ...styles.text, paddingBottom: 10, fontSize: 20 }}>Your Bets</Text>
+        <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+        <View style={{...styles.betBtn, marginTop: 20}} >
+        <FontAwesome6 name="users-between-lines" size={17} color="white" style={{...styles.editIcon, left: -6, bottom: 12}} />
+        <Text style={styles.betText}> 
+          Traditional
+        </Text>
+        <AntDesign name="edit" size={24} color="white" style={styles.editIcon} />
+      </View>
+      <View style={styles.betBtn} >
+      <MaterialIcons name="numbers" size={22} color="white" style={{...styles.editIcon, left: -8, bottom: 10}} />
+        <Text style={styles.betText}>Random          
+        </Text>
+        <AntDesign name="edit" size={24} color="white" style={styles.editIcon} />
+      </View>
         </ScrollView>
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Players')}>
-        <Text style={styles.buttonText}>
-          {finalTeam.length > 0 ? 'Edit my team' : 'Select players'}
-        </Text>
-      </TouchableOpacity>
 
       <Modal
         animationType="slide"
@@ -68,99 +113,65 @@ const Bets = ({ navigation }) => {
           setModalVisible(!modalVisible);
         }}
       >
-         
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Select Stage</Text>
-            <TouchableOpacity style={styles.modalButton} onPress={() => handleNavigate('QuarterFinals')}>
-              <Text style={styles.buttonText}>Quarter Finals</Text>
+            <Text style={styles.modalText}>Select game mode</Text>
+            <TouchableOpacity style={styles.modalButton} onPress={() => handleNavigate('Players')}>
+              <Text style={styles.modalT}>Traditional</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.modalButton} onPress={() => handleNavigate('SemiFinals')}>
-              <Text style={styles.buttonText}>Semi Finals</Text>
+            <TouchableOpacity style={styles.modalButtonDisabled} onPress={() => handleNavigate('SemiFinals')}>
+              <Text style={styles.modalTDisabled}>Random</Text>
+
             </TouchableOpacity>
-            <TouchableOpacity style={styles.modalButton} onPress={() => handleNavigate('Finals')}>
-              <Text style={styles.buttonText}>Finals</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ ...styles.modalButton, backgroundColor: "#2296F3" }} onPress={() => setModalVisible(false)}>
-              <Text style={styles.buttonText}>Close</Text>
+            <TouchableOpacity style={{ ...styles.modalButton, marginTop: 40, width: 250 }} onPress={() => setModalVisible(false)}>
+              <Text style={styles.modalT}>Close</Text>
             </TouchableOpacity>
           </View>
         </View>
-      
       </Modal>
-
     </LinearGradient>
   );
 };
 
+
 const styles = StyleSheet.create({
-  box: {
-    width: 350,
-    borderWidth: 5, // ancho del borde
-    borderColor: 'teal',
-    paddingHorizontal: 50,
-    paddingVertical: 20,
-    borderRadius: 30,
+  box:{
+    padding: 20,
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.788)',
-    height: 550,
-    marginBottom: 25,
-  },
-  logo: {
-    width: 100,
-    height: 100,
     borderRadius: 20,
+    width: 350,
+    marginTop: 30,
+    backgroundColor: 'rgb(255, 252, 241)',
+    shadowColor: '#000', // Color de la sombra
+    shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
+    shadowOpacity: 0.3, // Opacidad de la sombra
+    shadowRadius: 6, // Radio de la sombra
+    // Para Android
+    elevation: 10, // Elevación para la sombra
+    
   },
-  jugadorItem: {
+  logo:{
+    width: 150,
+    height: 120,
+    borderRadius: 20, 
+    backgroundColor: "black",
     padding: 5,
-    marginBottom: 10,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 5,
-    width: 200,
   },
+ 
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'black',
-    justifyContent: 'center',
-  },
-  text: {
-    fontSize: 15,
-    textAlign: 'left',
-    fontWeight: '700',
-    color: 'white',
-  },
-  button: {
-    backgroundColor: 'rgba(212, 188, 50, 0.76)',
-    padding: 15,
-    margin: 10,
-    borderRadius: 10,
-    width: 300,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'transparent',
-    // Sombra para iOS
-    shadowColor: '#000',
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.80,
-    shadowRadius: 3.84,
-    // Sombra para Android
-    elevation: 30,
-  },
-  buttonText: {
-    color: '#15303F',
-    fontSize: 20,
-    fontWeight: '600',
+    backgroundColor: 'rgb(241, 228, 151)',  
   },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.849)',
   },
   modalView: {
     width: 300,
-    backgroundColor: 'white',
+    backgroundColor: 'rgb(241, 228, 151)',
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
@@ -174,29 +185,90 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modalText: {
-    color: '#15303F',
     fontSize: 20,
     marginBottom: 15,
     textAlign: 'center',
-    fontWeight: "600"
+    color: '#1f3a5c',
+    fontWeight: "500"
   },
   modalButton: {
-    backgroundColor: 'rgba(212, 188, 50, 0.76)',
+    backgroundColor: '#1f3a5c',
     padding: 10,
-    margin: 7,
+    margin: 10,
+    borderRadius: 10,
+    width: 200, 
+    alignItems: 'center',
+    borderColor: '#17628b94',
+    borderBottomWidth: 7, 
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
+  },
+  modalT:{
+    color: 'white',
+    fontWeight: "600",
+    fontSize: 15,
+  },
+  modalTDisabled:{
+    color: 'white',
+    fontWeight: "600",
+    fontSize: 15,
+    textDecorationLine: "line-through"
+  },
+  modalButtonDisabled: {
+    backgroundColor: "grey",
+    padding: 10,
+    marginTop: 10,
     borderRadius: 10,
     width: 200,
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'transparent',
-    // Sombra para iOS
-    shadowColor: '#000',
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.80,
-    shadowRadius: 3.84,
-    // Sombra para Android
-    elevation: 30,
+    borderColor: '#17628b94',
+    borderBottomWidth: 7, 
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
   },
+  text: {
+    fontSize: 15,
+    fontWeight: "800",
+    color: '#1f3a5c',
+    fontFamily: 'Roboto' 
+  },
+  button: {
+    backgroundColor: '#17628b34',
+    padding: 7,
+    margin: 5,
+    borderRadius: 10,
+    width: 230, 
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#17628b94',
+    borderBottomWidth: 7, 
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
+  },
+  buttonText: {
+    color: '#1f3a5c',
+    fontSize: 17,
+    fontWeight: "600"
+  },
+  betBtn:{  
+    backgroundColor: '#1f3a5c',
+    padding: 12,
+    margin: 5,
+    borderRadius: 10,
+    width: 300, 
+    borderColor: "#1f3a5c",
+    borderWidth: 2, // Elevación para la sombra
+  },
+  betText:{
+    color: 'white',
+    fontSize: 14,
+    fontWeight: "600",
+    letterSpacing: 1.5,
+    marginHorizontal: 25
+  },
+  editIcon: {
+    position: "absolute",
+    right: 0,
+    marginHorizontal: 15,
+    marginTop: 11,
+  }
 });
 
-export default Bets;
+export default Tournaments;

@@ -4,9 +4,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; 
+import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
-
+import { TouchableOpacity, Text } from 'react-native';
 
 // Importar pantallas
 import Home from './screens/Home';
@@ -64,6 +65,34 @@ function BetStackScreen() {
 }
 
 
+function CustomTabBarButton({ children, onPress, isFocused }) {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={{
+        backgroundColor: isFocused ? '#1f3a5c' : 'rgb(255, 252, 241)', // cambiar color si está enfocado
+        height: 90,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 60,
+        marginHorizontal: 10,
+        width: 90,
+        position: "relative",
+        top: -30,
+        borderWidth: 5,
+        borderColor: "black"
+      }}
+    >
+      {children}
+    </TouchableOpacity>
+  );
+}
+
+function BetTabBarButton(props) {
+  const isFocused = useIsFocused();
+  return <CustomTabBarButton {...props} isFocused={isFocused} />;
+}
+
 
 function TabNavigator() {
   const [fontsLoaded] = useFonts({
@@ -84,31 +113,47 @@ function TabNavigator() {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Tournaments') {
             iconName = focused ? 'trophy' : 'trophy-outline';
-          } else if (route.name === 'Bets') {
+          } else if (route.name === 'Bet') {
             iconName = focused ? 'cash' : 'cash-outline';
           } else if (route.name === 'Wallet') {
             iconName = focused ? 'wallet' : 'wallet-outline';
           } else if (route.name === 'Settings') {
             iconName = focused ? 'settings' : 'settings-outline';
           }
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Ionicons name={iconName} size={22} color={color} />;
         },
         tabBarStyle: {
           paddingBottom: 20,
           paddingTop: 10,
           height: 80,
           backgroundColor: "black",
-          borderColor: "transparent"
+          borderColor: "transparent",
         },
         tabBarLabelStyle: {
-          fontSize: 10,
+          fontSize: 9,
           fontFamily: 'kanit-bold',
         },
       })}
     >
       <Tab.Screen options={{ headerShown: false }} name="Home" component={Home} />
       <Tab.Screen options={{ headerShown: false }} name="Tournaments" component={TournamentsStackScreen} />
-      <Tab.Screen options={{ headerShown: false }} name="Bets" component={BetStackScreen} />
+      <Tab.Screen 
+        options={{
+          headerShown: false,
+          tabBarButton: (props) => (
+            <BetTabBarButton {...props} />
+          ),
+          tabBarIcon: ({ focused, color, size }) => (
+            <>
+              <Ionicons name="cash" size={32} color={focused ? 'rgb(255, 252, 241)' : '#1f3a5c'} />
+              <Text style={{ color: focused ? 'rgb(255, 252, 241)' : '#1f3a5c', fontFamily: 'kanit-bold', fontSize: 13 }}>Bet</Text>
+            </>
+          ),
+          tabBarLabel: () => null, // eliminar etiqueta predeterminada
+        }}
+        name="Bet"
+        component={BetStackScreen}
+      />
       <Tab.Screen options={{ headerShown: false }} name="Wallet" component={Wallet} />
       <Tab.Screen options={{ headerShown: false }} name="Settings" component={Settings} />
     </Tab.Navigator>

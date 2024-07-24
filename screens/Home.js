@@ -1,277 +1,111 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView  } from 'react-native';
+import React, { useEffect, useState} from 'react';
+import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
 
 const Home = ({ navigation }) => {
 
-  const [fontsLoaded] = useFonts({
-    'kanitBold': require('../assets/fonts/kanit/Kanit-Bold.ttf'),
-  });
-  if (!fontsLoaded) {
-    return <AppLoading/>;
-  }
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const storedUser = await AsyncStorage.getItem('user');
+      if (storedUser !== null) {
+        setUser(JSON.parse(storedUser));
+      }
+    };
+  
+    loadUser();
+  }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.row}>
-        <Text style={[styles.dashboard, styles.customFont]}>
-          IMP <FontAwesome5 name="golf-ball" size={18} color="#2296F3" />
-        </Text>
-        <View style={styles.iconRow}>
-          <FontAwesome name="bell" size={25} marginHorizontal={25} color="#2296F3" />
-          <Ionicons name="settings" size={25} color="#2296F3" />
-        </View>
-      </View>
-
-      <View style={styles.walletCont}>
-        <Text style={[styles.wallet, styles.customFont]}>
-          My Wallet
-        </Text>
-        <Text style={[styles.customFont]}>
-          <Entypo name="wallet" size={130} color="black" />
-        </Text>
-        <Text style={[styles.customFont]}>
-          Available Balance
-        </Text>
-        <Text style={[styles.customFont]}>
-          $50.2
-        </Text>
-      </View>
-
-      <View style={styles.divider} />
-
-      <View style={styles.containerGrid}>
-      <Text style={[styles.title, styles.customFont]}>
-          Recent Bets
-        </Text>
-        <View style={styles.rowGrid}>
-        <Ionicons name="golf" size={12}  marginHorizontal={4} color="#2296F3" />
-          <Text style={[styles.tournament, styles.customFont]}>Tournament</Text>
-          <Text style={[styles.date, styles.customFont]}>Date</Text>
-          <Text style={[styles.pl, styles.customFont]}>P/L</Text>
-          <AntDesign name="pluscircle" size={18} style={styles.seeMore} color="black" />
-        </View>
+    <LinearGradient
+    colors={['#1f3a5c', 'white']}
+    locations={[0, 0.5]}
+    style={styles.container}>
         
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.containerGridData}>
-        <View style={styles.rowGridData}>
-        <Ionicons name="golf" size={12}  marginHorizontal={4} color="black" />
-          <Text style={[styles.tournamentData, styles.customFont]}>PGA Tour</Text>
-          <Text style={[styles.dateData, styles.customFont]}>12/04/24</Text>
-          <Text style={[styles.plData, styles.customFont, { color: 'red'}]}>-$10</Text>
-          <AntDesign name="pluscircle" size={18} style={styles.seeMore} color="black" />
-        </View>
-        <View style={styles.rowGridData}>
-        <Ionicons name="golf" size={12}  marginHorizontal={4} color="black" />
-          <Text style={[styles.tournamentData, styles.customFont]}>Open Championship</Text>
-          <Text style={[styles.dateData, styles.customFont]}>12/04/24</Text>
-          <Text style={[styles.plData, styles.customFont, { color: 'red'}]}>-$10</Text>
-          <AntDesign name="pluscircle" size={18} style={styles.seeMore} color="black" />
-        </View>    
-        <View style={styles.rowGridData}>
-        <Ionicons name="golf" size={12}  marginHorizontal={4} color="black" />
-          <Text style={[styles.tournamentData, styles.customFont]}>Us Open</Text>
-          <Text style={[styles.dateData, styles.customFont]}>12/04/24</Text>
-          <Text style={[styles.plData, styles.customFont, { color: 'red'}]}>-$10</Text>
-          <AntDesign name="pluscircle" size={18} style={styles.seeMore} color="black" />
-        </View>    
-        <View style={styles.rowGridData}>
-        <Ionicons name="golf" size={12}  marginHorizontal={4} color="black" />
-          <Text style={[styles.tournamentData, styles.customFont]}>British Open</Text>
-          <Text style={[styles.dateData, styles.customFont]}>12/04/24</Text>
-          <Text style={[styles.plData, styles.customFont, { color: 'green'}]}>+$1450</Text>
-          <AntDesign name="pluscircle" size={18} style={styles.seeMore} color="black" />
-        </View>     
-        <View style={styles.rowGridData}>
-        <Ionicons name="golf" size={12}  marginHorizontal={4} color="black" />
-          <Text style={[styles.tournamentData, styles.customFont]}>Canada</Text>
-          <Text style={[styles.dateData, styles.customFont]}>12/04/24</Text>
-          <Text style={[styles.plData, styles.customFont, { color: 'red'}]}>-$10</Text>
-          <AntDesign name="pluscircle" size={18} style={styles.seeMore} color="black" />
-        </View>
-        <View style={styles.rowGridData}>
-        <Ionicons name="golf" size={12}  marginHorizontal={4} color="black" />
-          <Text style={[styles.tournamentData, styles.customFont]}>Canada</Text>
-          <Text style={[styles.dateData, styles.customFont]}>12/04/24</Text>
-          <Text style={[styles.plData, styles.customFont, { color: 'red'}]}>-$10</Text>
-          <AntDesign name="pluscircle" size={18} style={styles.seeMore} color="black" />
-        </View>   
-        <View style={styles.rowGridData}>
-        <Ionicons name="golf" size={12}  marginHorizontal={4} color="black" />
-          <Text style={[styles.tournamentData, styles.customFont]}>Canada</Text>
-          <Text style={[styles.dateData, styles.customFont]}>12/04/24</Text>
-          <Text style={[styles.plData, styles.customFont, { color: 'red'}]}>-$10</Text>
-          <AntDesign name="pluscircle" size={18} style={styles.seeMore} color="black" />
-        </View>   
-        <View style={styles.rowGridData}>
-        <Ionicons name="golf" size={12}  marginHorizontal={4} color="black" />
-          <Text style={[styles.tournamentData, styles.customFont]}>Canada</Text>
-          <Text style={[styles.dateData, styles.customFont]}>12/04/24</Text>
-          <Text style={[styles.plData, styles.customFont, { color: 'red'}]}>-$10</Text>
-          <AntDesign name="pluscircle" size={18} style={styles.seeMore} color="black" />
-        </View>   
-        <View style={styles.rowGridData}>
-        <Ionicons name="golf" size={12}  marginHorizontal={4} color="black" />
-          <Text style={[styles.tournamentData, styles.customFont]}>Canada</Text>
-          <Text style={[styles.dateData, styles.customFont]}>12/04/24</Text>
-          <Text style={[styles.plData, styles.customFont, { color: 'red'}]}>-$10</Text>
-          <AntDesign name="pluscircle" size={18} style={styles.seeMore} color="black" />
-        </View>                
-      </View>
-      </ScrollView>
+    <Image
+    source={require('../assets/images/IMP-02.png')}
+    style={styles.logo}
+  />
+    <View style={styles.row}>
 
-      <View style={styles.btnCont}>
-        <TouchableOpacity style={{...styles.button, backgroundColor: "#008001"}} onPress={() => navigation.navigate('')}>
-          <Text style={[styles.buttonText, styles.customFont]}>Create Bet!</Text>
-        </TouchableOpacity> 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
-          <Text style={[styles.buttonText, styles.customFont]}>See Tournaments</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tournaments')}>
+          <Text style={styles.buttonText}>Tournaments</Text>
         </TouchableOpacity>
-        </View>
-    </View>
-    
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Bets')}>
+          <Text style={styles.buttonText}>Games</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Wallet')}>
+          <Text style={styles.buttonText}>Wallet</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Settings')}>
+          <Text style={styles.buttonText}>Settings</Text>
+        </TouchableOpacity>
+      </View>
+   </LinearGradient>
   );
 };
 
-const styles = StyleSheet.create({
-  wallet:{
-    color: "black",
-    fontSize: 30,
-  },
-  walletCont:{
-   width: "100%",
-   alignItems: 'center',
-   marginTop: 20,
-   marginBottom: 10,
-  },
-  iconRow:{
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 15
-  },
-  dashboard:{
-    fontSize: 20,
-    padding: 5,
-    textAlign: "center",
-    color: '#2296F3',
-  },
-  customFont: {
-    fontFamily: 'kanitBold',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between', 
-    height: 60,
-    width: '100%',
-    padding: 10, 
-    backgroundColor: "black",
 
+
+const styles = StyleSheet.create({
+  row:{
+    backgroundColor: 'rgb(255, 252, 241)',
+    marginTop: 0,
+    shadowColor: '#000', // Color de la sombra
+    shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
+    shadowOpacity: 0.3, // Opacidad de la sombra
+    shadowRadius: 6, // Radio de la sombra
+    // Para Android
+    elevation: 10, // Elevación para la sombra
+    padding: 20,
+    paddingVertical: 40,
+    borderRadius: 25,
+    paddingTop: 60,
+    alignItems: "center",
   },
+  text: {
+    fontSize: 30,
+    textAlign: "center",
+    fontWeight: "700",
+    color: "white",
+    paddingBottom: 20
+  },
+ 
   container: {
     flex: 1,
-    backgroundColor: 'rgba(216, 203, 132, 0.664)',  
+    alignItems: 'center',
+    backgroundColor: 'white',
+    justifyContent: "center"
+    
   },
   button: {
-    backgroundColor: '#2296F3',
-    padding: 5,
+    backgroundColor: '#17628b34',
+    padding: 10,
+    margin: 10,
     borderRadius: 10,
-    width: 150,
+    width: 300, 
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#233742',
-    borderBottomWidth: 4, 
-    marginTop: 15,
-},
+    borderColor: '#17628b94',
+    borderBottomWidth: 7, 
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
+  },
   buttonText: {
-    color: 'black',
-    fontSize: 15, 
+    color: '#1f3a5c',
+    fontSize: 18,
+    fontWeight: "500"
   },
-  divider: {
-    height: 2, // altura de la línea
-    backgroundColor: 'grey', // color de la línea
-    width: '100%', // ancho de la línea
+  logo: {
+    width: 250,
+    height: 150,
+    marginBottom: 30,
   },
-  containerGrid: {
-  },
-  rowGrid: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: 'grey',
-    paddingVertical: 6,
-    backgroundColor: "black",
-    paddingHorizontal: 30,
-    paddingTop: 10,  
-    marginBottom: 15,
-  },
-  tournament: {
-    flex: 3,
-    textAlign: 'left',
-    color:"#2296F3"
-  },
-  date: {
-    flex: 1,
-    textAlign: 'center',
-    color:"#2296F3"
-  },
-  pl: {
-    flex: 1,
-    textAlign: 'center',
-    color:"#2296F3"
-  },
-  title:{
-  fontSize: 17,
-  paddingHorizontal: 30,
-  backgroundColor: "black",
-   color:"#2296F3",
-   paddingTop: 10,
-  },
-  containerGridData: {
-    paddingHorizontal: 30,
-  },
-  rowGridData: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: 'grey',
-    paddingTop: 15,
-  },
-  tournamentData: {
-    flex: 3,
-    textAlign: 'left',
-      fontSize: 13,
-  },
-  dateData: {
-    flex: 1,
-    textAlign: 'center',
-      fontSize: 13,
-  },
-  plData: {
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 13,
-  },
-  seeMore:{
-    position: "relative",
-    left: 20,
-  },
-  btnCont:{
-    alignItems: "center",
-    paddingBottom: 20,
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 30,
-  }
 });
+
 
 export default Home;
