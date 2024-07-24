@@ -102,7 +102,7 @@ const Players = ({ navigation }) => {
     colors={['#1f3a5c', 'white']}
     locations={[0, 0.5]}
     style={styles.container}>
- 
+     <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
       <View style={styles.box}>
         <Text style={{ ...styles.text, fontSize: 15, marginTop: -5, paddingBottom: 10 }}>Choose 8 players</Text>
         <TextInput
@@ -127,7 +127,7 @@ const Players = ({ navigation }) => {
           ))}
         </ScrollView>
       </View>
-      <View style={{ ...styles.box, height: 250 }}>
+      <View style={{ ...styles.box, height: 270 }}>
         
         <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         <View style={styles.itemTitle}>
@@ -153,6 +153,7 @@ const Players = ({ navigation }) => {
         <Text style={styles.buttonText}>Cancel</Text>
       </TouchableOpacity>
       </View>
+      </ScrollView>
     </LinearGradient>
   );
 };
@@ -179,6 +180,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 10
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    alignItems: 'center',
+    justifyContent: "center",
   },
   logo: {
     width: 200,
@@ -218,7 +224,8 @@ const styles = StyleSheet.create({
     borderColor: '#1f3a5c',
     borderWidth: 1,
     padding: 5,
-    color: 'white',
+    fontSize: 12,
+    color: '#1f3a5c',
     borderRadius: 5,
     height: 30
   },

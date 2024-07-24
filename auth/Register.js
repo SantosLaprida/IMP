@@ -2,7 +2,7 @@ import { registerUserAPI } from '../api';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ImageBackground, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 
 export default function Register({navigation}) {
   const [email, setEmail] = useState('');
@@ -70,8 +70,8 @@ export default function Register({navigation}) {
     source={require('../assets/images/IMP-02.png')}
     style={styles.logo}
   /> 
-    <View style={styles.container2}>
-  
+   <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
+    <View style={styles.container2}>  
       <View>
         <Text style={styles.text}>Create account</Text>
       </View>
@@ -137,6 +137,7 @@ export default function Register({navigation}) {
           <Text style={styles.buttonText}>Back</Text>
         </TouchableOpacity>
     </View>
+    </ScrollView>
 </LinearGradient>
   );
 }
@@ -145,33 +146,37 @@ const styles = StyleSheet.create({
   logo: {
     width: 250,
     height: 150,
-    marginBottom: 20,
+    backgroundColor: "transparent",
+    marginTop: 50
   },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgb(241, 228, 151)',
+    backgroundColor: 'white',
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    alignItems: 'center',
   },
   container2: {
     borderRadius: 10,
-    alignItems: 'center',
-    padding: 20,
-    height: "68%",
+    padding: 20, 
     backgroundColor: 'rgb(255, 252, 241)',
-    marginTop: 0,
+    marginTop: 10,
     shadowColor: '#000', // Color de la sombra
     shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
     shadowOpacity: 0.3, // Opacidad de la sombra
     shadowRadius: 6, // Radio de la sombra
     // Para Android
     elevation: 10, // Elevación para la sombra
-    
+    minHeight: 250, // Altura mínima para container2
+    width: '100%', // Asegurar que ocupe el ancho completo
+    alignItems: 'center',
   },
   text: {
     color: '#1f3a5c',
     fontSize: 20,
-  
     padding: 10,
     marginBottom: 10,
     fontWeight: "700"
@@ -215,12 +220,7 @@ const styles = StyleSheet.create({
   linkText: {
     color: '#1f3a5c',
     marginTop: 10,
-    fontWeight: "500"
-  },
-  loginText: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    color: 'white',
-    fontFamily: "Roboto",
+    fontWeight: "500",
+    fontSize: 12,
   },
 });

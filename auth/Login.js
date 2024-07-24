@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, StatusBar, KeyboardAvoidingView, ScrollView  } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { loginUserAPI } from '../api';
 
 //import { checkIfUserExistsAPI } from '../api';
@@ -56,33 +56,30 @@ export default function Login({ navigation }) {
 
 
   return (
-
-     
     <LinearGradient
-    colors={['#1f3a5c', 'white']}
-    locations={[0, 0.5]}
-    style={styles.container}>
-
-<Image
-    source={require('../assets/images/IMP-02.png')}
-    style={styles.logo}
-  /> 
-    <View style={styles.container2}>
- 
-    <View >
-        <Text  style={styles.text}>Welcome!</Text>
-      </View>   
-
-      <View style={styles.passwordContainer}>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        placeholderTextColor="#28486e6b"
+      colors={['#1f3a5c', 'white']}
+      locations={[0, 0.5]}
+      style={styles.container}
+    >
+      <Image
+        source={require('../assets/images/IMP-02.png')}
+        style={styles.logo}
       />
-      </View>
-    <View style={styles.passwordContainer}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
+        <View style={styles.container2}>
+          <View>
+            <Text style={styles.text}>Welcome!</Text>
+          </View>
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              placeholderTextColor="#28486e6b"
+            />
+          </View>
+          <View style={styles.passwordContainer}>
             <TextInput
               style={styles.input}
               placeholder="Password"
@@ -96,21 +93,18 @@ export default function Login({ navigation }) {
             </TouchableOpacity>
           </View>
           <TouchableOpacity style={{...styles.button, marginTop: 30}} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Register')}>
-          <Text style={styles.buttonText}>Register</Text>
-        </TouchableOpacity>  
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Register')}>
+            <Text style={styles.buttonText}>Register</Text>
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => navigation.navigate('PasswordReset')}>
             <Text style={styles.linkText}>Forgot Password?</Text>
           </TouchableOpacity>
           <StatusBar style="auto" />
         </View>
-      </LinearGradient>
-
-   
-   
-    
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
@@ -118,8 +112,8 @@ const styles = StyleSheet.create({
   logo: {
     width: 250,
     height: 150,
-    marginBottom: 20,
     backgroundColor: "transparent",
+    marginTop: 50
   },
   container: {
     flex: 1,
@@ -127,25 +121,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'white',
   },
+  scrollViewContent: {
+    flexGrow: 1,
+    alignItems: 'center',
+  },
   container2: {
     borderRadius: 10,
-    alignItems: 'center',
-    padding: 20,
-    height: "52%", 
+    padding: 20, 
     backgroundColor: 'rgb(255, 252, 241)',
-    marginTop: 0,
+    marginTop: 30,
     shadowColor: '#000', // Color de la sombra
     shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
     shadowOpacity: 0.3, // Opacidad de la sombra
     shadowRadius: 6, // Radio de la sombra
     // Para Android
     elevation: 10, // Elevación para la sombra
-    
+    minHeight: 250, // Altura mínima para container2
+    width: '100%', // Asegurar que ocupe el ancho completo
+    alignItems: 'center',
   },
   text: {
     color: '#1f3a5c',
     fontSize: 20,
-  
     padding: 10,
     marginBottom: 10,
     fontWeight: "700"
