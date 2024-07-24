@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
     minHeight: 250, // Altura mínima para container2
     width: '100%', // Asegurar que ocupe el ancho completo
     alignItems: 'center',
+    paddingVertical: 40
   },
   text: {
     color: '#1f3a5c',

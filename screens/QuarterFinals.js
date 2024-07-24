@@ -163,12 +163,10 @@ const QuarterFinals = ({ navigation }) => {
 
   return (
     <LinearGradient
-      colors={['#0d1825', '#2e4857']}
-      style={styles.container}
-    >  
-      <TouchableOpacity style={styles.back} onPress={() => navigation.navigate('Bets')}>
-        <Text style={styles.buttonText}>Back</Text>
-      </TouchableOpacity>
+    colors={['#1f3a5c', 'white']}
+    locations={[0, 0.5]}
+    style={styles.container}>
+      
   
       <View style={{ ...styles.box, marginTop: 15 }}>
         <View style={styles.player}>
@@ -177,7 +175,7 @@ const QuarterFinals = ({ navigation }) => {
             source={require('../assets/images/logo.png')}
             style={styles.logo}
           />
-          <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsLeft(results1)}</Text>
+          <Text style={{ ...styles.text, marginTop: 5, backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsLeft(results1)}</Text>
         </View>
         <View style={styles.middle}>
           <Text style={styles.text}>{displayMiddle(results1, names[0], names[7])}</Text>
@@ -256,7 +254,9 @@ const QuarterFinals = ({ navigation }) => {
           <Text style={{ ...styles.text, marginTop: 5,  backgroundColor: "red", borderRadius: 5, fontSize: 12 }}>{displayResultsRight(results2)}</Text>
         </View>
       </View>
-  
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
+        <Text style={styles.buttonText}>Back</Text>
+      </TouchableOpacity>
      
     </LinearGradient>
   );
@@ -266,15 +266,19 @@ const styles = StyleSheet.create({
   box: {
     marginBottom: 15,
     flexDirection: "row",
-    borderWidth: 5,
-    borderColor: 'teal',
     height: 160,
     justifyContent: "space-between",
     alignItems: "center",
-    borderRadius: 30,
+    borderRadius: 10,
     width: 370,
     padding: 30,
-    backgroundColor: 'rgba(0, 0, 0, 0.788)',
+    backgroundColor: 'rgb(255, 252, 241)',
+    shadowColor: '#000', // Color de la sombra
+    shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
+    shadowOpacity: 0.3, // Opacidad de la sombra
+    shadowRadius: 6, // Radio de la sombra
+    // Para Android
+    elevation: 10, // Elevación para la sombra
   },
   container: {
     flex: 1,
@@ -282,7 +286,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    color: "white",
+    color: "#1f3a5c",
     textAlign: "center",
     fontWeight: "800",
   },
@@ -317,26 +321,21 @@ const styles = StyleSheet.create({
     elevation: 30,
   },
   button: {
-    backgroundColor: 'rgba(212, 188, 50, 0.76)',
-    padding: 15,
+    backgroundColor: '#17628b34',
+    padding: 10,
     margin: 10,
     borderRadius: 10,
-    width: 300,
+    width: 300, 
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'transparent',
-    // Sombra para iOS
-    shadowColor: '#000',
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.80,
-    shadowRadius: 3.84,
-    // Sombra para Android
-    elevation: 30,
+    borderColor: '#17628b94',
+    borderBottomWidth: 7, 
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
   },
   buttonText: {
-    color: '#15303F',
-    fontSize: 20,
-    fontWeight: '600',
+    color: '#1f3a5c',
+    fontSize: 18,
+    fontWeight: "500"
   },
 });
 

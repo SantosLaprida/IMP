@@ -28,7 +28,6 @@ import Finals from './screens/Finals';
 const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const MainStack = createStackNavigator();
-
 const HomeStack = createStackNavigator();
 
 
@@ -159,6 +158,9 @@ function MainStackScreen() {
     <MainStack.Navigator screenOptions={{ headerShown: false }}>
       <MainStack.Screen name="Auth" component={AuthStackScreen} />
       <MainStack.Screen name="Main" component={TabNavigator} />
+      <MainStack.Screen name="QuarterFinals" component={QuarterFinals} />
+      <MainStack.Screen name="SemiFinals" component={SemiFinals} />
+      <MainStack.Screen name="Finals" component={Finals} />
     </MainStack.Navigator>
   );
 }

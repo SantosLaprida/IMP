@@ -1,11 +1,35 @@
-import React, { useEffect, useState} from 'react';
-import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 
+
 const Home = ({ navigation }) => {
+
+  const BlinkDot = () => {
+    const opacity = useRef(new Animated.Value(1)).current;
+  
+    useEffect(() => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(opacity, {
+            toValue: 0,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    }, [opacity]);
+  
+    return <Animated.View style={[styles.dot, { opacity }]} />;
+  };
 
   const [user, setUser] = useState(null);
 
@@ -19,6 +43,8 @@ const Home = ({ navigation }) => {
   
     loadUser();
   }, []);
+
+
 
   return (
     <LinearGradient
@@ -35,10 +61,12 @@ const Home = ({ navigation }) => {
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tournaments')}>
           <Text style={styles.buttonText}>Tournaments</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Bets')}>
-          <Text style={styles.buttonText}>Games</Text>
-        </TouchableOpacity>
-
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('QuarterFinals')}>
+      <View style={styles.btnDot}>
+      <BlinkDot />
+        <Text style={styles.buttonText}>Games</Text>     
+      </View>
+    </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Wallet')}>
           <Text style={styles.buttonText}>Wallet</Text>
         </TouchableOpacity>
@@ -105,6 +133,22 @@ const styles = StyleSheet.create({
     height: 150,
     marginBottom: 30,
   },
+  dot: {
+    width: 12,
+    height: 12,
+    borderRadius: 12,
+    backgroundColor: 'red',
+    marginLeft: 5,
+    marginHorizontal: 5,
+    marginTop: 2
+
+  },
+  btnDot:{
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+
+  }
 });
 
 

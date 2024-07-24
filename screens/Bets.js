@@ -1,7 +1,7 @@
 import { fetchTournament } from '../server/firestoreFunctions';
 
-import React, { useEffect, useState} from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, ScrollView } from 'react-native';
+import React, { useEffect, useState, useRef} from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, ScrollView, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { AntDesign } from '@expo/vector-icons';
@@ -10,6 +10,29 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 
 const Tournaments = ({ navigation }) => {
+
+  const BlinkDot = () => {
+    const opacity = useRef(new Animated.Value(1)).current;
+  
+    useEffect(() => {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(opacity, {
+            toValue: 0,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+          Animated.timing(opacity, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    }, [opacity]);
+  
+    return <Animated.View style={[styles.dot, { opacity }]} />;
+  };
   
   const [start, setStart] = useState(null)
   const [end, setEnd] = useState(null)
@@ -60,7 +83,7 @@ const Tournaments = ({ navigation }) => {
     style={styles.container}>
     
       <View style={styles.box}>
-      <Text style={{ ...styles.text, fontSize: 25 }}>
+      <Text style={{ ...styles.text, fontSize: 20, textDecorationLine: 'underline'}}>
         Tournament of the week
       </Text>
         <Text style={{ ...styles.text, paddingBottom: 10, fontSize: 18, marginTop: 15 }}>
@@ -87,7 +110,10 @@ const Tournaments = ({ navigation }) => {
       </View>
 
       <View style={{ ...styles.box, height: 250 }}>
-        <Text style={{ ...styles.text, paddingBottom: 10, fontSize: 20 }}>Your Bets</Text>
+        <View style={styles.order}>
+        <Text style={{ ...styles.text, paddingBottom: 5, fontSize: 18, textDecorationLine: 'underline' }}>Your Bets</Text>
+    
+        </View>
         <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         <View style={{...styles.betBtn, marginTop: 20}} >
         <FontAwesome6 name="users-between-lines" size={17} color="white" style={{...styles.editIcon, left: -6, bottom: 12}} />
@@ -102,9 +128,18 @@ const Tournaments = ({ navigation }) => {
         </Text>
         <AntDesign name="edit" size={24} color="white" style={styles.editIcon} />
       </View>
+   
         </ScrollView>
+        
+        <TouchableOpacity 
+          style={{...styles.button, padding: 5, width: 150, position: "absolute", bottom: 0, right: 0, margin: 15}} >
+             <View style={styles.btnDot}>
+          <Text style={{...styles.buttonText, fontSize: 10}}>Watch games live</Text>
+          <BlinkDot />
+          </View>
+        </TouchableOpacity>
       </View>
-
+      
       <Modal
         animationType="slide"
         transparent={true}
@@ -156,6 +191,15 @@ const styles = StyleSheet.create({
     borderRadius: 20, 
     backgroundColor: "black",
     padding: 5,
+  },
+  dot: {
+    width: 12,
+    height: 12,
+    borderRadius: 12,
+    backgroundColor: 'red',
+    marginLeft: 5,
+    marginRight: -5,
+    marginTop: 2
   },
  
   container: {
@@ -269,6 +313,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
     marginHorizontal: 15,
+  },
+  order:{
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+  },
+  btnDot:{
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+
   }
 });
 
