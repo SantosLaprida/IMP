@@ -2,8 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
 
 
 const Home = ({ navigation }) => {
@@ -48,9 +46,10 @@ const Home = ({ navigation }) => {
 
   return (
     <LinearGradient
-    colors={['#1f3a5c', 'white']}
-    locations={[0, 0.5]}
-    style={styles.container}>
+    colors={['#17628b34', 'white']}
+    locations={[0, 15]}
+    style={styles.container}
+  >
         
     <Image
     source={require('../assets/images/IMP-02.png')}
@@ -114,19 +113,21 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#17628b34',
     padding: 10,
-    margin: 10,
+    margin: 5,
     borderRadius: 10,
     width: 300, 
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: '#17628b94',
     borderBottomWidth: 7, 
     borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
   },
   buttonText: {
     color: '#1f3a5c',
-    fontSize: 18,
-    fontWeight: "500"
+    fontSize: 14,
+    fontFamily: 'p-semibold',
+    position: "relative",
+    bottom: -2
   },
   logo: {
     width: 250,

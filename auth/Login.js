@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, Sta
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { loginUserAPI } from '../api';
+
 
 //import { checkIfUserExistsAPI } from '../api';
 // import { checkIfUserExists } from '../api';
@@ -55,10 +55,11 @@ export default function Login({ navigation }) {
   };
 
 
+
   return (
     <LinearGradient
-      colors={['#1f3a5c', 'white']}
-      locations={[0, 0.5]}
+      colors={['#17628b34', 'white']}
+      locations={[0, 15]}
       style={styles.container}
     >
       <Image
@@ -92,8 +93,8 @@ export default function Login({ navigation }) {
               <Icon name={secureTextEntry ? 'eye-off' : 'eye'} size={24} color="#1f3a5c" />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={{...styles.button, marginTop: 30}} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Login</Text>
+          <TouchableOpacity style={{...styles.button, marginTop: 30, backgroundColor: "#1f3a5c"}} onPress={handleLogin}>
+            <Text style={{...styles.buttonText, color: "white"}}>Login</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Register')}>
             <Text style={styles.buttonText}>Register</Text>
@@ -144,16 +145,15 @@ const styles = StyleSheet.create({
   text: {
     color: '#1f3a5c',
     fontSize: 20,
-    padding: 10,
-    marginBottom: 10,
-    fontWeight: "700"
+    fontFamily: 'p-bold'
   },
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: '#1f3a5c',
-    borderWidth: 1.5,
-    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#17628b94',
+    borderBottomWidth: 7, 
+    borderRadius: 5,
     width: 300,
     marginTop: 10,
   },
@@ -162,7 +162,10 @@ const styles = StyleSheet.create({
     color: '#1f3a5c',
     fontWeight: "500",
     padding: 10,
-    fontSize: 16,
+    fontSize: 14,
+    fontFamily: 'p-regular',
+    position: "relative",
+    bottom: -2
   },
   icon: {
     padding: 10,
@@ -174,20 +177,23 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: 300, 
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: '#17628b94',
     borderBottomWidth: 7, 
     borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
   },
   buttonText: {
     color: '#1f3a5c',
-    fontSize: 17,
-    fontWeight: "500"
+    fontSize: 14,
+    fontFamily: 'p-semibold',
+    position: "relative",
+    bottom: -2
   },
   linkText: {
     color: '#1f3a5c',
     marginTop: 10,
     fontWeight: "500",
     fontSize: 12,
+    fontFamily: 'p-italic'
   },
 });

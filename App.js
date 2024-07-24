@@ -64,15 +64,15 @@ function CustomTabBarButton({ children, onPress, isFocused }) {
       style={{
         backgroundColor: isFocused ? 'black' : 'black',
         borderColor: isFocused ? '#2296F3' : 'grey',
-        height: 90,
+        height: 80,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 60,
         marginHorizontal: 10,
-        width: 90,
+        width: 80,
         position: "relative",
-        top: -30,
-        borderWidth: 4,
+        top: -20,
+        borderWidth: 3,
        
       }}
     >
@@ -88,13 +88,6 @@ function BetTabBarButton(props) {
 
 
 function TabNavigator() {
-  const [fontsLoaded] = useFonts({
-    'kanit-bold': require('./assets/fonts/kanit/Kanit-Bold.ttf'),
-  });
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
 
   return (
     <Tab.Navigator
@@ -124,7 +117,7 @@ function TabNavigator() {
         },
         tabBarLabelStyle: {
           fontSize: 9,
-          fontFamily: 'kanit-bold',
+          fontFamily: 'p-medium',
         },
       })}
     >
@@ -138,8 +131,8 @@ function TabNavigator() {
           ),
           tabBarIcon: ({ focused, color, size }) => (
             <>
-              <Ionicons name="cash" size={32} color={focused ? '#2296F3' : 'grey'} />
-              <Text style={{ color: focused ? '#2296F3' : 'grey', fontFamily: 'kanit-bold', fontSize: 13 }}>Bet</Text>
+              <Ionicons name="cash" size={30} color={focused ? '#2296F3' : 'grey'} />
+              <Text style={{ color: focused ? '#2296F3' : 'grey', fontFamily: 'p-bold', fontSize: 12 }}>Bet</Text>
             </>
           ),
           tabBarLabel: () => null, // eliminar etiqueta predeterminada
@@ -154,6 +147,9 @@ function TabNavigator() {
 }
 
 function MainStackScreen() {
+
+  
+
   return (
     <MainStack.Navigator screenOptions={{ headerShown: false }}>
       <MainStack.Screen name="Auth" component={AuthStackScreen} />
@@ -166,6 +162,19 @@ function MainStackScreen() {
 }
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    'p-bold': require('./assets/fonts/Poppins/Poppins-Bold.ttf'),
+    'p-semibold': require('./assets/fonts/Poppins/Poppins-SemiBold.ttf'),
+    'p-medium': require('./assets/fonts/Poppins/Poppins-Medium.ttf'),
+    'p-light': require('./assets/fonts/Poppins/Poppins-Light.ttf'),
+    'p-regular': require('./assets/fonts/Poppins/Poppins-Regular.ttf'),
+    'p-italic': require('./assets/fonts/Poppins/Poppins-Italic.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
   return (
     <NavigationContainer>
       <MainStackScreen />
