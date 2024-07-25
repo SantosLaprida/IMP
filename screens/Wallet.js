@@ -1,10 +1,17 @@
-import React, { useEffect, useState} from 'react';
-import { View, Text, StyleSheet, Image, ImageBackground, Button, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Entypo } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+
+
 
 const Wallet = ({ navigation }) => {
+
 
   const [user, setUser] = useState(null);
 
@@ -19,103 +26,134 @@ const Wallet = ({ navigation }) => {
     loadUser();
   }, []);
 
+
+
   return (
     <LinearGradient
-    colors={['#1f3a5c', 'white']}
-    locations={[0, 0.5]}
-    style={styles.container}>
+    colors={['#17628b34', 'white']}
+    locations={[0, 15]}
+    style={styles.container}
+  >
+    <TouchableOpacity style={{...styles.buttonContainer, padding: 20, width: 350}}>           
+            <FontAwesome5 name="wallet" size={100} color="#1f3a5c"  />
+            <Text style={styles.buttonText}>Account balance:</Text>
+          </TouchableOpacity>
     <View style={styles.row}>
-  <View style={styles.walletCont}>
-        <Text style={{...styles.wallet, fontSize: 15}}>
-          <Entypo name="wallet" size={130} color="#1f3a5c" />
-        </Text>
-        <Text style={{...styles.wallet, fontSize: 15}}>
-          Available Balance
-        </Text>
-        <Text style={{...styles.wallet, fontSize: 15}}>
-          $50.2
-        </Text>
+      <View style={styles.rowContainer}>
+        <View style={{...styles.content, marginTop: 10}}>
+          <TouchableOpacity style={styles.buttonContainer}>           
+            <View style={styles.button} >
+            <FontAwesome6 name="money-bills" size={28} color="#1f3a5c"  />
+            </View>
+            <Text style={styles.buttonText}>Deposit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonContainer}>           
+            <View style={styles.button} >
+            <FontAwesome6 name="money-bill-transfer" size={28} color="#1f3a5c" />
+            </View>
+            <Text style={styles.buttonText}>Withdrawl</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.content}>
+        <TouchableOpacity style={styles.buttonContainer}>           
+            <View style={styles.button} >
+            <MaterialCommunityIcons name="database-eye" size={28} color="#1f3a5c" />
+            </View>
+            <Text style={styles.buttonText}>Movements</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonContainer}>           
+            <View style={styles.button} >
+            <FontAwesome name="history" size={28} color="#1f3a5c" />
+            </View>
+            <Text style={styles.buttonText}>Bet History</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-        <TouchableOpacity style={{...styles.button, marginTop: 30}} onPress={() => navigation.navigate('')}>
-          <Text style={styles.buttonText}>Deposit</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
-          <Text style={styles.buttonText}>Withdrawl</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('')}>
-          <Text style={styles.buttonText}>Movements</Text>
-        </TouchableOpacity>
-      </View>
-   </LinearGradient>
+    </View>
+  </LinearGradient>
   );
-};
-
-
-
+}
+  
 const styles = StyleSheet.create({
-  row:{
+  row: {
     backgroundColor: 'rgb(255, 252, 241)',
-    marginTop: 0,
-    shadowColor: '#000', // Color de la sombra
-    shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
-    shadowOpacity: 0.3, // Opacidad de la sombra
-    shadowRadius: 6, // Radio de la sombra
-    // Para Android
-    elevation: 10, // Elevación para la sombra
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 10,
     padding: 20,
-    paddingVertical: 40,
+    paddingVertical: 20,
     borderRadius: 25,
-    paddingTop: 60,
+    alignItems: "center",
+    marginTop: 30,
+    width: 350,
+  },
+  rowContainer: {
+    justifyContent: "center",
     alignItems: "center",
   },
-  text: {
-    fontSize: 30,
-    textAlign: "center",
-    fontWeight: "700",
-    color: "white",
-    paddingBottom: 20
-  },
- 
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'rgb(241, 228, 151)',
-    justifyContent: "center"
-    
+    backgroundColor: 'white',
+    justifyContent: "center",
   },
-  wallet:{
-    color: "#1f3a5c",
-    fontSize: 30,
-    fontWeight: "600"
+  content: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 20,
   },
-  walletCont:{
-   width: "100%",
-   alignItems: 'center',
-   marginTop: 20,
-   marginBottom: 20,
+  buttonContainer: {
+    alignItems: 'center',
+    margin: 8,
+    backgroundColor: 'rgb(255, 252, 241)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 10,
+    borderRadius: 15,
+    padding: 10
   },
   button: {
     backgroundColor: '#17628b34',
     padding: 10,
-    margin: 10,
-    borderRadius: 10,
-    width: 300, 
+    margin: 5,
+    marginHorizontal: 20,
+    borderRadius: 50,
+    width: 70,
+    height: 70,
     alignItems: 'center',
-    borderWidth: 1,
+    justifyContent: 'center',
+    borderWidth: 0,
     borderColor: '#17628b94',
-    borderBottomWidth: 7, 
     borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
   },
   buttonText: {
     color: '#1f3a5c',
-    fontSize: 18,
-    fontWeight: "500"
+    fontSize: 12,
+    fontFamily: 'p-semibold',
   },
   logo: {
     width: 250,
     height: 150,
     marginBottom: 30,
+  },
+  btnDot: {
+    position: "absolute",
+    top: -10,
+    right: -10,
+  },
+  dot: {
+    width: 20,
+    height: 20,
+    borderRadius: 12,
+    backgroundColor: 'red',
+    position: "absolute",
+    right: 0,
+    top: 0,
+    margin: 8
   },
 });
 

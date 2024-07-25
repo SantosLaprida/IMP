@@ -2,7 +2,7 @@ import { registerUserAPI } from '../api';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, ActivityIndicator, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 
 export default function Register({navigation}) {
   const [email, setEmail] = useState('');
@@ -12,6 +12,7 @@ export default function Register({navigation}) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [confirmSecureTextEntry, setConfirmSecureTextEntry] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const toggleSecureTextEntry = () => {
     setSecureTextEntry(!secureTextEntry);
@@ -49,6 +50,8 @@ export default function Register({navigation}) {
       return;
     }
 
+    setLoading(true);
+
     try {
       const user = await registerUserAPI(email.toLowerCase(), password, firstName, lastName);
       if (user) {
@@ -58,6 +61,7 @@ export default function Register({navigation}) {
     } catch (error) {
       alert('Registration failed');
     }
+    setLoading(false);
   };
 
   return (
@@ -66,80 +70,89 @@ export default function Register({navigation}) {
       locations={[0, 15]}
       style={styles.container}
     >
- <Image
-    source={require('../assets/images/IMP-02.png')}
-    style={styles.logo}
-  /> 
-   <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
-    <View style={styles.container2}>  
-      <View>
-        <Text style={styles.text}>Create account</Text>
-      </View>
-      <View style={styles.passwordContainer}>
-      <TextInput
-        style={styles.input}
-        placeholder="Name"
-        value={firstName}
-        onChangeText={setFirstName}
-        placeholderTextColor="#28486e6b"
-      />
-      </View>
-       <View style={styles.passwordContainer}>
-      <TextInput
-        style={styles.input}
-        placeholder="Lastname"
-        value={lastName}
-        onChangeText={setLastName}
-        placeholderTextColor="#28486e6b"
-      />
-      </View>
-        <View style={styles.passwordContainer}>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        placeholderTextColor="#28486e6b"
-      />
-      </View>
-     <View style={styles.passwordContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={secureTextEntry}
-              placeholderTextColor="#28486e6b"
-            />
-            <TouchableOpacity onPress={toggleSecureTextEntry} style={styles.icon}>
-              <Icon name={secureTextEntry ? 'eye-off' : 'eye'} size={24} color="#1f3a5c" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.passwordContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              secureTextEntry={confirmSecureTextEntry}
-              placeholderTextColor="#28486e6b"
-            />
-            <TouchableOpacity onPress={toggleConfirmSecureTextEntry} style={styles.icon}>
-              <Icon name={confirmSecureTextEntry ? 'eye-off' : 'eye'} size={24} color="#1f3a5c" />
-            </TouchableOpacity>
-          </View>
-      <TouchableOpacity style={{...styles.button, marginTop: 20, backgroundColor: "#1f3a5c"}} onPress={handleRegister}>
-          <Text style={{...styles.buttonText, color: "white"}}>Register</Text>
-        </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.buttonText}>Back</Text>
-        </TouchableOpacity>
-    </View>
-    </ScrollView>
-</LinearGradient>
-  );
+      {loading ? (
+        <ActivityIndicator size="large" color="#1f3a5c" />
+      ) : (
+        <>
+          <Image
+            source={require('../assets/images/IMP-02.png')}
+            style={styles.logo}
+          />
+          <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
+            <View style={styles.container2}>
+              <View>
+                <Text style={styles.text}>Create account</Text>
+              </View>
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Name"
+                  value={firstName}
+                  onChangeText={setFirstName}
+                  placeholderTextColor="#28486e6b"
+                />
+              </View>
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Lastname"
+                  value={lastName}
+                  onChangeText={setLastName}
+                  placeholderTextColor="#28486e6b"
+                />
+              </View>
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Email"
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  placeholderTextColor="#28486e6b"
+                />
+              </View>
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Password"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry={secureTextEntry}
+                  placeholderTextColor="#28486e6b"
+                />
+                <TouchableOpacity onPress={toggleSecureTextEntry} style={styles.icon}>
+                  <Icon name={secureTextEntry ? 'eye-off' : 'eye'} size={24} color="#1f3a5c" />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Confirm Password"
+                  value={confirmPassword}
+                  onChangeText={setConfirmPassword}
+                  secureTextEntry={confirmSecureTextEntry}
+                  placeholderTextColor="#28486e6b"
+                />
+                <TouchableOpacity onPress={toggleConfirmSecureTextEntry} style={styles.icon}>
+                  <Icon name={confirmSecureTextEntry ? 'eye-off' : 'eye'} size={24} color="#1f3a5c" />
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity
+                style={{ ...styles.button, marginTop: 20, backgroundColor: "#1f3a5c" }}
+                onPress={handleRegister}
+              >
+                <Text style={{ ...styles.buttonText, color: "white" }}>Register</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Login')}>
+                <Text style={styles.buttonText}>Back</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </>
+      )}
+    </LinearGradient>
+  );  
 }
 
 const styles = StyleSheet.create({

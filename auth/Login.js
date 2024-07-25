@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity, Image, StatusBar, KeyboardAvoidingView, ScrollView  } from 'react-native';
+import { StyleSheet, Text, View, TextInput, ActivityIndicator, TouchableOpacity, Image, StatusBar, ScrollView  } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -13,6 +13,8 @@ import { loginUserAPI } from '../api';
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
 
   const [secureTextEntry, setSecureTextEntry] = useState(true);
 
@@ -28,19 +30,20 @@ export default function Login({ navigation }) {
 
 
   const handleLogin = async () => {
-
     console.log(`Email: ${email}, Password: ${password}`);
-  
-    if(!email || !password) {
+
+    if (!email || !password) {
       alert('All fields are required');
       return;
     }
-  
+
     if (!validateEmail(email)) {
       alert('Invalid email format');
       return;
     }
-  
+
+    setLoading(true);
+
     try {
       const userData = await loginUserAPI(email.toLowerCase(), password);
       if (userData) {
@@ -51,6 +54,8 @@ export default function Login({ navigation }) {
     } catch (error) {
       console.error('Login failed:', error);
       alert('Login failed');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,6 +67,10 @@ export default function Login({ navigation }) {
       locations={[0, 15]}
       style={styles.container}
     >
+      {loading ? (
+        <ActivityIndicator size="large" color="#1f3a5c" />
+      ) : (
+        <>
       <Image
         source={require('../assets/images/IMP-02.png')}
         style={styles.logo}
@@ -105,6 +114,8 @@ export default function Login({ navigation }) {
           <StatusBar style="auto" />
         </View>
       </ScrollView>
+      </>
+      )}
     </LinearGradient>
   );
 }

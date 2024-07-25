@@ -61,43 +61,21 @@ const Tournaments = ({ navigation }) => {
   >
     
       <View style={{...styles.box, marginTop: -20}}>
-      <Text style={{ ...styles.text, fontSize: 20 }}>
+      <Text style={{ ...styles.text, fontSize: 20, paddingBottom: 50 }}>
         Upcoming Tournaments
       </Text>
-        <Text style={{ ...styles.text, paddingBottom: 10, fontSize: 18, marginTop: 15 }}>
-          {name}
-        </Text>
-        <Image
-          source={{ uri: logo }}
-          style={styles.logo}
-        />
-        <View>
-        <Text style={{ ...styles.text, marginTop: 20 }}>
-          {"Starting date: " + start}
-        </Text>
-        <Text style={{...styles.text}}>
-          {"Finish date: " + end}
-        </Text>
-        </View>
+           <Image
+      source={require('../assets/images/IMP-02.png')}
+      style={styles.logo}
+    />
       </View>
 
       <View style={styles.box}>
-        <Text style={{ ...styles.text, paddingBottom: 10, fontSize: 20 }}>Recent Tournaments</Text>
-        <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-        <View style={{...styles.betBtn, marginTop: 20}} >
-        <FontAwesome6 name="users-between-lines" size={17} color="white" style={{...styles.editIcon, left: -6, bottom: 12}} />
-        <Text style={styles.betText}> 
-          Traditional
-        </Text>
-        <AntDesign name="edit" size={24} color="white" style={styles.editIcon} />
-      </View>
-      <View style={styles.betBtn} >
-      <MaterialIcons name="numbers" size={22} color="white" style={{...styles.editIcon, left: -8, bottom: 10}} />
-        <Text style={styles.betText}>Random          
-        </Text>
-        <AntDesign name="edit" size={24} color="white" style={styles.editIcon} />
-      </View>
-        </ScrollView>
+        <Text style={{ ...styles.text, paddingBottom: 50, fontSize: 20 }}>Recent Tournaments</Text>
+        <Image
+      source={require('../assets/images/IMP-02.png')}
+      style={styles.logo}
+    />
       </View>
 
    
@@ -111,6 +89,7 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     borderRadius: 20,
+    justifyContent: "center",
     width: 350,
     marginTop: 30,
     backgroundColor: 'rgb(255, 252, 241)',

@@ -1,11 +1,10 @@
 import { fetchTournament } from '../server/firestoreFunctions';
 
+
 import React, { useEffect, useState, useRef} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, ScrollView, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -41,9 +40,13 @@ const Tournaments = ({ navigation }) => {
   const [name, setName] = useState(null)
   
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible1, setModalVisible1] = useState(false);
 
   const handleGameMode = () => {
     setModalVisible(true);
+  };
+  const handleEditBet = () => {
+    setModalVisible1(true);
   };
 
   const handleNavigate = (screen) => {
@@ -85,7 +88,7 @@ const Tournaments = ({ navigation }) => {
   >
     
       <View style={styles.box}>
-      <Text style={{ ...styles.text, fontSize: 20, textDecorationLine: 'underline'}}>
+      <Text style={{ ...styles.text, fontSize: 18, textDecorationLine: 'underline', fontFamily: 'p-bold'}}>
         Tournament of the week
       </Text>
      
@@ -117,19 +120,19 @@ const Tournaments = ({ navigation }) => {
 
       <View style={styles.box}>
         <View style={styles.order}>
-        <Text style={{ ...styles.text, paddingBottom: 5, fontSize: 18, textDecorationLine: 'underline' }}>Your Bets</Text>
+        <Text style={{ ...styles.text, paddingBottom: 5, fontSize: 18, textDecorationLine: 'underline', fontFamily: 'p-bold' }}>Your Bets</Text>
     
         </View>
         <View style={{...styles.content, marginTop: 10}}>
-          <TouchableOpacity style={styles.buttonContainer}>           
+          <TouchableOpacity style={styles.buttonContainer} onPress={handleEditBet}>           
             <View style={styles.button} >
-            <FontAwesome6 name="people-line" size={28} color="#1f3a5c" />
+            <FontAwesome6 name="people-line" size={22} color="#1f3a5c" />
             </View>
             <Text style={styles.buttonText}>Traditional</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttonContainer}>           
             <View style={styles.button} >
-            <FontAwesome name="random" size={28} color="#1f3a5c" />
+            <FontAwesome name="random" size={22} color="#1f3a5c" />
             </View>
             <Text style={styles.buttonText}>Random</Text>
           </TouchableOpacity>
@@ -155,18 +158,81 @@ const Tournaments = ({ navigation }) => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Select game mode</Text>
-            <TouchableOpacity style={styles.modalButton} onPress={() => handleNavigate('Players')}>
-              <Text style={styles.modalT}>Traditional</Text>
+          <View style={styles.itemTitle}>
+              <Text style={{...styles.text, textDecorationLine: "underline", fontSize: 16, marginBottom: 12}}>Select game mode</Text>
+            </View>
+            <TouchableOpacity style={{...styles.modalButton, width: 200, backgroundColor: "#1f3a5c"}} onPress={() => handleNavigate('Players')}>
+              <Text style={{...styles.modalT, color: "white"}}>Traditional</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.modalButtonDisabled} onPress={() => handleNavigate('SemiFinals')}>
+            <TouchableOpacity style={{...styles.modalButtonDisabled, width: 200}} onPress={() => handleNavigate('SemiFinals')}>
               <Text style={styles.modalTDisabled}>Random</Text>
 
             </TouchableOpacity>
-            <TouchableOpacity style={{ ...styles.modalButton, marginTop: 40, width: 250 }} onPress={() => setModalVisible(false)}>
+            <TouchableOpacity style={{ ...styles.modalButton, marginTop: 25, width: 250 }} onPress={() => setModalVisible(false)}>
               <Text style={styles.modalT}>Close</Text>
             </TouchableOpacity>
           </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible1}
+        onRequestClose={() => {
+          setModalVisible1(!modalVisible1);
+        }}
+      >
+        <View style={styles.modalContainer}>
+        <View style={{ ...styles.box, height: 500 }}>
+        <View style={styles.itemTitle}>
+              <Text style={{...styles.text, textDecorationLine: "underline", fontSize: 16, marginBottom: 12}}>Your players</Text>
+            </View>
+          <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+           
+            
+              <View >
+                <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{...styles.text, fontSize: 11}} >asdasd</Text>
+                  <Text style={{...styles.text, fontSize: 11}}>asdasd</Text>
+                </View>
+                <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{...styles.text, fontSize: 11}} >asdasd</Text>
+                  <Text style={{...styles.text, fontSize: 11}}>asdasd</Text>
+                </View>
+                <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{...styles.text, fontSize: 11}} >asdasd</Text>
+                  <Text style={{...styles.text, fontSize: 11}}>asdasd</Text>
+                </View>
+                <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{...styles.text, fontSize: 11}} >asdasd</Text>
+                  <Text style={{...styles.text, fontSize: 11}}>asdasd</Text>
+                </View>
+                <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{...styles.text, fontSize: 11}} >asdasd</Text>
+                  <Text style={{...styles.text, fontSize: 11}}>asdasd</Text>
+                </View>
+                <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{...styles.text, fontSize: 11}} >asdasd</Text>
+                  <Text style={{...styles.text, fontSize: 11}}>asdasd</Text>
+                </View>
+                <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{...styles.text, fontSize: 11}} >asdasd</Text>
+                  <Text style={{...styles.text, fontSize: 11}}>asdasd</Text>
+                </View>
+                <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{...styles.text, fontSize: 11}} >asdasd</Text>
+                  <Text style={{...styles.text, fontSize: 11}}>asdasd</Text>
+                </View>
+              </View>
+          
+          </ScrollView>
+          <TouchableOpacity style={{ ...styles.modalButton, marginTop: 15, width: 250, backgroundColor: "#1f3a5c" }}>
+              <Text style={{...styles.modalT, color: "white"}}>Edit</Text>
+            </TouchableOpacity>
+          <TouchableOpacity style={{ ...styles.modalButton, width: 250 }} onPress={() => setModalVisible1(false)}>
+              <Text style={styles.modalT}>Close</Text>
+            </TouchableOpacity>
+        </View>  
         </View>
       </Modal>
     </LinearGradient>
@@ -274,34 +340,39 @@ const styles = StyleSheet.create({
   },
   modalButton: {
     backgroundColor: '#17628b34',
-    padding: 7,
+    padding: 6,
     margin: 5,
     borderRadius: 10,
-    width: 200, 
+    width: 300, 
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: '#17628b94',
     borderBottomWidth: 7, 
     borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
   },
   modalT:{
     color: '#1f3a5c',
-    fontSize: 17,
+    fontSize: 14,
     fontFamily: 'p-semibold',
+    position: "relative",
+    bottom: -2
   },
   modalTDisabled:{
     color: 'white',
+    textDecorationLine: "line-through",
+    fontSize: 14,
     fontFamily: 'p-semibold',
-    fontSize: 15,
-    textDecorationLine: "line-through"
+    position: "relative",
+    bottom: -2
   },
   modalButtonDisabled: {
     backgroundColor: "grey",
-    padding: 10,
-    marginTop: 10,
+    padding: 6,
+    margin: 5,
     borderRadius: 10,
-    width: 200,
+    width: 300, 
     alignItems: 'center',
+    borderWidth: 0,
     borderColor: '#17628b94',
     borderBottomWidth: 7, 
     borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
@@ -377,16 +448,17 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 10,
     borderRadius: 15,
-    padding: 10
+    padding: 5,
+    marginHorizontal: 20,
   },
   button: {
     backgroundColor: '#17628b34',
-    padding: 10,
+    padding: 0,
     margin: 5,
     marginHorizontal: 20,
     borderRadius: 50,
-    width: 70,
-    height: 70,
+    width: 50,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 0,
@@ -397,6 +469,21 @@ const styles = StyleSheet.create({
     color: '#1f3a5c',
     fontSize: 12,
     fontFamily: 'p-semibold',
+  },
+  itemTitle: {
+    borderRadius: 5,
+    width: 250,
+    marginVertical: 10,
+    alignItems: "center",
+    textDecorationLine: "underline",
+  },
+  jugadorItem: {
+    padding: 5,
+    paddingHorizontal: 10,
+    marginBottom: 5,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 5,
+    width: 250,
   },
 });
 

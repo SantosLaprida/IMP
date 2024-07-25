@@ -3,7 +3,7 @@ import { fetchPlayers, storeTeam, fetchTeamAPI } from '../api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from '../server/firebaseConfig';
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const Players = ({ navigation }) => {
@@ -11,6 +11,8 @@ const Players = ({ navigation }) => {
   const [jugadores, setJugadores] = useState([]);
   const [originalJugadores, setOriginalJugadores] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,7 +20,7 @@ const Players = ({ navigation }) => {
         const data = await fetchPlayers();
         setJugadores(data);
         setOriginalJugadores(data);
-
+  
         const user = auth.currentUser;
         if (user) {
           const userId = user.uid;
@@ -32,6 +34,8 @@ const Players = ({ navigation }) => {
         }
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
     };
     
@@ -99,62 +103,68 @@ const Players = ({ navigation }) => {
 
   return (
     <LinearGradient
-    colors={['#1f3a5c', 'white']}
-    locations={[0, 0.5]}
-    style={styles.container}>
-     <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
-      <View style={styles.box}>
-        <Text style={{ ...styles.text, fontSize: 15, marginTop: -5, paddingBottom: 10 }}>Choose 8 players</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={text => setSearchTerm(text)}
-          value={searchTerm}
-          placeholder="Search players"
-          placeholderTextColor="#1f3a5c"
-        />
-        <View style={styles.itemTitle}>
-          <Text style={styles.text}>Player</Text>
-          <Text style={styles.text}>Ranking</Text>
+    colors={['#17628b34', 'white']}
+    locations={[0, 15]}
+    style={styles.container}
+  >
+    
+
+      <ScrollView contentContainerStyle={styles.scrollViewContent} showsVerticalScrollIndicator={false}>
+        <View style={styles.box}>
+          <Text style={{ ...styles.text, fontSize: 15, marginTop: -5, paddingBottom: 10 }}>Choose 8 players</Text>
+          <TextInput
+            style={styles.input}
+            onChangeText={text => setSearchTerm(text)}
+            value={searchTerm}
+            placeholder="Search players"
+            placeholderTextColor="#1f3a5c"
+          />
+          <View style={styles.itemTitle}>
+            <Text style={styles.text}>Player</Text>
+            <Text style={styles.text}>Ranking</Text>
+          </View>
+          {loading ? (
+      <ActivityIndicator style={styles.loader} size="large" color="#1f3a5c" />
+    ) : (
+          <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+            {filteredJugadores.map((jugador) => (
+              <TouchableOpacity key={jugador.id_player} onPress={() => agregarJugadorAlEquipo(jugador)}>
+                <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{...styles.text, fontSize: 11}}>{jugador.name}</Text>
+                  <Text style={{...styles.text, fontSize: 11}}>{jugador.rank}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+    )}
         </View>
-        <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-          {filteredJugadores.map((jugador) => (
-            <TouchableOpacity key={jugador.id_player} onPress={() => agregarJugadorAlEquipo(jugador)}>
-              <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{...styles.text, fontSize: 11}}>{jugador.name}</Text>
-                <Text style={{...styles.text, fontSize: 11}}>{jugador.rank}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-      <View style={{ ...styles.box, height: 270 }}>
-        
-        <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-        <View style={styles.itemTitle}>
-          <Text style={styles.text}>Your team</Text>
-          <Text style={styles.text}>{"N° of players: " + equipo.length}</Text>
-         
+        <View style={{ ...styles.box, height: 270 }}>
+          <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+            <View style={styles.itemTitle}>
+              <Text style={styles.text}>Your players</Text>
+              <Text style={styles.text}>{"N° of players: " + equipo.length}</Text>
+            </View>
+            {equipo.map((jugador) => (
+              <TouchableOpacity key={jugador.id_player} onPress={() => quitarJugadorDelEquipo(jugador)}>
+                <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{...styles.text, fontSize: 11}} >{jugador.name}</Text>
+                  <Text style={{...styles.text, fontSize: 11}}>{jugador.rank}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
-          {equipo.map((jugador) => (
-            <TouchableOpacity key={jugador.id_player} onPress={() => quitarJugadorDelEquipo(jugador)}>
-              <View style={{ ...styles.jugadorItem, flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{...styles.text, fontSize: 11}} >{jugador.name}</Text>
-                <Text style={{...styles.text, fontSize: 11}}>{jugador.rank}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-      <View style={styles.btns}>
-      <TouchableOpacity style={styles.button} onPress={handleFinish}>
-        <Text style={styles.buttonText}>Place my bet</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Bets')}>
-        <Text style={styles.buttonText}>Cancel</Text>
-      </TouchableOpacity>
-      </View>
+        <View style={styles.btns}>
+          <TouchableOpacity style={{...styles.button, backgroundColor: "#1f3a5c"}} onPress={handleFinish}>
+            <Text style={{...styles.buttonText, color: "white"}}>Place my bet</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Bets')}>
+            <Text style={styles.buttonText}>Cancel</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
-    </LinearGradient>
+ 
+  </LinearGradient>
   );
 };
 
@@ -202,7 +212,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'rgba(216, 203, 132, 0.664)',
     justifyContent: "center"
   },
   text: {
@@ -231,23 +240,28 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#17628b34',
-    padding: 8,
-    margin: 10,
+    padding: 6,
+    margin: 5,
     borderRadius: 10,
     width: 170, 
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: '#17628b94',
     borderBottomWidth: 7, 
     borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
   },
   buttonText: {
     color: '#1f3a5c',
-    fontSize: 18,
-    fontWeight: "500"
+    fontSize: 14,
+    fontFamily: 'p-semibold',
+    position: "relative",
+    bottom: -2
   },
   btns:{
     flexDirection: "row"
+  },
+  loader:{
+    marginTop: 50
   }
 });
 
