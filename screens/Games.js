@@ -17,7 +17,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { set } from "firebase/database";
 
-const QuarterFinals = ({ navigation }) => {
+const Games = ({ navigation }) => {
 	const [ids, setIds] = useState(Array(8).fill(null)); // Marcar posición con null
 	const [results1, setResults1] = useState(null);
 	const [results2, setResults2] = useState(null);
@@ -372,7 +372,7 @@ const QuarterFinals = ({ navigation }) => {
 			</View>
 			<TouchableOpacity
 				style={styles.button}
-				onPress={() => navigation.navigate("Home")}
+				onPress={() => navigation.navigate("Bets")}
 			>
 				<Text style={styles.buttonText}>Back</Text>
 			</TouchableOpacity>
@@ -440,21 +440,23 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		backgroundColor: "#17628b34",
-		padding: 10,
-		margin: 10,
+		padding: 6,
+		margin: 5,
 		borderRadius: 10,
 		width: 300,
 		alignItems: "center",
-		borderWidth: 1,
+		borderWidth: 0,
 		borderColor: "#17628b94",
 		borderBottomWidth: 7,
 		borderBottomColor: "rgba(0, 0, 0, 0.2)",
 	},
 	buttonText: {
 		color: "#1f3a5c",
-		fontSize: 18,
-		fontWeight: "500",
+		fontSize: 14,
+		fontFamily: "p-semibold",
+		position: "relative",
+		bottom: -2,
 	},
 });
 
-export default QuarterFinals;
+export default Games;

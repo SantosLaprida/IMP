@@ -1,44 +1,43 @@
-.cla{
-    color:rgba(0, 0, 0, 0.849)
+.cla {
+	color: rgba(0, 0, 0, 0.849);
 }
 
-.green{
-    color: rgb(15, 114, 11);
+.green {
+	color: rgb(15, 114, 11);
 }
-.blue{
-    color: rgb(10, 10, 71);
+.blue {
+	color: rgb(10, 10, 71);
 }
-.gold{
-    color: rgba(212, 188, 50, 0.76);
+.gold {
+	color: rgba(212, 188, 50, 0.76);
 }
-.asd{
-    color: #1f3a5c;
+.asd {
+	color: #1f3a5c;
 }
-.ddd{
-    color: #17628b34;
-}
-
-.white{
-    color: rgba(80, 78, 78, 0.363);
+.ddd {
+	color: #17628b34;
 }
 
-.Darkgold{
-    color: rgba(153, 136, 40, 0.336);
+.white {
+	color: rgba(80, 78, 78, 0.363);
 }
 
-.lightBlue{
-    color: #2296F3;
+.Darkgold {
+	color: rgba(153, 136, 40, 0.336);
 }
 
-.lightWhite{
-    color: rgb(255, 252, 241);
+.lightBlue {
+	color: #2296f3;
 }
 
-.green{
-    color: #cca1293f;
+.lightWhite {
+	color: rgb(255, 252, 241);
 }
 
+.green {
+	color: #cca1293f;
+}
 
-.darkerWhite{
-    color: #28486e6b;
+.darkerWhite {
+	color: #28486e6b;
 }
