@@ -15,7 +15,6 @@ import { TouchableOpacity, Text } from "react-native";
 
 // Importar pantallas
 import Home from "./screens/Home";
-import QuarterFinals from "./screens/QuarterFinals";
 import Players from "./screens/Players";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
@@ -24,8 +23,6 @@ import Bets from "./screens/Bets";
 import Wallet from "./screens/Wallet";
 import Settings from "./screens/Settings";
 import PasswordReset from "./auth/PasswordReset";
-import SemiFinals from "./screens/SemiFinals";
-import Finals from "./screens/Finals";
 import Games from "./screens/Games";
 
 const AuthStack = createStackNavigator();

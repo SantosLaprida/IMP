@@ -121,7 +121,16 @@ const Tournaments = ({ navigation }) => {
 						</Text>
 					</View>
 				</View>
-
+				<Text
+					style={{
+						...styles.text,
+						fontSize: 10,
+						marginTop: 5,
+						textDecorationLine: "underline",
+					}}
+				>
+					IMPORTANT: Available until Wednesday 9pm.
+				</Text>
 				<TouchableOpacity
 					style={{ ...styles.btnClick, marginTop: 15 }}
 					onPress={handleGameMode}
@@ -384,10 +393,7 @@ const styles = StyleSheet.create({
 		shadowRadius: 6,
 		elevation: 10,
 		borderRadius: 10,
-		borderWidth: 0,
-		borderColor: "#17628b94",
-		borderBottomWidth: 3,
-		borderBottomColor: "rgba(0, 0, 0, 0.2)",
+
 		padding: 10,
 		paddingHorizontal: 40,
 		justifyContent: "center",
