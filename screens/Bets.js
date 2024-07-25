@@ -4,9 +4,10 @@ import React, { useEffect, useState, useRef} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, ScrollView, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
-import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 
 const Tournaments = ({ navigation }) => {
@@ -78,15 +79,18 @@ const Tournaments = ({ navigation }) => {
 
   return (
     <LinearGradient
-    colors={['#1f3a5c', 'white']}
-    locations={[0, 0.5]}
-    style={styles.container}>
+    colors={['#17628b34', 'white']}
+    locations={[0, 15]}
+    style={styles.container}
+  >
     
       <View style={styles.box}>
       <Text style={{ ...styles.text, fontSize: 20, textDecorationLine: 'underline'}}>
         Tournament of the week
       </Text>
-        <Text style={{ ...styles.text, paddingBottom: 10, fontSize: 18, marginTop: 15 }}>
+     
+        <View style={styles.logoBox}> 
+        <Text style={{ ...styles.text, paddingBottom: 5, fontSize: 15, marginTop: 0 }}>
           {name}
         </Text>
         <Image
@@ -94,47 +98,48 @@ const Tournaments = ({ navigation }) => {
           style={styles.logo}
         />
         <View>
-        <Text style={{ ...styles.text, marginTop: 20 }}>
+        <Text style={{ ...styles.text, fontSize: 10, marginTop: 5 }}>
           {"Starting date: " + start}
         </Text>
-        <Text style={{...styles.text}}>
+        <Text style={{...styles.text, fontSize: 10}}>
           {"Finish date: " + end}
         </Text>
         </View>
+        </View>
+
         <TouchableOpacity 
-          style={{ ...styles.button, marginTop: 30 }} 
+          style={{ ...styles.btnClick, marginTop: 15}} 
           onPress={handleGameMode}
         >
-          <Text style={styles.buttonText}>Participate</Text>
+          <Text style={styles.btnClickText}>Participate!</Text>
         </TouchableOpacity>
       </View>
 
-      <View style={{ ...styles.box, height: 250 }}>
+      <View style={styles.box}>
         <View style={styles.order}>
         <Text style={{ ...styles.text, paddingBottom: 5, fontSize: 18, textDecorationLine: 'underline' }}>Your Bets</Text>
     
         </View>
-        <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-        <View style={{...styles.betBtn, marginTop: 20}} >
-        <FontAwesome6 name="users-between-lines" size={17} color="white" style={{...styles.editIcon, left: -6, bottom: 12}} />
-        <Text style={styles.betText}> 
-          Traditional
-        </Text>
-        <AntDesign name="edit" size={24} color="white" style={styles.editIcon} />
-      </View>
-      <View style={styles.betBtn} >
-      <MaterialIcons name="numbers" size={22} color="white" style={{...styles.editIcon, left: -8, bottom: 10}} />
-        <Text style={styles.betText}>Random          
-        </Text>
-        <AntDesign name="edit" size={24} color="white" style={styles.editIcon} />
-      </View>
+        <View style={{...styles.content, marginTop: 10}}>
+          <TouchableOpacity style={styles.buttonContainer}>           
+            <View style={styles.button} >
+            <FontAwesome6 name="people-line" size={28} color="#1f3a5c" />
+            </View>
+            <Text style={styles.buttonText}>Traditional</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonContainer}>           
+            <View style={styles.button} >
+            <FontAwesome name="random" size={28} color="#1f3a5c" />
+            </View>
+            <Text style={styles.buttonText}>Random</Text>
+          </TouchableOpacity>
+        </View>
    
-        </ScrollView>
         
         <TouchableOpacity 
-          style={{...styles.button, padding: 5, width: 150, position: "absolute", bottom: 0, right: 0, margin: 15}} >
+          style={styles.btnClick} >
              <View style={styles.btnDot}>
-          <Text style={{...styles.buttonText, fontSize: 10}}>Watch games live</Text>
+          <Text style={styles.btnClickText}>Watch games live</Text>
           <BlinkDot />
           </View>
         </TouchableOpacity>
@@ -187,10 +192,43 @@ const styles = StyleSheet.create({
   },
   logo:{
     width: 150,
-    height: 120,
-    borderRadius: 20, 
+    height: 100,
+    borderRadius: 10, 
     backgroundColor: "black",
     padding: 5,
+  },
+  logoBox:{
+    backgroundColor: 'rgb(255, 252, 241)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 10,
+    borderRadius: 10,
+    borderWidth: 0,
+    borderColor: '#17628b94',
+    borderBottomWidth: 3, 
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
+    padding: 10,
+    paddingHorizontal: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  miniBox:{
+    backgroundColor: 'rgb(255, 252, 241)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 10,
+    borderRadius: 10,
+    borderWidth: 0,
+    borderColor: '#17628b94',
+    borderBottomWidth: 5, 
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
+    paddingHorizontal: 30,
+    padding: 10,
   },
   dot: {
     width: 12,
@@ -204,8 +242,7 @@ const styles = StyleSheet.create({
  
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: 'rgb(241, 228, 151)',  
+    alignItems: 'center', 
   },
   modalContainer: {
     flex: 1,
@@ -233,7 +270,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: 'center',
     color: '#1f3a5c',
-    fontWeight: "500"
+    fontFamily: 'p-semibold',
   },
   modalButton: {
     backgroundColor: '#17628b34',
@@ -250,11 +287,11 @@ const styles = StyleSheet.create({
   modalT:{
     color: '#1f3a5c',
     fontSize: 17,
-    fontWeight: "600"
+    fontFamily: 'p-semibold',
   },
   modalTDisabled:{
     color: 'white',
-    fontWeight: "600",
+    fontFamily: 'p-semibold',
     fontSize: 15,
     textDecorationLine: "line-through"
   },
@@ -271,26 +308,27 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 15,
-    fontWeight: "800",
     color: '#1f3a5c',
-    fontFamily: 'Roboto' 
+    fontFamily: 'p-semibold',
   },
-  button: {
-    backgroundColor: '#17628b34',
-    padding: 7,
+  btnClick: {
+    backgroundColor: '#1f3a5c',
+    padding: 6,
     margin: 5,
     borderRadius: 10,
-    width: 230, 
+    width: 300, 
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: '#17628b94',
     borderBottomWidth: 7, 
     borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
   },
-  buttonText: {
-    color: '#1f3a5c',
-    fontSize: 17,
-    fontWeight: "600"
+  btnClickText: {
+    color: 'white',
+    fontSize: 14,
+    fontFamily: 'p-semibold',
+    position: "relative",
+    bottom: -2
   },
   betBtn:{  
     backgroundColor: '#1f3a5c',
@@ -305,7 +343,7 @@ const styles = StyleSheet.create({
   betText:{
     color: 'white',
     fontSize: 14,
-    fontWeight: "600",
+    fontFamily: 'p-semibold',
     letterSpacing: 1.5,
     marginHorizontal: 25
   },
@@ -323,8 +361,43 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-
-  }
+  },
+  content: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    margin: 8,
+    backgroundColor: 'rgb(255, 252, 241)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 10,
+    borderRadius: 15,
+    padding: 10
+  },
+  button: {
+    backgroundColor: '#17628b34',
+    padding: 10,
+    margin: 5,
+    marginHorizontal: 20,
+    borderRadius: 50,
+    width: 70,
+    height: 70,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 0,
+    borderColor: '#17628b94',
+    borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
+  },
+  buttonText: {
+    color: '#1f3a5c',
+    fontSize: 12,
+    fontFamily: 'p-semibold',
+  },
 });
 
 export default Tournaments;

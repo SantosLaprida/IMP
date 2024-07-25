@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Animated } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+
 
 
 const Home = ({ navigation }) => {
@@ -50,106 +53,127 @@ const Home = ({ navigation }) => {
     locations={[0, 15]}
     style={styles.container}
   >
-        
     <Image
-    source={require('../assets/images/IMP-02.png')}
-    style={styles.logo}
-  />
+      source={require('../assets/images/IMP-02.png')}
+      style={styles.logo}
+    />
     <View style={styles.row}>
-
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tournaments')}>
-          <Text style={styles.buttonText}>Tournaments</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('QuarterFinals')}>
-      <View style={styles.btnDot}>
-      <BlinkDot />
-        <Text style={styles.buttonText}>Games</Text>     
+      <View style={styles.rowContainer}>
+        <View style={{...styles.content, marginTop: 10}}>
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Tournaments')}>           
+            <View style={styles.button} >
+            <FontAwesome5 name="trophy" size={26} color="#1f3a5c" />
+            </View>
+            <Text style={styles.buttonText}>Tournaments</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('QuarterFinals')}>           
+            <View style={styles.button} >
+            <Ionicons name="golf" size={28} color="#1f3a5c" />
+            </View>
+            <Text style={styles.buttonText}>Games</Text>
+            <BlinkDot />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.content}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Wallet')}>           
+            <View style={styles.button} >
+            <FontAwesome5 name="wallet" size={28} color="#1f3a5c"  />
+            </View>
+            <Text style={styles.buttonText}>Wallet</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate('Settings')}>           
+            <View style={styles.button} >
+            <Ionicons name="settings" size={30} color="#1f3a5c" />
+            </View>
+            <Text style={styles.buttonText}>Settings</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Wallet')}>
-          <Text style={styles.buttonText}>Wallet</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Settings')}>
-          <Text style={styles.buttonText}>Settings</Text>
-        </TouchableOpacity>
-      </View>
-   </LinearGradient>
+    </View>
+  </LinearGradient>
   );
-};
-
-
-
+}
+  
 const styles = StyleSheet.create({
-  row:{
+  row: {
     backgroundColor: 'rgb(255, 252, 241)',
-    marginTop: 0,
-    shadowColor: '#000', // Color de la sombra
-    shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
-    shadowOpacity: 0.3, // Opacidad de la sombra
-    shadowRadius: 6, // Radio de la sombra
-    // Para Android
-    elevation: 10, // Elevación para la sombra
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 10,
     padding: 20,
-    paddingVertical: 40,
+    paddingVertical: 20,
     borderRadius: 25,
-    paddingTop: 60,
+    alignItems: "center",
+    width: 350,
+  },
+  rowContainer: {
+    justifyContent: "center",
     alignItems: "center",
   },
-  text: {
-    fontSize: 30,
-    textAlign: "center",
-    fontWeight: "700",
-    color: "white",
-    paddingBottom: 20
-  },
- 
   container: {
     flex: 1,
     alignItems: 'center',
     backgroundColor: 'white',
-    justifyContent: "center"
-    
+    justifyContent: "center",
+  },
+  content: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    margin: 8,
+    backgroundColor: 'rgb(255, 252, 241)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 10,
+    borderRadius: 15,
+    padding: 10
   },
   button: {
     backgroundColor: '#17628b34',
     padding: 10,
     margin: 5,
-    borderRadius: 10,
-    width: 300, 
+    marginHorizontal: 20,
+    borderRadius: 50,
+    width: 70,
+    height: 70,
     alignItems: 'center',
+    justifyContent: 'center',
     borderWidth: 0,
     borderColor: '#17628b94',
-    borderBottomWidth: 7, 
     borderBottomColor: 'rgba(0, 0, 0, 0.2)', 
   },
   buttonText: {
     color: '#1f3a5c',
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'p-semibold',
-    position: "relative",
-    bottom: -2
   },
   logo: {
     width: 250,
     height: 150,
     marginBottom: 30,
   },
+  btnDot: {
+    position: "absolute",
+    top: -10,
+    right: -10,
+  },
   dot: {
-    width: 12,
-    height: 12,
+    width: 20,
+    height: 20,
     borderRadius: 12,
     backgroundColor: 'red',
-    marginLeft: 5,
-    marginHorizontal: 5,
-    marginTop: 2
-
+    position: "absolute",
+    right: 0,
+    top: 0,
+    margin: 8
   },
-  btnDot:{
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-
-  }
 });
 
 

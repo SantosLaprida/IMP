@@ -55,9 +55,10 @@ const Tournaments = ({ navigation }) => {
 
   return (
     <LinearGradient
-    colors={['#1f3a5c', 'white']}
-    locations={[0, 0.5]}
-    style={styles.container}>
+    colors={['#17628b34', 'white']}
+    locations={[0, 15]}
+    style={styles.container}
+  >
     
       <View style={{...styles.box, marginTop: -20}}>
       <Text style={{ ...styles.text, fontSize: 20 }}>
@@ -133,7 +134,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'rgb(241, 228, 151)',  
     justifyContent: "center"
   },
   modalContainer: {
