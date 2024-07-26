@@ -6,6 +6,7 @@ import {
 	Image,
 	TouchableOpacity,
 	Animated,
+	Modal,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
@@ -39,6 +40,12 @@ const Home = ({ navigation }) => {
 		return <Animated.View style={[styles.dot, { opacity }]} />;
 	};
 
+	const [modalVisible, setModalVisible] = useState(false);
+
+	const handleBrackets = () => {
+		setModalVisible(true);
+	};
+
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {
@@ -57,13 +64,18 @@ const Home = ({ navigation }) => {
 		return tournament[0].id;
 	};
 
+	const handleRouting = (screen, origin) => {
+		setModalVisible(false);
+		navigation.navigate(screen, { origin });
+	};
+
 	const handleGames = async () => {
 		const tournamentId = await getTournamentId();
 		const bracket = await getBracketAPI(tournamentId);
 
 		if (bracket) {
 			if (bracket === "I_Cuartos") {
-				navigation.navigate("Tournaments");
+				navigation.navigate("QuarterFinals");
 			} else if (bracket === "I_Semisfinales") {
 				navigation.navigate("Bets");
 			} else {
@@ -99,7 +111,7 @@ const Home = ({ navigation }) => {
 						</TouchableOpacity>
 						<TouchableOpacity
 							style={styles.buttonContainer}
-							onPress={handleGames}
+							onPress={handleBrackets}
 						>
 							<View style={styles.button}>
 								<Ionicons name="golf" size={28} color="#1f3a5c" />
@@ -130,6 +142,62 @@ const Home = ({ navigation }) => {
 					</View>
 				</View>
 			</View>
+
+			<Modal
+				animationType="slide"
+				transparent={true}
+				visible={modalVisible}
+				onRequestClose={() => {
+					setModalVisible(!modalVisible);
+				}}
+			>
+				<View style={styles.modalContainer}>
+					<View style={styles.modalView}>
+						<View style={styles.itemTitle}>
+							<Text
+								style={{
+									...styles.text,
+									textDecorationLine: "underline",
+									fontSize: 16,
+									marginBottom: 12,
+								}}
+							>
+								Select bracket
+							</Text>
+						</View>
+						<TouchableOpacity
+							style={{
+								...styles.modalButton,
+								width: 200,
+								backgroundColor: "#1f3a5c",
+							}}
+							onPress={() => handleRouting("QuarterFinals", "Home")}
+						>
+							<Text style={{ ...styles.modalT, color: "white" }}>
+								Quarter finals
+							</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={{ ...styles.modalButtonDisabled, width: 200 }}
+							onPress={() => handleRouting("SemiFinals", "Home")}
+						>
+							<Text style={styles.modalTDisabled}>Semi finals</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={{ ...styles.modalButtonDisabled, width: 200 }}
+							onPress={() => handleRouting("Finals", "Home")}
+						>
+							<Text style={styles.modalTDisabled}>Finals</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={{ ...styles.modalButton, marginTop: 25, width: 250 }}
+							onPress={() => setModalVisible(false)}
+						>
+							<Text style={styles.modalT}>Close</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+			</Modal>
 		</LinearGradient>
 	);
 };
@@ -213,6 +281,78 @@ const styles = StyleSheet.create({
 		right: 0,
 		top: 0,
 		margin: 8,
+	},
+	modalContainer: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: "rgba(0, 0, 0, 0.849)",
+	},
+	modalView: {
+		width: 300,
+		backgroundColor: "rgb(255, 252, 241)",
+		borderRadius: 20,
+		padding: 35,
+		alignItems: "center",
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 5,
+	},
+	modalText: {
+		fontSize: 20,
+		marginBottom: 15,
+		textAlign: "center",
+		color: "#1f3a5c",
+		fontFamily: "p-semibold",
+	},
+	modalButton: {
+		backgroundColor: "#17628b34",
+		padding: 6,
+		margin: 5,
+		borderRadius: 10,
+		width: 300,
+		alignItems: "center",
+		borderWidth: 0,
+		borderColor: "#17628b94",
+		borderBottomWidth: 7,
+		borderBottomColor: "rgba(0, 0, 0, 0.2)",
+	},
+	modalT: {
+		color: "#1f3a5c",
+		fontSize: 14,
+		fontFamily: "p-semibold",
+		position: "relative",
+		bottom: -2,
+	},
+	modalTDisabled: {
+		color: "white",
+		textDecorationLine: "line-through",
+		fontSize: 14,
+		fontFamily: "p-semibold",
+		position: "relative",
+		bottom: -2,
+	},
+	modalButtonDisabled: {
+		backgroundColor: "grey",
+		padding: 6,
+		margin: 5,
+		borderRadius: 10,
+		width: 300,
+		alignItems: "center",
+		borderWidth: 0,
+		borderColor: "#17628b94",
+		borderBottomWidth: 7,
+		borderBottomColor: "rgba(0, 0, 0, 0.2)",
+	},
+	text: {
+		fontSize: 15,
+		color: "#1f3a5c",
+		fontFamily: "p-semibold",
 	},
 });
 

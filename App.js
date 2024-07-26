@@ -23,7 +23,9 @@ import Bets from "./screens/Bets";
 import Wallet from "./screens/Wallet";
 import Settings from "./screens/Settings";
 import PasswordReset from "./auth/PasswordReset";
-import Games from "./screens/Games";
+import QuarterFinals from "./screens/QuarterFinals";
+import SemiFinals from "./screens/SemiFinals";
+import Finals from "./screens/Finals";
 
 const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -181,8 +183,10 @@ function MainStackScreen() {
 		<MainStack.Navigator screenOptions={{ headerShown: false }}>
 			<MainStack.Screen name="Auth" component={AuthStackScreen} />
 			<MainStack.Screen name="Main" component={TabNavigator} />
-			<MainStack.Screen name="Games" component={Games} />
 			<MainStack.Screen name="Players" component={Players} />
+			<MainStack.Screen name="QuarterFinals" component={QuarterFinals} />
+			<MainStack.Screen name="SemiFinals" component={SemiFinals} />
+			<MainStack.Screen name="Finals" component={Finals} />
 		</MainStack.Navigator>
 	);
 }

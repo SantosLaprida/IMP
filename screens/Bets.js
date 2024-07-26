@@ -16,7 +16,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 
-const Tournaments = ({ navigation }) => {
+const Bets = ({ navigation }) => {
 	const BlinkDot = () => {
 		const opacity = useRef(new Animated.Value(1)).current;
 
@@ -58,6 +58,11 @@ const Tournaments = ({ navigation }) => {
 	const handleNavigate = (screen) => {
 		setModalVisible(false);
 		navigation.navigate(screen);
+	};
+
+	const handleRouting = (screen, origin) => {
+		setModalVisible(false);
+		navigation.navigate(screen, { origin });
 	};
 
 	useEffect(() => {
@@ -173,7 +178,7 @@ const Tournaments = ({ navigation }) => {
 
 				<TouchableOpacity
 					style={styles.btnClick}
-					onPress={() => navigation.navigate("Games")}
+					onPress={() => handleRouting("QuarterFinals", "Bets")}
 				>
 					<View style={styles.btnDot}>
 						<Text style={styles.btnClickText}>Watch games live</Text>
@@ -606,4 +611,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default Tournaments;
+export default Bets;
