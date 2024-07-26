@@ -10,7 +10,7 @@ import {
 	Text,
 	StyleSheet,
 	Image,
-	ImageBackground,
+	ActivityIndicator,
 	Button,
 	TouchableOpacity,
 } from "react-native";
@@ -18,6 +18,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { set } from "firebase/database";
 import { ScrollView } from "react-native-gesture-handler";
 import { Entypo } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { reload } from "firebase/auth";
 
 const Games = ({ navigation }) => {
 	const [ids, setIds] = useState(Array(8).fill(null)); // Marcar posición con null
@@ -26,6 +28,7 @@ const Games = ({ navigation }) => {
 	const [results3, setResults3] = useState(null);
 	const [results4, setResults4] = useState(null);
 	const [names, setNames] = useState(Array(8).fill("Loading..."));
+	const [loading, setLoading] = useState(true);
 
 	const [start, setStart] = useState(null);
 	const [end, setEnd] = useState(null);
@@ -55,6 +58,7 @@ const Games = ({ navigation }) => {
 	}, []);
 
 	const fetchQualifiers = async () => {
+		setLoading(true);
 		try {
 			const tournamentId = await getTournamentName();
 			const qualifiers = await fetchQuarterQualifiers(tournamentId);
@@ -66,6 +70,7 @@ const Games = ({ navigation }) => {
 		} catch (error) {
 			console.error(error);
 		}
+		setLoading(false);
 	};
 
 	const getTournamentName = async () => {
@@ -235,24 +240,17 @@ const Games = ({ navigation }) => {
 				<Text
 					style={{
 						...styles.text,
+						paddingBottom: 5,
+						fontSize: 15,
+						marginTop: 0,
 						fontSize: 18,
-						textDecorationLine: "underline",
 						fontFamily: "p-bold",
+						textDecorationLine: "underline",
 					}}
 				>
-					Tournament
+					{name}
 				</Text>
 				<View style={styles.logoBox}>
-					<Text
-						style={{
-							...styles.text,
-							paddingBottom: 5,
-							fontSize: 15,
-							marginTop: 0,
-						}}
-					>
-						{name}
-					</Text>
 					<Image source={{ uri: logo }} style={styles.logo} />
 				</View>
 				<View>
@@ -272,281 +270,321 @@ const Games = ({ navigation }) => {
 						marginBottom: 15,
 					}}
 				>
-					Bracket
+					Quarter Finals
 				</Text>
-				<ScrollView showsVerticalScrollIndicator={false}>
-					{/* GAME 1 */}
-					<View style={styles.gameBox}>
-						<Text
-							style={[
-								styles.text_left,
-								{
-									backgroundColor: displayResultsLeft(results1)
-										? "red"
-										: "transparent",
-								},
-							]}
-						>
-							{displayResultsLeft(results1)}
-						</Text>
-						<View style={styles.player}>
-							<Image
-								source={require("../assets/images/scottie.webp")}
-								style={styles.gameLogo}
-							/>
-							<Text
-								style={{
-									...styles.text,
-									marginBottom: 5,
-									fontSize: 10,
-									paddingHorizontal: 20,
-									textAlign: "center",
-								}}
-							>
-								{names[0]}
-							</Text>
-						</View>
-						<View style={styles.middle}>
-							<Text style={styles.text}>
-								{displayMiddle(results1, names[0], names[7])}
-							</Text>
-						</View>
-						<Text
-							style={[
-								styles.text_right,
-								{
-									backgroundColor: displayResultsRight(results1)
-										? "red"
-										: "transparent",
-								},
-							]}
-						>
-							{displayResultsRight(results1)}
-						</Text>
-						<View style={styles.player}>
-							<Image
-								source={require("../assets/images/scottie.webp")}
-								style={styles.gameLogo}
-							/>
-							<Text
-								style={{
-									...styles.text,
-									marginBottom: 5,
-									fontSize: 10,
-									paddingHorizontal: 20,
-									textAlign: "center",
-								}}
-							>
-								{names[7]}
-							</Text>
-						</View>
-					</View>
-					{/* GAME 2 */}
-					<View style={styles.gameBox}>
-						<Text
-							style={[
-								styles.text_left,
-								{
-									backgroundColor: displayResultsLeft(results4)
-										? "red"
-										: "transparent",
-								},
-							]}
-						>
-							{displayResultsLeft(results4)}
-						</Text>
-						<View style={styles.player}>
-							<Image
-								source={require("../assets/images/scottie.webp")}
-								style={styles.gameLogo}
-							/>
-							<Text
-								style={{
-									...styles.text,
-									marginBottom: 5,
-									fontSize: 10,
-									paddingHorizontal: 20,
-									textAlign: "center",
-								}}
-							>
-								{names[3]}
-							</Text>
-						</View>
-						<View style={styles.middle}>
-							<Text style={styles.text}>
-								{displayMiddle(results4, names[3], names[4])}
-							</Text>
-						</View>
-						<Text
-							style={[
-								styles.text_right,
-								{
-									backgroundColor: displayResultsRight(results4)
-										? "red"
-										: "transparent",
-								},
-							]}
-						>
-							{displayResultsRight(results4)}
-						</Text>
 
-						<View style={styles.player}>
-							<Image
-								source={require("../assets/images/scottie.webp")}
-								style={styles.gameLogo}
-							/>
-							<Text
-								style={{
-									...styles.text,
-									marginBottom: 5,
-									fontSize: 10,
-									paddingHorizontal: 20,
-									textAlign: "center",
-								}}
-							>
-								{names[4]}
-							</Text>
-						</View>
-					</View>
-					{/* GAME 3*/}
-					<View style={styles.gameBox}>
-						<Text
-							style={[
-								styles.text_left,
-								{
-									backgroundColor: displayResultsLeft(results3)
-										? "red"
-										: "transparent",
-								},
-							]}
-						>
-							{displayResultsLeft(results3)}
-						</Text>
-						<View style={styles.player}>
-							<Image
-								source={require("../assets/images/scottie.webp")}
-								style={styles.gameLogo}
-							/>
-							<Text
-								style={{
-									...styles.text,
-									marginBottom: 5,
-									fontSize: 10,
-									paddingHorizontal: 20,
-									textAlign: "center",
-								}}
-							>
-								{names[2]}
-							</Text>
-						</View>
-						<View style={styles.middle}>
-							<Text style={styles.text}>
-								{displayMiddle(results3, names[2], names[5])}
-							</Text>
-						</View>
-						<Text
-							style={[
-								styles.text_right,
-								{
-									backgroundColor: displayResultsRight(results3)
-										? "red"
-										: "transparent",
-								},
-							]}
-						>
-							{displayResultsRight(results3)}
-						</Text>
-						<View style={styles.player}>
-							<Image
-								source={require("../assets/images/scottie.webp")}
-								style={styles.gameLogo}
-							/>
-							<Text
-								style={{
-									...styles.text,
-									marginBottom: 5,
-									fontSize: 10,
-									paddingHorizontal: 20,
-									textAlign: "center",
-								}}
-							>
-								{names[5]}
-							</Text>
-						</View>
-					</View>
-					{/* GAME 4*/}
-					<View style={styles.gameBox}>
-						<Text
-							style={[
-								styles.text_left,
-								{
-									backgroundColor: displayResultsLeft(results2)
-										? "red"
-										: "transparent",
-								},
-							]}
-						>
-							{displayResultsLeft(results2)}
-						</Text>
-						<View style={styles.player}>
-							<Image
-								source={require("../assets/images/scottie.webp")}
-								style={styles.gameLogo}
-							/>
-							<Text
-								style={{
-									...styles.text,
-									marginBottom: 5,
-									fontSize: 10,
-									paddingHorizontal: 20,
-									textAlign: "center",
-								}}
-							>
-								{names[1]}
-							</Text>
-						</View>
-						<View style={styles.middle}>
-							<Text style={styles.text}>
-								{displayMiddle(results2, names[1], names[6])}
-							</Text>
-						</View>
-						<Text
-							style={[
-								styles.text_right,
-								{
-									backgroundColor: displayResultsRight(results2)
-										? "red"
-										: "transparent",
-								},
-							]}
-						>
-							{displayResultsRight(results2)}
-						</Text>
-						<View style={styles.player}>
-							<Image
-								source={require("../assets/images/scottie.webp")}
-								style={styles.gameLogo}
-							/>
-							<Text
-								style={{
-									...styles.text,
-									marginBottom: 5,
-									fontSize: 10,
-									paddingHorizontal: 20,
-									textAlign: "center",
-								}}
-							>
-								{names[6]}
-							</Text>
-						</View>
-					</View>
-				</ScrollView>
+				{loading ? (
+					<ActivityIndicator
+						style={styles.loader}
+						size="large"
+						color="#1f3a5c"
+					/>
+				) : (
+					<>
+						<ScrollView showsVerticalScrollIndicator={false}>
+							{/* GAME 1 */}
+							<View style={styles.gameBox}>
+								<Text style={styles.tGame}>Game 1</Text>
+								<Text
+									style={[
+										styles.text_left,
+										{
+											backgroundColor: displayResultsLeft(results1)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsLeft(results1)}
+								</Text>
+								<View style={styles.player}>
+									<Image
+										source={require("../assets/images/scottie.webp")}
+										style={styles.gameLogo}
+									/>
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[0]}
+									</Text>
+								</View>
+								<View style={styles.middle}>
+									<Text style={{ ...styles.text, fontSize: 14 }}>
+										{displayMiddle(results1, names[0], names[7])}
+									</Text>
+								</View>
+								<Text
+									style={[
+										styles.text_right,
+										{
+											backgroundColor: displayResultsRight(results1)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsRight(results1)}
+								</Text>
+								<View style={styles.player}>
+									<Image
+										source={require("../assets/images/scottie.webp")}
+										style={styles.gameLogo}
+									/>
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[7]}
+									</Text>
+								</View>
+							</View>
+							<TouchableOpacity style={styles.detailBtn}>
+								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
+									Details
+								</Text>
+							</TouchableOpacity>
+							{/* GAME 2 */}
+							<View style={styles.gameBox}>
+								<Text style={styles.tGame}>Game 2</Text>
+								<Text
+									style={[
+										styles.text_left,
+										{
+											backgroundColor: displayResultsLeft(results4)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsLeft(results4)}
+								</Text>
+								<View style={styles.player}>
+									<Image
+										source={require("../assets/images/scottie.webp")}
+										style={styles.gameLogo}
+									/>
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[3]}
+									</Text>
+								</View>
+								<View style={styles.middle}>
+									<Text style={{ ...styles.text, fontSize: 14 }}>
+										{displayMiddle(results4, names[3], names[4])}
+									</Text>
+								</View>
+								<Text
+									style={[
+										styles.text_right,
+										{
+											backgroundColor: displayResultsRight(results4)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsRight(results4)}
+								</Text>
+
+								<View style={styles.player}>
+									<Image
+										source={require("../assets/images/scottie.webp")}
+										style={styles.gameLogo}
+									/>
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[4]}
+									</Text>
+								</View>
+							</View>
+							<TouchableOpacity style={styles.detailBtn}>
+								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
+									Details
+								</Text>
+							</TouchableOpacity>
+							{/* GAME 3*/}
+							<View style={styles.gameBox}>
+								<Text style={styles.tGame}>Game 3</Text>
+								<Text
+									style={[
+										styles.text_left,
+										{
+											backgroundColor: displayResultsLeft(results3)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsLeft(results3)}
+								</Text>
+								<View style={styles.player}>
+									<Image
+										source={require("../assets/images/scottie.webp")}
+										style={styles.gameLogo}
+									/>
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[2]}
+									</Text>
+								</View>
+								<View style={styles.middle}>
+									<Text style={{ ...styles.text, fontSize: 14 }}>
+										{displayMiddle(results3, names[2], names[5])}
+									</Text>
+								</View>
+								<Text
+									style={[
+										styles.text_right,
+										{
+											backgroundColor: displayResultsRight(results3)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsRight(results3)}
+								</Text>
+								<View style={styles.player}>
+									<Image
+										source={require("../assets/images/scottie.webp")}
+										style={styles.gameLogo}
+									/>
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[5]}
+									</Text>
+								</View>
+							</View>
+							<TouchableOpacity style={styles.detailBtn}>
+								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
+									Details
+								</Text>
+							</TouchableOpacity>
+							{/* GAME 4*/}
+							<View style={styles.gameBox}>
+								<Text style={styles.tGame}>Game 4</Text>
+								<Text
+									style={[
+										styles.text_left,
+										{
+											backgroundColor: displayResultsLeft(results2)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsLeft(results2)}
+								</Text>
+								<View style={styles.player}>
+									<Image
+										source={require("../assets/images/scottie.webp")}
+										style={styles.gameLogo}
+									/>
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[1]}
+									</Text>
+								</View>
+								<View style={styles.middle}>
+									<Text style={{ ...styles.text, fontSize: 14 }}>
+										{displayMiddle(results2, names[1], names[6])}
+									</Text>
+								</View>
+								<Text
+									style={[
+										styles.text_right,
+										{
+											backgroundColor: displayResultsRight(results2)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsRight(results2)}
+								</Text>
+								<View style={styles.player}>
+									<Image
+										source={require("../assets/images/scottie.webp")}
+										style={styles.gameLogo}
+									/>
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[6]}
+									</Text>
+								</View>
+							</View>
+							<TouchableOpacity style={styles.detailBtn}>
+								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
+									Details
+								</Text>
+							</TouchableOpacity>
+						</ScrollView>
+					</>
+				)}
 			</View>
 			<TouchableOpacity
 				onPress={() => navigation.navigate("Bets")}
-				style={{ ...styles.button, marginTop: 20 }}
+				style={{
+					...styles.button,
+					marginTop: 20,
+					backgroundColor: "#1f3a5c",
+					width: "85%",
+				}}
 			>
-				<Text style={styles.buttonText}>Back</Text>
+				<Text style={{ ...styles.buttonText, color: "white" }}>Back</Text>
 			</TouchableOpacity>
 		</LinearGradient>
 	);
@@ -586,8 +624,8 @@ const styles = StyleSheet.create({
 		shadowRadius: 6,
 		elevation: 10,
 		borderRadius: 10,
-		padding: 10,
-		paddingHorizontal: 40,
+		padding: 15,
+
 		justifyContent: "center",
 		alignItems: "center",
 		marginVertical: 10,
@@ -598,10 +636,11 @@ const styles = StyleSheet.create({
 		fontFamily: "p-semibold",
 	},
 	gameBox: {
-		marginBottom: 10,
 		flexDirection: "row",
 		justifyContent: "space-between",
-		borderRadius: 10,
+		borderTopLeftRadius: 10,
+		borderTopRightRadius: 10,
+
 		width: "100%",
 		alignItems: "center",
 		padding: 5,
@@ -611,6 +650,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
+		marginVertical: 15,
 	},
 	gameLogo: {
 		width: 50,
@@ -666,6 +706,42 @@ const styles = StyleSheet.create({
 		padding: 5,
 		fontFamily: "p-semibold",
 		backgroundColor: "red",
+	},
+	loader: {
+		marginTop: 100,
+	},
+	gameInfo: {
+		alignItems: "center",
+		justifyContent: "center",
+		flex: 1,
+		marginBottom: 4,
+	},
+	detailBtn: {
+		padding: 5,
+		borderBottomLeftRadius: 5,
+		borderBottomRightRadius: 5,
+		flexDirection: "row",
+		width: "100%",
+		alignItems: "center",
+		justifyContent: "space-around",
+		backgroundColor: "#17628b34",
+		borderWidth: 0,
+		borderColor: "#17628b94",
+		borderBottomWidth: 4,
+		borderBottomColor: "rgba(0, 0, 0, 0.2)",
+		marginBottom: 15,
+	},
+	tGame: {
+		position: "absolute",
+		top: 0,
+		left: "41%",
+		fontFamily: "p-semibold",
+		backgroundColor: "#17628b34",
+		fontSize: 11,
+		borderRadius: 5,
+		padding: 3,
+		paddingHorizontal: 10,
+		color: "white",
 	},
 });
 
