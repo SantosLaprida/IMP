@@ -17,8 +17,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { set } from "firebase/database";
 import { ScrollView } from "react-native-gesture-handler";
-import { Entypo } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { reload } from "firebase/auth";
 import { useRoute } from "@react-navigation/native";
 
@@ -219,15 +218,25 @@ const QuarterFinals = ({ navigation }) => {
 
 	const displayMiddle = (results, name1, name2) => {
 		if (!results) {
-			return "Loading...";
+			return null;
 		}
 		if (results.stillPlaying) {
 			return "Thru " + results.holesPlayed;
+		} else {
+			return null;
 		}
-		if (results.result > 0) {
+	};
+	const displayMiddleResult = (results, name1, name2) => {
+		if (!results) {
+			return null;
+		}
+		if (results.stillPlaying && results.result === 0) {
+			return "All Square";
+		}
+		if (!results.stillPlaying && results.result > 0) {
 			return name2 + " Won";
 		}
-		if (results.result < 0) {
+		if (!results.stillPlaying && results.result < 0) {
 			return name1 + " Won";
 		}
 	};
@@ -323,8 +332,23 @@ const QuarterFinals = ({ navigation }) => {
 									</Text>
 								</View>
 								<View style={styles.middle}>
-									<Text style={{ ...styles.text, fontSize: 14 }}>
+									<Text style={{ ...styles.text, fontSize: 12 }}>
 										{displayMiddle(results1, names[0], names[7])}
+									</Text>
+									<MaterialCommunityIcons
+										style={styles.vsIcon}
+										name="sword-cross"
+										size={24}
+										color="#1f3a5c"
+									/>
+									<Text
+										style={{
+											...styles.text,
+											fontSize: 12,
+											color: "green",
+										}}
+									>
+										{displayMiddleResult(results1, names[0], names[7])}
 									</Text>
 								</View>
 								<Text
@@ -395,8 +419,23 @@ const QuarterFinals = ({ navigation }) => {
 									</Text>
 								</View>
 								<View style={styles.middle}>
-									<Text style={{ ...styles.text, fontSize: 14 }}>
+									<Text style={{ ...styles.text, fontSize: 12 }}>
 										{displayMiddle(results4, names[3], names[4])}
+									</Text>
+									<MaterialCommunityIcons
+										style={styles.vsIcon}
+										name="sword-cross"
+										size={24}
+										color="#1f3a5c"
+									/>
+									<Text
+										style={{
+											...styles.text,
+											fontSize: 12,
+											color: "green",
+										}}
+									>
+										{displayMiddleResult(results4, names[3], names[4])}
 									</Text>
 								</View>
 								<Text
@@ -468,8 +507,23 @@ const QuarterFinals = ({ navigation }) => {
 									</Text>
 								</View>
 								<View style={styles.middle}>
-									<Text style={{ ...styles.text, fontSize: 14 }}>
+									<Text style={{ ...styles.text, fontSize: 12 }}>
 										{displayMiddle(results3, names[2], names[5])}
+									</Text>
+									<MaterialCommunityIcons
+										style={styles.vsIcon}
+										name="sword-cross"
+										size={24}
+										color="#1f3a5c"
+									/>
+									<Text
+										style={{
+											...styles.text,
+											fontSize: 12,
+											color: "green",
+										}}
+									>
+										{displayMiddleResult(results3, names[2], names[5])}
 									</Text>
 								</View>
 								<Text
@@ -540,8 +594,23 @@ const QuarterFinals = ({ navigation }) => {
 									</Text>
 								</View>
 								<View style={styles.middle}>
-									<Text style={{ ...styles.text, fontSize: 14 }}>
+									<Text style={{ ...styles.text, fontSize: 12 }}>
 										{displayMiddle(results2, names[1], names[6])}
+									</Text>
+									<MaterialCommunityIcons
+										style={styles.vsIcon}
+										name="sword-cross"
+										size={24}
+										color="#1f3a5c"
+									/>
+									<Text
+										style={{
+											...styles.text,
+											fontSize: 12,
+											color: "green",
+										}}
+									>
+										{displayMiddleResult(results2, names[1], names[6])}
 									</Text>
 								</View>
 								<Text
@@ -669,6 +738,9 @@ const styles = StyleSheet.create({
 	middle: {
 		flex: 1,
 		alignItems: "center",
+		justifyContent: "space-around",
+		height: 100,
+		marginBottom: -25,
 	},
 	button: {
 		backgroundColor: "#17628b34",
@@ -748,8 +820,8 @@ const styles = StyleSheet.create({
 		fontSize: 11,
 		borderRadius: 5,
 		padding: 3,
+		color: "#1f3a5c",
 		paddingHorizontal: 10,
-		color: "white",
 	},
 });
 
