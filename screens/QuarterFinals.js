@@ -346,6 +346,7 @@ const QuarterFinals = ({ navigation }) => {
 											...styles.text,
 											fontSize: 12,
 											color: "green",
+											textAlign: "center",
 										}}
 									>
 										{displayMiddleResult(results1, names[0], names[7])}
@@ -433,6 +434,7 @@ const QuarterFinals = ({ navigation }) => {
 											...styles.text,
 											fontSize: 12,
 											color: "green",
+											textAlign: "center",
 										}}
 									>
 										{displayMiddleResult(results4, names[3], names[4])}
@@ -521,6 +523,7 @@ const QuarterFinals = ({ navigation }) => {
 											...styles.text,
 											fontSize: 12,
 											color: "green",
+											textAlign: "center",
 										}}
 									>
 										{displayMiddleResult(results3, names[2], names[5])}
@@ -608,6 +611,7 @@ const QuarterFinals = ({ navigation }) => {
 											...styles.text,
 											fontSize: 12,
 											color: "green",
+											textAlign: "center",
 										}}
 									>
 										{displayMiddleResult(results2, names[1], names[6])}
