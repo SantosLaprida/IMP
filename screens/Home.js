@@ -190,6 +190,28 @@ const Home = ({ navigation }) => {
               <Text style={styles.modalTDisabled}>Finals</Text>
             </TouchableOpacity>
             <TouchableOpacity
+              style={{
+                ...styles.modalButton,
+                width: 200,
+                backgroundColor: "#1f3a5c",
+              }}
+              onPress={() => handleRouting("Results", "Home")}
+            >
+              <Text style={{ ...styles.modalT, color: "white" }}>Results</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                ...styles.modalButton,
+                width: 200,
+                backgroundColor: "#1f3a5c",
+              }}
+              onPress={() => handleRouting("ThirdPlace", "Home")}
+            >
+              <Text style={{ ...styles.modalT, color: "white" }}>
+                Third place play-off
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               style={{ ...styles.modalButton, marginTop: 25, width: 250 }}
               onPress={() => setModalVisible(false)}
             >

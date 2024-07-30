@@ -3,6 +3,8 @@ import { getScoreSheet } from "../api";
 import { getPlayerName } from "../server/firestoreFunctions";
 import { processSemis } from "../server/semisUtils/semisUtils";
 import { processCuartos } from "../server/cuartosUtils/cuartosUtils";
+import { processFinals } from "../server/finalsUtils/finalsUtils";
+import { processThirdPlace } from "../server/thirdPlaceUtils/thirdPlaceUtils";
 
 export const compareScores = async (
   id_player1,
@@ -96,14 +98,6 @@ export const compareScores = async (
       // Call a function yet to be created that is going to be in a file inside server directory, inside quarterUtils directory
       // We will need to pass the tournamentName, the id of the two players, and the result of the game
 
-      console.log(
-        "About to process cuartos ",
-        tournamentName,
-        id_player1,
-        id_player2,
-        score.result
-      );
-
       await processCuartos(
         tournamentName,
         id_player1,
@@ -115,6 +109,15 @@ export const compareScores = async (
       // We will need to pass the tournamentName, the id of the two players, and the result of the game
 
       await processSemis(tournamentName, id_player1, id_player2, score.result);
+    } else if (collectionName === "I_Finales") {
+      await processFinals(tournamentName, id_player1, id_player2, score.result);
+    } else if (collectionName === "I_TercerCuarto") {
+      await processThirdPlace(
+        tournamentName,
+        id_player1,
+        id_player2,
+        score.result
+      );
     }
   }
 
