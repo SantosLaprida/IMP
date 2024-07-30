@@ -159,3 +159,42 @@ const getPlayerName = async (id_player, tournamentId) => {
     return null;
   }
 };
+
+export const fetchFinalResults = async (tournamentId) => {
+  try {
+    const finalsCollectionRef = collection(
+      firestore,
+      "I_Torneos",
+      tournamentId,
+      "I_Resultados"
+    );
+    const matchDocs = ["Match1", "Match2", "Match3", "Match4"];
+    const names = [];
+
+    for (const match of matchDocs) {
+      const matchDocRef = doc(finalsCollectionRef, match);
+      const matchDocSnapshot = await getDoc(matchDocRef);
+
+      if (!matchDocSnapshot.exists()) {
+        console.log(`Document ${match} does not exist in the collection.`);
+        // Assuming you have a function to show popups, you can replace the console.log with that function
+        // showPopup(`Document ${match} does not exist in the collection.`);
+        return;
+      }
+
+      const matchData = matchDocSnapshot.data();
+      if (matchData && matchData.name) {
+        names.push(matchData.name);
+      } else {
+        console.log(`No name field in document ${match}.`);
+        // showPopup(`No name field in document ${match}.`);
+        return;
+      }
+    }
+
+    return names;
+  } catch (error) {
+    console.error("Error fetching final results:", error);
+    throw error;
+  }
+};

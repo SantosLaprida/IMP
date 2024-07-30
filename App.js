@@ -191,6 +191,7 @@ function MainStackScreen() {
       <MainStack.Screen name="Finals" component={Finals} />
       <MainStack.Screen name="ThirdPlace" component={ThirdPlace} />
       <MainStack.Screen name="Results" component={Results} />
+      <MainStack.Screen name="Bets" component={Bets} />
     </MainStack.Navigator>
   );
 }

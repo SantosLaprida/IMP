@@ -1,27 +1,59 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 
+import { fetchTournament } from "../server/firestoreFunctions";
+import { fetchFinalResults } from "../server/finalsUtils/finalsUtils";
+
 const Results = ({ navigation }) => {
-  const positions = [
-    { id: "1", position: "1st Place - Team A" },
-    { id: "2", position: "2nd Place - Team B" },
-    { id: "3", position: "3rd Place - Team C" },
-    { id: "4", position: "4th Place - Team D" },
-  ];
+  const [names, setNames] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getTournamentId = async () => {
+      try {
+        const tournament = await fetchTournament();
+        return tournament[0].id;
+      } catch (error) {
+        console.error("Error fetching tournament data:", error);
+        throw error;
+      }
+    };
+
+    const fetchResults = async () => {
+      try {
+        const tournamentId = await getTournamentId();
+        const names = await fetchFinalResults(tournamentId);
+        setNames(names);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchResults();
+  }, []);
 
   const renderItem = ({ item }) => (
     <View style={styles.item}>
-      <Text style={styles.text}>{item.position}</Text>
+      <Text style={styles.text}>{item}</Text>
     </View>
   );
 
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Results</Text>
+      <Text style={styles.title}>Names</Text>
       <FlatList
-        data={positions}
+        data={names}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => index.toString()}
       />
     </View>
   );

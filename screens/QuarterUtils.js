@@ -4,7 +4,7 @@ import { getPlayerName } from "../server/firestoreFunctions";
 import { processSemis } from "../server/semisUtils/semisUtils";
 import { processCuartos } from "../server/cuartosUtils/cuartosUtils";
 import { processFinals } from "../server/finalsUtils/finalsUtils";
-import { processThirdPlace } from "../server/thirdPlaceUtils/thirdPlaceUtils";
+import { processThirdPlace } from "../server/finalsUtils/finalsUtils";
 
 export const compareScores = async (
   id_player1,
