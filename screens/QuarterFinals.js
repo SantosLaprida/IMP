@@ -183,13 +183,6 @@ const QuarterFinals = ({ navigation }) => {
 		fetchQualifiers();
 	}, []);
 
-	const displayResults = (results, name1, name2) => {
-		if (!results) {
-			return "Loading...";
-		}
-		return showResults(results, name1, name2);
-	};
-
 	const displayResultsLeft = (results) => {
 		if (!results) {
 			return null;
@@ -239,11 +232,6 @@ const QuarterFinals = ({ navigation }) => {
 		if (!results.stillPlaying && results.result < 0) {
 			return name1 + " Won";
 		}
-	};
-
-	const results = {
-		stillPlaying: true,
-		result: -5,
 	};
 
 	return (
