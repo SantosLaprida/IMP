@@ -268,30 +268,10 @@ export const getPlayerName = async (id_player, tournamentId) => {
   }
 };
 
-export const fetchQuarterQualifiers = async (tournamentName) => {
+export const fetchQualifiers = async (TournamentId, collectionName) => {
   try {
     const querySnapshot = await getDocs(
-      collection(firestore, "I_Torneos", tournamentName, "I_Cuartos")
-    );
-    const sortedPlayerData = querySnapshot.docs
-      .map((doc) => ({
-        id_player: doc.data().id_player,
-        name: doc.data().name,
-        orden: doc.data().orden,
-      }))
-      .sort((a, b) => a.orden - b.orden);
-
-    return sortedPlayerData.filter(({ name }) => name !== null);
-  } catch (error) {
-    console.error("Error fetching qualifiers:", error);
-    throw error;
-  }
-};
-
-export const fetchSemiQualifiers = async (tournamentId) => {
-  try {
-    const querySnapshot = await getDocs(
-      collection(firestore, "I_Torneos", tournamentId, "I_Semifinales")
+      collection(firestore, "I_Torneos", TournamentId, collectionName)
     );
     const sortedPlayerData = querySnapshot.docs
       .map((doc) => ({
