@@ -15,6 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { fetchTournament } from "../server/firestoreFunctions";
 import { getBracketAPI } from "../api";
+import { isBracketActive } from "../server/firestoreFunctions";
 
 const Home = ({ navigation }) => {
   const BlinkDot = () => {
@@ -64,27 +65,18 @@ const Home = ({ navigation }) => {
     return tournament[0].id;
   };
 
-  const handleRouting = (screen, origin) => {
+  const handleRouting = async (screen, origin, collectionName) => {
     setModalVisible(false);
-    navigation.navigate(screen, { origin });
-  };
 
-  const handleGames = async () => {
     const tournamentId = await getTournamentId();
-    const bracket = await getBracketAPI(tournamentId);
+    const active = await isBracketActive(tournamentId, collectionName);
 
-    if (bracket) {
-      if (bracket === "I_Cuartos") {
-        navigation.navigate("QuarterFinals");
-      } else if (bracket === "I_Semisfinales") {
-        navigation.navigate("Bets");
-      } else {
-        navigation.navigate("Players");
-      }
-      navigation.navigate("Bracket", { bracket });
-    } else {
-      alert("Error fetching bracket");
+    if (!active) {
+      alert("Bracket not active yet");
+      return;
     }
+
+    navigation.navigate(screen, { origin });
   };
 
   return (
@@ -171,7 +163,9 @@ const Home = ({ navigation }) => {
                 width: 200,
                 backgroundColor: "#1f3a5c",
               }}
-              onPress={() => handleRouting("QuarterFinals", "Home")}
+              onPress={() =>
+                handleRouting("QuarterFinals", "Home", "I_Cuartos")
+              }
             >
               <Text style={{ ...styles.modalT, color: "white" }}>
                 Quarter finals
@@ -179,13 +173,15 @@ const Home = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={{ ...styles.modalButtonDisabled, width: 200 }}
-              onPress={() => handleRouting("SemiFinals", "Home")}
+              onPress={() =>
+                handleRouting("SemiFinals", "Home", "I_Semifinales")
+              }
             >
               <Text style={styles.modalTDisabled}>Semi finals</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{ ...styles.modalButtonDisabled, width: 200 }}
-              onPress={() => handleRouting("Finals", "Home")}
+              onPress={() => handleRouting("Finals", "Home", "I_Finales")}
             >
               <Text style={styles.modalTDisabled}>Finals</Text>
             </TouchableOpacity>
@@ -205,7 +201,9 @@ const Home = ({ navigation }) => {
                 width: 200,
                 backgroundColor: "#1f3a5c",
               }}
-              onPress={() => handleRouting("ThirdPlace", "Home")}
+              onPress={() =>
+                handleRouting("ThirdPlace", "Home", "I_TercerPuesto")
+              }
             >
               <Text style={{ ...styles.modalT, color: "white" }}>
                 Third place play-off

@@ -475,25 +475,50 @@ export const checkIfSemisExist = async (tournamentId) => {
   }
 };
 
-export const fetchBracket = async (tournamentId) => {
+// export const fetchBracket = async (tournamentId) => {
+//   try {
+//     const querySnapshot = await getDocs(
+//       collection(firestore, "I_Torneos", tournamentId, "active_bracket")
+//     );
+//     const bracketData = querySnapshot.docs.map((doc) => doc.data());
+
+//     if (bracketData.length > 0) {
+//       const bracket = bracketData[0];
+//       for (const [key, value] of Object.entries(bracket)) {
+//         if (value === 1) {
+//           return key;
+//         }
+//       }
+//     }
+
+//     return null;
+//   } catch (error) {
+//     console.error("Error fetching bracket:", error);
+//     throw error;
+//   }
+// };
+
+export const isBracketActive = async (tournamentId, collectionName) => {
   try {
-    const querySnapshot = await getDocs(
-      collection(firestore, "I_Torneos", tournamentId, "active_bracket")
+    const bracketRef = collection(
+      firestore,
+      "I_Torneos",
+      tournamentId,
+      collectionName
     );
-    const bracketData = querySnapshot.docs.map((doc) => doc.data());
+    const querySnapshot = await getDocs(bracketRef);
+    let isActive = true;
 
-    if (bracketData.length > 0) {
-      const bracket = bracketData[0];
-      for (const [key, value] of Object.entries(bracket)) {
-        if (value === 1) {
-          return key;
-        }
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      if (!data.name || data.name.trim() === "") {
+        isActive = false;
       }
-    }
+    });
 
-    return null;
+    return isActive;
   } catch (error) {
-    console.error("Error fetching bracket:", error);
+    console.error("Error checking bracket:", error);
     throw error;
   }
 };
