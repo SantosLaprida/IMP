@@ -12,6 +12,17 @@ export const compareScores = async (
   tournamentName,
   collectionName
 ) => {
+  const player_name1 = await getPlayerName(id_player1, tournamentName);
+  const player_name2 = await getPlayerName(id_player2, tournamentName);
+
+  console.log(
+    "Called with",
+    player_name1,
+    player_name2,
+    tournamentName,
+    collectionName
+  );
+
   const scoreSheet1 = await getScoreSheet(
     id_player1,
     tournamentName,
@@ -22,9 +33,6 @@ export const compareScores = async (
     tournamentName,
     collectionName
   );
-
-  const name1 = await getPlayerName(id_player1, tournamentName);
-  const name2 = await getPlayerName(id_player2, tournamentName);
 
   let score = {
     currentHole: 1,
@@ -39,8 +47,9 @@ export const compareScores = async (
   }
 
   while (score.currentHole <= 18) {
-    const score1 = scoreSheet1[`H${score.currentHole}`];
-    const score2 = scoreSheet2[`H${score.currentHole}`];
+    const currentHoleKey = `H${score.currentHole.toString().padStart(2, "0")}`;
+    const score1 = scoreSheet1[currentHoleKey];
+    const score2 = scoreSheet2[currentHoleKey];
 
     if (score1 === 0 || score2 === 0) {
       score.currentHole++;
@@ -61,6 +70,7 @@ export const compareScores = async (
       score.currentHole++;
       continue;
     }
+
     if (score1 > score2) {
       score.result++;
       score.holesPlayed++;
@@ -78,8 +88,9 @@ export const compareScores = async (
 
   if (score.result === 0 && score.stillPlaying === false) {
     for (let i = 1; i <= 18; i++) {
-      const score1 = scoreSheet1[`H${i}`];
-      const score2 = scoreSheet2[`H${i}`];
+      const currentHoleKey = `H${i.toString().padStart(2, "0")}`;
+      const score1 = scoreSheet1[currentHoleKey];
+      const score2 = scoreSheet2[currentHoleKey];
 
       if (score1 < score2) {
         score.result--;
@@ -91,35 +102,7 @@ export const compareScores = async (
       }
     }
   }
-
-  if (score.stillPlaying === false) {
-    // If the game is over, then we can store the result in firebase
-    if (collectionName === "I_Cuartos") {
-      // Call a function yet to be created that is going to be in a file inside server directory, inside quarterUtils directory
-      // We will need to pass the tournamentName, the id of the two players, and the result of the game
-
-      await processCuartos(
-        tournamentName,
-        id_player1,
-        id_player2,
-        score.result
-      );
-    } else if (collectionName === "I_Semifinales") {
-      // Call a function yet to be created that is going to be in a file inside server directory, inside semisUtils directory
-      // We will need to pass the tournamentName, the id of the two players, and the result of the game
-
-      await processSemis(tournamentName, id_player1, id_player2, score.result);
-    } else if (collectionName === "I_Finales") {
-      await processFinals(tournamentName, id_player1, id_player2, score.result);
-    } else if (collectionName === "I_TercerCuarto") {
-      await processThirdPlace(
-        tournamentName,
-        id_player1,
-        id_player2,
-        score.result
-      );
-    }
-  }
+  console.log(score);
 
   return score;
 };

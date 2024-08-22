@@ -293,10 +293,6 @@ export const fetchScoreSheet = async (
   tournamentName,
   collectionName
 ) => {
-  console.log(id_player, "id_player INSIDE FETCH SCORE SHEET");
-  console.log(tournamentName, "tournamentName INSIDE FETCH SCORE SHEET");
-  console.log(collectionName, "collectionName INSIDE FETCH SCORE SHEET");
-
   try {
     const scoreQuery = query(
       collection(firestore, "I_Torneos", tournamentName, collectionName),
@@ -307,7 +303,7 @@ export const fetchScoreSheet = async (
     querySnapshot.docs.forEach((doc) => {
       const data = doc.data();
       for (const key in data) {
-        if (/^H(1[0-8]|[1-9])$/.test(key)) {
+        if (/^H(0[1-9]|1[0-8])$/.test(key)) {
           scoreData[key] = data[key];
         }
       }
@@ -320,7 +316,6 @@ export const fetchScoreSheet = async (
     throw error;
   }
 };
-
 export const fetchTournament = async () => {
   try {
     const q = query(
