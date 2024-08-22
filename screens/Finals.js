@@ -35,10 +35,13 @@ const Finals = ({ navigation }) => {
 	const [logo, setLogo] = useState(null);
 	const [name, setName] = useState(null);
 
-	const [ids, setIds] = useState(Array(4).fill(null));
-	const [results1, setResults1] = useState(null);
+	const [idsL, setIdsL] = useState(Array(2).fill(null));
 	const [results2, setResults2] = useState(null);
-	const [names, setNames] = useState(Array(4).fill("Loading...")); // Marcar posición con 'Loading...'
+	const [namesL, setNamesL] = useState(Array(2).fill("Loading..."));
+
+	const [ids, setIds] = useState(Array(2).fill(null));
+	const [results1, setResults1] = useState(null);
+	const [names, setNames] = useState(Array(2).fill("Loading...")); // Marcar posición con 'Loading...'
 
 	const fetchPlayers = async () => {
 		setLoading(true);
@@ -51,9 +54,9 @@ const Finals = ({ navigation }) => {
 			const lNames = lQualifiers.map((qualifier) => qualifier.name);
 			const lIds = lQualifiers.map((qualifier) => qualifier.id_player);
 			setNames(names);
-			setNames(lNames);
+			setNamesL(lNames);
 			setIds(ids);
-			setIds(lIds);
+			setIdsL(lIds);
 			await compareMatches(ids);
 		} catch (error) {
 			console.error(error);
@@ -100,20 +103,21 @@ const Finals = ({ navigation }) => {
 		}
 	};
 
-	const compareSecondMatch = async (ids) => {
+	const compareSecondMatch = async (idsL) => {
 		try {
-			if (ids[2] === null || ids[3] === null) {
-				console.error("Invalid player IDs for second match:", ids[2], ids[3]);
+			if (idsL[0] === null || idsL[1] === null) {
+				console.error("Invalid player IDs for second match:", idsL[0], idsL[1]);
 				return;
 			}
 			const collectionName = "I_TercerCuarto";
 			const tournamentId = await getTournamentId();
 			const results = await compareScores(
-				ids[2],
-				ids[3],
+				idsL[0],
+				idsL[1],
 				tournamentId,
 				collectionName
 			);
+			console.log(results);
 			setResults2(results);
 		} catch (error) {
 			console.error(error);
@@ -387,12 +391,12 @@ const Finals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{names[2]}
+										{namesL[0]}
 									</Text>
 								</View>
 								<View style={styles.middle}>
 									<Text style={{ ...styles.text, fontSize: 12 }}>
-										{displayMiddle(results2, names[2], names[3])}
+										{displayMiddle(results2, namesL[0], namesL[1])}
 									</Text>
 									<MaterialCommunityIcons
 										style={styles.vsIcon}
@@ -408,7 +412,7 @@ const Finals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{displayMiddleResult(results2, names[2], names[3])}
+										{displayMiddleResult(results2, namesL[0], namesL[1])}
 									</Text>
 								</View>
 								<Text
@@ -438,7 +442,7 @@ const Finals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{names[3]}
+										{namesL[1]}
 									</Text>
 								</View>
 							</View>
