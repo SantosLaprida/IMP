@@ -35,13 +35,13 @@ const Finals = ({ navigation }) => {
 	const [logo, setLogo] = useState(null);
 	const [name, setName] = useState(null);
 
-	const [idsL, setIdsL] = useState(Array(2).fill(null));
+	const [idsL, setIdsL] = useState();
 	const [results2, setResults2] = useState(null);
-	const [namesL, setNamesL] = useState(Array(2).fill("Loading..."));
+	const [namesL, setNamesL] = useState();
 
-	const [ids, setIds] = useState(Array(2).fill(null));
+	const [ids, setIds] = useState();
 	const [results1, setResults1] = useState(null);
-	const [names, setNames] = useState(Array(2).fill("Loading...")); // Marcar posición con 'Loading...'
+	const [names, setNames] = useState(); // Marcar posición con 'Loading...'
 
 	const fetchPlayers = async () => {
 		setLoading(true);
@@ -52,12 +52,13 @@ const Finals = ({ navigation }) => {
 			const ids = qualifiers.map((qualifier) => qualifier.id_player);
 			const lQualifiers = await fetchQualifiers(tournamentId, "I_TercerCuarto");
 			const lNames = lQualifiers.map((qualifier) => qualifier.name);
-			const lIds = lQualifiers.map((qualifier) => qualifier.id_player);
+			const idsL = lQualifiers.map((qualifier) => qualifier.id_player);
 			setNames(names);
 			setNamesL(lNames);
 			setIds(ids);
-			setIdsL(lIds);
-			await compareMatches(ids);
+			setIdsL(idsL);
+			console.log(idsL);
+			await compareMatches(ids, idsL);
 		} catch (error) {
 			console.error(error);
 		}
@@ -78,9 +79,9 @@ const Finals = ({ navigation }) => {
 		}
 	};
 
-	const compareMatches = async (ids) => {
+	const compareMatches = async (ids, idsL) => {
 		console.log("Comparing matches:", ids);
-		await Promise.all([compareFirstMatch(ids), compareSecondMatch(ids)]);
+		await Promise.all([compareFirstMatch(ids), compareSecondMatch(idsL)]);
 	};
 
 	const compareFirstMatch = async (ids) => {
@@ -118,6 +119,7 @@ const Finals = ({ navigation }) => {
 				collectionName
 			);
 			console.log(results);
+			console.log(idsL);
 			setResults2(results);
 		} catch (error) {
 			console.error(error);
