@@ -1,241 +1,627 @@
-import { fetchQualifiers, fetchTournament } from "../server/firestoreFunctions";
-import React, { useState, useEffect } from "react";
+import { fetchTournament, fetchQualifiers } from "../server/firestoreFunctions";
+import { semisExistsAPI } from "../api";
 import { compareScores, showResults } from "./QuarterUtils";
-import { fetchFinalsQualifiers } from "../server/finalsUtils/finalsUtils";
-
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ImageBackground,
-  Button,
-  TouchableOpacity,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { set } from "firebase/database";
 
+import React, { useState, useEffect } from "react";
+import {
+	View,
+	Text,
+	StyleSheet,
+	Image,
+	ActivityIndicator,
+	Button,
+	TouchableOpacity,
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { ScrollView } from "react-native-gesture-handler";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { reload } from "firebase/auth";
+import { useRoute } from "@react-navigation/native";
+import { FunctionDeclarationSchemaType } from "firebase/vertexai-preview";
+
 const Finals = ({ navigation }) => {
-  const [ids, setIds] = useState(Array(2).fill(null)); // Marcar posición con null
-  const [results1, setResults1] = useState(null);
-  const [names, setNames] = useState(Array(2).fill("Loading...")); // Marcar posición con 'Loading...'
+	const route = useRoute();
+	const { origin } = route.params;
 
-  const fetchPlayers = async () => {
-    try {
-      const tournamentId = await getTournamentId();
-      const qualifiers = await fetchQualifiers(tournamentId, "I_Finales");
-      const names = qualifiers.map((qualifier) => qualifier.name);
-      const ids = qualifiers.map((qualifier) => qualifier.id_player);
-      setNames(names);
-      setIds(ids);
-      await compareMatches(ids);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+	const handleNavigate = (origin) => {
+		navigation.navigate(origin);
+	};
 
-  const getTournamentId = async () => {
-    try {
-      const tournament = await fetchTournament();
-      return tournament[0].id;
-    } catch (error) {
-      console.error("Error fetching tournament data:", error);
-      throw error;
-    }
-  };
+	const [loading, setLoading] = useState(true);
 
-  const compareMatches = async (ids) => {
-    await Promise.all([compareFirstMatch(ids)]);
-  };
+	const [start, setStart] = useState(null);
+	const [end, setEnd] = useState(null);
+	const [logo, setLogo] = useState(null);
+	const [name, setName] = useState(null);
 
-  const compareFirstMatch = async (ids) => {
-    try {
-      if (ids[0] === null || ids[1] === null) {
-        console.error("Invalid player IDs for first match:", ids[0], ids[1]);
-        return;
-      }
-      const tournamentId = await getTournamentId();
-      const collectionName = "I_Finales";
-      const results = await compareScores(
-        ids[0],
-        ids[1],
-        tournamentId,
-        collectionName
-      );
-      setResults1(results);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+	const [ids, setIds] = useState(Array(4).fill(null));
+	const [results1, setResults1] = useState(null);
+	const [results2, setResults2] = useState(null);
+	const [names, setNames] = useState(Array(4).fill("Loading...")); // Marcar posición con 'Loading...'
 
-  useEffect(() => {
-    fetchPlayers();
-  }, []);
+	const fetchPlayers = async () => {
+		setLoading(true);
+		try {
+			const tournamentId = await getTournamentId();
+			const qualifiers = await fetchQualifiers(tournamentId, "I_Finales");
+			const names = qualifiers.map((qualifier) => qualifier.name);
+			const ids = qualifiers.map((qualifier) => qualifier.id_player);
+			const lQualifiers = await fetchQualifiers(tournamentId, "I_TercerCuarto");
+			const lNames = lQualifiers.map((qualifier) => qualifier.name);
+			const lIds = lQualifiers.map((qualifier) => qualifier.id_player);
+			setNames(names);
+			setNames(lNames);
+			setIds(ids);
+			setIds(lIds);
+			await compareMatches(ids);
+		} catch (error) {
+			console.error(error);
+		}
+		setLoading(false);
+	};
 
-  const displayResults = (results, name1, name2) => {
-    if (!results) {
-      return "Loading...";
-    }
-    return showResults(results, name1, name2);
-  };
+	useEffect(() => {
+		fetchPlayers();
+	}, []);
 
-  const displayResultsLeft = (results) => {
-    if (!results) {
-      return null;
-    }
-    if (!results.stillPlaying) {
-      return null;
-    }
-    if (results.result < 0) {
-      return -1 * results.result + "UP";
-    }
-    return null;
-  };
+	const getTournamentId = async () => {
+		try {
+			const tournament = await fetchTournament();
+			return tournament[0].id;
+		} catch (error) {
+			console.error("Error fetching tournament data:", error);
+			throw error;
+		}
+	};
 
-  const displayResultsRight = (results) => {
-    if (!results) {
-      return null;
-    }
-    if (!results.stillPlaying) {
-      return null;
-    }
-    if (results.result > 0) {
-      return results.result + "UP";
-    }
-    return null;
-  };
+	const compareMatches = async (ids) => {
+		console.log("Comparing matches:", ids);
+		await Promise.all([compareFirstMatch(ids), compareSecondMatch(ids)]);
+	};
 
-  const displayMiddle = (results, name1, name2) => {
-    if (!results) {
-      return "Loading...";
-    }
-    if (results.stillPlaying) {
-      return "Thru " + results.holesPlayed;
-    }
-    if (results.result > 0) {
-      return name2 + " Won";
-    }
-    if (results.result < 0) {
-      return name1 + " Won";
-    }
-  };
+	const compareFirstMatch = async (ids) => {
+		try {
+			if (ids[0] === null || ids[1] === null) {
+				console.error("Invalid player IDs for first match:", ids[0], ids[1]);
+				return;
+			}
+			const tournamentId = await getTournamentId();
+			const collectionName = "I_Finales";
+			const results = await compareScores(
+				ids[0],
+				ids[1],
+				tournamentId,
+				collectionName
+			);
+			setResults1(results);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
-  return (
-    <LinearGradient colors={["#0d1825", "#2e4857"]} style={styles.container}>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Bets")}
-      >
-        <Text style={styles.buttonText}>Back</Text>
-      </TouchableOpacity>
+	const compareSecondMatch = async (ids) => {
+		try {
+			if (ids[2] === null || ids[3] === null) {
+				console.error("Invalid player IDs for second match:", ids[2], ids[3]);
+				return;
+			}
+			const collectionName = "I_TercerCuarto";
+			const tournamentId = await getTournamentId();
+			const results = await compareScores(
+				ids[2],
+				ids[3],
+				tournamentId,
+				collectionName
+			);
+			setResults2(results);
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
-      <View style={{ ...styles.box, marginTop: 15 }}>
-        <View style={styles.player}>
-          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[0]}</Text>
-          <Image
-            source={require("../assets/images/logo.png")}
-            style={styles.logo}
-          />
-          <Text
-            style={{
-              ...styles.text,
-              marginTop: 5,
-              backgroundColor: "red",
-              borderRadius: 5,
-              fontSize: 12,
-            }}
-          >
-            {displayResultsLeft(results1)}
-          </Text>
-        </View>
-        <View style={styles.middle}>
-          <Text style={styles.text}>
-            {displayMiddle(results1, names[0], names[1])}
-          </Text>
-        </View>
-        <View style={styles.player}>
-          <Text style={{ ...styles.text, marginBottom: 10 }}>{names[1]}</Text>
-          <Image
-            source={require("../assets/images/logo.png")}
-            style={styles.logo}
-          />
-          <Text
-            style={{
-              ...styles.text,
-              marginTop: 5,
-              backgroundColor: "red",
-              borderRadius: 5,
-              fontSize: 12,
-            }}
-          >
-            {displayResultsRight(results1)}
-          </Text>
-        </View>
-      </View>
-    </LinearGradient>
-  );
+	useEffect(() => {
+		const getTournamentData = async () => {
+			try {
+				const torneo = await fetchTournament();
+
+				let name = torneo[0].name;
+				let start_date = torneo[0].start_date;
+				let finish_date = torneo[0].finish_date;
+				let logo = torneo[0].logo;
+
+				setName(name);
+				setStart(start_date);
+				setEnd(finish_date);
+				setLogo(logo);
+			} catch (error) {
+				console.error(error);
+			}
+		};
+		getTournamentData();
+	}, []);
+
+	const displayResultsLeft = (results) => {
+		if (!results) {
+			return null;
+		}
+		if (!results.stillPlaying) {
+			return null;
+		}
+		if (results.result < 0) {
+			return -1 * results.result + "UP";
+		}
+		return null;
+	};
+
+	const displayResultsRight = (results) => {
+		if (!results) {
+			return null;
+		}
+		if (!results.stillPlaying) {
+			return null;
+		}
+		if (results.result > 0) {
+			return results.result + "UP";
+		}
+		return null;
+	};
+
+	const displayMiddle = (results, name1, name2) => {
+		if (!results) {
+			return null;
+		}
+		if (results.stillPlaying) {
+			return "Thru " + results.holesPlayed;
+		} else {
+			return null;
+		}
+	};
+
+	const displayMiddleResult = (results, name1, name2) => {
+		if (!results) {
+			return null;
+		}
+		if (results.stillPlaying && results.result === 0) {
+			return "All Square";
+		}
+		if (!results.stillPlaying && results.result > 0) {
+			return name2 + " Won";
+		}
+		if (!results.stillPlaying && results.result < 0) {
+			return name1 + " Won";
+		}
+	};
+
+	return (
+		<LinearGradient
+			colors={["#17628b34", "white"]}
+			locations={[0, 15]}
+			style={styles.container}
+		>
+			{/* CONTAINER DE ARRIBA */}
+			<View style={styles.box}>
+				<Text
+					style={{
+						...styles.text,
+						paddingBottom: 5,
+						fontSize: 15,
+						marginTop: 0,
+						fontSize: 18,
+						fontFamily: "p-bold",
+						textDecorationLine: "underline",
+					}}
+				>
+					{name}
+				</Text>
+				<View style={styles.logoBox}>
+					<Image source={{ uri: logo }} style={styles.logo} />
+				</View>
+				<View>
+					<Text style={{ ...styles.text, fontSize: 10 }}>
+						{"Finish date: " + end}
+					</Text>
+				</View>
+			</View>
+			{/* CONTAINER DE ABAJO */}
+			<View style={{ ...styles.box, height: 450 }}>
+				<Text
+					style={{
+						...styles.text,
+						fontSize: 18,
+						textDecorationLine: "underline",
+						fontFamily: "p-bold",
+						marginBottom: 15,
+					}}
+				>
+					Finals
+				</Text>
+
+				{loading ? (
+					<ActivityIndicator
+						style={styles.loader}
+						size="large"
+						color="#1f3a5c"
+					/>
+				) : (
+					<>
+						<ScrollView showsVerticalScrollIndicator={false}>
+							{/* GAME 1 */}
+							<Text
+								style={{
+									...styles.text,
+									fontSize: 13,
+									textDecorationLine: "underline",
+									textAlign: "center",
+									fontFamily: "p-bold",
+									marginBottom: 5,
+								}}
+							>
+								Winners Final
+							</Text>
+							<View style={styles.gameBox}>
+								<Text style={styles.tGame}>Game 1</Text>
+								<Text
+									style={[
+										styles.text_left,
+										{
+											backgroundColor: displayResultsLeft(results1)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsLeft(results1)}
+								</Text>
+								<View style={styles.player}>
+									<Image
+										source={require("../assets/images/scottie.webp")}
+										style={styles.gameLogo}
+									/>
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[0]}
+									</Text>
+								</View>
+								<View style={styles.middle}>
+									<Text style={{ ...styles.text, fontSize: 12 }}>
+										{displayMiddle(results1, names[0], names[1])}
+									</Text>
+									<MaterialCommunityIcons
+										style={styles.vsIcon}
+										name="sword-cross"
+										size={24}
+										color="#1f3a5c"
+									/>
+									<Text
+										style={{
+											...styles.text,
+											fontSize: 12,
+											color: "green",
+											textAlign: "center",
+										}}
+									>
+										{displayMiddleResult(results1, names[0], names[1])}
+									</Text>
+								</View>
+								<Text
+									style={[
+										styles.text_right,
+										{
+											backgroundColor: displayResultsRight(results1)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsRight(results1)}
+								</Text>
+								<View style={styles.player}>
+									<Image
+										source={require("../assets/images/scottie.webp")}
+										style={styles.gameLogo}
+									/>
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[1]}
+									</Text>
+								</View>
+							</View>
+							<TouchableOpacity style={styles.detailBtn}>
+								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
+									Details
+								</Text>
+							</TouchableOpacity>
+							<Text
+								style={{
+									...styles.text,
+									fontSize: 13,
+									textDecorationLine: "underline",
+									textAlign: "center",
+									fontFamily: "p-bold",
+									marginBottom: 5,
+								}}
+							>
+								Losers Final
+							</Text>
+							{/* GAME 2 */}
+							<View style={styles.gameBox}>
+								<Text style={styles.tGame}>Game 2</Text>
+								<Text
+									style={[
+										styles.text_left,
+										{
+											backgroundColor: displayResultsLeft(results2)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsLeft(results2)}
+								</Text>
+								<View style={styles.player}>
+									<Image
+										source={require("../assets/images/scottie.webp")}
+										style={styles.gameLogo}
+									/>
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[2]}
+									</Text>
+								</View>
+								<View style={styles.middle}>
+									<Text style={{ ...styles.text, fontSize: 12 }}>
+										{displayMiddle(results2, names[2], names[3])}
+									</Text>
+									<MaterialCommunityIcons
+										style={styles.vsIcon}
+										name="sword-cross"
+										size={24}
+										color="#1f3a5c"
+									/>
+									<Text
+										style={{
+											...styles.text,
+											fontSize: 12,
+											color: "green",
+											textAlign: "center",
+										}}
+									>
+										{displayMiddleResult(results2, names[2], names[3])}
+									</Text>
+								</View>
+								<Text
+									style={[
+										styles.text_right,
+										{
+											backgroundColor: displayResultsRight(results2)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsRight(results2)}
+								</Text>
+
+								<View style={styles.player}>
+									<Image
+										source={require("../assets/images/scottie.webp")}
+										style={styles.gameLogo}
+									/>
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[3]}
+									</Text>
+								</View>
+							</View>
+							<TouchableOpacity style={styles.detailBtn}>
+								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
+									Details
+								</Text>
+							</TouchableOpacity>
+						</ScrollView>
+					</>
+				)}
+			</View>
+			<TouchableOpacity
+				onPress={() => handleNavigate(origin)}
+				style={{
+					...styles.button,
+					marginTop: 20,
+					backgroundColor: "#1f3a5c",
+					width: "85%",
+				}}
+			>
+				<Text style={{ ...styles.buttonText, color: "white" }}>Back</Text>
+			</TouchableOpacity>
+		</LinearGradient>
+	);
 };
 
 const styles = StyleSheet.create({
-  box: {
-    marginBottom: 15,
-    flexDirection: "row",
-    borderWidth: 5,
-    borderColor: "teal",
-    height: 160,
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderRadius: 30,
-    width: 370,
-    padding: 30,
-    marginVertical: 30,
-    backgroundColor: "rgba(0, 0, 0, 0.788)",
-  },
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    color: "white",
-    textAlign: "center",
-    fontWeight: "800",
-  },
-  logo: {
-    width: 70,
-    height: 70,
-    borderRadius: 20,
-  },
-  player: {
-    flex: 1,
-    alignItems: "center",
-  },
-  middle: {
-    flex: 1,
-    alignItems: "center",
-  },
-  button: {
-    backgroundColor: "rgba(212, 188, 50, 0.76)",
-    padding: 15,
-    margin: 10,
-    borderRadius: 10,
-    width: 300,
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "transparent",
-    // Sombra para iOS
-    shadowColor: "#000",
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 3.84,
-    // Sombra para Android
-    elevation: 30,
-  },
-  buttonText: {
-    color: "#15303F",
-    fontSize: 20,
-    fontWeight: "600",
-  },
+	container: {
+		flex: 1,
+		alignItems: "center",
+	},
+	box: {
+		padding: 20,
+		alignItems: "center",
+		borderRadius: 20,
+		width: "90%",
+		marginTop: 15,
+		backgroundColor: "rgb(255, 252, 241)",
+		shadowColor: "#000", // Color de la sombra
+		shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
+		shadowOpacity: 0.3, // Opacidad de la sombra
+		shadowRadius: 6, // Radio de la sombra
+		// Para Android
+		elevation: 10, // Elevación para la sombra
+	},
+	logo: {
+		width: 150,
+		height: 100,
+		borderRadius: 10,
+		backgroundColor: "black",
+		padding: 5,
+	},
+	logoBox: {
+		backgroundColor: "#f0f0f0",
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 4 },
+		shadowOpacity: 0.3,
+		shadowRadius: 6,
+		elevation: 10,
+		borderRadius: 10,
+		padding: 15,
+
+		justifyContent: "center",
+		alignItems: "center",
+		marginVertical: 10,
+	},
+	text: {
+		fontSize: 15,
+		color: "#1f3a5c",
+		fontFamily: "p-semibold",
+	},
+	gameBox: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		borderTopLeftRadius: 10,
+		borderTopRightRadius: 10,
+
+		width: "100%",
+		alignItems: "center",
+		padding: 5,
+		backgroundColor: "#f0f0f0",
+	},
+	player: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+		marginVertical: 15,
+	},
+	gameLogo: {
+		width: 50,
+		height: 50,
+		borderRadius: 20,
+		marginVertical: 2,
+	},
+	middle: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "space-around",
+		height: 100,
+		marginBottom: -25,
+	},
+	button: {
+		backgroundColor: "#17628b34",
+		padding: 6,
+		margin: 5,
+		borderRadius: 10,
+		width: "80%",
+		alignItems: "center",
+		borderWidth: 0,
+		borderColor: "#17628b94",
+		borderBottomWidth: 7,
+		borderBottomColor: "rgba(0, 0, 0, 0.2)",
+	},
+	buttonText: {
+		color: "#1f3a5c",
+		fontSize: 14,
+		fontFamily: "p-semibold",
+		position: "relative",
+		bottom: -2,
+	},
+	text_left: {
+		fontSize: 8,
+		width: 30,
+		color: "white",
+		borderRadius: 5,
+		height: 25,
+		position: "absolute",
+		left: 0,
+		top: 0,
+		padding: 5,
+		fontFamily: "p-semibold",
+		backgroundColor: "red",
+	},
+	text_right: {
+		fontSize: 8,
+		width: 30,
+		color: "white",
+		borderRadius: 5,
+		height: 25,
+		position: "absolute",
+		right: 0,
+		top: 0,
+		padding: 5,
+		fontFamily: "p-semibold",
+		backgroundColor: "red",
+	},
+	loader: {
+		marginTop: 100,
+	},
+	gameInfo: {
+		alignItems: "center",
+		justifyContent: "center",
+		flex: 1,
+		marginBottom: 4,
+	},
+	detailBtn: {
+		padding: 5,
+		borderBottomLeftRadius: 5,
+		borderBottomRightRadius: 5,
+		flexDirection: "row",
+		width: "100%",
+		alignItems: "center",
+		justifyContent: "space-around",
+		backgroundColor: "#17628b34",
+		borderWidth: 0,
+		borderColor: "#17628b94",
+		borderBottomWidth: 4,
+		borderBottomColor: "rgba(0, 0, 0, 0.2)",
+		marginBottom: 15,
+	},
+	tGame: {
+		position: "absolute",
+		top: 0,
+		left: "41%",
+		fontFamily: "p-semibold",
+		backgroundColor: "#17628b34",
+		fontSize: 11,
+		borderRadius: 5,
+		padding: 3,
+		color: "#1f3a5c",
+		paddingHorizontal: 10,
+	},
 });
 
 export default Finals;
