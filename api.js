@@ -45,9 +45,9 @@ export const sendPasswordResetAPI = async (email) => {
   }
 };
 
-export const fetchPlayers = async () => {
+export const fetchPlayers = async (tournamentId) => {
   try {
-    const players = await fetchPlayersFromFirestore();
+    const players = await fetchPlayersFromFirestore(tournamentId);
     return players;
   } catch (error) {
     console.error("Error fetching players:", error);
@@ -55,19 +55,18 @@ export const fetchPlayers = async () => {
   }
 };
 
-export const storeTeam = async (userId, team) => {
+export const storeTeam = async (userId, team, tournamentId) => {
   try {
-    await storeTeamInFirestore(userId, team);
+    await storeTeamInFirestore(userId, team, tournamentId);
   } catch (error) {
     console.error("Error storing team:", error);
     throw error;
   }
 };
 
-export const fetchTeamAPI = async (userId) => {
+export const fetchTeamAPI = async (tournamentId, userId) => {
   try {
-    const team = await fetchTeamFromFirestore(userId);
-    console.log(team);
+    const team = await fetchTeamFromFirestore(tournamentId, userId);
     return team;
   } catch (error) {
     console.error("Error fetching team:", error);

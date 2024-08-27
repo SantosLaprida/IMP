@@ -178,15 +178,10 @@ export const storeTeam = async (userId, team) => {
   }
 };
 
-export const fetchPlayersFromFirestore = async () => {
+export const fetchPlayersFromFirestore = async (tournamentId) => {
   try {
     const querySnapshot = await getDocs(
-      collection(
-        firestore,
-        "I_Torneos",
-        "The_Open_Championship_2024",
-        "I_Players"
-      )
+      collection(firestore, "I_Torneos", tournamentId, "I_Players")
     );
     const playersData = querySnapshot.docs.map((doc) => {
       const data = doc.data(); // Get the data without adding the Firestore id
@@ -200,16 +195,25 @@ export const fetchPlayersFromFirestore = async () => {
   }
 };
 
-export const storeTeamInFirestore = async (userId, team) => {
+export const storeTeamInFirestore = async (userId, team, tournamentId) => {
   try {
-    const teamCollection = collection(firestore, "I_Apuestas");
+    const teamDocRef = doc(
+      firestore,
+      "I_Torneos",
+      tournamentId,
+      "I_Apuestas",
+      userId // The document ID is the userId
+    );
 
-    for (const playerId of team) {
-      await addDoc(teamCollection, {
-        id_member: userId,
-        id_player: playerId,
-      });
-    }
+    // Create an object to store the players in the format { player1: playerId1, player2: playerId2, ... }
+    const teamData = {};
+
+    team.forEach((playerId, index) => {
+      teamData[`player${index + 1}`] = playerId;
+    });
+
+    // Store the team data in Firestore
+    await setDoc(teamDocRef, teamData);
 
     console.log("Team stored successfully");
   } catch (error) {
@@ -217,16 +221,24 @@ export const storeTeamInFirestore = async (userId, team) => {
     throw error;
   }
 };
-
-export const fetchTeamFromFirestore = async (userId) => {
+export const fetchTeamFromFirestore = async (tournamentId, userId) => {
   try {
-    const teamQuery = query(
-      collection(firestore, "I_Apuestas"),
-      where("id_member", "==", userId)
+    const teamDocRef = doc(
+      firestore,
+      "I_Torneos",
+      tournamentId,
+      "I_Apuestas",
+      userId // The document ID is the userId
     );
-    const querySnapshot = await getDocs(teamQuery);
-    const teamData = querySnapshot.docs.map((doc) => doc.data());
-    return teamData;
+
+    const teamDoc = await getDoc(teamDocRef);
+
+    if (teamDoc.exists()) {
+      return teamDoc.data(); // Return the team data if the document exists
+    } else {
+      console.log("No team found for this user.");
+      return null;
+    }
   } catch (error) {
     console.error("Error fetching team:", error);
     throw error;
@@ -469,29 +481,6 @@ export const checkIfSemisExist = async (tournamentId) => {
     throw error;
   }
 };
-
-// export const fetchBracket = async (tournamentId) => {
-//   try {
-//     const querySnapshot = await getDocs(
-//       collection(firestore, "I_Torneos", tournamentId, "active_bracket")
-//     );
-//     const bracketData = querySnapshot.docs.map((doc) => doc.data());
-
-//     if (bracketData.length > 0) {
-//       const bracket = bracketData[0];
-//       for (const [key, value] of Object.entries(bracket)) {
-//         if (value === 1) {
-//           return key;
-//         }
-//       }
-//     }
-
-//     return null;
-//   } catch (error) {
-//     console.error("Error fetching bracket:", error);
-//     throw error;
-//   }
-// };
 
 export const isBracketActive = async (tournamentId, collectionName) => {
   try {

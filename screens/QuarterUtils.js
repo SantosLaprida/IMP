@@ -12,17 +12,6 @@ export const compareScores = async (
   tournamentName,
   collectionName
 ) => {
-  const player_name1 = await getPlayerName(id_player1, tournamentName);
-  const player_name2 = await getPlayerName(id_player2, tournamentName);
-
-  console.log(
-    "Called with",
-    player_name1,
-    player_name2,
-    tournamentName,
-    collectionName
-  );
-
   const scoreSheet1 = await getScoreSheet(
     id_player1,
     tournamentName,
@@ -102,7 +91,6 @@ export const compareScores = async (
       }
     }
   }
-  console.log(score);
 
   return score;
 };
