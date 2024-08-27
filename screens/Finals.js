@@ -10,7 +10,6 @@ import {
   StyleSheet,
   Image,
   ActivityIndicator,
-  
   Button,
   TouchableOpacity,
 } from "react-native";
@@ -36,7 +35,6 @@ const Finals = ({ navigation }) => {
   const [logo, setLogo] = useState(null);
   const [name, setName] = useState(null);
 
-<<<<<<< HEAD
   const [idsL, setIdsL] = useState(Array(2).fill(null));
   const [results2, setResults2] = useState(null);
   const [namesL, setNamesL] = useState(Array(2).fill("Loading..."));
@@ -65,37 +63,6 @@ const Finals = ({ navigation }) => {
     }
     setLoading(false);
   };
-=======
-	const [idsL, setIdsL] = useState();
-	const [results2, setResults2] = useState(null);
-	const [namesL, setNamesL] = useState();
-
-	const [ids, setIds] = useState();
-	const [results1, setResults1] = useState(null);
-	const [names, setNames] = useState(); // Marcar posición con 'Loading...'
-
-	const fetchPlayers = async () => {
-		setLoading(true);
-		try {
-			const tournamentId = await getTournamentId();
-			const qualifiers = await fetchQualifiers(tournamentId, "I_Finales");
-			const names = qualifiers.map((qualifier) => qualifier.name);
-			const ids = qualifiers.map((qualifier) => qualifier.id_player);
-			const lQualifiers = await fetchQualifiers(tournamentId, "I_TercerCuarto");
-			const lNames = lQualifiers.map((qualifier) => qualifier.name);
-			const idsL = lQualifiers.map((qualifier) => qualifier.id_player);
-			setNames(names);
-			setNamesL(lNames);
-			setIds(ids);
-			setIdsL(idsL);
-			console.log(idsL);
-			await compareMatches(ids, idsL);
-		} catch (error) {
-			console.error(error);
-		}
-		setLoading(false);
-	};
->>>>>>> 3c49a1770ecaa389e2168c832b7cde635b296973
 
   useEffect(() => {
     fetchPlayers();
@@ -111,17 +78,10 @@ const Finals = ({ navigation }) => {
     }
   };
 
-<<<<<<< HEAD
   const compareMatches = async (ids) => {
     console.log("Comparing matches:", ids);
     await Promise.all([compareFirstMatch(ids), compareSecondMatch(ids)]);
   };
-=======
-	const compareMatches = async (ids, idsL) => {
-		console.log("Comparing matches:", ids);
-		await Promise.all([compareFirstMatch(ids), compareSecondMatch(idsL)]);
-	};
->>>>>>> 3c49a1770ecaa389e2168c832b7cde635b296973
 
   const compareFirstMatch = async (ids) => {
     try {
@@ -143,7 +103,6 @@ const Finals = ({ navigation }) => {
     }
   };
 
-<<<<<<< HEAD
   const compareSecondMatch = async (idsL) => {
     try {
       if (idsL[0] === null || idsL[1] === null) {
@@ -164,29 +123,6 @@ const Finals = ({ navigation }) => {
       console.error(error);
     }
   };
-=======
-	const compareSecondMatch = async (idsL) => {
-		try {
-			if (idsL[0] === null || idsL[1] === null) {
-				console.error("Invalid player IDs for second match:", idsL[0], idsL[1]);
-				return;
-			}
-			const collectionName = "I_TercerCuarto";
-			const tournamentId = await getTournamentId();
-			const results = await compareScores(
-				idsL[0],
-				idsL[1],
-				tournamentId,
-				collectionName
-			);
-			console.log(results);
-			console.log(idsL);
-			setResults2(results);
-		} catch (error) {
-			console.error(error);
-		}
-	};
->>>>>>> 3c49a1770ecaa389e2168c832b7cde635b296973
 
   useEffect(() => {
     const getTournamentData = async () => {
