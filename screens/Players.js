@@ -45,6 +45,16 @@ const Players = ({ navigation }) => {
               })
               .filter((player) => player); // Filter out any undefined results
             setEquipo(mappedTeam);
+
+            // Remove the players in the team from the list of available players
+            setJugadores((prevJugadores) =>
+              prevJugadores.filter(
+                (jugador) =>
+                  !mappedTeam.some(
+                    (player) => player.id_player === jugador.id_player
+                  )
+              )
+            );
           }
         }
       } catch (error) {
@@ -65,6 +75,14 @@ const Players = ({ navigation }) => {
     } catch (error) {
       console.error("Error fetching tournament data:", error);
       throw error;
+    }
+  };
+
+  const getButtonText = () => {
+    if (equipo.length === 0) {
+      return "Place my bet";
+    } else {
+      return "Change my bet";
     }
   };
 
@@ -103,6 +121,8 @@ const Players = ({ navigation }) => {
       await storeTeam(userId, playersIds, tournamentId);
       console.log("Team stored successfully");
       alert("Bet placed succesfully");
+
+      navigation.navigate("Bets");
     } catch (error) {
       console.error("Failed to store team:", error);
     }
@@ -261,7 +281,7 @@ const Players = ({ navigation }) => {
             onPress={handleFinish}
           >
             <Text style={{ ...styles.buttonText, color: "white" }}>
-              Place my bet
+              {getButtonText()}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
