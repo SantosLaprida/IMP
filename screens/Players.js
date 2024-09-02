@@ -78,14 +78,6 @@ const Players = ({ navigation }) => {
 		}
 	};
 
-	const getButtonText = () => {
-		if (equipo.length === 0) {
-			return "Place my bet";
-		} else {
-			return "Change my bet";
-		}
-	};
-
 	const agregarJugadorAlEquipo = (jugador) => {
 		if (equipo.length >= 8) {
 			alert("You can only select a maximum of 8 players.");
@@ -95,6 +87,14 @@ const Players = ({ navigation }) => {
 		setJugadores((prevJugadores) =>
 			prevJugadores.filter((j) => j.id_player !== jugador.id_player)
 		);
+	};
+
+	const getButtonText = () => {
+		if (equipo.length === 0) {
+			return "Place my bet";
+		} else {
+			return "Change my bet";
+		}
 	};
 
 	const quitarJugadorDelEquipo = (jugador) => {

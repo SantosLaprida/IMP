@@ -57,7 +57,7 @@ const Finals = ({ navigation }) => {
       setNamesL(lNames);
       setIds(ids);
       setIdsL(lIds);
-      await compareMatches(ids);
+      await compareMatches(ids, lIds);
     } catch (error) {
       console.error(error);
     }
@@ -78,9 +78,9 @@ const Finals = ({ navigation }) => {
     }
   };
 
-  const compareMatches = async (ids) => {
+  const compareMatches = async (ids, idsL) => {
     console.log("Comparing matches:", ids);
-    await Promise.all([compareFirstMatch(ids), compareSecondMatch(ids)]);
+    await Promise.all([compareFirstMatch(ids), compareSecondMatch(idsL)]);
   };
 
   const compareFirstMatch = async (ids) => {
@@ -196,6 +196,8 @@ const Finals = ({ navigation }) => {
       return name1 + " Won";
     }
   };
+
+
 
   return (
     <LinearGradient

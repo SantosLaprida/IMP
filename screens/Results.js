@@ -152,7 +152,7 @@ const Results = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{names[0]}
+										Scottie
 									</Text>
 								</View>
 							</View>
@@ -179,7 +179,7 @@ const Results = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{names[1]}
+										Scottie
 									</Text>
 								</View>
 							</View>
@@ -206,7 +206,7 @@ const Results = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{names[2]}
+										Scottie
 									</Text>
 								</View>
 							</View>
@@ -233,7 +233,7 @@ const Results = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{names[3]}
+										Scottie
 									</Text>
 								</View>
 							</View>
