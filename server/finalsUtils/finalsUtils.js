@@ -168,29 +168,28 @@ export const fetchFinalResults = async (tournamentId) => {
       tournamentId,
       "I_Resultados"
     );
-    const matchDocs = ["Match1", "Match2", "Match3", "Match4"];
+
     const names = [];
 
-    for (const match of matchDocs) {
-      const matchDocRef = doc(finalsCollectionRef, match);
-      const matchDocSnapshot = await getDoc(matchDocRef);
+    // Fetch all documents in the I_Resultados collection
+    const querySnapshot = await getDocs(finalsCollectionRef);
 
-      if (!matchDocSnapshot.exists()) {
-        console.log(`Document ${match} does not exist in the collection.`);
-        // Assuming you have a function to show popups, you can replace the console.log with that function
-        // showPopup(`Document ${match} does not exist in the collection.`);
-        return;
-      }
+    if (querySnapshot.empty) {
+      console.log("No documents found in the I_Resultados collection.");
+      // Assuming you have a function to show popups, you can replace the console.log with that function
+      // showPopup("No documents found in the I_Resultados collection.");
+      return names; // return empty array if no documents found
+    }
 
-      const matchData = matchDocSnapshot.data();
+    querySnapshot.forEach((doc) => {
+      const matchData = doc.data();
       if (matchData && matchData.name) {
         names.push(matchData.name);
       } else {
-        console.log(`No name field in document ${match}.`);
-        // showPopup(`No name field in document ${match}.`);
-        return;
+        console.log(`No name field in document ${doc.id}.`);
+        // showPopup(`No name field in document ${doc.id}.`);
       }
-    }
+    });
 
     return names;
   } catch (error) {
