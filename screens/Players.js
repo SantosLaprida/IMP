@@ -219,28 +219,6 @@ const Players = ({ navigation }) => {
 						</ScrollView>
 					)}
 				</View>
-				<View style={styles.arrowCont}>
-					<View style={styles.arrows}>
-						<Feather
-							style={styles.element}
-							name="chevrons-down"
-							size={28}
-							color="#1f3a5c"
-						/>
-						<Feather
-							style={styles.element}
-							name="chevrons-down"
-							size={28}
-							color="#1f3a5c"
-						/>
-						<Feather
-							style={styles.element}
-							name="chevrons-down"
-							size={28}
-							color="#1f3a5c"
-						/>
-					</View>
-				</View>
 
 				<View style={{ ...styles.box, height: 270 }}>
 					<ScrollView
@@ -304,7 +282,7 @@ const styles = StyleSheet.create({
 		borderRadius: 15,
 		alignItems: "center",
 		backgroundColor: "rgb(255, 252, 241)",
-		height: 350,
+		height: 380,
 		marginBottom: 10,
 		shadowColor: "#000", // Color de la sombra
 		shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra

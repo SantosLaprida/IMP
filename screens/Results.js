@@ -106,11 +106,6 @@ const Results = ({ navigation }) => {
 				<View style={styles.logoBox}>
 					<Image source={{ uri: logo }} style={styles.logo} />
 				</View>
-				<View>
-					<Text style={{ ...styles.text, fontSize: 10 }}>
-						{"Finish date: " + end}
-					</Text>
-				</View>
 			</View>
 			{/* CONTAINER DE ABAJO */}
 			<View style={{ ...styles.box, height: 450 }}>
@@ -146,7 +141,7 @@ const Results = ({ navigation }) => {
 									<Text
 										style={{
 											...styles.text,
-											marginBottom: 5,
+
 											fontSize: 10,
 											paddingHorizontal: 20,
 											textAlign: "center",
@@ -156,11 +151,7 @@ const Results = ({ navigation }) => {
 									</Text>
 								</View>
 							</View>
-							<TouchableOpacity style={styles.detailBtn}>
-								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
-									Details
-								</Text>
-							</TouchableOpacity>
+
 							{/* GAME 2 */}
 							<View style={styles.gameBox}>
 								<Text style={styles.tGame}>2° Place</Text>
@@ -173,7 +164,7 @@ const Results = ({ navigation }) => {
 									<Text
 										style={{
 											...styles.text,
-											marginBottom: 5,
+
 											fontSize: 10,
 											paddingHorizontal: 20,
 											textAlign: "center",
@@ -183,11 +174,7 @@ const Results = ({ navigation }) => {
 									</Text>
 								</View>
 							</View>
-							<TouchableOpacity style={styles.detailBtn}>
-								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
-									Details
-								</Text>
-							</TouchableOpacity>
+
 							{/* GAME 3*/}
 							<View style={styles.gameBox}>
 								<Text style={styles.tGame}>3° Place</Text>
@@ -200,7 +187,7 @@ const Results = ({ navigation }) => {
 									<Text
 										style={{
 											...styles.text,
-											marginBottom: 5,
+
 											fontSize: 10,
 											paddingHorizontal: 20,
 											textAlign: "center",
@@ -210,11 +197,7 @@ const Results = ({ navigation }) => {
 									</Text>
 								</View>
 							</View>
-							<TouchableOpacity style={styles.detailBtn}>
-								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
-									Details
-								</Text>
-							</TouchableOpacity>
+
 							{/* GAME 4*/}
 							<View style={styles.gameBox}>
 								<Text style={styles.tGame}>4° Place</Text>
@@ -227,21 +210,16 @@ const Results = ({ navigation }) => {
 									<Text
 										style={{
 											...styles.text,
-											marginBottom: 5,
+
 											fontSize: 10,
 											paddingHorizontal: 20,
 											textAlign: "center",
 										}}
 									>
-									{names[3]}
+										{names[3]}
 									</Text>
 								</View>
 							</View>
-							<TouchableOpacity style={styles.detailBtn}>
-								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
-									Details
-								</Text>
-							</TouchableOpacity>
 						</ScrollView>
 					</>
 				)}
@@ -268,6 +246,7 @@ const styles = StyleSheet.create({
 	},
 	box: {
 		padding: 20,
+		paddingHorizontal: 0,
 		alignItems: "center",
 		borderRadius: 20,
 		width: "90%",
@@ -308,23 +287,27 @@ const styles = StyleSheet.create({
 	},
 	gameBox: {
 		flexDirection: "row",
-		justifyContent: "space-between",
+		justifyContent: "center",
 		borderTopLeftRadius: 10,
 		borderTopRightRadius: 10,
 		paddingVertical: 15,
 		width: "100%",
+		height: 80,
 		alignItems: "center",
 		backgroundColor: "#f0f0f0",
+		width: "100%",
+		borderRadius: 10,
+		marginBottom: 10,
 	},
 	player: {
-		flex: 1,
+		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "center",
-		marginVertical: 15,
+		marginTop: 20,
 	},
 	gameLogo: {
-		width: 50,
-		height: 50,
+		width: 35,
+		height: 35,
 		borderRadius: 20,
 		marginVertical: 2,
 	},
