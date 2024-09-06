@@ -482,6 +482,67 @@ export const checkIfSemisExist = async (tournamentId) => {
   }
 };
 
+export const userMadeBet = async (tournamentId, userId) => {
+  try {
+    const querySnapshot = await getDocs(
+      collection(firestore, "I_Torneos", tournamentId, "I_Apuestas")
+    );
+    return querySnapshot.docs.some((doc) => doc.id === userId);
+  } catch (error) {
+    console.error("Error checking if user made bet:", error);
+    throw error;
+  }
+};
+
+/**
+ *
+ * @param {*} tournamentId
+ * @returns True or False, if returns null something went wrong with the database
+ */
+export const getApuestas = async (tournamentId) => {
+  try {
+    const querySnapshot = await getDocs(
+      collection(firestore, "I_Torneos", tournamentId)
+    );
+
+    for (const doc of querySnapshot.docs) {
+      const data = doc.data();
+      if (data.apuestas && data.apuestas.trim() !== "") {
+        return data.apuestas;
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error("Error getting active bracket:", error);
+    throw error;
+  }
+};
+
+/**
+ *
+ * @param {*} tournamentId
+ * @returns a string, either cuartos, semis or finales if there is a bracket active, it returns an empty string if there is no active bracket
+ * If it return null, something went wrong with the database
+ */
+export const getActiveBracket = async (tournamentId) => {
+  try {
+    const querySnapshot = await getDocs(
+      collection(firestore, "I_Torneos", tournamentId)
+    );
+
+    for (const doc of querySnapshot.docs) {
+      const data = doc.data();
+      if (data.active_bracket && data.active_bracket.trim() !== "") {
+        return data.active_bracket;
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error("Error getting active bracket:", error);
+    throw error;
+  }
+};
+
 export const isBracketActive = async (tournamentId, collectionName) => {
   try {
     const bracketRef = collection(
