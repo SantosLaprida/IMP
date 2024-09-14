@@ -1,5 +1,9 @@
 import { fetchPlayers, storeTeam, fetchTeamAPI } from "../api";
-import { fetchTournament, userMadeBet } from "../server/firestoreFunctions";
+import {
+	fetchTournament,
+	userMadeBet,
+	getActiveBracket,
+} from "../server/firestoreFunctions";
 import { auth } from "../server/firebaseConfig";
 
 import React, { useEffect, useState, useRef } from "react";
@@ -31,6 +35,7 @@ const Bets = ({ navigation }) => {
 	const [modalVisible1, setModalVisible1] = useState(false);
 
 	const [hasBet, setHasBet] = useState(false);
+	const [activeBracketStage, setActiveBracketStage] = useState(null);
 
 	const BlinkDot = () => {
 		const opacity = useRef(new Animated.Value(1)).current;
@@ -67,10 +72,6 @@ const Bets = ({ navigation }) => {
 				if (user) {
 					const userId = user.uid;
 
-					// Verificar si el usuario ya hizo una apuesta
-					const betMade = await userMadeBet(tournamentId, userId);
-					setHasBet(betMade); // Asumiendo que hasBet ya está en el estado
-
 					const userTeam = await fetchTeamAPI(tournamentId, userId);
 					if (userTeam) {
 						const teamArray = Object.values(userTeam);
@@ -104,6 +105,25 @@ const Bets = ({ navigation }) => {
 		fetchData();
 	}, []);
 
+	useEffect(() => {
+		const checkBetInterval = setInterval(async () => {
+			try {
+				const tournamentId = await getTournamentId();
+				const user = auth.currentUser;
+				if (user) {
+					const userId = user.uid;
+					const betMade = await userMadeBet(tournamentId, userId);
+					setHasBet(betMade); // Actualiza el estado hasBet según la respuesta
+				}
+			} catch (error) {
+				console.error("Error checking if user made bet:", error);
+			}
+		}, 1000); // 5000 milisegundos = 5 segundos
+
+		// Limpiar el intervalo cuando el componente se desmonte
+		return () => clearInterval(checkBetInterval);
+	}, []); // Dependencias vacías para que solo se configure una vez
+
 	const getTournamentId = async () => {
 		try {
 			const tournament = await fetchTournament();
@@ -136,6 +156,26 @@ const Bets = ({ navigation }) => {
 		setModalVisible(false);
 		navigation.navigate(screen, { origin });
 	};
+
+	const checkGames = async () => {
+		let tournamentId = await getTournamentId();
+		try {
+			const activeBracket = await getActiveBracket(tournamentId); // Obtén la etapa actual (QuarterFinals, SemiFinals, Finals)
+			setActiveBracketStage(activeBracket);
+		} catch (error) {
+			console.error("Error checking games:", error);
+			setActiveBracketStage(null);
+		}
+	};
+
+	useEffect(() => {
+		checkGames();
+		const intervalId = setInterval(() => {
+			checkGames();
+		}, 5000);
+
+		return () => clearInterval(intervalId);
+	}, []);
 
 	useEffect(() => {
 		const getTournamentData = async () => {
@@ -250,7 +290,7 @@ const Bets = ({ navigation }) => {
 				>
 					<View style={styles.btnDot}>
 						<Text style={styles.btnClickText}>Watch games live</Text>
-						<BlinkDot />
+						{activeBracketStage && <BlinkDot />}
 					</View>
 				</TouchableOpacity>
 			</View>

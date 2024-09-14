@@ -1,5 +1,5 @@
 import { fetchPlayers, storeTeam, fetchTeamAPI } from "../api";
-import { fetchTournament } from "../server/firestoreFunctions";
+import { fetchTournament, userMadeBet } from "../server/firestoreFunctions";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { auth } from "../server/firebaseConfig";
@@ -22,6 +22,7 @@ const Players = ({ navigation }) => {
 	const [originalJugadores, setOriginalJugadores] = useState([]);
 	const [searchTerm, setSearchTerm] = useState("");
 	const [loading, setLoading] = useState(true);
+	const [hasBet, setHasBet] = useState(false);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -34,19 +35,24 @@ const Players = ({ navigation }) => {
 				const user = auth.currentUser;
 				if (user) {
 					const userId = user.uid;
+
+					// Verificar si el usuario ya hizo una apuesta
+					const betMade = await userMadeBet(tournamentId, userId);
+					setHasBet(betMade); // Actualiza el estado hasBet
+
 					const userTeam = await fetchTeamAPI(tournamentId, userId);
 					if (userTeam) {
 						const teamArray = Object.values(userTeam);
 
 						const mappedTeam = teamArray
 							.map((playerId) => {
-								// Directly compare the playerId from teamArray with the player.id_player in data
 								return data.find((player) => player.id_player === playerId);
 							})
-							.filter((player) => player); // Filter out any undefined results
+							.filter((player) => player); // Filtrar resultados undefined
+
 						setEquipo(mappedTeam);
 
-						// Remove the players in the team from the list of available players
+						// Remover jugadores del equipo de la lista de jugadores disponibles
 						setJugadores((prevJugadores) =>
 							prevJugadores.filter(
 								(jugador) =>
@@ -88,12 +94,11 @@ const Players = ({ navigation }) => {
 			prevJugadores.filter((j) => j.id_player !== jugador.id_player)
 		);
 	};
-
 	const getButtonText = () => {
-		if (equipo.length === 0) {
-			return "Place my bet";
-		} else {
+		if (hasBet) {
 			return "Change my bet";
+		} else {
+			return "Place my bet";
 		}
 	};
 
