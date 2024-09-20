@@ -269,6 +269,13 @@ const Players = ({ navigation }) => {
 						</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
+						style={{ ...styles.button, backgroundColor: "red" }}
+					>
+						<Text style={{ ...styles.buttonText, color: "white" }}>
+							Delete Bet
+						</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
 						style={styles.button}
 						onPress={() => navigation.navigate("Bets")}
 					>
