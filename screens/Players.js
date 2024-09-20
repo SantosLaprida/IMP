@@ -275,13 +275,13 @@ const Players = ({ navigation }) => {
 							Delete Bet
 						</Text>
 					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.button}
-						onPress={() => navigation.navigate("Bets")}
-					>
-						<Text style={styles.buttonText}>Cancel</Text>
-					</TouchableOpacity>
 				</View>
+				<TouchableOpacity
+					style={styles.button}
+					onPress={() => navigation.navigate("Bets")}
+				>
+					<Text style={styles.buttonText}>Go back</Text>
+				</TouchableOpacity>
 			</ScrollView>
 		</LinearGradient>
 	);
