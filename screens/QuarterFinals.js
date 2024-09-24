@@ -66,6 +66,8 @@ const QuarterFinals = ({ navigation }) => {
 		getTournamentData();
 	}, []);
 
+	const showScoresheet = (player1, player2) => {};
+
 	const fetchPlayers = async () => {
 		setLoading(true);
 		try {
@@ -464,7 +466,10 @@ const QuarterFinals = ({ navigation }) => {
 									</Text>
 								</View>
 							</View>
-							<TouchableOpacity onPress={() => setModalVisible(true)} style={styles.detailBtn}>
+							<TouchableOpacity
+								onPress={() => setModalVisible(true)}
+								style={styles.detailBtn}
+							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
 									Details
 								</Text>
@@ -552,7 +557,10 @@ const QuarterFinals = ({ navigation }) => {
 									</Text>
 								</View>
 							</View>
-							<TouchableOpacity onPress={() => setModalVisible(true)} style={styles.detailBtn}>
+							<TouchableOpacity
+								onPress={() => setModalVisible(true)}
+								style={styles.detailBtn}
+							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
 									Details
 								</Text>
@@ -640,7 +648,10 @@ const QuarterFinals = ({ navigation }) => {
 									</Text>
 								</View>
 							</View>
-							<TouchableOpacity onPress={() => setModalVisible(true)} style={styles.detailBtn}>
+							<TouchableOpacity
+								onPress={() => setModalVisible(true)}
+								style={styles.detailBtn}
+							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
 									Details
 								</Text>
@@ -673,7 +684,6 @@ const QuarterFinals = ({ navigation }) => {
 						<Text style={styles.modalTitle}>Scoresheet</Text>
 						<ScrollView>
 							<View style={styles.row}>
-							
 								<View style={styles.column}>
 									<Text style={styles.playerName}>{player1}</Text>
 									{holes.map((hole) => (

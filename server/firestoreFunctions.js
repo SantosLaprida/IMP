@@ -501,12 +501,11 @@ export const userMadeBet = async (tournamentId, userId) => {
  */
 export const getApuestas = async (tournamentId) => {
 	try {
-		const tournamentDocRef = doc(db, "I_Torneos", tournamentId);
+		const docRef = doc(firestore, "I_Torneos", tournamentId);
+		const docSnap = await getDoc(docRef);
 
-		const tournamentDoc = await getDoc(tournamentDocRef);
-
-		if (tournamentDoc.exists()) {
-			const data = tournamentDoc.data();
+		if (docSnap.exists()) {
+			const data = docSnap.data();
 			const apuestas = data.apuestas;
 
 			return apuestas;
