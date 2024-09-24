@@ -501,19 +501,21 @@ export const userMadeBet = async (tournamentId, userId) => {
  */
 export const getApuestas = async (tournamentId) => {
 	try {
-		const querySnapshot = await getDocs(
-			collection(firestore, "I_Torneos", tournamentId)
-		);
+		const tournamentDocRef = doc(db, "I_Torneos", tournamentId);
 
-		for (const doc of querySnapshot.docs) {
-			const data = doc.data();
-			if (data.apuestas && data.apuestas.trim() !== "") {
-				return data.apuestas;
-			}
+		const tournamentDoc = await getDoc(tournamentDocRef);
+
+		if (tournamentDoc.exists()) {
+			const data = tournamentDoc.data();
+			const apuestas = data.apuestas;
+
+			return apuestas;
+		} else {
+			console.error("No such document found");
+			return null;
 		}
-		return null;
 	} catch (error) {
-		console.error("Error getting active bracket:", error);
+		console.error("Error checking apuestas:", error);
 		throw error;
 	}
 };

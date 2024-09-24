@@ -2,6 +2,7 @@ import { fetchPlayers, storeTeam, fetchTeamAPI } from "../api";
 import {
 	fetchTournament,
 	userMadeBet,
+	getApuestas,
 	getActiveBracket,
 } from "../server/firestoreFunctions";
 import { auth } from "../server/firebaseConfig";
@@ -36,6 +37,8 @@ const Bets = ({ navigation }) => {
 
 	const [hasBet, setHasBet] = useState(false);
 	const [activeBracketStage, setActiveBracketStage] = useState(null);
+
+	const [canBet, setCanBet] = useState(true);
 
 	const BlinkDot = () => {
 		const opacity = useRef(new Animated.Value(1)).current;
@@ -112,17 +115,22 @@ const Bets = ({ navigation }) => {
 				const user = auth.currentUser;
 				if (user) {
 					const userId = user.uid;
+
+					// Verificar si el usuario ya hizo una apuesta
 					const betMade = await userMadeBet(tournamentId, userId);
-					setHasBet(betMade); // Actualiza el estado hasBet según la respuesta
+					setHasBet(betMade);
+
+					// Verificar si se pueden hacer apuestas
+					const canMakeBet = await getApuestas(tournamentId);
+					setCanBet(canMakeBet);
 				}
 			} catch (error) {
 				console.error("Error checking if user made bet:", error);
 			}
-		}, 1000); // 5000 milisegundos = 5 segundos
+		}, 1000); // Cada segundo
 
-		// Limpiar el intervalo cuando el componente se desmonte
 		return () => clearInterval(checkBetInterval);
-	}, []); // Dependencias vacías para que solo se configure una vez
+	}, []);
 
 	const getTournamentId = async () => {
 		try {
@@ -250,7 +258,13 @@ const Bets = ({ navigation }) => {
 				</Text>
 				<TouchableOpacity
 					style={{ ...styles.btnClick, marginTop: 15 }}
-					onPress={() => navigation.navigate("Players")}
+					onPress={() => {
+						if (canBet === 1) {
+							navigation.navigate("Players");
+						} else {
+							setModalVisible1(true);
+						}
+					}}
 				>
 					<Text style={styles.btnClickText}>
 						{hasBet ? "See your bet" : "Participate"}
@@ -391,21 +405,15 @@ const Bets = ({ navigation }) => {
 							))}
 						</ScrollView>
 						<TouchableOpacity
-							onPress={() => handleNavigation("Players")}
+							onPress={() => setModalVisible1(false)}
 							style={{
 								...styles.modalButton,
-								marginTop: 15,
+								marginTop: 5,
 								width: 250,
 								backgroundColor: "#1f3a5c",
 							}}
 						>
-							<Text style={{ ...styles.modalT, color: "white" }}>Edit</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={{ ...styles.modalButton, width: 250 }}
-							onPress={() => setModalVisible1(false)}
-						>
-							<Text style={styles.modalT}>Close</Text>
+							<Text style={{ ...styles.modalT, color: "white" }}>Close</Text>
 						</TouchableOpacity>
 					</View>
 				</View>

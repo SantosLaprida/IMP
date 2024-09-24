@@ -483,7 +483,7 @@ const Finals = ({ navigation }) => {
 			>
 				<View style={styles.modalContainer}>
 					<View style={styles.modalContent}>
-						<Text style={styles.modalTitle}>Resultados de los Hoyos</Text>
+						<Text style={styles.modalTitle}>Scoresheet</Text>
 						<ScrollView>
 							<View style={styles.row}>
 								{/* Columna del Jugador 1 */}
@@ -491,7 +491,7 @@ const Finals = ({ navigation }) => {
 									<Text style={styles.playerName}>{player1}</Text>
 									{holes.map((hole) => (
 										<Text key={hole} style={styles.holeText}>
-											Hoyo {hole}: {/* Aquí iría el resultado */}
+											Hole {hole}: {/* Aquí iría el resultado */}
 										</Text>
 									))}
 								</View>
@@ -501,7 +501,7 @@ const Finals = ({ navigation }) => {
 									<Text style={styles.playerName}>{player2}</Text>
 									{holes.map((hole) => (
 										<Text key={hole} style={styles.holeText}>
-											Hoyo {hole}: {/* Aquí iría el resultado */}
+											Hole {hole}: {/* Aquí iría el resultado */}
 										</Text>
 									))}
 								</View>
@@ -513,7 +513,7 @@ const Finals = ({ navigation }) => {
 							style={styles.closeButton}
 							onPress={() => setModalVisible(false)}
 						>
-							<Text style={styles.closeButtonText}>Cerrar</Text>
+							<Text style={styles.closeButtonText}>Close</Text>
 						</TouchableOpacity>
 					</View>
 				</View>

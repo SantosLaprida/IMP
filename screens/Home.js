@@ -87,7 +87,7 @@ const Home = ({ navigation }) => {
 		setModalVisible(false);
 
 		const tournamentId = await getTournamentId();
-		const active = await isBracketActive(tournamentId, collectionName);
+		const active = await isBracketActive(tournamentId, collectionName);	
 
 		if (!active) {
 			alert("Bracket not active yet");
