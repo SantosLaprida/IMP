@@ -43,6 +43,11 @@ const Finals = ({ navigation }) => {
   const [results1, setResults1] = useState(null);
   const [names, setNames] = useState(Array(2).fill("Loading...")); // Marcar posición con 'Loading...'
 
+  const [modalVisible, setModalVisible] = useState(false);
+	const player1 = "Jugador 1";
+	const player2 = "Jugador 2";
+	const holes = Array.from({ length: 18 }, (_, i) => i + 1);
+
   const fetchPlayers = async () => {
     setLoading(true);
     try {
@@ -347,7 +352,7 @@ const Finals = ({ navigation }) => {
                   </Text>
                 </View>
               </View>
-              <TouchableOpacity style={styles.detailBtn}>
+              <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.detailBtn}>
                 <Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
                   Details
                 </Text>
@@ -448,7 +453,7 @@ const Finals = ({ navigation }) => {
                   </Text>
                 </View>
               </View>
-              <TouchableOpacity style={styles.detailBtn}>
+              <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.detailBtn}>
                 <Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
                   Details
                 </Text>
@@ -468,166 +473,264 @@ const Finals = ({ navigation }) => {
       >
         <Text style={{ ...styles.buttonText, color: "white" }}>Back</Text>
       </TouchableOpacity>
+
+      			{/* Modal */}
+			<Modal
+				visible={modalVisible}
+				transparent={true}
+				animationType="slide"
+				onRequestClose={() => setModalVisible(false)}
+			>
+				<View style={styles.modalContainer}>
+					<View style={styles.modalContent}>
+						<Text style={styles.modalTitle}>Resultados de los Hoyos</Text>
+						<ScrollView>
+							<View style={styles.row}>
+								{/* Columna del Jugador 1 */}
+								<View style={styles.column}>
+									<Text style={styles.playerName}>{player1}</Text>
+									{holes.map((hole) => (
+										<Text key={hole} style={styles.holeText}>
+											Hoyo {hole}: {/* Aquí iría el resultado */}
+										</Text>
+									))}
+								</View>
+
+								{/* Columna del Jugador 2 */}
+								<View style={styles.column}>
+									<Text style={styles.playerName}>{player2}</Text>
+									{holes.map((hole) => (
+										<Text key={hole} style={styles.holeText}>
+											Hoyo {hole}: {/* Aquí iría el resultado */}
+										</Text>
+									))}
+								</View>
+							</View>
+						</ScrollView>
+
+						{/* Botón para cerrar el modal */}
+						<TouchableOpacity
+							style={styles.closeButton}
+							onPress={() => setModalVisible(false)}
+						>
+							<Text style={styles.closeButtonText}>Cerrar</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+			</Modal>
     </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-  },
-  box: {
-    padding: 20,
-    alignItems: "center",
-    borderRadius: 20,
-    width: "90%",
-    marginTop: 15,
-    backgroundColor: "rgb(255, 252, 241)",
-    shadowColor: "#000", // Color de la sombra
-    shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
-    shadowOpacity: 0.3, // Opacidad de la sombra
-    shadowRadius: 6, // Radio de la sombra
-    // Para Android
-    elevation: 10, // Elevación para la sombra
-  },
-  logo: {
-    width: 150,
-    height: 100,
-    borderRadius: 10,
-    backgroundColor: "black",
-    padding: 5,
-  },
-  logoBox: {
-    backgroundColor: "#f0f0f0",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 10,
-    borderRadius: 10,
-    padding: 15,
+	container: {
+		flex: 1,
+		alignItems: "center",
+	},
 
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 10,
-  },
-  text: {
-    fontSize: 15,
-    color: "#1f3a5c",
-    fontFamily: "p-semibold",
-  },
-  gameBox: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+	container: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	modalContainer: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
+	},
+	modalContent: {
+		width: "90%",
+		backgroundColor: "#fff",
+		borderRadius: 10,
+		padding: 20,
+		alignItems: "center",
+	},
+	modalTitle: {
+		fontSize: 18,
+		fontWeight: "bold",
+		marginBottom: 20,
+	},
+	row: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		width: "100%",
+	},
+	column: {
+		flex: 1,
+		alignItems: "center",
+		marginHorizontal: 10,
+	},
+	playerName: {
+		fontSize: 16,
+		fontWeight: "bold",
+		marginBottom: 10,
+	},
+	holeText: {
+		fontSize: 14,
+		marginVertical: 5,
+	},
+	closeButton: {
+		marginTop: 20,
+		padding: 10,
+		backgroundColor: "#1f3a5c",
+		borderRadius: 5,
+	},
+	closeButtonText: {
+		color: "white",
+		fontSize: 14,
+	},
 
-    width: "100%",
-    alignItems: "center",
-    padding: 5,
-    backgroundColor: "#f0f0f0",
-  },
-  player: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    marginVertical: 15,
-  },
-  gameLogo: {
-    width: 50,
-    height: 50,
-    borderRadius: 20,
-    marginVertical: 2,
-  },
-  middle: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "space-around",
-    height: 100,
-    marginBottom: -25,
-  },
-  button: {
-    backgroundColor: "#17628b34",
-    padding: 6,
-    margin: 5,
-    borderRadius: 10,
-    width: "80%",
-    alignItems: "center",
-    borderWidth: 0,
-    borderColor: "#17628b94",
-    borderBottomWidth: 7,
-    borderBottomColor: "rgba(0, 0, 0, 0.2)",
-  },
-  buttonText: {
-    color: "#1f3a5c",
-    fontSize: 14,
-    fontFamily: "p-semibold",
-    position: "relative",
-    bottom: -2,
-  },
-  text_left: {
-    fontSize: 8,
-    width: 30,
-    color: "white",
-    borderRadius: 5,
-    height: 25,
-    position: "absolute",
-    left: 0,
-    top: 0,
-    padding: 5,
-    fontFamily: "p-semibold",
-    backgroundColor: "red",
-  },
-  text_right: {
-    fontSize: 8,
-    width: 30,
-    color: "white",
-    borderRadius: 5,
-    height: 25,
-    position: "absolute",
-    right: 0,
-    top: 0,
-    padding: 5,
-    fontFamily: "p-semibold",
-    backgroundColor: "red",
-  },
-  loader: {
-    marginTop: 100,
-  },
-  gameInfo: {
-    alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
-    marginBottom: 4,
-  },
-  detailBtn: {
-    padding: 5,
-    borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 5,
-    flexDirection: "row",
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "space-around",
-    backgroundColor: "#17628b34",
-    borderWidth: 0,
-    borderColor: "#17628b94",
-    borderBottomWidth: 4,
-    borderBottomColor: "rgba(0, 0, 0, 0.2)",
-    marginBottom: 15,
-  },
-  tGame: {
-    position: "absolute",
-    top: 0,
-    left: "41%",
-    fontFamily: "p-semibold",
-    backgroundColor: "#17628b34",
-    fontSize: 11,
-    borderRadius: 5,
-    padding: 3,
-    color: "#1f3a5c",
-    paddingHorizontal: 10,
-  },
+	box: {
+		padding: 20,
+		alignItems: "center",
+		borderRadius: 20,
+		width: "90%",
+		marginTop: 15,
+		backgroundColor: "rgb(255, 252, 241)",
+		shadowColor: "#000", // Color de la sombra
+		shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
+		shadowOpacity: 0.3, // Opacidad de la sombra
+		shadowRadius: 6, // Radio de la sombra
+		// Para Android
+		elevation: 10, // Elevación para la sombra
+	},
+	logo: {
+		width: 150,
+		height: 100,
+		borderRadius: 10,
+		backgroundColor: "black",
+		padding: 5,
+	},
+	logoBox: {
+		backgroundColor: "#f0f0f0",
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 4 },
+		shadowOpacity: 0.3,
+		shadowRadius: 6,
+		elevation: 10,
+		borderRadius: 10,
+		padding: 15,
+
+		justifyContent: "center",
+		alignItems: "center",
+		marginVertical: 10,
+	},
+	text: {
+		fontSize: 15,
+		color: "#1f3a5c",
+		fontFamily: "p-semibold",
+	},
+	gameBox: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		borderTopLeftRadius: 10,
+		borderTopRightRadius: 10,
+
+		width: "100%",
+		alignItems: "center",
+		padding: 5,
+		backgroundColor: "#f0f0f0",
+	},
+	player: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+		marginVertical: 15,
+	},
+	gameLogo: {
+		width: 50,
+		height: 50,
+		borderRadius: 20,
+		marginVertical: 2,
+	},
+	middle: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "space-around",
+		height: 100,
+		marginBottom: -25,
+	},
+	button: {
+		backgroundColor: "#17628b34",
+		padding: 6,
+		margin: 5,
+		borderRadius: 10,
+		width: "80%",
+		alignItems: "center",
+		borderWidth: 0,
+		borderColor: "#17628b94",
+		borderBottomWidth: 7,
+		borderBottomColor: "rgba(0, 0, 0, 0.2)",
+	},
+	buttonText: {
+		color: "#1f3a5c",
+		fontSize: 14,
+		fontFamily: "p-semibold",
+		position: "relative",
+		bottom: -2,
+	},
+	text_left: {
+		fontSize: 8,
+		width: 30,
+		color: "white",
+		borderRadius: 5,
+		height: 25,
+		position: "absolute",
+		left: 0,
+		top: 0,
+		padding: 5,
+		fontFamily: "p-semibold",
+		backgroundColor: "red",
+	},
+	text_right: {
+		fontSize: 8,
+		width: 30,
+		color: "white",
+		borderRadius: 5,
+		height: 25,
+		position: "absolute",
+		right: 0,
+		top: 0,
+		padding: 5,
+		fontFamily: "p-semibold",
+		backgroundColor: "red",
+	},
+	loader: {
+		marginTop: 100,
+	},
+	gameInfo: {
+		alignItems: "center",
+		justifyContent: "center",
+		flex: 1,
+		marginBottom: 4,
+	},
+	detailBtn: {
+		padding: 5,
+		borderBottomLeftRadius: 5,
+		borderBottomRightRadius: 5,
+		flexDirection: "row",
+		width: "100%",
+		alignItems: "center",
+		justifyContent: "space-around",
+		backgroundColor: "#17628b34",
+		borderWidth: 0,
+		borderColor: "#17628b94",
+		borderBottomWidth: 4,
+		borderBottomColor: "rgba(0, 0, 0, 0.2)",
+		marginBottom: 15,
+	},
+	tGame: {
+		position: "absolute",
+		top: 0,
+		left: "41%",
+		fontFamily: "p-semibold",
+		backgroundColor: "#17628b34",
+		fontSize: 11,
+		borderRadius: 5,
+		padding: 3,
+		color: "#1f3a5c",
+		paddingHorizontal: 10,
+	},
 });
-
 export default Finals;

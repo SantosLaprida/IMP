@@ -44,6 +44,11 @@ const SemiFinals = ({ navigation }) => {
 	const [results2, setResults2] = useState(null);
 	const [names, setNames] = useState(Array(4).fill("Loading...")); // Marcar posición con 'Loading...'
 
+	const [modalVisible, setModalVisible] = useState(false);
+	const player1 = "Jugador 1";
+	const player2 = "Jugador 2";
+	const holes = Array.from({ length: 18 }, (_, i) => i + 1);
+
 	const fetchPlayers = async () => {
 		setLoading(true);
 		try {
@@ -328,7 +333,7 @@ const SemiFinals = ({ navigation }) => {
 									</Text>
 								</View>
 							</View>
-							<TouchableOpacity style={styles.detailBtn}>
+							<TouchableOpacity onPress={() => setModalVisible(true)} style={styles.detailBtn}>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
 									Details
 								</Text>
@@ -417,7 +422,7 @@ const SemiFinals = ({ navigation }) => {
 									</Text>
 								</View>
 							</View>
-							<TouchableOpacity style={styles.detailBtn}>
+							<TouchableOpacity onPress={() => setModalVisible(true)} style={styles.detailBtn}>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
 									Details
 								</Text>
@@ -437,6 +442,51 @@ const SemiFinals = ({ navigation }) => {
 			>
 				<Text style={{ ...styles.buttonText, color: "white" }}>Back</Text>
 			</TouchableOpacity>
+
+				{/* Modal */}
+				<Modal
+				visible={modalVisible}
+				transparent={true}
+				animationType="slide"
+				onRequestClose={() => setModalVisible(false)}
+			>
+				<View style={styles.modalContainer}>
+					<View style={styles.modalContent}>
+						<Text style={styles.modalTitle}>Resultados de los Hoyos</Text>
+						<ScrollView>
+							<View style={styles.row}>
+								{/* Columna del Jugador 1 */}
+								<View style={styles.column}>
+									<Text style={styles.playerName}>{player1}</Text>
+									{holes.map((hole) => (
+										<Text key={hole} style={styles.holeText}>
+											Hoyo {hole}: {/* Aquí iría el resultado */}
+										</Text>
+									))}
+								</View>
+
+								{/* Columna del Jugador 2 */}
+								<View style={styles.column}>
+									<Text style={styles.playerName}>{player2}</Text>
+									{holes.map((hole) => (
+										<Text key={hole} style={styles.holeText}>
+											Hoyo {hole}: {/* Aquí iría el resultado */}
+										</Text>
+									))}
+								</View>
+							</View>
+						</ScrollView>
+
+						{/* Botón para cerrar el modal */}
+						<TouchableOpacity
+							style={styles.closeButton}
+							onPress={() => setModalVisible(false)}
+						>
+							<Text style={styles.closeButtonText}>Cerrar</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+			</Modal>
 		</LinearGradient>
 	);
 };
@@ -446,6 +496,60 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 	},
+
+	container: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	modalContainer: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
+	},
+	modalContent: {
+		width: "90%",
+		backgroundColor: "#fff",
+		borderRadius: 10,
+		padding: 20,
+		alignItems: "center",
+	},
+	modalTitle: {
+		fontSize: 18,
+		fontWeight: "bold",
+		marginBottom: 20,
+	},
+	row: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		width: "100%",
+	},
+	column: {
+		flex: 1,
+		alignItems: "center",
+		marginHorizontal: 10,
+	},
+	playerName: {
+		fontSize: 16,
+		fontWeight: "bold",
+		marginBottom: 10,
+	},
+	holeText: {
+		fontSize: 14,
+		marginVertical: 5,
+	},
+	closeButton: {
+		marginTop: 20,
+		padding: 10,
+		backgroundColor: "#1f3a5c",
+		borderRadius: 5,
+	},
+	closeButtonText: {
+		color: "white",
+		fontSize: 14,
+	},
+
 	box: {
 		padding: 20,
 		alignItems: "center",
