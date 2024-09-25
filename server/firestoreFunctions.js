@@ -663,6 +663,7 @@ const getHoles = async (
     });
 
     // Return the two arrays (holes for player 1 and player 2)
+
     return {
       player1Holes,
       player2Holes,

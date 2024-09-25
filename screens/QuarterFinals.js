@@ -66,6 +66,8 @@ const QuarterFinals = ({ navigation }) => {
 		getTournamentData();
 	}, []);
 
+	const showScoresheet = (player1, player2) => {};
+
 	const fetchPlayers = async () => {
 		setLoading(true);
 		try {
@@ -464,7 +466,10 @@ const QuarterFinals = ({ navigation }) => {
 									</Text>
 								</View>
 							</View>
-							<TouchableOpacity onPress={() => setModalVisible(true)} style={styles.detailBtn}>
+							<TouchableOpacity
+								onPress={() => setModalVisible(true)}
+								style={styles.detailBtn}
+							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
 									Details
 								</Text>
@@ -552,7 +557,10 @@ const QuarterFinals = ({ navigation }) => {
 									</Text>
 								</View>
 							</View>
-							<TouchableOpacity onPress={() => setModalVisible(true)} style={styles.detailBtn}>
+							<TouchableOpacity
+								onPress={() => setModalVisible(true)}
+								style={styles.detailBtn}
+							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
 									Details
 								</Text>
@@ -640,7 +648,10 @@ const QuarterFinals = ({ navigation }) => {
 									</Text>
 								</View>
 							</View>
-							<TouchableOpacity onPress={() => setModalVisible(true)} style={styles.detailBtn}>
+							<TouchableOpacity
+								onPress={() => setModalVisible(true)}
+								style={styles.detailBtn}
+							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
 									Details
 								</Text>
@@ -670,15 +681,14 @@ const QuarterFinals = ({ navigation }) => {
 			>
 				<View style={styles.modalContainer}>
 					<View style={styles.modalContent}>
-						<Text style={styles.modalTitle}>Resultados de los Hoyos</Text>
+						<Text style={styles.modalTitle}>Scoresheet</Text>
 						<ScrollView>
 							<View style={styles.row}>
-								{/* Columna del Jugador 1 */}
 								<View style={styles.column}>
 									<Text style={styles.playerName}>{player1}</Text>
 									{holes.map((hole) => (
 										<Text key={hole} style={styles.holeText}>
-											Hoyo {hole}: {/* Aquí iría el resultado */}
+											Hole {hole}: {/* Aquí iría el resultado */}
 										</Text>
 									))}
 								</View>
@@ -688,7 +698,7 @@ const QuarterFinals = ({ navigation }) => {
 									<Text style={styles.playerName}>{player2}</Text>
 									{holes.map((hole) => (
 										<Text key={hole} style={styles.holeText}>
-											Hoyo {hole}: {/* Aquí iría el resultado */}
+											Hole {hole}: {/* Aquí iría el resultado */}
 										</Text>
 									))}
 								</View>
@@ -700,7 +710,7 @@ const QuarterFinals = ({ navigation }) => {
 							style={styles.closeButton}
 							onPress={() => setModalVisible(false)}
 						>
-							<Text style={styles.closeButtonText}>Cerrar</Text>
+							<Text style={styles.closeButtonText}>Close</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
