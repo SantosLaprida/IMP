@@ -1,7 +1,9 @@
 import {
 	createI_Semifinales,
 	fetchTournament,
+	getHoles,
 	fetchQualifiers,
+	getPlayerName,
 } from "../server/firestoreFunctions";
 import { semisExistsAPI } from "../api";
 import { compareScores, showResults } from "./QuarterUtils";
@@ -45,9 +47,45 @@ const SemiFinals = ({ navigation }) => {
 	const [names, setNames] = useState(Array(4).fill("Loading...")); // Marcar posición con 'Loading...'
 
 	const [modalVisible, setModalVisible] = useState(false);
-	const player1 = "Jugador 1";
-	const player2 = "Jugador 2";
+	const [player1Scores, setPlayer1Scores] = useState([]);
+	const [player2Scores, setPlayer2Scores] = useState([]);
+	const [player1Name, setPlayer1Name] = useState(null);
+	const [player2Name, setPlayer2Name] = useState(null);
+
 	const holes = Array.from({ length: 18 }, (_, i) => i + 1);
+
+	const showHoles = async (player1Id, player2Id) => {
+		setModalVisible(true);
+		try {
+			let tournamentId = await getTournamentId();
+			let collection = "I_Cuartos";
+
+			// Llamada al backend para obtener el scoresheet
+			const response = await getHoles(
+				tournamentId,
+				collection,
+				player1Id,
+				player2Id
+			);
+
+			const name1 = await getPlayerName(player1Id, tournamentId);
+			const name2 = await getPlayerName(player2Id, tournamentId);
+
+			if (response) {
+				// Actualizamos el estado con los scores de los jugadores
+				console.log(response);
+				setPlayer1Scores(response.player1Holes);
+				setPlayer2Scores(response.player2Holes);
+				setPlayer1Name(name1);
+				setPlayer2Name(name2);
+				console.log(player1Scores, player2Scores);
+			} else {
+				console.error("Error al obtener los scoresheets.");
+			}
+		} catch (error) {
+			console.error("Error:", error);
+		}
+	};
 
 	const fetchPlayers = async () => {
 		setLoading(true);
@@ -333,7 +371,10 @@ const SemiFinals = ({ navigation }) => {
 									</Text>
 								</View>
 							</View>
-							<TouchableOpacity onPress={() => setModalVisible(true)} style={styles.detailBtn}>
+							<TouchableOpacity
+								onPress={() => showHoles(ids[0], ids[1])}
+								style={styles.detailBtn}
+							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
 									Details
 								</Text>
@@ -422,7 +463,10 @@ const SemiFinals = ({ navigation }) => {
 									</Text>
 								</View>
 							</View>
-							<TouchableOpacity onPress={() => setModalVisible(true)} style={styles.detailBtn}>
+							<TouchableOpacity
+								onPress={() => showHoles(ids[2], ids[3])}
+								style={styles.detailBtn}
+							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
 									Details
 								</Text>
@@ -443,8 +487,8 @@ const SemiFinals = ({ navigation }) => {
 				<Text style={{ ...styles.buttonText, color: "white" }}>Back</Text>
 			</TouchableOpacity>
 
-				{/* Modal */}
-				<Modal
+			{/* Modal */}
+			<Modal
 				visible={modalVisible}
 				transparent={true}
 				animationType="slide"
@@ -457,7 +501,7 @@ const SemiFinals = ({ navigation }) => {
 							<View style={styles.row}>
 								{/* Columna del Jugador 1 */}
 								<View style={styles.column}>
-									<Text style={styles.playerName}>{player1}</Text>
+									<Text style={styles.playerName}>{player1Name}</Text>
 									{holes.map((hole) => (
 										<Text key={hole} style={styles.holeText}>
 											hole {hole}: {/* Aquí iría el resultado */}
@@ -467,7 +511,7 @@ const SemiFinals = ({ navigation }) => {
 
 								{/* Columna del Jugador 2 */}
 								<View style={styles.column}>
-									<Text style={styles.playerName}>{player2}</Text>
+									<Text style={styles.playerName}>{player2Name}</Text>
 									{holes.map((hole) => (
 										<Text key={hole} style={styles.holeText}>
 											hole {hole}: {/* Aquí iría el resultado */}

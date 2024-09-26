@@ -2,6 +2,7 @@ import {
 	fetchQualifiers,
 	fetchTournament,
 	getHoles,
+	getPlayerName,
 } from "../server/firestoreFunctions";
 import React, { useState, useEffect } from "react";
 import { compareScores, showResults } from "./QuarterUtils";
@@ -44,10 +45,10 @@ const QuarterFinals = ({ navigation }) => {
 	const [name, setName] = useState(null);
 
 	const [modalVisible, setModalVisible] = useState(false);
-	const player1 = "Jugador 1";
-	const player2 = "Jugador 2";
 	const [player1Scores, setPlayer1Scores] = useState([]);
 	const [player2Scores, setPlayer2Scores] = useState([]);
+	const [player1Name, setPlayer1Name] = useState(null);
+	const [player2Name, setPlayer2Name] = useState(null);
 
 	const holes = Array.from({ length: 18 }, (_, i) => i + 1);
 
@@ -65,11 +66,16 @@ const QuarterFinals = ({ navigation }) => {
 				player2Id
 			);
 
+			const name1 = await getPlayerName(player1Id, tournamentId);
+			const name2 = await getPlayerName(player2Id, tournamentId);
+
 			if (response) {
 				// Actualizamos el estado con los scores de los jugadores
 				console.log(response);
 				setPlayer1Scores(response.player1Holes);
 				setPlayer2Scores(response.player2Holes);
+				setPlayer1Name(name1);
+				setPlayer2Name(name2);
 				console.log(player1Scores, player2Scores);
 			} else {
 				console.error("Error al obtener los scoresheets.");
@@ -717,7 +723,7 @@ const QuarterFinals = ({ navigation }) => {
 						<ScrollView>
 							<View style={styles.row}>
 								<View style={styles.column}>
-									<Text style={styles.playerName}>Jugador 1</Text>
+									<Text style={styles.playerName}>{player1Name}</Text>
 									{holes.map((hole, index) => (
 										<Text key={hole} style={styles.holeText}>
 											Hole {hole}: {player1Scores[index] || 0}
@@ -726,7 +732,7 @@ const QuarterFinals = ({ navigation }) => {
 								</View>
 
 								<View style={styles.column}>
-									<Text style={styles.playerName}>Jugador 2</Text>
+									<Text style={styles.playerName}>{player2Name}</Text>
 									{holes.map((hole, index) => (
 										<Text key={hole} style={styles.holeText}>
 											Hole {hole}: {player2Scores[index] || 0}
