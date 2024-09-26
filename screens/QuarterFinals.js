@@ -1,4 +1,8 @@
-import { fetchQualifiers, fetchTournament } from "../server/firestoreFunctions";
+import {
+	fetchQualifiers,
+	fetchTournament,
+	getHoles,
+} from "../server/firestoreFunctions";
 import React, { useState, useEffect } from "react";
 import { compareScores, showResults } from "./QuarterUtils";
 
@@ -42,7 +46,38 @@ const QuarterFinals = ({ navigation }) => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const player1 = "Jugador 1";
 	const player2 = "Jugador 2";
+	const [player1Scores, setPlayer1Scores] = useState([]);
+	const [player2Scores, setPlayer2Scores] = useState([]);
+
 	const holes = Array.from({ length: 18 }, (_, i) => i + 1);
+
+	const showHoles = async (player1Id, player2Id) => {
+		setModalVisible(true);
+		try {
+			let tournamentId = await getTournamentId();
+			let collection = "I_Cuartos";
+
+			// Llamada al backend para obtener el scoresheet
+			const response = await getHoles(
+				tournamentId,
+				collection,
+				player1Id,
+				player2Id
+			);
+
+			if (response) {
+				// Actualizamos el estado con los scores de los jugadores
+				console.log(response);
+				setPlayer1Scores(response.player1Holes);
+				setPlayer2Scores(response.player2Holes);
+				console.log(player1Scores, player2Scores);
+			} else {
+				console.error("Error al obtener los scoresheets.");
+			}
+		} catch (error) {
+			console.error("Error:", error);
+		}
+	};
 
 	useEffect(() => {
 		const getTournamentData = async () => {
@@ -65,8 +100,6 @@ const QuarterFinals = ({ navigation }) => {
 
 		getTournamentData();
 	}, []);
-
-	const showScoresheet = (player1, player2) => {};
 
 	const fetchPlayers = async () => {
 		setLoading(true);
@@ -375,7 +408,7 @@ const QuarterFinals = ({ navigation }) => {
 								</View>
 							</View>
 							<TouchableOpacity
-								onPress={() => setModalVisible(true)}
+								onPress={() => showHoles(ids[0], ids[7])}
 								style={styles.detailBtn}
 							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
@@ -467,7 +500,7 @@ const QuarterFinals = ({ navigation }) => {
 								</View>
 							</View>
 							<TouchableOpacity
-								onPress={() => setModalVisible(true)}
+								onPress={() => showHoles(ids[3], ids[4])}
 								style={styles.detailBtn}
 							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
@@ -558,7 +591,7 @@ const QuarterFinals = ({ navigation }) => {
 								</View>
 							</View>
 							<TouchableOpacity
-								onPress={() => setModalVisible(true)}
+								onPress={() => showHoles(ids[2], ids[5])}
 								style={styles.detailBtn}
 							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
@@ -649,7 +682,7 @@ const QuarterFinals = ({ navigation }) => {
 								</View>
 							</View>
 							<TouchableOpacity
-								onPress={() => setModalVisible(true)}
+								onPress={() => showHoles(ids[1], ids[6])}
 								style={styles.detailBtn}
 							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
@@ -672,7 +705,6 @@ const QuarterFinals = ({ navigation }) => {
 				<Text style={{ ...styles.buttonText, color: "white" }}>Back</Text>
 			</TouchableOpacity>
 
-			{/* Modal */}
 			<Modal
 				visible={modalVisible}
 				transparent={true}
@@ -685,27 +717,25 @@ const QuarterFinals = ({ navigation }) => {
 						<ScrollView>
 							<View style={styles.row}>
 								<View style={styles.column}>
-									<Text style={styles.playerName}>{player1}</Text>
-									{holes.map((hole) => (
+									<Text style={styles.playerName}>Jugador 1</Text>
+									{holes.map((hole, index) => (
 										<Text key={hole} style={styles.holeText}>
-											Hole {hole}: {/* Aquí iría el resultado */}
+											Hole {hole}: {player1Scores[index] || 0}
 										</Text>
 									))}
 								</View>
 
-								{/* Columna del Jugador 2 */}
 								<View style={styles.column}>
-									<Text style={styles.playerName}>{player2}</Text>
-									{holes.map((hole) => (
+									<Text style={styles.playerName}>Jugador 2</Text>
+									{holes.map((hole, index) => (
 										<Text key={hole} style={styles.holeText}>
-											Hole {hole}: {/* Aquí iría el resultado */}
+											Hole {hole}: {player2Scores[index] || 0}
 										</Text>
 									))}
 								</View>
 							</View>
 						</ScrollView>
 
-						{/* Botón para cerrar el modal */}
 						<TouchableOpacity
 							style={styles.closeButton}
 							onPress={() => setModalVisible(false)}
