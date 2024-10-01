@@ -498,35 +498,73 @@ const SemiFinals = ({ navigation }) => {
 					<View style={styles.modalContent}>
 						<Text style={styles.modalTitle}>Scoresheet</Text>
 						<ScrollView>
-							<View style={styles.row}>
-								{/* Columna del Jugador 1 */}
-								<View style={styles.column}>
-									<Text style={styles.playerName}>{player1Name}</Text>
-									{holes.map((hole) => (
-										<Text key={hole} style={styles.holeText}>
-											hole {hole}: {/* Aquí iría el resultado */}
-										</Text>
-									))}
-								</View>
-
-								{/* Columna del Jugador 2 */}
-								<View style={styles.column}>
-									<Text style={styles.playerName}>{player2Name}</Text>
-									{holes.map((hole) => (
-										<Text key={hole} style={styles.holeText}>
-											hole {hole}: {/* Aquí iría el resultado */}
-										</Text>
-									))}
-								</View>
+							{/* Encabezado */}
+							<View style={styles.gridRow}>
+								<Text
+									style={{
+										...styles.headearHole,
+										borderRightWidth: 1,
+									}}
+								>
+									Hole
+								</Text>
+								<Text
+									style={{
+										...styles.headerCell,
+										borderRightWidth: 1,
+									}}
+								>
+									{player1Name}
+								</Text>
+								<Text style={styles.headerCell}>{player2Name}</Text>
 							</View>
+
+							{/* Filas con datos */}
+							{holes.map((hole, index) => (
+								<View key={hole} style={styles.gridRow}>
+									<Text
+										style={{
+											...styles.holeCell,
+											backgroundColor: "rgba(153, 136, 40, 0.336);",
+											borderBottomWidth: 0,
+											borderRightWidth: 1,
+										}}
+									>
+										{hole}
+									</Text>
+									<Text
+										style={{
+											...styles.gridCell,
+											backgroundColor: "#19898d4d",
+
+											borderRightWidth: 1,
+										}}
+									>
+										{player1Scores[index] || 0}
+									</Text>
+									<Text
+										style={{
+											...styles.gridCell,
+											backgroundColor: "#19898d4d",
+										}}
+									>
+										{player2Scores[index] || 0}
+									</Text>
+								</View>
+							))}
 						</ScrollView>
 
-						{/* Botón para cerrar el modal */}
 						<TouchableOpacity
-							style={styles.closeButton}
 							onPress={() => setModalVisible(false)}
+							style={{
+								...styles.button,
+								marginVertical: 15,
+								backgroundColor: "#1f3a5c",
+								width: "85%",
+								padding: 3,
+							}}
 						>
-							<Text style={styles.closeButtonText}>Close</Text>
+							<Text style={{ ...styles.buttonText, color: "white" }}>Back</Text>
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -550,38 +588,63 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
-		backgroundColor: "rgba(0, 0, 0, 0.5)",
+		backgroundColor: "rgba(0, 0, 0, 0.849);",
 	},
 	modalContent: {
-		width: "90%",
-		backgroundColor: "#fff",
-		borderRadius: 10,
-		padding: 20,
+		width: "80%",
+		backgroundColor: "rgb(255, 252, 241)",
+		borderRadius: 20,
+		padding: 5,
 		alignItems: "center",
+		fontFamily: "p-semibold",
+		borderWidth: 1,
+		borderColor: "black",
 	},
 	modalTitle: {
 		fontSize: 18,
-		fontWeight: "bold",
-		marginBottom: 20,
-	},
-	row: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		width: "100%",
-	},
-	column: {
-		flex: 1,
-		alignItems: "center",
-		marginHorizontal: 10,
-	},
-	playerName: {
-		fontSize: 16,
-		fontWeight: "bold",
+
+		marginTop: 10,
+		fontFamily: "p-semibold",
 		marginBottom: 10,
 	},
-	holeText: {
-		fontSize: 14,
-		marginVertical: 5,
+	gridRow: {
+		flexDirection: "row",
+		justifyContent: "space-around",
+		width: "100%",
+		marginBottom: 0,
+		fontFamily: "p-semibold",
+		borderBottomWidth: 1,
+
+		borderColor: "black",
+	},
+	headerCell: {
+		flex: 1,
+		fontFamily: "p-semibold",
+		textAlign: "center",
+		fontSize: 10,
+		paddingVertical: 5,
+	},
+	headearHole: {
+		flex: 0.5,
+		textAlign: "center",
+		fontSize: 10,
+		fontFamily: "p-semibold",
+		paddingVertical: 5,
+	},
+	gridCell: {
+		flex: 1,
+		textAlign: "center",
+		fontSize: 9,
+		paddingVertical: 3,
+
+		fontFamily: "p-bold",
+	},
+	holeCell: {
+		flex: 0.5, // Más angosto para la columna de hoyos
+		textAlign: "center",
+		fontSize: 9,
+		paddingVertical: 3,
+		fontFamily: "p-bold",
 	},
 	closeButton: {
 		marginTop: 20,
@@ -589,6 +652,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#1f3a5c",
 		borderRadius: 5,
 	},
+
 	closeButtonText: {
 		color: "white",
 		fontSize: 14,

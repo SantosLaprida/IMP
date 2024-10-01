@@ -3,16 +3,16 @@
 }
 
 .green {
-	color: rgb(15, 114, 11);
+	color: rgba(80, 185, 77, 0.747);
 }
 .blue {
 	color: rgb(10, 10, 71);
 }
 .gold {
-	color: rgba(212, 188, 50, 0.76);
+	color: rgba(212, 188, 50, 0.438);
 }
 .asd {
-	color: #1f3a5c;
+	color: #19898d4d;
 }
 .ddd {
 	color: #17628b34;
@@ -27,7 +27,7 @@
 }
 
 .lightBlue {
-	color: #2296f3;
+	color: #2295f354;
 }
 
 .lightWhite {
