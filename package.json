@@ -21,6 +21,8 @@
     "expo-app-loading": "^2.1.1",
     "expo-font": "~12.0.9",
     "expo-linear-gradient": "~13.0.2",
+    "expo-modules-core": "^1.12.25",
+    "expo-splash-screen": "^0.27.6",
     "expo-status-bar": "~1.12.1",
     "firebase": "^10.12.2",
     "pre-commit": "^1.2.2",
