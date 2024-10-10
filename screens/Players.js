@@ -119,8 +119,8 @@ const Players = ({ navigation }) => {
 	};
 
 	const handleFinish = async () => {
-		if (equipo.length < 8) {
-			alert("Please select at least 8 players");
+		if (equipo.length < limit) {
+			alert(`please select ${limit} players`);
 			return;
 		}
 
