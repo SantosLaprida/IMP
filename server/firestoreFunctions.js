@@ -485,10 +485,34 @@ export const checkIfSemisExist = async (tournamentId) => {
 
 export const userMadeBet = async (tournamentId, userId) => {
 	try {
-		const querySnapshot = await getDocs(
-			collection(firestore, "I_Torneos", tournamentId, "I_Apuestas")
-		);
-		return querySnapshot.docs.some((doc) => doc.id === userId);
+		if (
+			!tournamentId ||
+			typeof tournamentId !== "string" ||
+			!userId ||
+			typeof userId !== "string"
+		) {
+			throw new Error("Invalid tournament ID or user ID.");
+		}
+
+		// Reference to the tournament document
+		const tournamentDocRef = doc(firestore, "I_Torneos", tournamentId);
+
+		// Check if the tournament document exists
+		const tournamentDocSnap = await getDoc(tournamentDocRef);
+
+		if (!tournamentDocSnap.exists()) {
+			console.log("Tournament document does not exist.");
+			return false;
+		}
+
+		// Reference to the specific bet document in I_Apuestas sub-collection
+		const apuestaDocRef = doc(tournamentDocRef, "I_Apuestas", userId);
+
+		// Check if the bet document exists
+		const apuestaDocSnap = await getDoc(apuestaDocRef);
+
+		// If the document exists, return true; otherwise, return false
+		return apuestaDocSnap.exists();
 	} catch (error) {
 		console.error("Error checking if user made bet:", error);
 		throw error;

@@ -109,27 +109,24 @@ const Bets = ({ navigation }) => {
 	}, []);
 
 	useEffect(() => {
-		const checkBetInterval = async () => {
+		const checkBetInterval = setInterval(async () => {
 			try {
 				const tournamentId = await getTournamentId();
 				const user = auth.currentUser;
 				if (user) {
 					const userId = user.uid;
-
-					// Verificar si el usuario ya hizo una apuesta
 					const betMade = await userMadeBet(tournamentId, userId);
+					console.log(betMade);
 					setHasBet(betMade);
 
-					// Verificar si se pueden hacer apuestas
 					const canMakeBet = await getApuestas(tournamentId);
 					setCanBet(canMakeBet);
 				}
 			} catch (error) {
 				console.error("Error checking if user made bet:", error);
 			}
-		}; // Cada segundo
-
-		checkBetInterval();
+		}, 1000);
+		return () => clearInterval(checkBetInterval);
 	}, []);
 
 	const getTournamentId = async () => {
