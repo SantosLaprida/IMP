@@ -109,7 +109,7 @@ const Bets = ({ navigation }) => {
 	}, []);
 
 	useEffect(() => {
-		const checkBetInterval = setInterval(async () => {
+		const checkBetInterval = async () => {
 			try {
 				const tournamentId = await getTournamentId();
 				const user = auth.currentUser;
@@ -127,9 +127,9 @@ const Bets = ({ navigation }) => {
 			} catch (error) {
 				console.error("Error checking if user made bet:", error);
 			}
-		}, 1000); // Cada segundo
+		}; // Cada segundo
 
-		return () => clearInterval(checkBetInterval);
+		checkBetInterval();
 	}, []);
 
 	const getTournamentId = async () => {
