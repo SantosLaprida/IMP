@@ -187,7 +187,6 @@ export const fetchPlayersFromFirestore = async (tournamentId) => {
       const data = doc.data(); // Get the data without adding the Firestore id
       return { id_player: doc.id, ...data }; // Use id_player as the primary identifier
     });
-    console.log("returning playersData", playersData);
     return playersData;
   } catch (error) {
     console.error("Error fetching players:", error);
@@ -735,6 +734,55 @@ export const updateBetCount = async (tournamentId, playerNames) => {
     console.log("Bet counts updated successfully.");
   } catch (error) {
     console.error("Error updating apuestas:", error);
+    throw error;
+  }
+};
+
+export const deleteBet = async (tournamentId, playerNames, userId) => {
+  try {
+    const db = firestore;
+
+    for (const playerName of playerNames) {
+      const playerDocRef = doc(
+        db,
+        "I_Torneos",
+        tournamentId,
+        "I_Players",
+        playerName
+      );
+
+      const playerDocSnap = await getDoc(playerDocRef);
+
+      if (playerDocSnap.exists()) {
+        const currentData = playerDocSnap.data();
+        const currentApuestas = currentData.apuestas || 0;
+
+        // Decrement apuestas by 1, ensuring it doesn't go below 0
+        const updatedApuestas = Math.max(0, currentApuestas - 1);
+
+        // Update the apuestas field
+        await updateDoc(playerDocRef, {
+          apuestas: updatedApuestas,
+        });
+      } else {
+        console.log(`Player ${playerName} not found in I_Players collection.`);
+      }
+    }
+
+    // Delete the document in the I_Apuestas collection for the specified userId
+    const apuestaDocRef = doc(
+      db,
+      "I_Torneos",
+      tournamentId,
+      "I_Apuestas",
+      userId
+    );
+    await deleteDoc(apuestaDocRef);
+    console.log(
+      `Deleted bet document for user ${userId} in I_Apuestas collection`
+    );
+  } catch (error) {
+    console.error("Error deleting Bet:", error);
     throw error;
   }
 };
