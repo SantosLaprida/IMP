@@ -126,9 +126,7 @@ const Players = ({ navigation }) => {
     }
 
     const userId = await retrieveUser();
-
     const playersIds = equipo.map((jugador) => jugador.id_player);
-
     const playerNames = equipo.map((jugador) => jugador.name);
 
     try {
