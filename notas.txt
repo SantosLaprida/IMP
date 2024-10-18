@@ -18,7 +18,8 @@ npm install @react-navigation/native
 npm install @react-navigation/stack
 
 
-adb logcat *:E
+adb logcat *:S ReactNative:V ReactNativeJS:V
+
 
 
 

@@ -6,20 +6,20 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "light",
-
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.IMPprototype.IMPprototype",
       "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
-      "enableHermes": false,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -36,6 +36,11 @@
         "projectId": "ddbc7b69-bd19-494b-84f9-61b43891b302"
       }
     },
-    "plugins": [["expo-font"]]
+    "plugins": [
+      [
+        "expo-font"
+      ]
+    ],
+    "owner": "charlie1203"
   }
 }
