@@ -1,6 +1,11 @@
 console.log("App.js: Start of file");
 
+import { enableScreens } from "react-native-screens";
+
+enableScreens();
+
 import "react-native-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -266,12 +271,37 @@ function App() {
   }
 
   return (
-    <NavigationContainer>
-      <MainStackScreen />
-    </NavigationContainer>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <MainStackScreen />
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
 console.log("App.js: After App function definition");
 
 export default registerRootComponent(App);
 console.log("App.js: End of file");
+
+// console.log("App.js: Start of file");
+
+// import React from "react";
+// import { View, Text } from "react-native";
+// import { registerRootComponent } from "expo";
+
+// console.log("App.js: Imports completed");
+
+// function App() {
+//   console.log("App.js: App function called");
+//   return (
+//     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+//       <Text>Hello, World!</Text>
+//     </View>
+//   );
+// }
+
+// console.log("App.js: Before registerRootComponent");
+// registerRootComponent(App);
+// console.log("App.js: End of file");
+
+// export default App;
