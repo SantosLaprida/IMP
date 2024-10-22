@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 
 import { fetchTournament } from "../server/firestoreFunctions";
 import { getBracketAPI } from "../api";
@@ -87,7 +88,7 @@ const Home = ({ navigation }) => {
 		setModalVisible(false);
 
 		const tournamentId = await getTournamentId();
-		const active = await isBracketActive(tournamentId, collectionName);	
+		const active = await isBracketActive(tournamentId, collectionName);
 
 		if (!active) {
 			alert("Bracket not active yet");
@@ -133,12 +134,12 @@ const Home = ({ navigation }) => {
 					<View style={styles.content}>
 						<TouchableOpacity
 							style={styles.buttonContainer}
-							onPress={() => navigation.navigate("Wallet")}
+							onPress={() => navigation.navigate("RulesOfPlay")}
 						>
 							<View style={styles.button}>
-								<FontAwesome5 name="wallet" size={28} color="#1f3a5c" />
+								<FontAwesome name="book" size={28} color="#1f3a5c" />
 							</View>
-							<Text style={styles.buttonText}>Wallet</Text>
+							<Text style={styles.buttonText}>Rules of play</Text>
 						</TouchableOpacity>
 						<TouchableOpacity
 							style={styles.buttonContainer}

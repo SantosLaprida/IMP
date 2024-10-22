@@ -139,6 +139,7 @@ export default function Register({ navigation }) {
 									onChangeText={setPassword}
 									secureTextEntry={secureTextEntry}
 									placeholderTextColor="#28486e6b"
+									autoCapitalize="none"
 								/>
 								<TouchableOpacity
 									onPress={toggleSecureTextEntry}
@@ -159,6 +160,7 @@ export default function Register({ navigation }) {
 									onChangeText={setConfirmPassword}
 									secureTextEntry={confirmSecureTextEntry}
 									placeholderTextColor="#28486e6b"
+									autoCapitalize="none"
 								/>
 								<TouchableOpacity
 									onPress={toggleConfirmSecureTextEntry}
