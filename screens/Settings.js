@@ -14,6 +14,7 @@ import { Entypo } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 const Settings = ({ navigation }) => {
 	const [user, setUser] = useState(null);
@@ -64,13 +65,13 @@ const Settings = ({ navigation }) => {
 						</TouchableOpacity>
 						<TouchableOpacity style={styles.buttonContainer}>
 							<View style={styles.button}>
-								<MaterialCommunityIcons
-									name="account-circle"
-									size={35}
+							<FontAwesome6
+									name="money-bill-transfer"
+									size={28}
 									color="#1f3a5c"
 								/>
 							</View>
-							<Text style={styles.buttonText}>Account</Text>
+							<Text style={styles.buttonText}>Wallet</Text>
 						</TouchableOpacity>
 					</View>
 				</View>

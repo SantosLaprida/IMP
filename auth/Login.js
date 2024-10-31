@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	StyleSheet,
 	Text,
@@ -15,16 +15,29 @@ import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { loginUserAPI } from "../api";
 
-//import { checkIfUserExistsAPI } from '../api';
-// import { checkIfUserExists } from '../api';
-//import { localStorage } from './Storage';
-
 export default function Login({ navigation }) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
-
 	const [secureTextEntry, setSecureTextEntry] = useState(true);
+
+	// Cargar el email y la contraseña almacenados cuando el componente se monta
+	useEffect(() => {
+		const loadStoredCredentials = async () => {
+			try {
+				const savedEmail = await AsyncStorage.getItem("savedEmail");
+				const savedPassword = await AsyncStorage.getItem("savedPassword");
+				if (savedEmail && savedPassword) {
+					setEmail(savedEmail);
+					setPassword(savedPassword);
+				}
+			} catch (error) {
+				console.error("Error loading credentials from storage:", error);
+			}
+		};
+
+		loadStoredCredentials();
+	}, []);
 
 	const toggleSecureTextEntry = () => {
 		setSecureTextEntry(!secureTextEntry);
@@ -53,10 +66,16 @@ export default function Login({ navigation }) {
 		try {
 			const userData = await loginUserAPI(email.toLowerCase(), password);
 			if (userData) {
+				// Guardar los datos del usuario en AsyncStorage
 				await AsyncStorage.setItem(
 					"user",
 					JSON.stringify({ uid: userData.uid, email: userData.email })
 				);
+
+				// Guardar el email y la contraseña para recordarlos
+				await AsyncStorage.setItem("savedEmail", email);
+				await AsyncStorage.setItem("savedPassword", password);
+
 				console.log("Login successful");
 				navigation.navigate("Main");
 			}
@@ -176,14 +195,13 @@ const styles = StyleSheet.create({
 		padding: 20,
 		backgroundColor: "rgb(255, 252, 241)",
 		marginTop: 30,
-		shadowColor: "#000", // Color de la sombra
-		shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
-		shadowOpacity: 0.3, // Opacidad de la sombra
-		shadowRadius: 6, // Radio de la sombra
-		// Para Android
-		elevation: 10, // Elevación para la sombra
-		minHeight: 250, // Altura mínima para container2
-		width: "100%", // Asegurar que ocupe el ancho completo
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 4 },
+		shadowOpacity: 0.3,
+		shadowRadius: 6,
+		elevation: 10,
+		minHeight: 250,
+		width: "100%",
 		alignItems: "center",
 		paddingVertical: 40,
 	},
