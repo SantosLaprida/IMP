@@ -16,6 +16,7 @@ import {
 	StyleSheet,
 	Image,
 	ActivityIndicator,
+	Modal,
 	Button,
 	TouchableOpacity,
 } from "react-native";

@@ -21,6 +21,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import Finals from "./Finals";
 
 const Bets = ({ navigation }) => {
 	const [equipo, setEquipo] = useState([]);
@@ -157,9 +158,22 @@ const Bets = ({ navigation }) => {
 		navigation.navigate(screen);
 	};
 
-	const handleRouting = (screen, origin) => {
-		setModalVisible(false);
-		navigation.navigate(screen, { origin });
+	const handleRouting = async (origin) => {
+		let tournamentId = await getTournamentId();
+
+		try {
+			const activeBracket = await getActiveBracket(tournamentId); // Obtén la etapa actual (QuarterFinals, SemiFinals, Finals)
+			if (activeBracket === "cuartos") {
+				navigation.navigate("QuarterFinals", { origin });
+			} else if (activeBracket === "semis") {
+				navigation.navigate("SemiFinals", { origin });
+			} else if (activeBracket === "finales") {
+				navigation.navigate("Finals", { origin });
+			}
+		} catch (error) {
+			console.error("Error checking games:", error);
+			setActiveBracketStage(null);
+		}
 	};
 
 	const showText = () => {
@@ -306,7 +320,7 @@ const Bets = ({ navigation }) => {
 
 				<TouchableOpacity
 					style={styles.btnClick}
-					onPress={() => handleRouting("QuarterFinals", "Bets")}
+					onPress={() => handleRouting("Bets")}
 				>
 					<View style={styles.btnDot}>
 						<Text style={styles.btnClickText}>Watch games live</Text>
