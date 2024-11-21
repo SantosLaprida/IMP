@@ -1,38 +1,17 @@
 
 
-npm install expo@~51.0.2
-
-
-necesitas node primero que nada
-despues tenes que instalar react native globalmente --->    npm install -g expo-cli
 
 npm start --> para arrancar la aplicacion
 
 Documentacion ---> https://docs.expo.dev/
 
+adb logcat *:S ReactNative:V ReactNativeJS:V (para debuguear el build en android)
 
-descargar expo client en el telefono para poder escanear el codigo y ver la app
+Distribucion -> subir app a testflight.
+             -> Crear developer account en apple.
 
-npm install @react-navigation/native
-
-npm install @react-navigation/stack
-
-
-adb logcat *:S ReactNative:V ReactNativeJS:V
-
-
-
-
-NOTAS PARA CAR
-
-Ok car pude terminar con el codigo para rregistrar un usuario
-Fijate la prox que lo abras trata de registrarte, primero intenta dejando un campo vacio, vas a ver que no te deja.
-Despues intenta poniendo en el campo de email un email que no sea valido, por ejemplo un string que no tenga '@'.
-Despues intenta poner una Contraseña corta, menos de 6 caracteres, no te va a dejar.
-Despues llena los campos con datos validos y vas a ver que te lo deberia registrar correctamente.
-Habla con papa Y fijate que la base de datos tiene un par de nuevos en el I_Members que registre yo cuando hacia las pruebas.
-En Registro.js te deje en la linea 75 estos comentarios: // ########################################################################
-                                                        // CAR: ACA INSERTA EL CODIGO PARA QUE TE MANDE A UNA NUEVA PAGINA Y 
-                                                        // TAMBIEN QUE TE MUESTRE UN MENSAJE DE QUE TE REGISTRASTE CORRECTAMENTE O ALGO POR EL ESTILO
-                                                        // ########################################################################
-Asi que le podes seguir metiendo, fijate de cambiar todo a ingles pero tene cuidado de refactorearlo correctamente
+Funciones: 1- Que puedas ver la cantidad de apuestas que tiene cada jugador (en porcentajes).
+            2- En el ADMIN -> Que puedas ver la lista de members.
+            3- En la APP -> Que puedas ver los torneos pasados, con los detalles(Jugadores que ganaron, clasificaron, cantidad de apuestas a cada jugador, y premios a usarios, cantidad de participantes).
+            4- Agregar la opcion de cerrar sesion y eliminar cuenta.
+            5- Que sea scrolleable los players.
