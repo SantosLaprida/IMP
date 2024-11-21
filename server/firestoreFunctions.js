@@ -66,31 +66,6 @@ export const createTournament = async (
   }
 };
 
-export const createI_Players = async (tournamentId, players) => {
-  if (!Array.isArray(players)) {
-    throw new TypeError("The 'players' parameter must be an array");
-  }
-
-  const collectionRef = collection(
-    firestore,
-    "I_Torneos",
-    tournamentId,
-    "I_Players"
-  );
-
-  for (const player of players) {
-    if (player.name && player.rank !== undefined) {
-      const docRef = doc(collectionRef, player.name);
-      await setDoc(docRef, {
-        rank: player.rank,
-        id_player: docRef.id,
-      });
-    } else {
-      console.error("Invalid player object", player);
-    }
-  }
-};
-
 export const registerUser = async (email, password, firstName, lastName) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
@@ -344,121 +319,6 @@ export const fetchTournament = async () => {
   } catch (error) {
     console.error("Error fetching active tournament:", error);
     throw error;
-  }
-};
-
-export const createI_Cuartos = async () => {
-  try {
-    const collectionRef = collection(
-      firestore,
-      "I_Torneos",
-      "The_Open_Championship_2024",
-      "I_Cuartos"
-    );
-
-    for (let i = 1; i <= 8; i++) {
-      const cuartoData = {
-        H1: 0,
-        H2: 0,
-        H3: 0,
-        H4: 0,
-        H5: 0,
-        H6: 0,
-        H7: 0,
-        H8: 0,
-        H9: 0,
-        H10: 0,
-        H11: 0,
-        H12: 0,
-        H13: 0,
-        H14: 0,
-        H15: 0,
-        H16: 0,
-        H17: 0,
-        H18: 0,
-        id_player: 0,
-        orden: 0,
-      };
-      await addDoc(collectionRef, cuartoData);
-    }
-    console.log("I_Cuartos created successfully.");
-  } catch (error) {
-    console.error("Error creating I_Cuartos:", error);
-  }
-};
-
-export const createI_Semifinales = async (tournamentId) => {
-  try {
-    const collectionRef = collection(
-      firestore,
-      "I_Torneos",
-      tournamentId,
-      "I_Semifinales"
-    );
-
-    for (let i = 1; i <= 4; i++) {
-      const cuartoData = {
-        H1: 0,
-        H2: 0,
-        H3: 0,
-        H4: 0,
-        H5: 0,
-        H6: 0,
-        H7: 0,
-        H8: 0,
-        H9: 0,
-        H10: 0,
-        H11: 0,
-        H12: 0,
-        H13: 0,
-        H14: 0,
-        H15: 0,
-        H16: 0,
-        H17: 0,
-        H18: 0,
-        id_player: 0,
-        orden: 0,
-        name: 0,
-      };
-      await addDoc(collectionRef, cuartoData);
-    }
-    console.log("I_Semifinales created successfully.");
-  } catch (error) {
-    console.error("Error creating I_Semifinales:", error);
-  }
-};
-
-export const updateI_Players = async () => {
-  try {
-    const collectionRef = collection(
-      firestore,
-      "I_Torneos",
-      "The_Open_Championship_2024",
-      "I_Players"
-    );
-    const querySnapshot = await getDocs(collectionRef);
-
-    for (const docSnap of querySnapshot.docs) {
-      const playerName = docSnap.id;
-      const playerRef = doc(
-        firestore,
-        "I_Torneos",
-        "The_Open_Championship_2024",
-        "I_Players",
-        playerName
-      );
-
-      const updatedData = {
-        name: playerName,
-        id_player: generateAutoId(),
-      };
-
-      await updateDoc(playerRef, updatedData);
-    }
-
-    console.log("I_Players updated successfully.");
-  } catch (error) {
-    console.error("Error updating I_Players:", error);
   }
 };
 
@@ -783,6 +643,38 @@ export const deleteBet = async (tournamentId, playerNames, userId) => {
     );
   } catch (error) {
     console.error("Error deleting Bet:", error);
+    throw error;
+  }
+};
+
+/**
+ * Fetch all players with their respective bet count.
+ *
+ * @param {*} tournamentId - The ID of the tournament.
+ * @returns {Promise<Object>} - An array containing objects, each object has the name and the apuestas fields.
+ */
+
+export const getPlayerBets = async (tournamentId) => {
+  try {
+    // Reference to the I_Players collection
+    const playerCollectionReference = collection(
+      firestore,
+      "I_Torneos",
+      tournamentId,
+      "I_Players"
+    );
+    const querySnapshot = await getDocs(playerCollectionReference);
+
+    const playerBets = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        name: doc.id,
+        apuestas: data.apuestas || 0,
+      };
+    });
+    return playerBets;
+  } catch (error) {
+    console.error("Error fetching player bets: ", error);
     throw error;
   }
 };

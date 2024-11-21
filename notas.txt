@@ -11,7 +11,17 @@ Distribucion -> subir app a testflight.
              -> Crear developer account en apple.
 
 Funciones: 1- Que puedas ver la cantidad de apuestas que tiene cada jugador (en porcentajes).
-            2- En el ADMIN -> Que puedas ver la lista de members.
+                SANTOS --- Funcion del back --> Te devuelve un array, cada elemento es un objecto con el nombre y cantidad de apuestas. 
+                Array este ordenado de mayor a menor --- SANTOS
+
+                CAR --- Parte de front --- CAR
+
+            CAR --- LOGO EN LA APP --- CAR
+
+            5- --- CAR --- Que sea scrolleable los players --- CAR.
+
+            2- SANTOS --- En el ADMIN -> Que puedas ver la lista de members. --- SANTOS
+
             3- En la APP -> Que puedas ver los torneos pasados, con los detalles(Jugadores que ganaron, clasificaron, cantidad de apuestas a cada jugador, y premios a usarios, cantidad de participantes).
             4- Agregar la opcion de cerrar sesion y eliminar cuenta.
-            5- Que sea scrolleable los players.
+            
