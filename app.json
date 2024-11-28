@@ -24,7 +24,7 @@
 			},
 			"package": "com.IMPprototype.IMPprototype",
 			"googleServicesFile": "./google-services.json",
-			"versionCode": 4
+			"versionCode": 5
 		},
 		"web": {
 			"favicon": "./assets/images/favicon.png"
