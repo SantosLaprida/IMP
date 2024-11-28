@@ -4,6 +4,7 @@ import {
 	userMadeBet,
 	getApuestas,
 	getActiveBracket,
+	getPlayerBets,
 } from "../server/firestoreFunctions";
 import { auth } from "../server/firebaseConfig";
 
@@ -16,6 +17,7 @@ import {
 	TouchableOpacity,
 	Modal,
 	ScrollView,
+	FlatList,
 	Animated,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -32,9 +34,11 @@ const Bets = ({ navigation }) => {
 	const [logo, setLogo] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [name, setName] = useState(null);
+	const [playerBets, setPlayerBets] = useState([]);
 
 	const [modalVisible, setModalVisible] = useState(false);
 	const [modalVisible1, setModalVisible1] = useState(false);
+	const [modalBets, setModalBets] = useState(false);
 
 	const [hasBet, setHasBet] = useState(false);
 	const [activeBracketStage, setActiveBracketStage] = useState(null);
@@ -141,6 +145,10 @@ const Bets = ({ navigation }) => {
 		}
 	};
 
+	const handleSeeBets = () => {
+		setModalBets(true);
+	};
+
 	const handleGameMode = () => {
 		setModalVisible(true);
 	};
@@ -151,6 +159,26 @@ const Bets = ({ navigation }) => {
 	const handleNavigate = (screen) => {
 		setModalVisible(false);
 		navigation.navigate(screen);
+	};
+
+	useEffect(() => {
+		if (modalBets) {
+			fetchPlayerBets();
+		}
+	}, [modalBets]);
+
+	const fetchPlayerBets = async () => {
+		setLoading(true);
+
+		try {
+			const tournamentId = await getTournamentId();
+			const bets = await getPlayerBets(tournamentId);
+			setPlayerBets(bets);
+		} catch (error) {
+			console.error("Error fetching player bets:", error);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	const handleNavigation = (screen) => {
@@ -317,6 +345,17 @@ const Bets = ({ navigation }) => {
 						<Text style={styles.buttonText}>More</Text>
 					</TouchableOpacity>
 				</View>
+				<View style={{ ...styles.content, marginTop: 10 }}>
+					<TouchableOpacity
+						style={styles.buttonContainer}
+						onPress={handleSeeBets}
+					>
+						<View style={styles.button}>
+							<FontAwesome6 name="people-line" size={22} color="#1f3a5c" />
+						</View>
+						<Text style={styles.buttonText}>See bets</Text>
+					</TouchableOpacity>
+				</View>
 
 				<TouchableOpacity
 					style={styles.btnClick}
@@ -379,6 +418,56 @@ const Bets = ({ navigation }) => {
 							style={{
 								...styles.modalButton,
 								marginTop: 5,
+								width: 250,
+								backgroundColor: "#1f3a5c",
+							}}
+						>
+							<Text style={{ ...styles.modalT, color: "white" }}>Close</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+			</Modal>
+
+			<Modal
+				animationType="slide"
+				transparent={true}
+				visible={modalBets}
+				onRequestClose={() => {
+					setModalBets(!modalBets);
+				}}
+			>
+				<View style={styles.modalContainerBets}>
+					<View style={{ ...styles.box, height: 650, width: 500 }}>
+						<Text
+							style={{
+								...styles.text,
+								textDecorationLine: "underline",
+								fontSize: 16,
+								marginBottom: 12,
+							}}
+						>
+							Player Bets
+						</Text>
+						{loading ? (
+							<Text>Loading...</Text>
+						) : (
+							<FlatList
+								style={{ width: "80%", marginBottom: 5 }}
+								data={playerBets}
+								keyExtractor={(item) => item.name}
+								renderItem={({ item }) => (
+									<View style={styles.row}>
+										<Text style={styles.cell}>{item.name}</Text>
+										<Text style={styles.cell}>{item.apuestas}</Text>
+									</View>
+								)}
+							/>
+						)}
+						<TouchableOpacity
+							onPress={() => setModalBets(false)}
+							style={{
+								...styles.modalButton,
+								marginTop: 15,
 								width: 250,
 								backgroundColor: "#1f3a5c",
 							}}
@@ -453,12 +542,28 @@ const styles = StyleSheet.create({
 		marginRight: -5,
 		marginTop: 2,
 	},
+	row: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		paddingVertical: 10,
+		borderBottomWidth: 1,
+		borderBottomColor: "#ccc",
+	},
+	cell: {
+		fontSize: 15,
+	},
 
 	container: {
 		flex: 1,
 		alignItems: "center",
 	},
 	modalContainer: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: "rgba(0, 0, 0, 0.849)",
+	},
+	modalContainerBets: {
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
