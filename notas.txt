@@ -1,6 +1,4 @@
 
-
-
 npm start --> para arrancar la aplicacion
 
 Documentacion ---> https://docs.expo.dev/
@@ -11,8 +9,9 @@ Distribucion -> subir app a testflight.
              -> Crear developer account en apple.
 
 Funciones: 1- Que puedas ver la cantidad de apuestas que tiene cada jugador (en porcentajes).
+
                 SANTOS --- Funcion del back --> Te devuelve un array, cada elemento es un objecto con el nombre y cantidad de apuestas. 
-                Array este ordenado de mayor a menor --- SANTOS
+                Array este ordenado de mayor a menor --- SANTOS Done
 
                 CAR --- Parte de front --- CAR
 
