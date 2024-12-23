@@ -1,7 +1,7 @@
 {
 	"expo": {
-		"name": "IMPprototype",
-		"slug": "IMPprototype",
+		"name": "Golf Match Play",
+		"slug": "golf-match-play",
 		"version": "1.0.0",
 		"orientation": "portrait",
 		"icon": "./assets/images/icon.png",
@@ -14,7 +14,7 @@
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
 			"supportsTablet": true,
-			"bundleIdentifier": "com.IMPprototype.IMPprototype",
+			"bundleIdentifier": "com.IMPprototype.golfmatchplay",
 			"googleServicesFile": "./GoogleService-Info.plist"
 		},
 		"android": {
@@ -22,7 +22,7 @@
 				"foregroundImage": "./assets/images/adaptive-icon.png",
 				"backgroundColor": "#ffffff"
 			},
-			"package": "com.IMPprototype.IMPprototype",
+			"package": "com.IMPprototype.golfmatchplay",
 			"googleServicesFile": "./google-services.json",
 			"versionCode": 5
 		},
