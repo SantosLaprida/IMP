@@ -11,12 +11,10 @@
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.IMPprototype.golfmatchplay",
+      "bundleIdentifier": "com.IMPprototype.IMPprototype",
       "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
@@ -24,7 +22,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.IMPprototype.golfmatchplay",
+      "package": "com.IMPprototype.IMPprototype",
       "googleServicesFile": "./google-services.json",
       "versionCode": 5
     },
@@ -36,11 +34,7 @@
         "projectId": "ddbc7b69-bd19-494b-84f9-61b43891b302"
       }
     },
-    "plugins": [
-      [
-        "expo-font"
-      ]
-    ],
+    "plugins": [["expo-font"]],
     "owner": "charlie1203"
   }
 }
