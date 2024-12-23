@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,11 +8,39 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
+import { fetchPlayers } from "../api";
 
 const TournamentDetails = ({ route }) => {
+  const [tournamentId, setTournamentId] = useState(null);
+  const [jugadores, setJugadores] = useState([]);
+
   // Access the passed data from route.params
-  const { jugadores, name, start_date, end_date, logo } = route.params;
-  console.log(jugadores);
+  const {
+    name,
+    start_date,
+    end_date,
+    logo,
+    tournamentId: passedTournamentId,
+  } = route.params;
+
+  useEffect(() => {
+    setTournamentId(passedTournamentId);
+  }, [passedTournamentId]);
+
+  useEffect(() => {
+    if (tournamentId) {
+      const getJugadores = async () => {
+        try {
+          const data = await fetchPlayers(tournamentId);
+          setJugadores(data);
+        } catch (error) {
+          console.error("Error fetching players:", error);
+        }
+      };
+
+      getJugadores();
+    }
+  }, [tournamentId]);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

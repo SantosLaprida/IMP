@@ -141,8 +141,6 @@ export const checkIfEmailExistsAPI = async (email) => {
 };
 
 export const checkIfUserExistsAPI = async (email, password) => {
-  console.log("Inside checkIfUserExistsAPI in api.js");
-
   try {
     const userData = await checkIfUserExists(email, password);
     if (userData) {

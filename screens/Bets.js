@@ -337,11 +337,11 @@ const Bets = ({ navigation }) => {
           onPress={() => {
             // Navigate to the Tournament Details screen or show modal with details
             navigation.navigate("TournamentDetails", {
-              originalJugadores,
               name,
               start_date: start,
               end_date: end,
               logo,
+              tournamentId,
             });
           }}
         >
