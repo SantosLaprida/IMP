@@ -336,7 +336,13 @@ const Bets = ({ navigation }) => {
           style={{ ...styles.btnClick, marginTop: 15 }}
           onPress={() => {
             // Navigate to the Tournament Details screen or show modal with details
-            navigation.navigate("TournamentDetails");
+            navigation.navigate("TournamentDetails", {
+              originalJugadores,
+              name,
+              start_date: start,
+              end_date: end,
+              logo,
+            });
           }}
         >
           <Text style={styles.btnClickText}>See Tournament Details</Text>
