@@ -1,4 +1,5 @@
 import { enableScreens } from "react-native-screens";
+import "react-native-url-polyfill/auto";
 
 enableScreens();
 
