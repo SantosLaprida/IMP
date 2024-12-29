@@ -13,7 +13,7 @@ import {
   addDoc,
   getFirestore,
 } from "firebase/firestore";
-import { auth, db } from "./firebaseConfig";
+import { auth, db } from "./config/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -21,102 +21,6 @@ import {
 } from "firebase/auth";
 
 const firestore = getFirestore();
-
-export const createTournament = async (
-  tournamentId,
-  name,
-  start_date,
-  finish_date,
-  logo,
-  players
-) => {
-  console.log(players);
-
-  // if (!Array.isArray(players)) {
-  //   throw new TypeError("The 'players' parameter must be an array");
-  // }
-
-  const tournamentRef = doc(firestore, "I_Torneos", tournamentId);
-  await setDoc(tournamentRef, {
-    activo: 1,
-    start_date: start_date,
-    finish_date: finish_date,
-    logo: logo,
-    name: name,
-  });
-
-  const collectionRef = collection(
-    firestore,
-    "I_Torneos",
-    tournamentId,
-    "I_Players"
-  );
-
-  for (const player of players) {
-    if (player.name && player.rank !== undefined) {
-      const docRef = doc(collectionRef, player.name);
-      await setDoc(docRef, {
-        id_player: generateAutoId(),
-        name: player.name,
-        rank: player.rank,
-      });
-    } else {
-      console.error("Invalid player object", player);
-    }
-  }
-};
-
-export const registerUser = async (email, password, firstName, lastName) => {
-  try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    console.log("User registered:", userCredential.user);
-
-    // Store additional user data in Firestore
-    const uid = userCredential.user.uid;
-    const userRef = doc(firestore, "I_Members", uid);
-    await setDoc(userRef, {
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
-    });
-
-    return userCredential.user;
-  } catch (error) {
-    console.error("Error registering user:", error.code, error.message);
-    throw error;
-  }
-};
-
-export const loginUser = async (email, password) => {
-  try {
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    console.log("User logged in:", userCredential.user);
-
-    // Retrieve additional user data from Firestore if needed
-    const uid = userCredential.user.uid;
-    const userRef = doc(firestore, "I_Members", uid);
-    const userDoc = await getDoc(userRef);
-
-    if (userDoc.exists()) {
-      console.log("User data:", userDoc.data());
-      return { ...userCredential.user, ...userDoc.data() };
-    } else {
-      console.log("No such user document!");
-      return userCredential.user;
-    }
-  } catch (error) {
-    console.error("Error logging in user:", error.code, error.message);
-    throw error;
-  }
-};
 
 export const sendPasswordReset = async (email) => {
   try {
@@ -675,6 +579,26 @@ export const getPlayerBets = async (tournamentId) => {
     return playerBets;
   } catch (error) {
     console.error("Error fetching player bets: ", error);
+    throw error;
+  }
+};
+
+export const fetchThirdPlaceQualifiers = async (tournamentName) => {
+  try {
+    const querySnapshot = await getDocs(
+      collection(firestore, "I_Torneos", tournamentName, "I_TercerCuarto")
+    );
+    const sortedPlayerData = querySnapshot.docs
+      .map((doc) => ({
+        id_player: doc.data().id_player,
+        name: doc.data().name,
+        orden: doc.data().orden,
+      }))
+      .sort((a, b) => a.orden - b.orden);
+
+    return sortedPlayerData.filter(({ name }) => name !== null);
+  } catch (error) {
+    console.error("Error fetching qualifiers:", error);
     throw error;
   }
 };

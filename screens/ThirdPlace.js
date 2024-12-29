@@ -1,7 +1,9 @@
-import { fetchTournament } from "../server/firestoreFunctions";
-import { fetchThirdPlaceQualifiers } from "../server/thirdPlaceUtils/thirdPlaceUtils";
+import {
+  fetchTournament,
+  fetchThirdPlaceQualifiers,
+} from "../server/firestoreFunctions";
 import React, { useState, useEffect } from "react";
-import { compareScores, showResults } from "./QuarterUtils";
+import { compareScores, showResults } from "../server/matchUtils/matchUtils";
 
 import {
   View,

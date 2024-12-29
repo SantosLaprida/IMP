@@ -9,7 +9,7 @@ import {
 } from "../server/firestoreFunctions";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { auth } from "../server/firebaseConfig";
+import { auth } from "../server/config/firebaseConfig";
 import { Feather } from "@expo/vector-icons";
 import React, { useState, useEffect } from "react";
 import {

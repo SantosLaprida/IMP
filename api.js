@@ -13,28 +13,6 @@ import {
   fetchTeamFromFirestore,
 } from "./server/firestoreFunctions";
 
-const publicIp = "http://192.168.1.40:3000";
-
-export const registerUserAPI = async (email, password, firstName, lastName) => {
-  try {
-    const user = await registerUser(email, password, firstName, lastName);
-    return user;
-  } catch (error) {
-    console.error("Error in registerUserAPI:", error);
-    throw error;
-  }
-};
-
-export const loginUserAPI = async (email, password) => {
-  try {
-    const user = await loginUser(email, password);
-    return user;
-  } catch (error) {
-    console.error("Error in loginUserAPI:", error);
-    throw error;
-  }
-};
-
 export const sendPasswordResetAPI = async (email) => {
   try {
     await sendPasswordReset(email);

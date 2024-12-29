@@ -6,7 +6,7 @@ import {
   getActiveBracket,
   getPlayerBets,
 } from "../server/firestoreFunctions";
-import { auth } from "../server/firebaseConfig";
+import { auth } from "../server/config/firebaseConfig";
 
 import React, { useEffect, useState, useRef } from "react";
 import {

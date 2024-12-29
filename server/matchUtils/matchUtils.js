@@ -1,10 +1,8 @@
 import { get } from "firebase/database";
-import { getScoreSheet } from "../api";
-import { getPlayerName } from "../server/firestoreFunctions";
-import { processSemis } from "../server/semisUtils/semisUtils";
-import { processCuartos } from "../server/cuartosUtils/cuartosUtils";
-import { processFinals } from "../server/finalsUtils/finalsUtils";
-import { processThirdPlace } from "../server/finalsUtils/finalsUtils";
+import { getScoreSheet } from "../../api";
+import { getPlayerName } from "../firestoreFunctions";
+import { processFinals } from "../finalsUtils/finalsUtils";
+import { processThirdPlace } from "../finalsUtils/finalsUtils";
 
 export const compareScores = async (
   id_player1,
@@ -12,6 +10,7 @@ export const compareScores = async (
   tournamentName,
   collectionName
 ) => {
+  console.log("Compare Scores called");
   const scoreSheet1 = await getScoreSheet(
     id_player1,
     tournamentName,
