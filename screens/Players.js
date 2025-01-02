@@ -1,4 +1,5 @@
-import { fetchPlayers, storeTeam, fetchTeamAPI } from "../api";
+import { storeTeam, fetchTeamAPI } from "../api";
+import { fetchPlayersFromFirestore } from "../server/firestore/players";
 import {
   fetchTournament,
   userMadeBet,
@@ -37,7 +38,7 @@ const Players = ({ navigation }) => {
     const fetchData = async () => {
       try {
         const tournamentId = await getTournamentId();
-        const data = await fetchPlayers(tournamentId);
+        const data = await fetchPlayersFromFirestore(tournamentId);
         const limit = await getNumberPlayersBet(tournamentId);
         setLimit(limit);
         setJugadores(data);

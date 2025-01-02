@@ -1,8 +1,20 @@
-import { get } from "firebase/database";
 import { getScoreSheet } from "../../api";
-import { getPlayerName } from "../firestoreFunctions";
-import { processFinals } from "../finalsUtils/finalsUtils";
-import { processThirdPlace } from "../finalsUtils/finalsUtils";
+
+import {
+  collection,
+  deleteDoc,
+  updateDoc,
+  getDocs,
+  query,
+  where,
+  doc,
+  setDoc,
+  getDoc,
+  addDoc,
+  getFirestore,
+} from "firebase/firestore";
+
+const firestore = getFirestore();
 
 export const compareScores = async (
   id_player1,
@@ -126,4 +138,40 @@ export const showResults = (results, player_name1, player_name2) => {
   }
 
   return results.result;
+};
+
+export const fetchResults = async (tournamentId) => {
+  try {
+    const finalsCollectionRef = collection(
+      firestore,
+      "I_Torneos",
+      tournamentId,
+      "I_Resultados"
+    );
+
+    const names = [];
+
+    // Fetch all documents in the I_Resultados collection
+    const querySnapshot = await getDocs(finalsCollectionRef);
+
+    if (querySnapshot.empty) {
+      console.log("No documents found in the I_Resultados collection.");
+      return names; // return empty array if no documents found
+    }
+
+    querySnapshot.forEach((doc) => {
+      const matchData = doc.data();
+      if (matchData && matchData.name) {
+        names.push(matchData.name);
+      } else {
+        console.log(`No name field in document ${doc.id}.`);
+        // showPopup(`No name field in document ${doc.id}.`);
+      }
+    });
+
+    return names;
+  } catch (error) {
+    console.error("Error fetching final results:", error);
+    throw error;
+  }
 };

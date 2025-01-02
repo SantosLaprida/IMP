@@ -70,3 +70,13 @@ export const registerUser = async (email, password, firstName, lastName) => {
     throw error;
   }
 };
+
+export const sendPasswordReset = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    console.log("Password reset email sent!");
+  } catch (error) {
+    console.error("Error sending password reset email:", error);
+    throw error;
+  }
+};

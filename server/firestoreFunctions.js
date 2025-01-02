@@ -14,37 +14,8 @@ import {
   getFirestore,
 } from "firebase/firestore";
 import { auth, db } from "./config/firebaseConfig";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  sendPasswordResetEmail,
-} from "firebase/auth";
 
 const firestore = getFirestore();
-
-export const sendPasswordReset = async (email) => {
-  try {
-    await sendPasswordResetEmail(auth, email);
-    console.log("Password reset email sent!");
-  } catch (error) {
-    console.error("Error sending password reset email:", error);
-    throw error;
-  }
-};
-
-export const fetchPlayers = async () => {
-  try {
-    const querySnapshot = await getDocs(collection(firestore, "I_Players"));
-    const playersData = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    return playersData;
-  } catch (error) {
-    console.error("Error fetching players:", error);
-    throw error;
-  }
-};
 
 export const storeTeam = async (userId, team) => {
   try {
@@ -53,22 +24,6 @@ export const storeTeam = async (userId, team) => {
     console.log("Team stored successfully");
   } catch (error) {
     console.error("Error storing team:", error);
-    throw error;
-  }
-};
-
-export const fetchPlayersFromFirestore = async (tournamentId) => {
-  try {
-    const querySnapshot = await getDocs(
-      collection(firestore, "I_Torneos", tournamentId, "I_Players")
-    );
-    const playersData = querySnapshot.docs.map((doc) => {
-      const data = doc.data(); // Get the data without adding the Firestore id
-      return { id_player: doc.id, ...data }; // Use id_player as the primary identifier
-    });
-    return playersData;
-  } catch (error) {
-    console.error("Error fetching players:", error);
     throw error;
   }
 };

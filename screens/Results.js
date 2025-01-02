@@ -1,7 +1,7 @@
 import { fetchQualifiers, fetchTournament } from "../server/firestoreFunctions";
 import React, { useState, useEffect } from "react";
 import { compareScores, showResults } from "../server/matchUtils/matchUtils";
-import { fetchFinalResults } from "../server/finalsUtils/finalsUtils";
+import { fetchResults } from "../server/matchUtils/matchUtils";
 
 import {
   View,
@@ -41,10 +41,10 @@ const Results = ({ navigation }) => {
       }
     };
 
-    const fetchResults = async () => {
+    const getResults = async () => {
       try {
         const tournamentId = await getTournamentId();
-        const names = await fetchFinalResults(tournamentId);
+        const names = await fetchResults(tournamentId);
         setNames(names);
         setLoading(false);
       } catch (error) {
@@ -52,7 +52,7 @@ const Results = ({ navigation }) => {
       }
     };
 
-    fetchResults();
+    getResults();
   }, []);
 
   const [start, setStart] = useState(null);
