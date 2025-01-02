@@ -371,7 +371,7 @@ export const getNumberPlayersBet = async (tournamentId) => {
   }
 };
 
-const getMinimumClassification = async (tournamentId) => {
+export const getMinimumClassification = async (tournamentId) => {
   try {
     const tournamentDocRef = doc(db, "I_Torneos", tournamentId);
 

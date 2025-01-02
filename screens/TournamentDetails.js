@@ -9,11 +9,13 @@ import {
 	ScrollView,
 	TouchableOpacity
 } from "react-native";
+import {getMinimumClassification} from "../server/firestoreFunctions"
 import { fetchPlayers } from "../api";
 
 const TournamentDetails = ({ route, navigation }) => {
 	const [tournamentId, setTournamentId] = useState(null);
 	const [jugadores, setJugadores] = useState([]);
+	const [minimunCl, setMinimunCl] = useState([]);
 
 	// Access the passed data from route.params
 	const {
@@ -43,6 +45,16 @@ const TournamentDetails = ({ route, navigation }) => {
 		}
 	}, [tournamentId]);
 
+	const getMinimunBet = async () => {
+		let min = await getMinimumClassification(tournamentId)
+		setMinimunCl(min)
+		console.log(min)
+	}
+
+	useEffect(() => {
+		getMinimunBet()
+	},);
+
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
 			<View style={styles.topCont}>
@@ -59,7 +71,7 @@ const TournamentDetails = ({ route, navigation }) => {
 					Number of Players: {jugadores.length}
 				</Text>
 				<Text style={styles.subtitle}>Number of players to choose {end_date}</Text>
-				<Text style={styles.subtitle}>Minimun number to clasify: {end_date}</Text>
+				<Text style={styles.subtitle}>Minimun number to clasify: {minimunCl}</Text>
 			</View>
 			<Text style={{ ...styles.title, marginTop: 15 }}>Players</Text>
 			<FlatList
