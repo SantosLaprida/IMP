@@ -7,10 +7,11 @@ import {
 	Image,
 	StyleSheet,
 	ScrollView,
+	TouchableOpacity
 } from "react-native";
 import { fetchPlayers } from "../api";
 
-const TournamentDetails = ({ route }) => {
+const TournamentDetails = ({ route, navigation }) => {
 	const [tournamentId, setTournamentId] = useState(null);
 	const [jugadores, setJugadores] = useState([]);
 
@@ -45,17 +46,20 @@ const TournamentDetails = ({ route }) => {
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
 			<View style={styles.topCont}>
+			<Text style={styles.title}>{name}</Text>
 				<View style={styles.logoBox}>
 					<Image source={{ uri: logo }} style={styles.logo} />
 				</View>
 
-				<Text style={styles.title}>{name}</Text>
+				
 
 				<Text style={styles.subtitle}>Start Date: {start_date}</Text>
 				<Text style={styles.subtitle}>End Date: {end_date}</Text>
 				<Text style={styles.subtitle}>
 					Number of Players: {jugadores.length}
 				</Text>
+				<Text style={styles.subtitle}>Number of players to choose {end_date}</Text>
+				<Text style={styles.subtitle}>Minimun number to clasify: {end_date}</Text>
 			</View>
 			<Text style={{ ...styles.title, marginTop: 15 }}>Players</Text>
 			<FlatList
@@ -68,6 +72,12 @@ const TournamentDetails = ({ route }) => {
 					</View>
 				)}
 			/>
+			  <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Bets")}
+        >
+          <Text style={styles.buttonText}>Go back</Text>
+        </TouchableOpacity>
 		</ScrollView>
 	);
 };
@@ -97,12 +107,16 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 		textAlign: "center",
 		color: "#1f3a5c",
+		fontFamily: "p-semibold",
+		fontSize: 20
 	},
 	subtitle: {
 		fontSize: 16,
 		marginBottom: 5,
 		textAlign: "center",
 		color: "#333",
+		fontFamily: "p-semibold",
+		fontSize: 10
 	},
 	playerItem: {
 		marginBottom: 10,
@@ -140,6 +154,25 @@ const styles = StyleSheet.create({
 		shadowRadius: 6,
 		elevation: 10,
 	},
+	button: {
+		backgroundColor: "#17628b34",
+		padding: 6,
+		margin: 15,
+		borderRadius: 10,
+		width: 170,
+		alignItems: "center",
+		borderWidth: 0,
+		borderColor: "#17628b94",
+		borderBottomWidth: 7,
+		borderBottomColor: "rgba(0, 0, 0, 0.2)",
+	  },
+	  buttonText: {
+		color: "#1f3a5c",
+		fontSize: 14,
+		fontFamily: "p-semibold",
+		position: "relative",
+		bottom: -2,
+	  },
 });
 
 export default TournamentDetails;
