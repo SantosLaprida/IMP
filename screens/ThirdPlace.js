@@ -1,7 +1,7 @@
 import {
   fetchTournament,
   fetchThirdPlaceQualifiers,
-} from "../server/firestoreFunctions";
+} from "../server/firestore/tournaments";
 import React, { useState, useEffect } from "react";
 import { compareScores, showResults } from "../server/matchUtils/matchUtils";
 
@@ -27,7 +27,6 @@ const ThirdPlace = ({ navigation }) => {
       const tournamentId = await getTournamentId();
       const qualifiers = await fetchThirdPlaceQualifiers(tournamentId);
       const names = qualifiers.map((qualifier) => qualifier.name);
-      console.log(names, "INSIDE fetchQualifiers THIRDPLACE");
       const ids = qualifiers.map((qualifier) => qualifier.id_player);
       setNames(names);
       setIds(ids);

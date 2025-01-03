@@ -1,4 +1,4 @@
-import { getScoreSheet } from "../../api";
+import { fetchScoreSheet } from "../firestore/utils";
 
 import {
   collection,
@@ -23,12 +23,12 @@ export const compareScores = async (
   collectionName
 ) => {
   console.log("Compare Scores called");
-  const scoreSheet1 = await getScoreSheet(
+  const scoreSheet1 = await fetchScoreSheet(
     id_player1,
     tournamentName,
     collectionName
   );
-  const scoreSheet2 = await getScoreSheet(
+  const scoreSheet2 = await fetchScoreSheet(
     id_player2,
     tournamentName,
     collectionName

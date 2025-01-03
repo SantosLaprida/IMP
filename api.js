@@ -2,7 +2,6 @@
 // 192.168.0.14  car's ip address
 import { registerUser, loginUser } from "./server/firestoreFunctions";
 import { sendPasswordReset } from "./server/firestoreFunctions";
-import { fetchScoreSheet } from "./server/firestoreFunctions";
 import { checkIfSemisExist } from "./server/firestoreFunctions";
 import { fetchBracket } from "./server/firestoreFunctions";
 
@@ -33,25 +32,6 @@ export const fetchPlayers = async (tournamentId) => {
   }
 };
 
-export const storeTeam = async (userId, team, tournamentId) => {
-  try {
-    await storeTeamInFirestore(userId, team, tournamentId);
-  } catch (error) {
-    console.error("Error storing team:", error);
-    throw error;
-  }
-};
-
-export const fetchTeamAPI = async (tournamentId, userId) => {
-  try {
-    const team = await fetchTeamFromFirestore(tournamentId, userId);
-    return team;
-  } catch (error) {
-    console.error("Error fetching team:", error);
-    throw error;
-  }
-};
-
 export const get_name_by_id = (players, ids) => {
   const result = {};
 
@@ -63,37 +43,6 @@ export const get_name_by_id = (players, ids) => {
   });
 
   return result;
-};
-
-export const getScoreSheet = async (
-  id_player,
-  tournamentName,
-  collectionName
-) => {
-  try {
-    const scoreSheet = await fetchScoreSheet(
-      id_player,
-      tournamentName,
-      collectionName
-    );
-    return scoreSheet;
-  } catch (error) {
-    console.error("Error fetching score sheet:", error);
-    throw error;
-  }
-};
-
-export const semisExistsAPI = async (tournamentId) => {
-  try {
-    const semisExist = await checkIfSemisExist(tournamentId);
-    if (semisExist) {
-      return false;
-    }
-    return true;
-  } catch (error) {
-    console.error("Error checking if semis exist:", error);
-    throw error;
-  }
 };
 
 export const getBracketAPI = async (tournamentId) => {

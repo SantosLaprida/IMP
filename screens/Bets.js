@@ -1,12 +1,15 @@
-import { storeTeam, fetchTeamAPI } from "../api";
-import { fetchPlayersFromFirestore } from "../server/firestore/players";
+import { fetchTeam } from "../server/firestore/teams";
 import {
   fetchTournament,
-  userMadeBet,
-  getApuestas,
   getActiveBracket,
-  getPlayerBets,
-} from "../server/firestoreFunctions";
+  getApuestas,
+} from "../server/firestore/tournaments";
+import {
+  fetchPlayersFromFirestore,
+  updateBetCount,
+} from "../server/firestore/players";
+import { userMadeBet } from "../server/firestore/bets";
+import { getPlayerBets } from "../server/firestoreFunctions";
 import { auth } from "../server/config/firebaseConfig";
 
 import React, { useEffect, useState, useRef } from "react";
@@ -95,7 +98,7 @@ const Bets = ({ navigation }) => {
         if (user) {
           const userId = user.uid;
 
-          const userTeam = await fetchTeamAPI(tournamentId, userId);
+          const userTeam = await fetchTeam(tournamentId, userId);
           if (userTeam) {
             const teamArray = Object.values(userTeam);
 
@@ -205,7 +208,7 @@ const Bets = ({ navigation }) => {
     let tournamentId = await getTournamentId();
 
     try {
-      const activeBracket = await getActiveBracket(tournamentId); // Obtén la etapa actual (QuarterFinals, SemiFinals, Finals)
+      const activeBracket = await getActiveBracket(tournamentId);
       if (activeBracket === "cuartos") {
         navigation.navigate("QuarterFinals", { origin });
       } else if (activeBracket === "semis") {
@@ -233,7 +236,7 @@ const Bets = ({ navigation }) => {
   const checkGames = async () => {
     let tournamentId = await getTournamentId();
     try {
-      const activeBracket = await getActiveBracket(tournamentId); // Obtén la etapa actual (QuarterFinals, SemiFinals, Finals)
+      const activeBracket = await getActiveBracket(tournamentId);
       setActiveBracketStage(activeBracket);
     } catch (error) {
       console.error("Error checking games:", error);

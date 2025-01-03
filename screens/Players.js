@@ -1,13 +1,12 @@
-import { storeTeam, fetchTeamAPI } from "../api";
+import { storeTeam, fetchTeam } from "../server/firestore/teams";
 import { fetchPlayersFromFirestore } from "../server/firestore/players";
 import {
   fetchTournament,
-  userMadeBet,
   getNumberPlayersBet,
-  getMinimumClassification,
-  updateBetCount,
-  deleteBet,
-} from "../server/firestoreFunctions";
+} from "../server/firestore/tournaments";
+import { getMinimumClassification } from "../server/firestoreFunctions";
+import { updateBetCount } from "../server/firestore/players";
+import { userMadeBet, deleteBet } from "../server/firestore/bets";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { auth } from "../server/config/firebaseConfig";
@@ -52,7 +51,7 @@ const Players = ({ navigation }) => {
           const betMade = await userMadeBet(tournamentId, userId);
           setHasBet(betMade); // Actualiza el estado hasBet
 
-          const userTeam = await fetchTeamAPI(tournamentId, userId);
+          const userTeam = await fetchTeam(tournamentId, userId);
           if (userTeam) {
             const teamArray = Object.values(userTeam);
 

@@ -1,9 +1,9 @@
+import { getPlayerName } from "../server/firestore/players";
+import { getHoles } from "../server/firestore/utils";
 import {
-  fetchQualifiers,
   fetchTournament,
-  getHoles,
-  getPlayerName,
-} from "../server/firestoreFunctions";
+  fetchQualifiers,
+} from "../server/firestore/tournaments";
 import React, { useState, useEffect } from "react";
 import { compareScores, showResults } from "../server/matchUtils/matchUtils";
 

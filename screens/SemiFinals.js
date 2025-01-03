@@ -1,11 +1,12 @@
 import {
   createI_Semifinales,
-  fetchTournament,
-  getHoles,
-  fetchQualifiers,
   getPlayerName,
-} from "../server/firestoreFunctions";
-import { semisExistsAPI } from "../api";
+} from "../server/firestore/players";
+import { getHoles } from "../server/firestore/utils";
+import {
+  fetchTournament,
+  fetchQualifiers,
+} from "../server/firestore/tournaments";
 import { compareScores, showResults } from "../server/matchUtils/matchUtils";
 import { set } from "firebase/database";
 
