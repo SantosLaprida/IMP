@@ -12,7 +12,7 @@ import {
   getFirestore,
 } from "firebase/firestore";
 
-const firestore = getFirestore();
+import { firestore } from "../config/firebaseConfig";
 
 export const fetchScoreSheet = async (
   id_player,

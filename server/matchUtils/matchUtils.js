@@ -14,7 +14,7 @@ import {
   getFirestore,
 } from "firebase/firestore";
 
-const firestore = getFirestore();
+import { firestore } from "../config/firebaseConfig";
 
 export const compareScores = async (
   id_player1,

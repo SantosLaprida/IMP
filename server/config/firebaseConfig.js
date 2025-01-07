@@ -19,7 +19,10 @@ const firebaseConfig = {
   measurementId: "G-B7Q070NLJ3",
 };
 
+console.log("Initializing Firebase App with config:", firebaseConfig);
 const app = initializeApp(firebaseConfig);
+console.log("Firebase App initialized:", app.name);
+
 const firestore = getFirestore(app);
 
 // Initialize Firebase Auth with conditional persistence
