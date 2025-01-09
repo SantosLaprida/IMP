@@ -18,8 +18,6 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 
-const firestore = getFirestore();
-
 export const loginUser = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(
