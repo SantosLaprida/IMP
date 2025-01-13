@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState,  } from "react";
 import {
   View,
   Text,
@@ -7,10 +7,11 @@ import {
   Image,
   StyleSheet,
   ScrollView,
+  TouchableOpacity
 } from "react-native";
 import { fetchPlayersFromFirestore } from "../server/firestore/players";
 
-const TournamentDetails = ({ route }) => {
+const TournamentDetails = ({ route, navigation }) => {
   const [tournamentId, setTournamentId] = useState(null);
   const [jugadores, setJugadores] = useState([]);
 
@@ -68,6 +69,12 @@ const TournamentDetails = ({ route }) => {
           </View>
         )}
       />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("Bets")}
+        >
+          <Text style={styles.buttonText}>Go back</Text>
+        </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -139,6 +146,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 6,
     elevation: 10,
+  },
+  button: {
+    backgroundColor: "#17628b34",
+    padding: 6,
+    margin: 5,
+    borderRadius: 10,
+    width: 170,
+    alignItems: "center",
+    borderWidth: 0,
+    borderColor: "#17628b94",
+    borderBottomWidth: 7,
+    borderBottomColor: "rgba(0, 0, 0, 0.2)",
+  },
+  buttonText: {
+    color: "#1f3a5c",
+    fontSize: 14,
+    fontFamily: "p-semibold",
+    position: "relative",
+    bottom: -2,
   },
 });
 

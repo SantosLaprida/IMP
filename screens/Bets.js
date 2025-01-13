@@ -367,7 +367,7 @@ const Bets = ({ navigation }) => {
             Your Bet
           </Text>
         </View>
-        <View style={{ ...styles.content, marginTop: 10 }}>
+        <View style={{ ...styles.content, marginTop: 0 }}>
           <TouchableOpacity
             style={styles.buttonContainer}
             onPress={handleEditBet}
@@ -377,8 +377,6 @@ const Bets = ({ navigation }) => {
             </View>
             <Text style={styles.buttonText}>More</Text>
           </TouchableOpacity>
-        </View>
-        <View style={{ ...styles.content, marginTop: 10 }}>
           <TouchableOpacity
             style={styles.buttonContainer}
             onPress={handleSeeBets}
@@ -388,7 +386,10 @@ const Bets = ({ navigation }) => {
             </View>
             <Text style={styles.buttonText}>See bets</Text>
           </TouchableOpacity>
+       
         </View>
+     
+      
 
         <TouchableOpacity
           style={styles.btnClick}
@@ -520,7 +521,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 20,
     width: 350,
-    marginTop: 30,
+    marginTop: 15,
     backgroundColor: "rgb(255, 252, 241)",
     shadowColor: "#000", // Color de la sombra
     shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
@@ -722,7 +723,7 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 20,
+    marginBottom: 0,
   },
   buttonContainer: {
     alignItems: "center",
