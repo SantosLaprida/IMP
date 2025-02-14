@@ -1,4 +1,3 @@
-// firebaseConfig.js
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import {
@@ -7,35 +6,28 @@ import {
   getReactNativePersistence,
 } from "firebase/auth";
 import { Platform } from "react-native";
+import Constants from "expo-constants";
 
-// Initialize Firebase
+// Use values from Constants.expoConfig.extra
 const firebaseConfig = {
-  apiKey: "AIzaSyAXzPEQIqJA9mBoamIjsfAyptIjgpMyo1o",
-  authDomain: "internetmatchplay.firebaseapp.com",
-  projectId: "internetmatchplay",
-  storageBucket: "internetmatchplay.appspot.com",
-  messagingSenderId: "1030174523087",
-  appId: "1:1030174523087:web:00f3a877aabb57628981ba",
-  measurementId: "G-B7Q070NLJ3",
+  apiKey: Constants.expoConfig.extra.firebaseApiKey,
+  authDomain: Constants.expoConfig.extra.firebaseAuthDomain,
+  projectId: Constants.expoConfig.extra.firebaseProjectId,
+  storageBucket: Constants.expoConfig.extra.firebaseStorageBucket,
+  messagingSenderId: Constants.expoConfig.extra.firebaseMessagingSenderId,
+  appId: Constants.expoConfig.extra.firebaseAppId,
+  measurementId: Constants.expoConfig.extra.firebaseMeasurementId,
 };
 
-console.log("Initializing Firebase App with config:", firebaseConfig);
 const app = initializeApp(firebaseConfig);
-console.log("Firebase App initialized:", app.name);
-
 const firestore = getFirestore(app);
 
-// Initialize Firebase Auth with conditional persistence
 let auth;
-
 if (Platform.OS === "web") {
-  // For web platforms
   auth = getAuth(app);
 } else {
-  // For React Native platforms
   const AsyncStorage =
     require("@react-native-async-storage/async-storage").default;
-
   auth = initializeAuth(app, {
     persistence: getReactNativePersistence(AsyncStorage),
   });
