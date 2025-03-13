@@ -15,6 +15,7 @@ import {
 
 export default function Register({ navigation }) {
 	const [email, setEmail] = useState("");
+	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
@@ -41,7 +42,7 @@ export default function Register({ navigation }) {
 			`Email: ${email}, Password: ${password}, First Name: ${firstName}, Last Name: ${lastName}`
 		);
 
-		if (!email || !password || !firstName || !lastName) {
+		if (!email || !password || !firstName || !lastName || !username) {
 			alert("All fields are required");
 			return;
 		}
@@ -68,7 +69,8 @@ export default function Register({ navigation }) {
 				email.toLowerCase(),
 				password,
 				firstName,
-				lastName
+				lastName,
+				username
 			);
 			if (user) {
 				alert("Registration successful");
@@ -124,6 +126,8 @@ export default function Register({ navigation }) {
 								<TextInput
 									style={styles.input}
 									placeholder="Username"
+									value={username}
+									onChangeText={setUsername}
 									placeholderTextColor="#28486e6b"
 								/>
 							</View>
