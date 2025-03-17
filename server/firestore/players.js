@@ -15,9 +15,11 @@ import {
 import { firestore } from "../config/firebaseConfig";
 
 export const fetchPlayersFromFirestore = async (tournamentId) => {
+
+  const currentYear = new Date().getFullYear().toString();
   try {
     const querySnapshot = await getDocs(
-      collection(firestore, "I_Torneos", tournamentId, "I_Players")
+      collection(firestore, "I_Torneos", currentYear, tournamentId, "I_Players")
     );
     const playersData = querySnapshot.docs.map((doc) => {
       const data = doc.data();
@@ -57,11 +59,13 @@ export const getPlayerName = async (id_player, tournamentId) => {
  * @returns {Promise<Object>} - An array containing objects, each object has the name and the apuestas fields.
  */
 export const getPlayerBets = async (tournamentId) => {
+  const currentYear = new Date().getFullYear().toString();
   try {
     // Reference to the I_Players collection
     const playerCollectionReference = collection(
       firestore,
       "I_Torneos",
+      currentYear,
       tournamentId,
       "I_Players"
     );

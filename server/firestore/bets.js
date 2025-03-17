@@ -15,6 +15,7 @@ import {
 import { firestore } from "../config/firebaseConfig";
 
 export const userMadeBet = async (tournamentId, userId) => {
+  const currentYear = new Date().getFullYear().toString();
   try {
     if (
       !tournamentId ||
@@ -29,6 +30,7 @@ export const userMadeBet = async (tournamentId, userId) => {
     const apuestaDocRef = doc(
       firestore,
       "I_Torneos",
+      currentYear,
       tournamentId,
       "I_Apuestas",
       userId

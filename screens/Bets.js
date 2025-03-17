@@ -259,9 +259,8 @@ const Bets = ({ navigation }) => {
         const torneo = await fetchTournament();
 
         let name = torneo[0].name;
-        let start_date = torneo[0].start_date;
-        let finish_date = torneo[0].finish_date;
-        let logo = torneo[0].logo;
+        let start_date = formatDate(torneo[0].start_date); 
+        let finish_date = formatDate(torneo[0].finish_date); 
 
         setName(name);
         setStart(start_date);
@@ -274,6 +273,13 @@ const Bets = ({ navigation }) => {
 
     getTournamentData();
   }, []);
+
+  const formatDate = (timestamp) => {
+    const date = timestamp.toDate(); // Convertir a objeto Date
+    return date.toLocaleDateString('es-ES'); // Formato dd/mm/yyyy
+  };
+  
+  
 
   return (
     <LinearGradient

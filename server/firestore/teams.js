@@ -15,10 +15,12 @@ import {
 import { firestore } from "../config/firebaseConfig";
 
 export const storeTeam = async (userId, team, tournamentId) => {
+  const currentYear = new Date().getFullYear().toString();
   try {
     const teamDocRef = doc(
       firestore,
       "I_Torneos",
+      currentYear,
       tournamentId,
       "I_Apuestas",
       userId // The document ID is the userId
@@ -42,10 +44,12 @@ export const storeTeam = async (userId, team, tournamentId) => {
 };
 
 export const fetchTeam = async (tournamentId, userId) => {
+  const currentYear = new Date().getFullYear().toString();
   try {
     const teamDocRef = doc(
       firestore,
       "I_Torneos",
+      currentYear,
       tournamentId,
       "I_Apuestas",
       userId // The document ID is the userId
