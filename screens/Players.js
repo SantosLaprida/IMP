@@ -32,6 +32,7 @@ const Players = ({ navigation }) => {
 	const [hasBet, setHasBet] = useState(false);
 	const [limit, setLimit] = useState(null);
 	const [classification, setClassification] = useState(null);
+	const [ordenado, setOrdenado] = useState(false); 
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -94,8 +95,21 @@ const Players = ({ navigation }) => {
 		}
 	};
 	const ordenarPorRank = () => {
-		const jugadoresOrdenados = [...jugadores].sort((a, b) => a.rank - b.rank);
-		setJugadores(jugadoresOrdenados);
+		if (ordenado) {
+			
+			setJugadores(originalJugadores);
+		} else {
+			const jugadoresOrdenados = [...jugadores].sort((a, b) => {
+				// Si `a.rank` es 0, lo mueve al final
+				if (a.rank === 0) return 1;
+				// Si `b.rank` es 0, lo mueve al final
+				if (b.rank === 0) return -1;
+				// Orden normal de menor a mayor
+				return a.rank - b.rank;
+			});
+			setJugadores(jugadoresOrdenados);
+		}
+		setOrdenado(!ordenado); 
 	};
 
 	const agregarJugadorAlEquipo = (jugador, limit) => {

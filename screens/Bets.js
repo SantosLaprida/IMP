@@ -9,7 +9,7 @@ import {
   updateBetCount,
 } from "../server/firestore/players";
 import { userMadeBet } from "../server/firestore/bets";
-import { getPlayerBets } from "../server/firestoreFunctions";
+import { getPlayerBets } from "../server/firestore/players";
 import { auth } from "../server/config/firebaseConfig";
 
 import React, { useEffect, useState, useRef } from "react";
@@ -261,6 +261,7 @@ const Bets = ({ navigation }) => {
         let name = torneo[0].name;
         let start_date = formatDate(torneo[0].start_date); 
         let finish_date = formatDate(torneo[0].finish_date); 
+        let logo  = torneo[0].logo;
 
         setName(name);
         setStart(start_date);

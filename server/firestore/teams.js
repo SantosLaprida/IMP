@@ -21,6 +21,7 @@ export const storeTeam = async (userId, team, tournamentId) => {
       firestore,
       "I_Torneos",
       currentYear,
+      "Tournaments",
       tournamentId,
       "I_Apuestas",
       userId // The document ID is the userId
@@ -50,6 +51,7 @@ export const fetchTeam = async (tournamentId, userId) => {
       firestore,
       "I_Torneos",
       currentYear,
+      "Tournaments",
       tournamentId,
       "I_Apuestas",
       userId // The document ID is the userId

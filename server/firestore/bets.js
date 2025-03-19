@@ -16,6 +16,7 @@ import { firestore } from "../config/firebaseConfig";
 
 export const userMadeBet = async (tournamentId, userId) => {
   const currentYear = new Date().getFullYear().toString();
+
   try {
     if (
       !tournamentId ||
@@ -26,20 +27,30 @@ export const userMadeBet = async (tournamentId, userId) => {
       throw new Error("Invalid tournament ID or user ID.");
     }
 
-    // Reference to the specific bet document in the I_Apuestas sub-collection
-    const apuestaDocRef = doc(
+    // Referencia a la subcolección I_Apuestas
+    const apuestasCollectionRef = collection(
       firestore,
       "I_Torneos",
       currentYear,
+      "Tournaments",
       tournamentId,
       "I_Apuestas",
-      userId
     );
 
-    // Check if the bet document exists
+    // Verificar si la subcolección tiene documentos
+    const apuestasSnapshot = await getDocs(apuestasCollectionRef);
+
+    if (apuestasSnapshot.empty) {
+      console.log("La subcolección I_Apuestas no existe o está vacía.");
+      return false;
+    }
+
+    // Referencia al documento de la apuesta específica del usuario
+    const apuestaDocRef = doc(apuestasCollectionRef, userId);
+
+    // Verificar si el documento del usuario existe
     const apuestaDocSnap = await getDoc(apuestaDocRef);
 
-    // If the document exists, return true; otherwise, return false
     return apuestaDocSnap.exists();
   } catch (error) {
     console.error("Error checking if user made bet:", error);

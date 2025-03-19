@@ -125,9 +125,10 @@ export const isBracketActive = async (tournamentId, collectionName) => {
 };
 
 export const getApuestas = async (tournamentId) => {
+	const currentYear = new Date().getFullYear().toString();
 	try {
 		// Reference to the specific tournament document
-		const tournamentDocRef = doc(firestore, "I_Torneos", tournamentId);
+		const tournamentDocRef = doc(firestore, "I_Torneos", currentYear, "Tournaments", tournamentId);
 
 		// Fetch the document
 		const tournamentDocSnap = await getDoc(tournamentDocRef);
@@ -147,8 +148,9 @@ export const getApuestas = async (tournamentId) => {
 };
 
 export const getNumberPlayersBet = async (tournamentId) => {
+	const currentYear = new Date().getFullYear().toString();
 	try {
-		const docRef = doc(firestore, "I_Torneos", tournamentId);
+		const docRef = doc(firestore, "I_Torneos", currentYear, "Tournaments", tournamentId);
 		const docSnapshot = await getDoc(docRef);
 
 		if (docSnapshot.exists()) {

@@ -19,7 +19,7 @@ export const fetchPlayersFromFirestore = async (tournamentId) => {
   const currentYear = new Date().getFullYear().toString();
   try {
     const querySnapshot = await getDocs(
-      collection(firestore, "I_Torneos", currentYear, tournamentId, "I_Players")
+      collection(firestore, "I_Torneos", currentYear, "Tournaments", tournamentId, "I_Players")
     );
     const playersData = querySnapshot.docs.map((doc) => {
       const data = doc.data();
@@ -33,9 +33,10 @@ export const fetchPlayersFromFirestore = async (tournamentId) => {
 };
 
 export const getPlayerName = async (id_player, tournamentId) => {
+  const currentYear = new Date().getFullYear().toString();
   try {
     const playerQuery = query(
-      collection(firestore, "I_Torneos", tournamentId, "I_Players"),
+      collection(firestore, "I_Torneos", tournamentId, currentYear, "I_Players"),
       where("id_player", "==", id_player)
     );
     const playerQuerySnapshot = await getDocs(playerQuery);
@@ -66,6 +67,7 @@ export const getPlayerBets = async (tournamentId) => {
       firestore,
       "I_Torneos",
       currentYear,
+      "Tournaments",
       tournamentId,
       "I_Players"
     );
