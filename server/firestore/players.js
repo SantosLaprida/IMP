@@ -25,6 +25,7 @@ export const fetchPlayersFromFirestore = async (tournamentId) => {
       const data = doc.data();
       return { id_player: doc.id, ...data };
     });
+    console.log(playersData)
     return playersData;
   } catch (error) {
     console.error("Error fetching players:", error);

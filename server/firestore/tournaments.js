@@ -35,9 +35,10 @@ export const fetchTournament = async () => {
 };
 
 export const fetchQualifiers = async (TournamentId, collectionName) => {
+	const currentYear = new Date().getFullYear().toString();
 	try {
 		const querySnapshot = await getDocs(
-			collection(firestore, "I_Torneos", TournamentId, collectionName)
+			collection(firestore, "I_Torneos", currentYear, "Tournaments", TournamentId, collectionName)
 		);
 		const sortedPlayerData = querySnapshot.docs
 			.map((doc) => ({
@@ -55,9 +56,10 @@ export const fetchQualifiers = async (TournamentId, collectionName) => {
 };
 
 export const fetchThirdPlaceQualifiers = async (tournamentName) => {
+	const currentYear = new Date().getFullYear().toString();
 	try {
 		const querySnapshot = await getDocs(
-			collection(firestore, "I_Torneos", tournamentName, "I_TercerCuarto")
+			collection(firestore, "I_Torneos", currentYear, "Tournaments", tournamentName, "I_TercerCuarto")
 		);
 		const sortedPlayerData = querySnapshot.docs
 			.map((doc) => ({
@@ -81,9 +83,10 @@ export const fetchThirdPlaceQualifiers = async (tournamentName) => {
  * If it return null, something went wrong with the database
  */
 export const getActiveBracket = async (tournamentId) => {
+	const currentYear = new Date().getFullYear().toString();
 	try {
 		// Accede al documento específico en la colección "I_Torneos"
-		const docRef = doc(firestore, "I_Torneos", tournamentId);
+		const docRef = doc(firestore, "I_Torneos", currentYear, "Tournaments", tournamentId);
 		const docSnap = await getDoc(docRef);
 
 		if (docSnap.exists()) {
@@ -100,10 +103,13 @@ export const getActiveBracket = async (tournamentId) => {
 };
 
 export const isBracketActive = async (tournamentId, collectionName) => {
+	const currentYear = new Date().getFullYear().toString();
 	try {
 		const bracketRef = collection(
 			firestore,
 			"I_Torneos",
+			currentYear,
+			"Tournaments",
 			tournamentId,
 			collectionName
 		);

@@ -41,7 +41,7 @@ export const userMadeBet = async (tournamentId, userId) => {
     const apuestasSnapshot = await getDocs(apuestasCollectionRef);
 
     if (apuestasSnapshot.empty) {
-      console.log("La subcolección I_Apuestas no existe o está vacía.");
+      
       return false;
     }
 
