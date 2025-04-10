@@ -28,8 +28,8 @@ const TournamentDetails = ({ route, navigation }) => {
 		logo,
 		tournamentId: passedTournamentId,
 	} = route.params;
-
 	useEffect(() => {
+
 		setTournamentId(passedTournamentId);
 	}, [passedTournamentId]);
 
@@ -66,7 +66,8 @@ const TournamentDetails = ({ route, navigation }) => {
 			<Text style={{ ...styles.title, marginTop: 15 }}>Players</Text>
 			<FlatList
 				data={jugadores}
-				keyExtractor={(item) => item.id_player}
+				nestedScrollEnabled={true}
+				keyExtractor={(item) => item.idPlayer}
 				renderItem={({ item }) => (
 					<View style={styles.playerItem}>
 						<Text style={styles.playerName}>{item.name}</Text>

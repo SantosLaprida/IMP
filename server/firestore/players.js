@@ -23,7 +23,7 @@ export const fetchPlayersFromFirestore = async (tournamentId) => {
     );
     const playersData = querySnapshot.docs.map((doc) => {
       const data = doc.data();
-      return { id_player: doc.id, ...data };
+      return { idPlayer: doc.id, ...data };
     });
     console.log(playersData)
     return playersData;

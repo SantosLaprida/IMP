@@ -50,22 +50,25 @@ const Bets = ({ navigation }) => {
 
   const [canBet, setCanBet] = useState(true);
 
+  useEffect(() => {
+    const fetchTournamentId = async () => {
+      try {
+        const id = await getTournamentId();
+        console.log("Fetched tournament ID:", id);
+        setTournamentId(id);
+      } catch (error) {
+        console.error("Error fetching tournament ID:", error);
+      }
+    };
+  
+    fetchTournamentId();
+  }, []);
+  
+
+
   const BlinkDot = () => {
     const opacity = useRef(new Animated.Value(1)).current;
-
-    useEffect(() => {
-      const fetchTournamentId = async () => {
-        try {
-          const id = await getTournamentId();
-          setTournamentId(id);
-        } catch (error) {
-          console.error("Error fetching tournament ID:", error);
-        }
-      };
-
-      fetchTournamentId();
-    }, []);
-
+  
     useEffect(() => {
       Animated.loop(
         Animated.sequence([
@@ -81,8 +84,8 @@ const Bets = ({ navigation }) => {
           }),
         ])
       ).start();
-    }, [opacity]);
-
+    }, []);
+  
     return <Animated.View style={[styles.dot, { opacity }]} />;
   };
 
