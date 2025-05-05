@@ -360,7 +360,7 @@ const Bets = ({ navigation }) => {
 				</View>
 				<View style={{ ...styles.content, marginTop: 0 }}>
 					<TouchableOpacity
-						style={styles.buttonContainer}
+						style={styles.buttonContainer}  
 						onPress={handleEditBet}
 					>
 						<View style={styles.button}>
