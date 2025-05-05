@@ -7,6 +7,7 @@ import {
 } from "firebase/auth";
 import { Platform } from "react-native";
 import Constants from "expo-constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Use values from Constants.expoConfig.extra
 const firebaseConfig = {
@@ -26,11 +27,16 @@ let auth;
 if (Platform.OS === "web") {
   auth = getAuth(app);
 } else {
-  const AsyncStorage =
-    require("@react-native-async-storage/async-storage").default;
-  auth = initializeAuth(app, {
-    persistence: getReactNativePersistence(AsyncStorage),
-  });
+  try {
+    auth = initializeAuth(app, {
+      persistence: getReactNativePersistence(AsyncStorage),
+    });
+    console.log("Firebase Auth initialized successfully for mobile");
+  } catch (error) {
+    console.error("Error initializing Firebase Auth:", error);
+    // Fallback to standard auth if the above fails
+    auth = getAuth(app);
+  }
 }
 
 export { firestore, auth };
