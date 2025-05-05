@@ -58,7 +58,7 @@ const Players = ({ navigation }) => {
 
 						const mappedTeam = teamArray
 							.map((playerId) => {
-								return data.find((player) => player.id_player === playerId);
+								return data.find((player) => player.idPlayer === playerId);
 							})
 							.filter((player) => player); // Filtrar resultados undefined
 
@@ -69,7 +69,7 @@ const Players = ({ navigation }) => {
 							prevJugadores.filter(
 								(jugador) =>
 									!mappedTeam.some(
-										(player) => player.id_player === jugador.id_player
+										(player) => player.idPlayer === jugador.idPlayer
 									)
 							)
 						);
@@ -119,7 +119,7 @@ const Players = ({ navigation }) => {
 		}
 		setEquipo((prevEquipo) => [...prevEquipo, jugador]);
 		setJugadores((prevJugadores) =>
-			prevJugadores.filter((j) => j.id_player !== jugador.id_player)
+			prevJugadores.filter((j) => j.idPlayer !== jugador.idPlayer)
 		);
 	};
 	const getButtonText = () => {
@@ -132,7 +132,7 @@ const Players = ({ navigation }) => {
 
 	const quitarJugadorDelEquipo = (jugador) => {
 		setEquipo((prevEquipo) =>
-			prevEquipo.filter((j) => j.id_player !== jugador.id_player)
+			prevEquipo.filter((j) => j.idPlayer !== jugador.idPlayer)
 		);
 		setJugadores((prevJugadores) => [...prevJugadores, jugador]);
 	};
@@ -144,7 +144,7 @@ const Players = ({ navigation }) => {
 		}
 
 		const userId = await retrieveUser();
-		const playersIds = equipo.map((jugador) => jugador.id_player);
+		const playersIds = equipo.map((jugador) => jugador.idPlayer);
 		const playerNames = equipo.map((jugador) => jugador.name);
 
 		try {
@@ -196,11 +196,11 @@ const Players = ({ navigation }) => {
 		}
 	};
 
-	const teamPlayerIds = new Set(equipo.map((player) => player.id_player));
+	const teamPlayerIds = new Set(equipo.map((player) => player.idPlayer));
 
 	const filteredJugadores = jugadores.filter(
 		(jugador) =>
-			!teamPlayerIds.has(jugador.id_player) &&
+			!teamPlayerIds.has(jugador.idPlayer) &&
 			(jugador.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				jugador.rank.toString().includes(searchTerm))
 	);
@@ -250,7 +250,7 @@ const Players = ({ navigation }) => {
 						>
 							{filteredJugadores.map((jugador) => (
 								<TouchableOpacity
-									key={jugador.id_player}
+									key={jugador.idPlayer}
 									onPress={() => agregarJugadorAlEquipo(jugador, limit)}
 								>
 									<View
@@ -302,7 +302,7 @@ const Players = ({ navigation }) => {
 						</View>
 						{equipo.map((jugador) => (
 							<TouchableOpacity
-								key={jugador.id_player}
+								key={jugador.idPlayer}
 								onPress={() => quitarJugadorDelEquipo(jugador)}
 							>
 								<View

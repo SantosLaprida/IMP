@@ -102,6 +102,7 @@ export const getPlayerBets = async (tournamentId) => {
 
 export const updateBetCount = async (tournamentId, playerNames) => {
 	const currentYear = new Date().getFullYear().toString();
+	console.log(playerNames)
 	try {
 		const db = firestore;
 
