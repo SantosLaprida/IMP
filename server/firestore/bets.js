@@ -27,7 +27,6 @@ export const userMadeBet = async (tournamentId, userId) => {
       throw new Error("Invalid tournament ID or user ID.");
     }
 
-    // Referencia a la subcolección I_Apuestas
     const apuestasCollectionRef = collection(
       firestore,
       "I_Torneos",
@@ -58,17 +57,20 @@ export const userMadeBet = async (tournamentId, userId) => {
   }
 };
 
-export const deleteBet = async (tournamentId, playerNames, userId) => {
-  try {
-    const db = firestore;
+export const deleteBet = async (tournamentId, playerIds, userId) => {
+  const db = firestore;
+  const currentYear = new Date().getFullYear().toString();
 
-    for (const playerName of playerNames) {
+  try {
+    const updatePromises = playerIds.map(async (playerId) => {
       const playerDocRef = doc(
         db,
         "I_Torneos",
+        currentYear,
+        "Tournaments",
         tournamentId,
         "I_Players",
-        playerName
+        playerId
       );
 
       const playerDocSnap = await getDoc(playerDocRef);
@@ -76,31 +78,30 @@ export const deleteBet = async (tournamentId, playerNames, userId) => {
       if (playerDocSnap.exists()) {
         const currentData = playerDocSnap.data();
         const currentApuestas = currentData.apuestas || 0;
-
-        // Decrement apuestas by 1, ensuring it doesn't go below 0
         const updatedApuestas = Math.max(0, currentApuestas - 1);
 
-        // Update the apuestas field
-        await updateDoc(playerDocRef, {
+        return updateDoc(playerDocRef, {
           apuestas: updatedApuestas,
         });
       } else {
-        console.log(`Player ${playerName} not found in I_Players collection.`);
+        console.log(`Player ${playerId} not found in I_Players collection.`);
       }
-    }
+    });
 
-    // Delete the document in the I_Apuestas collection for the specified userId
+    await Promise.all(updatePromises);
+
     const apuestaDocRef = doc(
       db,
       "I_Torneos",
+      currentYear,
+      "Tournaments",
       tournamentId,
       "I_Apuestas",
       userId
     );
     await deleteDoc(apuestaDocRef);
-    console.log(
-      `Deleted bet document for user ${userId} in I_Apuestas collection`
-    );
+
+    console.log(`Deleted bet document for user ${userId}`);
   } catch (error) {
     console.error("Error deleting Bet:", error);
     throw error;

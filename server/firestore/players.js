@@ -31,7 +31,7 @@ export const fetchPlayersFromFirestore = async (tournamentId) => {
 			const data = doc.data();
 			return { idPlayer: doc.id, ...data };
 		});
-		console.log(playersData);
+		//console.log(playersData);
 		return playersData;
 	} catch (error) {
 		console.error("Error fetching players:", error);
@@ -100,47 +100,43 @@ export const getPlayerBets = async (tournamentId) => {
 	}
 };
 
-export const updateBetCount = async (tournamentId, playerNames) => {
+export const updateBetCount = async (tournamentId, playerIds) => {
 	const currentYear = new Date().getFullYear().toString();
-	console.log(playerNames)
+	const db = firestore;
+  
 	try {
-		const db = firestore;
-
-		for (const playerName of playerNames) {
-			// Reference the specific player document in the I_Players collection
-			const playerDocRef = doc(
-				db,
-				"I_Torneos",
-				currentYear,
-				"Tournaments",
-				tournamentId,
-				"I_Players",
-				playerName
-			);
-
-			// Fetch the document to check if it exists and get the current apuestas field
-			const playerDocSnap = await getDoc(playerDocRef);
-
-			if (playerDocSnap.exists()) {
-				const currentData = playerDocSnap.data();
-				const currentApuestas = currentData.apuestas || 0;
-
-				// Increment apuestas by 1
-				await updateDoc(playerDocRef, {
-					apuestas: currentApuestas + 1,
-				});
-
-				console.log(
-					`Updated apuestas for player ${playerName}: ${currentApuestas + 1}`
-				);
-			} else {
-				console.log(`Player ${playerName} not found in I_Players collection.`);
-			}
+	  const updates = playerIds.map(async (playerId) => {
+		const playerDocRef = doc(
+		  db,
+		  "I_Torneos",
+		  currentYear,
+		  "Tournaments",
+		  tournamentId,
+		  "I_Players",
+		  playerId
+		);
+  
+		const playerDocSnap = await getDoc(playerDocRef);
+  
+		if (playerDocSnap.exists()) {
+		  const currentData = playerDocSnap.data();
+		  const currentApuestas = currentData.apuestas || 0;
+  
+		  await updateDoc(playerDocRef, {
+			apuestas: currentApuestas + 1,
+		  });
+  
+		  console.log(`Updated apuestas for player ${playerId}: ${currentApuestas + 1}`);
+		} else {
+		  console.log(`Player ${playerId} not found in I_Players collection.`);
 		}
-
-		console.log("Bet counts updated successfully.");
+	  });
+  
+	  await Promise.all(updates); 
+  
+	  console.log("Bet counts updated successfully.");
 	} catch (error) {
-		console.error("Error updating apuestas:", error);
-		throw error;
+	  console.error("Error updating apuestas:", error);
+	  throw error;
 	}
-};
+  };

@@ -60,6 +60,7 @@ export const fetchTeam = async (tournamentId, userId) => {
     const teamDoc = await getDoc(teamDocRef);
 
     if (teamDoc.exists()) {
+
       return teamDoc.data(); // Return the team data if the document exists
     } else {
       console.log("No team found for this user.");

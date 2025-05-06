@@ -32,7 +32,8 @@ const Players = ({ navigation }) => {
 	const [hasBet, setHasBet] = useState(false);
 	const [limit, setLimit] = useState(null);
 	const [classification, setClassification] = useState(null);
-	const [ordenado, setOrdenado] = useState(false); 
+	const [ordenado, setOrdenado] = useState(false);
+	const [loadingSubmit, setLoadingSubmit] = useState(false);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -53,12 +54,13 @@ const Players = ({ navigation }) => {
 					setHasBet(betMade); // Actualiza el estado hasBet
 
 					const userTeam = await fetchTeam(tournamentId, userId);
+					
 					if (userTeam) {
 						const teamArray = Object.values(userTeam);
 
 						const mappedTeam = teamArray
-							.map((playerId) => {
-								return data.find((player) => player.idPlayer === playerId);
+							.map((idPlayer) => {
+								return data.find((player) => player.idPlayer === idPlayer);
 							})
 							.filter((player) => player); // Filtrar resultados undefined
 
@@ -143,17 +145,20 @@ const Players = ({ navigation }) => {
 			return;
 		}
 
+		setLoadingSubmit(true);
+
 		const userId = await retrieveUser();
 		const playersIds = equipo.map((jugador) => jugador.idPlayer);
-		const playerNames = equipo.map((jugador) => jugador.name);
+		// const playerNames = equipo.map((jugador) => jugador.name);
 
 		try {
 			const tournamentId = await getTournamentId();
-			await storeTeam(userId, playersIds, tournamentId);
-			await updateBetCount(tournamentId, playerNames);
+			await Promise.all([
+				storeTeam(userId, playersIds, tournamentId),
+				updateBetCount(tournamentId, playersIds)
+			  ]);
 			console.log("Team stored successfully");
 			alert("Bet placed succesfully");
-
 			navigation.navigate("Bets");
 		} catch (error) {
 			console.error("Failed to store team:", error);
@@ -162,6 +167,7 @@ const Players = ({ navigation }) => {
 		await AsyncStorage.setItem("equipo", JSON.stringify(equipo));
 		setEquipo([]);
 		setJugadores(originalJugadores);
+		setLoadingSubmit(false);
 	};
 
 	const handleDelete = async () => {
@@ -169,17 +175,21 @@ const Players = ({ navigation }) => {
 			alert("You don't have a bet to delete");
 			return;
 		}
+		
+		setLoadingSubmit(true);
 
-		playerNames = equipo.map((jugador) => jugador.name);
+		// const playerNames = equipo.map((jugador) => jugador.name);
+		const playerIds = equipo.map((jugador) => jugador.idPlayer);
 
 		const userId = await retrieveUser();
 
 		try {
 			const tournamentId = await getTournamentId();
-			await deleteBet(tournamentId, playerNames, userId);
+			await deleteBet(tournamentId, playerIds, userId);
 			alert("Bet deleted succesfully");
 			setEquipo([]);
 			setJugadores(originalJugadores);
+			setLoadingSubmit(false);
 		} catch (error) {
 			console.error("Failed to delete bet");
 		}
@@ -327,18 +337,29 @@ const Players = ({ navigation }) => {
 					<TouchableOpacity
 						style={{ ...styles.button, backgroundColor: "#1f3a5c" }}
 						onPress={handleFinish}
+						disabled={loadingSubmit}
 					>
+					
+					{loadingSubmit ? (
+						<ActivityIndicator color="#fff" />
+					) : (
 						<Text style={{ ...styles.buttonText, color: "white" }}>
 							{getButtonText()}
 						</Text>
+					)}
 					</TouchableOpacity>
 					<TouchableOpacity
 						onPress={handleDelete}
 						style={{ ...styles.button, backgroundColor: "red" }}
+						disabled={loadingSubmit}
 					>
+						{loadingSubmit ? (
+						<ActivityIndicator color="#fff" />
+					) : (
 						<Text style={{ ...styles.buttonText, color: "white" }}>
 							Delete Bet
 						</Text>
+					)}
 					</TouchableOpacity>
 				</View>
 				<TouchableOpacity
