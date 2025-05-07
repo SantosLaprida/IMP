@@ -23,7 +23,7 @@ import {
 	ScrollView,
 	FlatList,
 	Animated,
-	ActivityIndicator
+	ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -112,6 +112,7 @@ const Bets = ({ navigation }) => {
 							.filter((player) => player); // Filtrar resultados undefined
 
 						setEquipo(mappedTeam);
+						console.log(mappedTeam, "here i am");
 
 						// Remover jugadores del equipo de la lista de jugadores disponibles
 						setJugadores((prevJugadores) =>
@@ -122,6 +123,8 @@ const Bets = ({ navigation }) => {
 									)
 							)
 						);
+					} else {
+						setEquipo([]);
 					}
 				}
 			} catch (error) {
@@ -132,7 +135,7 @@ const Bets = ({ navigation }) => {
 		};
 
 		fetchData();
-	}, []);
+	}, [tournamentId]);
 
 	useEffect(() => {
 		const checkBetStatus = async () => {
@@ -143,7 +146,7 @@ const Bets = ({ navigation }) => {
 					const userId = user.uid;
 					const betMade = await userMadeBet(tournamentId, userId);
 					setHasBet(betMade);
-	
+
 					const canMakeBet = await getApuestas(tournamentId);
 					setCanBet(canMakeBet);
 				}
@@ -153,7 +156,7 @@ const Bets = ({ navigation }) => {
 				setLoadingBetStatus(false);
 			}
 		};
-	
+
 		checkBetStatus();
 		const interval = setInterval(checkBetStatus, 10000);
 		return () => clearInterval(interval);
@@ -264,6 +267,7 @@ const Bets = ({ navigation }) => {
 		const getTournamentData = async () => {
 			try {
 				const torneo = await fetchTournament();
+				console.log(equipo, "aca estoy");
 
 				let name = torneo[0].name;
 				let start_date = formatDate(torneo[0].start_date);
@@ -342,17 +346,17 @@ const Bets = ({ navigation }) => {
 						setLoadingButton(true);
 
 						try {
-						if (canBet) {
-							navigation.navigate("Players");
-						} else {
-							setModalVisible1(true);
-						}
+							if (canBet) {
+								navigation.navigate("Players");
+							} else {
+								setModalVisible1(true);
+							}
 						} finally {
-						setLoadingButton(false);
+							setLoadingButton(false);
 						}
 					}}
 					disabled={loadingButton}
-					>
+				>
 					{loadingButton || loadingBetStatus ? (
 						<ActivityIndicator size="small" color="white" />
 					) : (
@@ -377,7 +381,7 @@ const Bets = ({ navigation }) => {
 				</View>
 				<View style={{ ...styles.content, marginTop: 0 }}>
 					<TouchableOpacity
-						style={styles.buttonContainer}  
+						style={styles.buttonContainer}
 						onPress={handleEditBet}
 					>
 						<View style={styles.button}>
@@ -429,12 +433,12 @@ const Bets = ({ navigation }) => {
 								Your players
 							</Text>
 						</View>
-						<ScrollView
-							style={styles.scroll}
-							showsVerticalScrollIndicator={false}
-						>
-							{equipo.map((jugador) => {
-								return (
+						{equipo.length > 1 ? (
+							<ScrollView
+								style={styles.scroll}
+								showsVerticalScrollIndicator={false}
+							>
+								{equipo.map((jugador) => (
 									<TouchableOpacity key={jugador.idPlayer}>
 										<View
 											style={{
@@ -451,13 +455,18 @@ const Bets = ({ navigation }) => {
 											</Text>
 										</View>
 									</TouchableOpacity>
-								);
-							})}
-					</ScrollView>
+								))}
+							</ScrollView>
+						) : (
+							<Text
+								style={{ ...styles.text, textAlign: "center", marginTop: 10 }}
+							>
+								No bet
+							</Text>
+						)}
+
 						<TouchableOpacity
-							onPress={() => 
-								setModalVisible1(false)
-							}
+							onPress={() => setModalVisible1(false)}
 							style={{
 								...styles.modalButton,
 								marginTop: 5,
