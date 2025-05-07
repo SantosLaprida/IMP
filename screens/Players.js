@@ -153,13 +153,21 @@ const Players = ({ navigation }) => {
 
 		try {
 			const tournamentId = await getTournamentId();
+			let oldPlayerIds = [];
+			if (hasBet) {
+				const oldTeam = await fetchTeam(tournamentId, userId);
+				if (oldTeam) {
+					oldPlayerIds = Object.values(oldTeam);
+					await deleteBet(tournamentId, oldPlayerIds, userId);
+				}
+			}
 			await Promise.all([
 				storeTeam(userId, playersIds, tournamentId),
 				updateBetCount(tournamentId, playersIds)
 			  ]);
 			console.log("Team stored successfully");
 			alert("Bet placed succesfully");
-			navigation.navigate("Bets");
+			navigation.navigate("Bets", { team: equipo });
 		} catch (error) {
 			console.error("Failed to store team:", error);
 		}
@@ -190,6 +198,7 @@ const Players = ({ navigation }) => {
 			setEquipo([]);
 			setJugadores(originalJugadores);
 			setLoadingSubmit(false);
+			navigation.navigate("Bets", { team: [] });
 		} catch (error) {
 			console.error("Failed to delete bet");
 		}

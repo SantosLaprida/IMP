@@ -25,12 +25,14 @@ import {
 	Animated,
 	ActivityIndicator,
 } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import Finals from "./Finals";
 
-const Bets = ({ navigation }) => {
+const Bets = ({ navigation, route }) => {
+	const { team } = route.params || {};
 	const [equipo, setEquipo] = useState([]);
 	const [jugadores, setJugadores] = useState([]);
 	const [originalJugadores, setOriginalJugadores] = useState([]);
@@ -51,6 +53,13 @@ const Bets = ({ navigation }) => {
 	const [canBet, setCanBet] = useState(true);
 	const [loadingButton, setLoadingButton] = useState(false);
 	const [loadingBetStatus, setLoadingBetStatus] = useState(true);
+
+	useEffect(() => {
+		if (Array.isArray(team)) {
+			setEquipo(team);
+		}
+	}, [team]);
+	
 
 	useEffect(() => {
 		const fetchTournamentId = async () => {
