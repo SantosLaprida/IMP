@@ -42,3 +42,5 @@ const Classification = ({ navigation }) => {
 		}
 	};
 };
+
+export default Classification;

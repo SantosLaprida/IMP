@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, act } from "react";
 import {
 	View,
 	Text,
@@ -26,8 +26,7 @@ const screenToRoundMap = {
 	QuarterFinals: "Round2",
 	SemiFinals: "Round3",
 	Finals: "Round4",
-  };
-  
+};
 
 const Home = ({ navigation }) => {
 	const [activeBracketStage, setActiveBracketStage] = useState(null);
@@ -67,14 +66,21 @@ const Home = ({ navigation }) => {
 	};
 
 	const renderBlinkDotIfActive = (screenKey) => {
-		return activeBracketStage === screenToRoundMap[screenKey] ? <BlinkDot /> : null;
-	  };
-	  
+		return activeBracketStage === screenToRoundMap[screenKey] ? (
+			<BlinkDot />
+		) : null;
+	};
 
 	const [modalVisible, setModalVisible] = useState(false);
 
 	const handleBrackets = () => {
-		setModalVisible(true);
+		console.log(activeBracketStage);
+		if (activeBracketStage === null || "not_started") {
+			console.log("entro");
+			alert("Tournament has not started");
+		} else {
+			setModalVisible(true);
+		}
 	};
 
 	const [user, setUser] = useState(null);
@@ -205,7 +211,6 @@ const Home = ({ navigation }) => {
 							{renderBlinkDotIfActive("Classification")}
 						</TouchableOpacity>
 
-
 						<TouchableOpacity
 							style={{
 								...styles.modalButton,
@@ -250,7 +255,6 @@ const Home = ({ navigation }) => {
 							{renderBlinkDotIfActive("Finals")}
 						</TouchableOpacity>
 
-
 						<TouchableOpacity
 							style={{
 								...styles.modalButton,
@@ -268,9 +272,6 @@ const Home = ({ navigation }) => {
 						>
 							<Text style={styles.modalT}>Close</Text>
 						</TouchableOpacity>
-
-
-
 					</View>
 				</View>
 			</Modal>

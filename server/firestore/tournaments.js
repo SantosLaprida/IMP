@@ -38,7 +38,14 @@ export const fetchQualifiers = async (TournamentId, collectionName) => {
 	const currentYear = new Date().getFullYear().toString();
 	try {
 		const querySnapshot = await getDocs(
-			collection(firestore, "I_Torneos", currentYear, "Tournaments", TournamentId, collectionName)
+			collection(
+				firestore,
+				"I_Torneos",
+				currentYear,
+				"Tournaments",
+				TournamentId,
+				collectionName
+			)
 		);
 		const sortedPlayerData = querySnapshot.docs
 			.map((doc) => ({
@@ -59,7 +66,14 @@ export const fetchThirdPlaceQualifiers = async (tournamentName) => {
 	const currentYear = new Date().getFullYear().toString();
 	try {
 		const querySnapshot = await getDocs(
-			collection(firestore, "I_Torneos", currentYear, "Tournaments", tournamentName, "I_TercerCuarto")
+			collection(
+				firestore,
+				"I_Torneos",
+				currentYear,
+				"Tournaments",
+				tournamentName,
+				"I_TercerCuarto"
+			)
 		);
 		const sortedPlayerData = querySnapshot.docs
 			.map((doc) => ({
@@ -76,12 +90,17 @@ export const fetchThirdPlaceQualifiers = async (tournamentName) => {
 	}
 };
 
-
 export const getActiveBracket = async (tournamentId) => {
 	const currentYear = new Date().getFullYear().toString();
 
 	try {
-		const docRef = doc(firestore, "I_Torneos", currentYear, "Tournaments", tournamentId);
+		const docRef = doc(
+			firestore,
+			"I_Torneos",
+			currentYear,
+			"Tournaments",
+			tournamentId
+		);
 		const docSnap = await getDoc(docRef);
 
 		if (!docSnap.exists()) return null;
@@ -91,7 +110,7 @@ export const getActiveBracket = async (tournamentId) => {
 		const rounds = ["Round1", "Round2", "Round3", "Round4"];
 		const statuses = rounds.map((round) => data[round]);
 
-		if (statuses.every((status) => status === "Not Started")) {
+		if (statuses.every((status) => status === "Not started")) {
 			return "not_started";
 		}
 
@@ -105,13 +124,12 @@ export const getActiveBracket = async (tournamentId) => {
 			}
 		}
 
-		return null; 
+		return null;
 	} catch (error) {
 		console.error("Error determining active bracket:", error);
 		throw error;
 	}
 };
-
 
 export const isBracketActive = async (tournamentId, collectionName) => {
 	const currentYear = new Date().getFullYear().toString();
@@ -145,7 +163,13 @@ export const getApuestas = async (tournamentId) => {
 	const currentYear = new Date().getFullYear().toString();
 	try {
 		// Reference to the specific tournament document
-		const tournamentDocRef = doc(firestore, "I_Torneos", currentYear, "Tournaments", tournamentId);
+		const tournamentDocRef = doc(
+			firestore,
+			"I_Torneos",
+			currentYear,
+			"Tournaments",
+			tournamentId
+		);
 
 		// Fetch the document
 		const tournamentDocSnap = await getDoc(tournamentDocRef);
@@ -167,7 +191,13 @@ export const getApuestas = async (tournamentId) => {
 export const getNumberPlayersBet = async (tournamentId) => {
 	const currentYear = new Date().getFullYear().toString();
 	try {
-		const docRef = doc(firestore, "I_Torneos", currentYear, "Tournaments", tournamentId);
+		const docRef = doc(
+			firestore,
+			"I_Torneos",
+			currentYear,
+			"Tournaments",
+			tournamentId
+		);
 		const docSnapshot = await getDoc(docRef);
 
 		if (docSnapshot.exists()) {
