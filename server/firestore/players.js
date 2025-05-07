@@ -103,40 +103,42 @@ export const getPlayerBets = async (tournamentId) => {
 export const updateBetCount = async (tournamentId, playerIds) => {
 	const currentYear = new Date().getFullYear().toString();
 	const db = firestore;
-  
+
 	try {
-	  const updates = playerIds.map(async (playerId) => {
-		const playerDocRef = doc(
-		  db,
-		  "I_Torneos",
-		  currentYear,
-		  "Tournaments",
-		  tournamentId,
-		  "I_Players",
-		  playerId
-		);
-  
-		const playerDocSnap = await getDoc(playerDocRef);
-  
-		if (playerDocSnap.exists()) {
-		  const currentData = playerDocSnap.data();
-		  const currentApuestas = currentData.apuestas || 0;
-  
-		  await updateDoc(playerDocRef, {
-			apuestas: currentApuestas + 1,
-		  });
-  
-		  console.log(`Updated apuestas for player ${playerId}: ${currentApuestas + 1}`);
-		} else {
-		  console.log(`Player ${playerId} not found in I_Players collection.`);
-		}
-	  });
-  
-	  await Promise.all(updates); 
-  
-	  console.log("Bet counts updated successfully.");
+		const updates = playerIds.map(async (playerId) => {
+			const playerDocRef = doc(
+				db,
+				"I_Torneos",
+				currentYear,
+				"Tournaments",
+				tournamentId,
+				"I_Players",
+				playerId
+			);
+
+			const playerDocSnap = await getDoc(playerDocRef);
+
+			if (playerDocSnap.exists()) {
+				const currentData = playerDocSnap.data();
+				const currentApuestas = currentData.apuestas || 0;
+
+				await updateDoc(playerDocRef, {
+					apuestas: currentApuestas + 1,
+				});
+
+				console.log(
+					`Updated apuestas for player ${playerId}: ${currentApuestas + 1}`
+				);
+			} else {
+				console.log(`Player ${playerId} not found in I_Players collection.`);
+			}
+		});
+
+		await Promise.all(updates);
+
+		console.log("Bet counts updated successfully.");
 	} catch (error) {
-	  console.error("Error updating apuestas:", error);
-	  throw error;
+		console.error("Error updating apuestas:", error);
+		throw error;
 	}
-  };
+};

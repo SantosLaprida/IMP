@@ -183,11 +183,15 @@ const Home = ({ navigation }) => {
 								backgroundColor: "#1f3a5c",
 							}}
 							onPress={() =>
-								handleRouting("Clasification", "Home", "I_Players_Clasicacion")
+								handleRouting(
+									"Clasification",
+									"Home",
+									"I_Players_Clasificacion"
+								)
 							}
 						>
 							<Text style={{ ...styles.modalT, color: "white" }}>
-								Quarter finals
+								Clasification
 							</Text>
 							{renderBlinkDotIfActive("cuartos")}
 						</TouchableOpacity>

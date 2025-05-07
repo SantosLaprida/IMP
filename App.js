@@ -46,6 +46,7 @@ import SemiFinals from "./screens/SemiFinals";
 import Finals from "./screens/Finals";
 import ThirdPlace from "./screens/ThirdPlace";
 import Results from "./screens/Results";
+import Clasification from "./screens/Clasification";
 
 // Configure LogBox
 LogBox.ignoreAllLogs(true);

@@ -59,7 +59,6 @@ const Bets = ({ navigation, route }) => {
 			setEquipo(team);
 		}
 	}, [team]);
-	
 
 	useEffect(() => {
 		const fetchTournamentId = async () => {
