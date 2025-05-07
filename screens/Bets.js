@@ -23,6 +23,7 @@ import {
 	ScrollView,
 	FlatList,
 	Animated,
+	ActivityIndicator
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -47,8 +48,9 @@ const Bets = ({ navigation }) => {
 
 	const [hasBet, setHasBet] = useState(false);
 	const [activeBracketStage, setActiveBracketStage] = useState(null);
-
 	const [canBet, setCanBet] = useState(true);
+	const [loadingButton, setLoadingButton] = useState(false);
+	const [loadingBetStatus, setLoadingBetStatus] = useState(true);
 
 	useEffect(() => {
 		const fetchTournamentId = async () => {
@@ -133,24 +135,28 @@ const Bets = ({ navigation }) => {
 	}, []);
 
 	useEffect(() => {
-		const checkBetInterval = setInterval(async () => {
+		const checkBetStatus = async () => {
 			try {
 				const tournamentId = await getTournamentId();
 				const user = auth.currentUser;
 				if (user) {
 					const userId = user.uid;
 					const betMade = await userMadeBet(tournamentId, userId);
-
 					setHasBet(betMade);
-
+	
 					const canMakeBet = await getApuestas(tournamentId);
 					setCanBet(canMakeBet);
 				}
 			} catch (error) {
 				console.error("Error checking if user made bet:", error);
+			} finally {
+				setLoadingBetStatus(false);
 			}
-		}, 1000);
-		return () => clearInterval(checkBetInterval);
+		};
+	
+		checkBetStatus();
+		const interval = setInterval(checkBetStatus, 10000);
+		return () => clearInterval(interval);
 	}, []);
 
 	const getTournamentId = async () => {
@@ -332,15 +338,26 @@ const Bets = ({ navigation }) => {
 				</Text>
 				<TouchableOpacity
 					style={{ ...styles.btnClick, marginTop: 15 }}
-					onPress={() => {
+					onPress={async () => {
+						setLoadingButton(true);
+
+						try {
 						if (canBet) {
 							navigation.navigate("Players");
 						} else {
 							setModalVisible1(true);
 						}
+						} finally {
+						setLoadingButton(false);
+						}
 					}}
-				>
-					<Text style={styles.btnClickText}>{showText()}</Text>
+					disabled={loadingButton}
+					>
+					{loadingButton || loadingBetStatus ? (
+						<ActivityIndicator size="small" color="white" />
+					) : (
+						<Text style={styles.btnClickText}>{showText()}</Text>
+					)}
 				</TouchableOpacity>
 			</View>
 
@@ -416,27 +433,31 @@ const Bets = ({ navigation }) => {
 							style={styles.scroll}
 							showsVerticalScrollIndicator={false}
 						>
-							{equipo.map((jugador) => (
-								<TouchableOpacity key={jugador.idPlayer}>
-									<View
-										style={{
-											...styles.jugadorItem,
-											flexDirection: "row",
-											justifyContent: "space-between",
-										}}
-									>
-										<Text style={{ ...styles.text, fontSize: 11 }}>
-											{jugador.name}
-										</Text>
-										<Text style={{ ...styles.text, fontSize: 11 }}>
-											{jugador.rank}
-										</Text>
-									</View>
-								</TouchableOpacity>
-							))}
-						</ScrollView>
+							{equipo.map((jugador) => {
+								return (
+									<TouchableOpacity key={jugador.idPlayer}>
+										<View
+											style={{
+												...styles.jugadorItem,
+												flexDirection: "row",
+												justifyContent: "space-between",
+											}}
+										>
+											<Text style={{ ...styles.text, fontSize: 11 }}>
+												{jugador.name}
+											</Text>
+											<Text style={{ ...styles.text, fontSize: 11 }}>
+												{jugador.rank}
+											</Text>
+										</View>
+									</TouchableOpacity>
+								);
+							})}
+					</ScrollView>
 						<TouchableOpacity
-							onPress={() => setModalVisible1(false)}
+							onPress={() => 
+								setModalVisible1(false)
+							}
 							style={{
 								...styles.modalButton,
 								marginTop: 5,
