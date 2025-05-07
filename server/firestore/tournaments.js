@@ -76,31 +76,42 @@ export const fetchThirdPlaceQualifiers = async (tournamentName) => {
 	}
 };
 
-/**
- *
- * @param {*} tournamentId
- * @returns a string, either cuartos, semis or finales if there is a bracket active, it returns an empty string if there is no active bracket
- * If it return null, something went wrong with the database
- */
+
 export const getActiveBracket = async (tournamentId) => {
 	const currentYear = new Date().getFullYear().toString();
+
 	try {
-		// Accede al documento específico en la colección "I_Torneos"
 		const docRef = doc(firestore, "I_Torneos", currentYear, "Tournaments", tournamentId);
 		const docSnap = await getDoc(docRef);
 
-		if (docSnap.exists()) {
-			const data = docSnap.data();
-			if (data.active_bracket && data.active_bracket.trim() !== "") {
-				return data.active_bracket; // Retorna el campo "active_bracket"
+		if (!docSnap.exists()) return null;
+
+		const data = docSnap.data();
+
+		const rounds = ["Round1", "Round2", "Round3", "Round4"];
+		const statuses = rounds.map((round) => data[round]);
+
+		if (statuses.every((status) => status === "Not Started")) {
+			return "not_started";
+		}
+
+		if (statuses.every((status) => status === "Complete")) {
+			return "complete";
+		}
+
+		for (const round of rounds) {
+			if (data[round] === "In Progress") {
+				return round;
 			}
 		}
-		return null; // Si no hay active_bracket o no existe el documento
+
+		return null; 
 	} catch (error) {
-		console.error("Error getting active bracket:", error);
+		console.error("Error determining active bracket:", error);
 		throw error;
 	}
 };
+
 
 export const isBracketActive = async (tournamentId, collectionName) => {
 	const currentYear = new Date().getFullYear().toString();

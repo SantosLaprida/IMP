@@ -15,7 +15,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-const clasification = ({ navigation }) => {
+const Classification = ({ navigation }) => {
 	const [jugadores, setJugadores] = useState([]);
 
 	useEffect(() => {

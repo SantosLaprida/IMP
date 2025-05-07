@@ -143,4 +143,4 @@ export const updateBetCount = async (tournamentId, playerIds) => {
 	}
 };
 
-export const getClasificationPlayers = async (tournamentId) => {};
+export const getClassificationPlayers = async (tournamentId) => {};

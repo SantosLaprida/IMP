@@ -46,7 +46,7 @@ import SemiFinals from "./screens/SemiFinals";
 import Finals from "./screens/Finals";
 import ThirdPlace from "./screens/ThirdPlace";
 import Results from "./screens/Results";
-import Clasification from "./screens/Clasification";
+import Classification from "./screens/Classification";
 
 // Configure LogBox
 LogBox.ignoreAllLogs(true);
@@ -203,6 +203,7 @@ function MainStackScreen() {
 			<MainStack.Screen name="Finals" component={Finals} />
 			<MainStack.Screen name="ThirdPlace" component={ThirdPlace} />
 			<MainStack.Screen name="Results" component={Results} />
+			<MainStack.Screen name="Classification" component={Classification} />
 		</MainStack.Navigator>
 	);
 }

@@ -21,6 +21,14 @@ import {
 } from "../server/firestore/tournaments";
 import { getBracketAPI } from "../api";
 
+const screenToRoundMap = {
+	Classification: "Round1",
+	QuarterFinals: "Round2",
+	SemiFinals: "Round3",
+	Finals: "Round4",
+  };
+  
+
 const Home = ({ navigation }) => {
 	const [activeBracketStage, setActiveBracketStage] = useState(null);
 
@@ -58,9 +66,10 @@ const Home = ({ navigation }) => {
 		}
 	};
 
-	const renderBlinkDotIfActive = (stage) => {
-		return activeBracketStage === stage ? <BlinkDot /> : null;
-	};
+	const renderBlinkDotIfActive = (screenKey) => {
+		return activeBracketStage === screenToRoundMap[screenKey] ? <BlinkDot /> : null;
+	  };
+	  
 
 	const [modalVisible, setModalVisible] = useState(false);
 
@@ -184,7 +193,7 @@ const Home = ({ navigation }) => {
 							}}
 							onPress={() =>
 								handleRouting(
-									"Clasification",
+									"Classification",
 									"Home",
 									"I_Players_Clasificacion"
 								)
@@ -193,8 +202,10 @@ const Home = ({ navigation }) => {
 							<Text style={{ ...styles.modalT, color: "white" }}>
 								Clasification
 							</Text>
-							{renderBlinkDotIfActive("cuartos")}
+							{renderBlinkDotIfActive("Classification")}
 						</TouchableOpacity>
+
+
 						<TouchableOpacity
 							style={{
 								...styles.modalButton,
@@ -208,7 +219,7 @@ const Home = ({ navigation }) => {
 							<Text style={{ ...styles.modalT, color: "white" }}>
 								Quarter finals
 							</Text>
-							{renderBlinkDotIfActive("cuartos")}
+							{renderBlinkDotIfActive("QuarterFinals")}
 						</TouchableOpacity>
 
 						<TouchableOpacity
@@ -224,7 +235,7 @@ const Home = ({ navigation }) => {
 							<Text style={{ ...styles.modalT, color: "white" }}>
 								Semi finals
 							</Text>
-							{renderBlinkDotIfActive("semis")}
+							{renderBlinkDotIfActive("SemiFinals")}
 						</TouchableOpacity>
 
 						<TouchableOpacity
@@ -236,8 +247,10 @@ const Home = ({ navigation }) => {
 							onPress={() => handleRouting("Finals", "Home", "I_Finales")}
 						>
 							<Text style={{ ...styles.modalT, color: "white" }}>Finals</Text>
-							{renderBlinkDotIfActive("finales")}
+							{renderBlinkDotIfActive("Finals")}
 						</TouchableOpacity>
+
+
 						<TouchableOpacity
 							style={{
 								...styles.modalButton,
@@ -255,6 +268,9 @@ const Home = ({ navigation }) => {
 						>
 							<Text style={styles.modalT}>Close</Text>
 						</TouchableOpacity>
+
+
+
 					</View>
 				</View>
 			</Modal>

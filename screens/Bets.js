@@ -205,11 +205,14 @@ const Bets = ({ navigation, route }) => {
 
 	const fetchPlayerBets = async () => {
 		setLoading(true);
-
+	
 		try {
 			const tournamentId = await getTournamentId();
 			const bets = await getPlayerBets(tournamentId);
-			setPlayerBets(bets);
+	
+			const sortedBets = bets.sort((a, b) => b.apuestas - a.apuestas);
+	
+			setPlayerBets(sortedBets);
 		} catch (error) {
 			console.error("Error fetching player bets:", error);
 		} finally {
