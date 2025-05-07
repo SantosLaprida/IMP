@@ -142,3 +142,5 @@ export const updateBetCount = async (tournamentId, playerIds) => {
 		throw error;
 	}
 };
+
+export const getClasificationPlayers = async (tournamentId) => {};
