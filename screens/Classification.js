@@ -17,6 +17,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 const Classification = ({ navigation }) => {
 	const [jugadores, setJugadores] = useState([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -27,6 +28,8 @@ const Classification = ({ navigation }) => {
 				setJugadores(jugadores);
 			} catch (error) {
 				console.error("Error fetching data:", error);
+			} finally {
+				setLoading(false);
 			}
 		};
 
@@ -62,37 +65,50 @@ const Classification = ({ navigation }) => {
 							paddingBottom: 10,
 						}}
 					>
-						Top 8 from leaderbord
+						Leaderboard
 					</Text>
 
 					<View style={styles.itemTitle}>
-						<Text style={styles.text}>Player</Text>
-						<Text style={styles.text}>Placement</Text>
+						<Text style={{ ...styles.text, width: "55%" }}>Player</Text>
+						<Text style={styles.text}>N°</Text>
+						<Text style={styles.text}>score</Text>
 					</View>
-
-					<ScrollView
-						style={{ ...styles.scroll, marginBottom: 25 }}
-						showsVerticalScrollIndicator={false}
-					>
-						{jugadores.map((jugador) => (
-							<TouchableOpacity key={jugador.playerId}>
-								<View
-									style={{
-										...styles.jugadorItem,
-										flexDirection: "row",
-										justifyContent: "space-between",
-									}}
-								>
-									<Text style={{ ...styles.text, fontSize: 11 }}>
-										{jugador.name}
-									</Text>
-									<Text style={{ ...styles.text, fontSize: 11 }}>
-										{jugador.order}
-									</Text>
-								</View>
-							</TouchableOpacity>
-						))}
-					</ScrollView>
+					{loading ? (
+						<ActivityIndicator
+							style={styles.loader}
+							size="large"
+							color="#1f3a5c"
+						/>
+					) : (
+						<ScrollView
+							style={{ ...styles.scroll, marginBottom: 25 }}
+							showsVerticalScrollIndicator={false}
+						>
+							{jugadores.map((jugador) => (
+								<TouchableOpacity key={jugador.playerId}>
+									<View
+										style={{
+											...styles.jugadorItem,
+											flexDirection: "row",
+											justifyContent: "space-between",
+										}}
+									>
+										<Text
+											style={{ ...styles.text, fontSize: 11, width: "50%" }}
+										>
+											{jugador.name}
+										</Text>
+										<Text style={{ ...styles.text, fontSize: 11 }}>
+											{jugador.order}
+										</Text>
+										<Text style={{ ...styles.text, fontSize: 11 }}>
+											{jugador.score}
+										</Text>
+									</View>
+								</TouchableOpacity>
+							))}
+						</ScrollView>
+					)}
 				</View>
 
 				<TouchableOpacity
@@ -113,7 +129,7 @@ const styles = StyleSheet.create({
 		borderRadius: 15,
 		alignItems: "center",
 		backgroundColor: "rgb(255, 252, 241)",
-		height: 380,
+		height: 650,
 		marginBottom: 10,
 		shadowColor: "#000", // Color de la sombra
 		shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
