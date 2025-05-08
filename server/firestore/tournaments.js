@@ -124,12 +124,19 @@ export const getActiveBracket = async (tournamentId) => {
 			}
 		}
 
+		for (let i = rounds.length - 1; i >= 0; i--) {
+			if (data[rounds[i]] === "Complete") {
+				return rounds[i];
+			}
+		}
+
 		return null;
 	} catch (error) {
 		console.error("Error determining active bracket:", error);
 		throw error;
 	}
 };
+
 
 export const isBracketActive = async (tournamentId, collectionName) => {
 	const currentYear = new Date().getFullYear().toString();

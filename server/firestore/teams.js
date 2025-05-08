@@ -18,6 +18,7 @@ export const storeTeam = async (userId, team, tournamentId) => {
   const currentYear = new Date().getFullYear().toString();
   try {
     const teamDocRef = doc(
+      
       firestore,
       "I_Torneos",
       currentYear,

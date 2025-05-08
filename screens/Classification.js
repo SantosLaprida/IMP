@@ -1,5 +1,6 @@
 import { getClasificationPlayers } from "../server/firestore/players";
 import { fetchTournament } from "../server/firestore/tournaments";
+import { fetchTeam } from "../server/firestore/teams";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { auth } from "../server/config/firebaseConfig";
@@ -17,6 +18,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 const Classification = ({ navigation }) => {
 	const [jugadores, setJugadores] = useState([]);
+	const [equipo, setEquipo] = useState([]);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -24,8 +26,17 @@ const Classification = ({ navigation }) => {
 			try {
 				const tournamentId = await getTournamentId();
 				const jugadores = await getClasificationPlayers(tournamentId);
+				const user = auth.currentUser;
+				let equipo = []
+				if (user) {
+					const userId = user.uid;
+					const equipoData = await fetchTeam(tournamentId, userId);
+					equipo = equipoData ? Object.values(equipoData) : [];
+				}
 				jugadores.sort((a, b) => a.order - b.order);
+				setEquipo(equipo);
 				setJugadores(jugadores);
+				console.log(equipo);
 			} catch (error) {
 				console.error("Error fetching data:", error);
 			} finally {
@@ -84,29 +95,27 @@ const Classification = ({ navigation }) => {
 							style={{ ...styles.scroll, marginBottom: 25 }}
 							showsVerticalScrollIndicator={false}
 						>
-							{jugadores.map((jugador) => (
+							{jugadores.map((jugador) => {
+							const isSelected = equipo.includes(jugador.playerId);
+							return (
 								<TouchableOpacity key={jugador.playerId}>
 									<View
 										style={{
 											...styles.jugadorItem,
+											backgroundColor: isSelected ? "#d4f0ff" : "#f0f0f0",
 											flexDirection: "row",
 											justifyContent: "space-between",
 										}}
 									>
-										<Text
-											style={{ ...styles.text, fontSize: 11, width: "50%" }}
-										>
+										<Text style={{ ...styles.text, fontSize: 11, width: "50%" }}>
 											{jugador.name}
 										</Text>
-										<Text style={{ ...styles.text, fontSize: 11 }}>
-											{jugador.order}
-										</Text>
-										<Text style={{ ...styles.text, fontSize: 11 }}>
-											{jugador.score}
-										</Text>
+										<Text style={{ ...styles.text, fontSize: 11 }}>{jugador.order}</Text>
+										<Text style={{ ...styles.text, fontSize: 11 }}>{jugador.score}</Text>
 									</View>
 								</TouchableOpacity>
-							))}
+							);
+						})}
 						</ScrollView>
 					)}
 				</View>
