@@ -143,4 +143,27 @@ export const updateBetCount = async (tournamentId, playerIds) => {
 	}
 };
 
-export const getClassificationPlayers = async (tournamentId) => {};
+export const getClasificationPlayers = async (tournamentId) => {
+	const currentYear = new Date().getFullYear().toString();
+	try {
+		const querySnapshot = await getDocs(
+			collection(
+				firestore,
+				"I_Torneos",
+				currentYear,
+				"Tournaments",
+				tournamentId,
+				"I_Players_Clasificacion"
+			)
+		);
+		const playersData = querySnapshot.docs.map((doc) => {
+			const data = doc.data();
+			return { idPlayer: doc.id, ...data };
+		});
+
+		return playersData;
+	} catch (error) {
+		console.error("Error fetching players:", error);
+		throw error;
+	}
+};

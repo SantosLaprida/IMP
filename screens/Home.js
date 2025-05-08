@@ -79,7 +79,6 @@ const Home = ({ navigation }) => {
 		} else {
 			setModalVisible(true);
 		}
-		
 	};
 
 	const [user, setUser] = useState(null);
@@ -110,6 +109,24 @@ const Home = ({ navigation }) => {
 		}
 
 		navigation.navigate(screen, { origin });
+	};
+
+	const renderBracketButton = (label, screenKey, screen, collectionName) => {
+		const isActive = activeBracketStage === screenToRoundMap[screenKey];
+		return (
+			<TouchableOpacity
+				style={{
+					...styles.modalButton,
+					width: 200,
+					backgroundColor: isActive ? "#1f3a5c" : "#aaa",
+				}}
+				onPress={() => handleRouting(screen, "Home", collectionName)}
+				disabled={!isActive}
+			>
+				<Text style={{ ...styles.modalT, color: "white" }}>{label}</Text>
+				{renderBlinkDotIfActive(screenKey)}
+			</TouchableOpacity>
+		);
 	};
 
 	return (
@@ -190,80 +207,31 @@ const Home = ({ navigation }) => {
 								Select bracket
 							</Text>
 						</View>
-						<TouchableOpacity
-							style={{
-								...styles.modalButton,
-								width: 200,
-								backgroundColor: "#1f3a5c",
-							}}
-							onPress={() =>
-								handleRouting(
-									"Classification",
-									"Home",
-									"I_Players_Clasificacion"
-								)
-							}
-						>
-							<Text style={{ ...styles.modalT, color: "white" }}>
-								Clasification
-							</Text>
-							{renderBlinkDotIfActive("Classification")}
-						</TouchableOpacity>
-
-						<TouchableOpacity
-							style={{
-								...styles.modalButton,
-								width: 200,
-								backgroundColor: "#1f3a5c",
-							}}
-							onPress={() =>
-								handleRouting("QuarterFinals", "Home", "I_Cuartos")
-							}
-						>
-							<Text style={{ ...styles.modalT, color: "white" }}>
-								Quarter finals
-							</Text>
-							{renderBlinkDotIfActive("QuarterFinals")}
-						</TouchableOpacity>
-
-						<TouchableOpacity
-							style={{
-								...styles.modalButton,
-								width: 200,
-								backgroundColor: "#1f3a5c",
-							}}
-							onPress={() =>
-								handleRouting("SemiFinals", "Home", "I_Semifinales")
-							}
-						>
-							<Text style={{ ...styles.modalT, color: "white" }}>
-								Semi finals
-							</Text>
-							{renderBlinkDotIfActive("SemiFinals")}
-						</TouchableOpacity>
-
-						<TouchableOpacity
-							style={{
-								...styles.modalButton,
-								width: 200,
-								backgroundColor: "#1f3a5c",
-							}}
-							onPress={() => handleRouting("Finals", "Home", "I_Finales")}
-						>
-							<Text style={{ ...styles.modalT, color: "white" }}>Finals</Text>
-							{renderBlinkDotIfActive("Finals")}
-						</TouchableOpacity>
-
-						<TouchableOpacity
-							style={{
-								...styles.modalButton,
-								width: 200,
-								backgroundColor: "#1f3a5c",
-							}}
-							onPress={() => handleRouting("Results", "Home", "I_Resultados")}
-						>
-							<Text style={{ ...styles.modalT, color: "white" }}>Results</Text>
-						</TouchableOpacity>
+						{renderBracketButton(
+							"Clasification",
+							"Classification",
+							"Classification",
+							"I_Players_Clasificacion"
+						)}
+						{renderBracketButton(
+							"Quarter finals",
+							"QuarterFinals",
+							"QuarterFinals",
+							"I_Cuartos"
+						)}
+						{renderBracketButton(
+							"Semi finals",
+							"SemiFinals",
+							"SemiFinals",
+							"I_Semifinales"
+						)}
+						{renderBracketButton("Finals", "Finals", "Finals", "I_Finales")}
+						{renderBracketButton(
+							"Results",
+							"Results",
+							"Results",
+							"I_Resultados"
+						)}
 
 						<TouchableOpacity
 							style={{ ...styles.modalButton, marginTop: 25, width: 250 }}
