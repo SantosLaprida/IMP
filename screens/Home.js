@@ -22,10 +22,10 @@ import {
 import { getBracketAPI } from "../api";
 
 const screenToRoundMap = {
-	Classification: "Round1",
-	QuarterFinals: "Round2",
-	SemiFinals: "Round3",
-	Finals: "Round4",
+	Classification: "round1",
+	QuarterFinals: "round2",
+	SemiFinals: "round3",
+	Finals: "round4",
 };
 
 const Home = ({ navigation }) => {
@@ -74,13 +74,12 @@ const Home = ({ navigation }) => {
 	const [modalVisible, setModalVisible] = useState(false);
 
 	const handleBrackets = () => {
-		console.log(activeBracketStage);
-		if (activeBracketStage === null || "not_started") {
-			console.log("entro");
+		if (activeBracketStage === null || activeBracketStage === "not_started") {
 			alert("Tournament has not started");
 		} else {
 			setModalVisible(true);
 		}
+		
 	};
 
 	const [user, setUser] = useState(null);

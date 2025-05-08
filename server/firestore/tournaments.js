@@ -107,10 +107,10 @@ export const getActiveBracket = async (tournamentId) => {
 
 		const data = docSnap.data();
 
-		const rounds = ["Round1", "Round2", "Round3", "Round4"];
+		const rounds = ["round1", "round2", "round3", "round4"];
 		const statuses = rounds.map((round) => data[round]);
 
-		if (statuses.every((status) => status === "Not started")) {
+		if (statuses.every((status) => status === "Not Started")) {
 			return "not_started";
 		}
 
