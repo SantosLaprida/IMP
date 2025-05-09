@@ -27,7 +27,7 @@ const Classification = ({ navigation }) => {
 				const tournamentId = await getTournamentId();
 				const jugadores = await getClasificationPlayers(tournamentId);
 				const user = auth.currentUser;
-				let equipo = []
+				let equipo = [];
 				if (user) {
 					const userId = user.uid;
 					const equipoData = await fetchTeam(tournamentId, userId);
@@ -80,8 +80,9 @@ const Classification = ({ navigation }) => {
 					</Text>
 
 					<View style={styles.itemTitle}>
-						<Text style={{ ...styles.text, width: "55%" }}>Player</Text>
-						<Text style={styles.text}>N°</Text>
+						<Text style={{ ...styles.text, paddingLeft: 7 }}>N°</Text>
+						<Text style={{ ...styles.text, width: "72%" }}>Player</Text>
+
 						<Text style={styles.text}>score</Text>
 					</View>
 					{loading ? (
@@ -96,26 +97,33 @@ const Classification = ({ navigation }) => {
 							showsVerticalScrollIndicator={false}
 						>
 							{jugadores.map((jugador) => {
-							const isSelected = equipo.includes(jugador.playerId);
-							return (
-								<TouchableOpacity key={jugador.playerId}>
-									<View
-										style={{
-											...styles.jugadorItem,
-											backgroundColor: isSelected ? "#d4f0ff" : "#f0f0f0",
-											flexDirection: "row",
-											justifyContent: "space-between",
-										}}
-									>
-										<Text style={{ ...styles.text, fontSize: 11, width: "50%" }}>
-											{jugador.name}
-										</Text>
-										<Text style={{ ...styles.text, fontSize: 11 }}>{jugador.order}</Text>
-										<Text style={{ ...styles.text, fontSize: 11 }}>{jugador.score}</Text>
-									</View>
-								</TouchableOpacity>
-							);
-						})}
+								const isSelected = equipo.includes(jugador.playerId);
+								return (
+									<TouchableOpacity key={jugador.playerId}>
+										<View
+											style={{
+												...styles.jugadorItem,
+												backgroundColor: isSelected ? "#d4f0ff" : "#f0f0f0",
+												flexDirection: "row",
+												justifyContent: "space-between",
+											}}
+										>
+											<Text style={{ ...styles.text, fontSize: 11 }}>
+												{jugador.order}
+											</Text>
+											<Text
+												style={{ ...styles.text, fontSize: 11, width: "80%" }}
+											>
+												{jugador.name}
+											</Text>
+
+											<Text style={{ ...styles.text, fontSize: 11 }}>
+												{jugador.score}
+											</Text>
+										</View>
+									</TouchableOpacity>
+								);
+							})}
 						</ScrollView>
 					)}
 				</View>
@@ -152,7 +160,7 @@ const styles = StyleSheet.create({
 		width: 250,
 		flexDirection: "row",
 		justifyContent: "space-between",
-		marginVertical: 10,
+		marginVertical: 7,
 	},
 	scrollViewContent: {
 		flexGrow: 1,
