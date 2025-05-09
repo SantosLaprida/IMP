@@ -19,10 +19,15 @@ export const fetchScoreSheet = async (
   tournamentName,
   collectionName
 ) => {
+
+  console.log("id player is: ", id_player);
+
+  const currentYear = new Date().getFullYear().toString();
+
   try {
     const scoreQuery = query(
-      collection(firestore, "I_Torneos", tournamentName, collectionName),
-      where("id_player", "==", id_player)
+      collection(firestore, "I_Torneos", currentYear, "Tournaments", tournamentName, collectionName),
+      where("playerId", "==", id_player)
     );
     const querySnapshot = await getDocs(scoreQuery);
     let scoreData = {};
@@ -35,7 +40,7 @@ export const fetchScoreSheet = async (
       }
     });
 
-    const name = await getPlayerName(id_player, tournamentName);
+    // const name = await getPlayerName(id_player, tournamentName);
     return scoreData;
   } catch (error) {
     console.error("Error fetching score sheet:", error);
@@ -58,11 +63,16 @@ export const getHoles = async (
   id_player1,
   id_player2
 ) => {
+
+  const currentYear = new Date().getFullYear().toString();
+
   try {
     // Collection reference to the players in the tournament
     const playersCollection = collection(
       firestore,
       "I_Torneos",
+      currentYear,
+      'Tournaments',
       tournamentId,
       collectionName
     );
@@ -70,7 +80,7 @@ export const getHoles = async (
     // Query to get player 1 and player 2 documents
     const q = query(
       playersCollection,
-      where("id_player", "in", [id_player1, id_player2])
+      where("playerId", "in", [id_player1, id_player2])
     );
     const querySnapshot = await getDocs(q);
 
@@ -91,10 +101,10 @@ export const getHoles = async (
       }
 
       // Assign the hole data to the respective player
-      if (playerData.id_player === id_player1) {
+      if (playerData.playerId === id_player1) {
         player1Holes = holes;
         response.player1 = player1Holes;
-      } else if (playerData.id_player === id_player2) {
+      } else if (playerData.playerId === id_player2) {
         player2Holes = holes;
         response.player2 = player2Holes;
       }

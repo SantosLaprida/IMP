@@ -34,6 +34,10 @@ export const compareScores = async (
     collectionName
   );
 
+  console.log(scoreSheet1);
+  console.log(scoreSheet2);
+
+
   let score = {
     currentHole: 1,
     holesPlayed: 0,
@@ -50,6 +54,12 @@ export const compareScores = async (
     const currentHoleKey = `H${score.currentHole.toString().padStart(2, "0")}`;
     const score1 = scoreSheet1[currentHoleKey];
     const score2 = scoreSheet2[currentHoleKey];
+
+    console.log("*********************************");
+    console.log(score1);
+    console.log(score2);
+    console.log("Current hole is ", score.currentHole)
+    console.log("*********************************");
 
     if (score1 === 0 || score2 === 0) {
       score.currentHole++;

@@ -46,8 +46,9 @@ export const getPlayerName = async (id_player, tournamentId) => {
 			collection(
 				firestore,
 				"I_Torneos",
-				tournamentId,
 				currentYear,
+				"Tournaments",
+				tournamentId,
 				"I_Players"
 			),
 			where("id_player", "==", id_player)

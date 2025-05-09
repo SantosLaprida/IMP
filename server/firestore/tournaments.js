@@ -49,7 +49,7 @@ export const fetchQualifiers = async (TournamentId, collectionName) => {
 		);
 		const sortedPlayerData = querySnapshot.docs
 			.map((doc) => ({
-				id_player: doc.data().id_player,
+				id_player: doc.data().playerId,
 				name: doc.data().name,
 				orden: doc.data().orden,
 			}))

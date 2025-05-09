@@ -59,6 +59,7 @@ const Home = ({ navigation }) => {
 		try {
 			const activeBracket = await getActiveBracket(tournamentId);
 			setActiveBracketStage(activeBracket);
+			console.log(activeBracket);
 		} catch (error) {
 			console.error("Error checking games:", error);
 			setActiveBracketStage(null);
@@ -111,23 +112,38 @@ const Home = ({ navigation }) => {
 		navigation.navigate(screen, { origin });
 	};
 
+		const roundOrder = {
+		round1: 1,
+		round2: 2,
+		round3: 3,
+		round4: 4,
+	};
+
 	const renderBracketButton = (label, screenKey, screen, collectionName) => {
-		const isActive = activeBracketStage === screenToRoundMap[screenKey];
+		const currentRound = roundOrder[activeBracketStage];
+		const buttonRound = roundOrder[screenToRoundMap[screenKey]];
+
+		// If buttonRound is undefined (e.g. for "Results"), disable it by default
+		const isDisabled = buttonRound === undefined || buttonRound > currentRound;
+
+		const isCurrent = activeBracketStage === screenToRoundMap[screenKey];
+
 		return (
 			<TouchableOpacity
 				style={{
 					...styles.modalButton,
 					width: 200,
-					backgroundColor: isActive ? "#1f3a5c" : "#aaa",
+					backgroundColor: isDisabled ? "#aaa" : "#1f3a5c",
 				}}
 				onPress={() => handleRouting(screen, "Home", collectionName)}
-				disabled={!isActive}
+				disabled={isDisabled}
 			>
 				<Text style={{ ...styles.modalT, color: "white" }}>{label}</Text>
-				{renderBlinkDotIfActive(screenKey)}
+				{isCurrent && <BlinkDot />}
 			</TouchableOpacity>
 		);
 	};
+
 
 	return (
 		<LinearGradient
