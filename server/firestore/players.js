@@ -51,11 +51,12 @@ export const getPlayerName = async (id_player, tournamentId) => {
 				tournamentId,
 				"I_Players"
 			),
-			where("id_player", "==", id_player)
+			where("idPlayer", "==", id_player)
 		);
 		const playerQuerySnapshot = await getDocs(playerQuery);
 		if (!playerQuerySnapshot.empty) {
 			const playerDoc = playerQuerySnapshot.docs[0];
+			console.log(playerDoc.data().name);
 			return playerDoc.data().name;
 		} else {
 			console.log("No such player!");

@@ -205,13 +205,13 @@ const Bets = ({ navigation, route }) => {
 
 	const fetchPlayerBets = async () => {
 		setLoading(true);
-	
+
 		try {
 			const tournamentId = await getTournamentId();
 			const bets = await getPlayerBets(tournamentId);
-	
+
 			const sortedBets = bets.sort((a, b) => b.apuestas - a.apuestas);
-	
+
 			setPlayerBets(sortedBets);
 		} catch (error) {
 			console.error("Error fetching player bets:", error);
@@ -230,11 +230,11 @@ const Bets = ({ navigation, route }) => {
 
 		try {
 			const activeBracket = await getActiveBracket(tournamentId);
-			if (activeBracket === "cuartos") {
+			if (activeBracket === "round2") {
 				navigation.navigate("QuarterFinals", { origin });
-			} else if (activeBracket === "semis") {
+			} else if (activeBracket === "round3") {
 				navigation.navigate("SemiFinals", { origin });
-			} else if (activeBracket === "finales") {
+			} else if (activeBracket === "round4") {
 				navigation.navigate("Finals", { origin });
 			}
 		} catch (error) {
@@ -500,7 +500,7 @@ const Bets = ({ navigation, route }) => {
 				}}
 			>
 				<View style={styles.modalContainerBets}>
-					<View style={{ ...styles.box, height: 650, width: 500 }}>
+					<View style={{ ...styles.box, height: 650, width: 350 }}>
 						<Text
 							style={{
 								...styles.text,
