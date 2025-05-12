@@ -21,6 +21,7 @@ import { set } from "firebase/database";
 import { ScrollView } from "react-native-gesture-handler";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { reload } from "firebase/auth";
+
 import { useRoute } from "@react-navigation/native";
 
 const QuarterFinals = ({ navigation }) => {
@@ -346,9 +347,12 @@ const QuarterFinals = ({ navigation }) => {
 									{displayResultsLeft(results1)}
 								</Text>
 								<View style={styles.player}>
-									<Image
-										source={require("../assets/images/scottie.webp")}
-										style={styles.gameLogo}
+									<MaterialCommunityIcons
+										name="golf-cart"
+										size={45}
+										color="black"
+										marginTop={15}
+										marginBottom={5}
 									/>
 									<Text
 										style={{
@@ -396,9 +400,12 @@ const QuarterFinals = ({ navigation }) => {
 									{displayResultsRight(results1)}
 								</Text>
 								<View style={styles.player}>
-									<Image
-										source={require("../assets/images/scottie.webp")}
-										style={styles.gameLogo}
+									<MaterialCommunityIcons
+										name="golf-cart"
+										size={45}
+										color="black"
+										marginTop={15}
+										marginBottom={5}
 									/>
 									<Text
 										style={{
@@ -437,9 +444,12 @@ const QuarterFinals = ({ navigation }) => {
 									{displayResultsLeft(results4)}
 								</Text>
 								<View style={styles.player}>
-									<Image
-										source={require("../assets/images/scottie.webp")}
-										style={styles.gameLogo}
+									<MaterialCommunityIcons
+										name="golf-cart"
+										size={45}
+										color="black"
+										marginTop={15}
+										marginBottom={5}
 									/>
 									<Text
 										style={{
@@ -488,9 +498,12 @@ const QuarterFinals = ({ navigation }) => {
 								</Text>
 
 								<View style={styles.player}>
-									<Image
-										source={require("../assets/images/scottie.webp")}
-										style={styles.gameLogo}
+									<MaterialCommunityIcons
+										name="golf-cart"
+										size={45}
+										color="black"
+										marginTop={15}
+										marginBottom={5}
 									/>
 									<Text
 										style={{
@@ -529,9 +542,12 @@ const QuarterFinals = ({ navigation }) => {
 									{displayResultsLeft(results3)}
 								</Text>
 								<View style={styles.player}>
-									<Image
-										source={require("../assets/images/scottie.webp")}
-										style={styles.gameLogo}
+									<MaterialCommunityIcons
+										name="golf-cart"
+										size={45}
+										color="black"
+										marginTop={15}
+										marginBottom={5}
 									/>
 									<Text
 										style={{
@@ -579,9 +595,12 @@ const QuarterFinals = ({ navigation }) => {
 									{displayResultsRight(results3)}
 								</Text>
 								<View style={styles.player}>
-									<Image
-										source={require("../assets/images/scottie.webp")}
-										style={styles.gameLogo}
+									<MaterialCommunityIcons
+										name="golf-cart"
+										size={45}
+										color="black"
+										marginTop={15}
+										marginBottom={5}
 									/>
 									<Text
 										style={{
@@ -620,9 +639,12 @@ const QuarterFinals = ({ navigation }) => {
 									{displayResultsLeft(results2)}
 								</Text>
 								<View style={styles.player}>
-									<Image
-										source={require("../assets/images/scottie.webp")}
-										style={styles.gameLogo}
+									<MaterialCommunityIcons
+										name="golf-cart"
+										size={45}
+										color="black"
+										marginTop={15}
+										marginBottom={5}
 									/>
 									<Text
 										style={{
@@ -670,9 +692,12 @@ const QuarterFinals = ({ navigation }) => {
 									{displayResultsRight(results2)}
 								</Text>
 								<View style={styles.player}>
-									<Image
-										source={require("../assets/images/scottie.webp")}
-										style={styles.gameLogo}
+									<MaterialCommunityIcons
+										name="golf-cart"
+										size={45}
+										color="black"
+										marginTop={15}
+										marginBottom={5}
 									/>
 									<Text
 										style={{

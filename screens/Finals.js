@@ -324,9 +324,12 @@ const Finals = ({ navigation }) => {
 									{displayResultsLeft(results1)}
 								</Text>
 								<View style={styles.player}>
-									<Image
-										source={require("../assets/images/scottie.webp")}
-										style={styles.gameLogo}
+									<MaterialCommunityIcons
+										name="golf-cart"
+										size={45}
+										color="black"
+										marginTop={15}
+										marginBottom={5}
 									/>
 									<Text
 										style={{
@@ -374,9 +377,12 @@ const Finals = ({ navigation }) => {
 									{displayResultsRight(results1)}
 								</Text>
 								<View style={styles.player}>
-									<Image
-										source={require("../assets/images/scottie.webp")}
-										style={styles.gameLogo}
+									<MaterialCommunityIcons
+										name="golf-cart"
+										size={45}
+										color="black"
+										marginTop={15}
+										marginBottom={5}
 									/>
 									<Text
 										style={{
@@ -427,9 +433,12 @@ const Finals = ({ navigation }) => {
 									{displayResultsLeft(results2)}
 								</Text>
 								<View style={styles.player}>
-									<Image
-										source={require("../assets/images/scottie.webp")}
-										style={styles.gameLogo}
+									<MaterialCommunityIcons
+										name="golf-cart"
+										size={45}
+										color="black"
+										marginTop={15}
+										marginBottom={5}
 									/>
 									<Text
 										style={{
@@ -478,9 +487,12 @@ const Finals = ({ navigation }) => {
 								</Text>
 
 								<View style={styles.player}>
-									<Image
-										source={require("../assets/images/scottie.webp")}
-										style={styles.gameLogo}
+									<MaterialCommunityIcons
+										name="golf-cart"
+										size={45}
+										color="black"
+										marginTop={15}
+										marginBottom={5}
 									/>
 									<Text
 										style={{
