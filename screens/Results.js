@@ -137,10 +137,10 @@ const Results = ({ navigation }) => {
               <View style={styles.gameBox}>
                 <Text style={styles.tGame}>1° Place</Text>
                 <View style={styles.player}>
-                  <Image
+                  {/* <Image
                     source={require("../assets/images/scottie.webp")}
                     style={styles.gameLogo}
-                  />
+                  /> */}
                   <Text
                     style={{
                       ...styles.text,
@@ -160,10 +160,10 @@ const Results = ({ navigation }) => {
                 <Text style={styles.tGame}>2° Place</Text>
 
                 <View style={styles.player}>
-                  <Image
+                  {/* <Image
                     source={require("../assets/images/scottie.webp")}
                     style={styles.gameLogo}
-                  />
+                  /> */}
                   <Text
                     style={{
                       ...styles.text,
@@ -183,10 +183,10 @@ const Results = ({ navigation }) => {
                 <Text style={styles.tGame}>3° Place</Text>
 
                 <View style={styles.player}>
-                  <Image
+                  {/* <Image
                     source={require("../assets/images/scottie.webp")}
                     style={styles.gameLogo}
-                  />
+                  /> */}
                   <Text
                     style={{
                       ...styles.text,
@@ -206,10 +206,10 @@ const Results = ({ navigation }) => {
                 <Text style={styles.tGame}>4° Place</Text>
 
                 <View style={styles.player}>
-                  <Image
+                  {/* <Image
                     source={require("../assets/images/scottie.webp")}
                     style={styles.gameLogo}
-                  />
+                  /> */}
                   <Text
                     style={{
                       ...styles.text,

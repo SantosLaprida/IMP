@@ -18,6 +18,7 @@ import {
 	fetchTournament,
 	getActiveBracket,
 	isBracketActive,
+	isResultsReady
 } from "../server/firestore/tournaments";
 import { getBracketAPI } from "../api";
 
@@ -30,6 +31,9 @@ const screenToRoundMap = {
 
 const Home = ({ navigation }) => {
 	const [activeBracketStage, setActiveBracketStage] = useState(null);
+	const [resultsReady, setResultsReady] = useState(false);
+	const [modalVisible, setModalVisible] = useState(false);
+	const [user, setUser] = useState(null);
 
 	const BlinkDot = () => {
 		const opacity = useRef(new Animated.Value(1)).current;
@@ -58,11 +62,13 @@ const Home = ({ navigation }) => {
 		let tournamentId = await getTournamentId();
 		try {
 			const activeBracket = await getActiveBracket(tournamentId);
+			console.log("Active Bracket Stage:", activeBracket);
 			setActiveBracketStage(activeBracket);
-			console.log(activeBracket);
+
 		} catch (error) {
 			console.error("Error checking games:", error);
 			setActiveBracketStage(null);
+
 		}
 	};
 
@@ -72,9 +78,10 @@ const Home = ({ navigation }) => {
 		) : null;
 	};
 
-	const [modalVisible, setModalVisible] = useState(false);
+	
 
 	const handleBrackets = () => {
+		
 		if (activeBracketStage === null || activeBracketStage === "not_started") {
 			alert("Tournament has not started");
 		} else {
@@ -82,7 +89,7 @@ const Home = ({ navigation }) => {
 		}
 	};
 
-	const [user, setUser] = useState(null);
+	
 
 	useEffect(() => {
 		checkGames();
@@ -119,30 +126,32 @@ const Home = ({ navigation }) => {
 		round4: 4,
 	};
 
-	const renderBracketButton = (label, screenKey, screen, collectionName) => {
-		const currentRound = roundOrder[activeBracketStage];
-		const buttonRound = roundOrder[screenToRoundMap[screenKey]];
+const renderBracketButton = (label, screenKey, screen, collectionName) => {
+	const currentRound = roundOrder[activeBracketStage];
+	const buttonRound = roundOrder[screenToRoundMap[screenKey]];
+	const isResultsScreen = screenKey === "Results";
 
-		// If buttonRound is undefined (e.g. for "Results"), disable it by default
-		const isDisabled = buttonRound === undefined || buttonRound > currentRound;
+	const isDisabled = isResultsScreen
+		? activeBracketStage !== "complete"
+		: buttonRound === undefined || buttonRound > currentRound;
 
-		const isCurrent = activeBracketStage === screenToRoundMap[screenKey];
+	const isCurrent = activeBracketStage === screenToRoundMap[screenKey];
 
-		return (
-			<TouchableOpacity
-				style={{
-					...styles.modalButton,
-					width: 200,
-					backgroundColor: isDisabled ? "#aaa" : "#1f3a5c",
-				}}
-				onPress={() => handleRouting(screen, "Home", collectionName)}
-				disabled={isDisabled}
-			>
-				<Text style={{ ...styles.modalT, color: "white" }}>{label}</Text>
-				{isCurrent && <BlinkDot />}
-			</TouchableOpacity>
-		);
-	};
+	return (
+		<TouchableOpacity
+			style={{
+				...styles.modalButton,
+				width: 200,
+				backgroundColor: isDisabled ? "#aaa" : "#1f3a5c",
+			}}
+			onPress={() => handleRouting(screen, "Home", collectionName)}
+			disabled={isDisabled}
+		>
+			<Text style={{ ...styles.modalT, color: "white" }}>{label}</Text>
+			{isCurrent && <BlinkDot />}
+		</TouchableOpacity>
+	);
+};
 
 
 	return (
