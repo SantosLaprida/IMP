@@ -219,3 +219,4 @@ export const getNumberPlayersBet = async (tournamentId) => {
 		throw error;
 	}
 };
+

@@ -55,12 +55,6 @@ export const compareScores = async (
     const score1 = scoreSheet1[currentHoleKey];
     const score2 = scoreSheet2[currentHoleKey];
 
-    console.log("*********************************");
-    console.log(score1);
-    console.log(score2);
-    console.log("Current hole is ", score.currentHole)
-    console.log("*********************************");
-
     if (score1 === 0 || score2 === 0) {
       score.currentHole++;
       continue;
@@ -152,9 +146,12 @@ export const showResults = (results, player_name1, player_name2) => {
 
 export const fetchResults = async (tournamentId) => {
   try {
+    const currentYear = new Date().getFullYear().toString();
     const finalsCollectionRef = collection(
       firestore,
       "I_Torneos",
+      currentYear,
+      "Tournaments",
       tournamentId,
       "I_Resultados"
     );
