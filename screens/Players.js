@@ -54,7 +54,7 @@ const Players = ({ navigation }) => {
 					setHasBet(betMade); // Actualiza el estado hasBet
 
 					const userTeam = await fetchTeam(tournamentId, userId);
-					
+
 					if (userTeam) {
 						const teamArray = Object.values(userTeam);
 
@@ -98,7 +98,6 @@ const Players = ({ navigation }) => {
 	};
 	const ordenarPorRank = () => {
 		if (ordenado) {
-			
 			setJugadores(originalJugadores);
 		} else {
 			const jugadoresOrdenados = [...jugadores].sort((a, b) => {
@@ -111,7 +110,7 @@ const Players = ({ navigation }) => {
 			});
 			setJugadores(jugadoresOrdenados);
 		}
-		setOrdenado(!ordenado); 
+		setOrdenado(!ordenado);
 	};
 
 	const agregarJugadorAlEquipo = (jugador, limit) => {
@@ -163,8 +162,8 @@ const Players = ({ navigation }) => {
 			}
 			await Promise.all([
 				storeTeam(userId, playersIds, tournamentId),
-				updateBetCount(tournamentId, playersIds)
-			  ]);
+				updateBetCount(tournamentId, playersIds),
+			]);
 			console.log("Team stored successfully");
 			alert("Bet placed succesfully");
 			navigation.navigate("Bets", { team: equipo });
@@ -183,7 +182,7 @@ const Players = ({ navigation }) => {
 			alert("You don't have a bet to delete");
 			return;
 		}
-		
+
 		setLoadingSubmit(true);
 
 		// const playerNames = equipo.map((jugador) => jugador.name);
@@ -348,14 +347,13 @@ const Players = ({ navigation }) => {
 						onPress={handleFinish}
 						disabled={loadingSubmit}
 					>
-					
-					{loadingSubmit ? (
-						<ActivityIndicator color="#fff" />
-					) : (
-						<Text style={{ ...styles.buttonText, color: "white" }}>
-							{getButtonText()}
-						</Text>
-					)}
+						{loadingSubmit ? (
+							<ActivityIndicator color="#fff" />
+						) : (
+							<Text style={{ ...styles.buttonText, color: "white" }}>
+								{getButtonText()}
+							</Text>
+						)}
 					</TouchableOpacity>
 					<TouchableOpacity
 						onPress={handleDelete}
@@ -363,12 +361,12 @@ const Players = ({ navigation }) => {
 						disabled={loadingSubmit}
 					>
 						{loadingSubmit ? (
-						<ActivityIndicator color="#fff" />
-					) : (
-						<Text style={{ ...styles.buttonText, color: "white" }}>
-							Delete Bet
-						</Text>
-					)}
+							<ActivityIndicator color="#fff" />
+						) : (
+							<Text style={{ ...styles.buttonText, color: "white" }}>
+								Delete Bet
+							</Text>
+						)}
 					</TouchableOpacity>
 				</View>
 				<TouchableOpacity
@@ -389,7 +387,7 @@ const styles = StyleSheet.create({
 		borderRadius: 15,
 		alignItems: "center",
 		backgroundColor: "rgb(255, 252, 241)",
-		height: 380,
+		height: 340,
 		marginBottom: 10,
 		shadowColor: "#000", // Color de la sombra
 		shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
