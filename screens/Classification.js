@@ -71,9 +71,10 @@ const Classification = ({ navigation }) => {
 					<Text
 						style={{
 							...styles.text,
-							fontSize: 15,
+							fontSize: 20,
 							marginTop: -5,
 							paddingBottom: 10,
+							fontWeight: 900,
 						}}
 					>
 						Leaderboard
@@ -96,14 +97,14 @@ const Classification = ({ navigation }) => {
 							style={{ ...styles.scroll, marginBottom: 25 }}
 							showsVerticalScrollIndicator={false}
 						>
-							{jugadores.map((jugador) => {
+							{jugadores.map((jugador, index) => {
 								const isSelected = equipo.includes(jugador.playerId);
 								const isTop8 = index < 8;
 								const textStyle = {
 									...styles.text,
 									fontSize: 11,
-									fontWeight: isTop8 ? "900" : "700",
-									color: isTop8 ? "#0d1b2a" : "#1f3a5c",
+									fontWeight: isTop8 ? "900" : "600",
+									color: isTop8 ? "black" : "grey",
 								};
 								return (
 									<TouchableOpacity key={jugador.playerId}>
