@@ -98,6 +98,13 @@ const Classification = ({ navigation }) => {
 						>
 							{jugadores.map((jugador) => {
 								const isSelected = equipo.includes(jugador.playerId);
+								const isTop8 = index < 8;
+								const textStyle = {
+									...styles.text,
+									fontSize: 11,
+									fontWeight: isTop8 ? "900" : "700",
+									color: isTop8 ? "#0d1b2a" : "#1f3a5c",
+								};
 								return (
 									<TouchableOpacity key={jugador.playerId}>
 										<View
@@ -108,16 +115,16 @@ const Classification = ({ navigation }) => {
 												justifyContent: "space-between",
 											}}
 										>
-											<Text style={{ ...styles.text, fontSize: 11 }}>
+											<Text style={{ ...textStyle, fontSize: 11 }}>
 												{jugador.order}
 											</Text>
 											<Text
-												style={{ ...styles.text, fontSize: 11, width: "80%" }}
+												style={{ ...textStyle, fontSize: 11, width: "80%" }}
 											>
 												{jugador.name}
 											</Text>
 
-											<Text style={{ ...styles.text, fontSize: 11 }}>
+											<Text style={{ ...textStyle, fontSize: 11 }}>
 												{jugador.score}
 											</Text>
 										</View>
