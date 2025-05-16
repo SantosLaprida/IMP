@@ -33,7 +33,6 @@ const QuarterFinals = ({ navigation }) => {
 	};
 
 	const [ids, setIds] = useState(Array(8).fill(null)); // Marcar posición con null
-	const [players, setPlayers] = useState([]);
 	const [results1, setResults1] = useState(null);
 	const [results2, setResults2] = useState(null);
 	const [results3, setResults3] = useState(null);
@@ -112,7 +111,6 @@ const QuarterFinals = ({ navigation }) => {
 		try {
 			const tournamentId = await getTournamentId();
 			const qualifiers = await fetchQualifiers(tournamentId, "I_Cuartos");
-			setPlayers(qualifiers);
 			const names = qualifiers.map(q => q.name);
 			const ids = qualifiers.map(q => q.id_player);
 			setNames(names);
