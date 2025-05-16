@@ -51,9 +51,9 @@ export const fetchQualifiers = async (TournamentId, collectionName) => {
 			.map((doc) => ({
 				id_player: doc.data().playerId,
 				name: doc.data().name,
-				orden: doc.data().orden,
+				order: doc.data().order,
 			}))
-			.sort((a, b) => a.orden - b.orden);
+			.sort((a, b) => a.order - b.order);
 
 		return sortedPlayerData.filter(({ name }) => name !== null);
 	} catch (error) {

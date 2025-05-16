@@ -22,7 +22,6 @@ export const compareScores = async (
   tournamentName,
   collectionName
 ) => {
-  console.log("Compare Scores called");
   const scoreSheet1 = await fetchScoreSheet(
     id_player1,
     tournamentName,
@@ -33,10 +32,6 @@ export const compareScores = async (
     tournamentName,
     collectionName
   );
-
-  console.log(scoreSheet1);
-  console.log(scoreSheet2);
-
 
   let score = {
     currentHole: 1,

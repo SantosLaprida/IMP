@@ -33,6 +33,7 @@ const QuarterFinals = ({ navigation }) => {
 	};
 
 	const [ids, setIds] = useState(Array(8).fill(null)); // Marcar posición con null
+	const [players, setPlayers] = useState([]);
 	const [results1, setResults1] = useState(null);
 	const [results2, setResults2] = useState(null);
 	const [results3, setResults3] = useState(null);
@@ -72,12 +73,10 @@ const QuarterFinals = ({ navigation }) => {
 
 			if (response) {
 				// Actualizamos el estado con los scores de los jugadores
-				console.log(response);
 				setPlayer1Scores(response.player1Holes);
 				setPlayer2Scores(response.player2Holes);
 				setPlayer1Name(name1);
 				setPlayer2Name(name2);
-				console.log(player1Scores, player2Scores);
 			} else {
 				console.error("Error al obtener los scoresheets.");
 			}
@@ -113,8 +112,9 @@ const QuarterFinals = ({ navigation }) => {
 		try {
 			const tournamentId = await getTournamentId();
 			const qualifiers = await fetchQualifiers(tournamentId, "I_Cuartos");
-			const names = qualifiers.map((qualifier) => qualifier.name);
-			const ids = qualifiers.map((qualifier) => qualifier.id_player);
+			setPlayers(qualifiers);
+			const names = qualifiers.map(q => q.name);
+			const ids = qualifiers.map(q => q.id_player);
 			setNames(names);
 			setIds(ids);
 			await compareMatches(ids);

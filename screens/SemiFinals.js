@@ -75,12 +75,10 @@ const SemiFinals = ({ navigation }) => {
 
 			if (response) {
 				// Actualizamos el estado con los scores de los jugadores
-				console.log(response);
 				setPlayer1Scores(response.player1Holes);
 				setPlayer2Scores(response.player2Holes);
 				setPlayer1Name(name1);
 				setPlayer2Name(name2);
-				console.log(player1Scores, player2Scores);
 			} else {
 				console.error("Error al obtener los scoresheets.");
 			}

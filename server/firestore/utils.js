@@ -20,7 +20,6 @@ export const fetchScoreSheet = async (
   collectionName
 ) => {
 
-  console.log("id player is: ", id_player);
 
   const currentYear = new Date().getFullYear().toString();
 
@@ -111,7 +110,6 @@ export const getHoles = async (
     });
 
     // Return the two arrays (holes for player 1 and player 2)
-    console.log(response);
     return {
       player1Holes,
       player2Holes,
