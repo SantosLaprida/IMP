@@ -120,7 +120,6 @@ const Bets = ({ navigation, route }) => {
 							.filter((player) => player); // Filtrar resultados undefined
 
 						setEquipo(mappedTeam);
-						console.log(mappedTeam, "here i am");
 
 						// Remover jugadores del equipo de la lista de jugadores disponibles
 						setJugadores((prevJugadores) =>
@@ -278,7 +277,6 @@ const Bets = ({ navigation, route }) => {
 		const getTournamentData = async () => {
 			try {
 				const torneo = await fetchTournament();
-				console.log(equipo, "aca estoy");
 
 				let name = torneo[0].name;
 				let start_date = formatDate(torneo[0].start_date);

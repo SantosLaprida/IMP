@@ -91,12 +91,17 @@ const SemiFinals = ({ navigation }) => {
 		setLoading(true);
 		try {
 			const tournamentId = await getTournamentId();
-			const qualifiers = await fetchQualifiers(tournamentId, "I_Semifinales");
-			const names = qualifiers.map((qualifier) => qualifier.name);
-			const ids = qualifiers.map((qualifier) => qualifier.id_player);
-			setNames(names);
-			setIds(ids);
-			await compareMatches(ids);
+			const qualifiers = (await fetchQualifiers(tournamentId, "I_Semifinales")).sort(
+				(a, b) => a.order - b.order
+				);
+
+			const sortedIds = qualifiers.map(q => q.id_player);
+			const sortedNames = qualifiers.map(q => q.name);
+
+			setIds(sortedIds);
+			setNames(sortedNames);
+
+			await compareMatches(sortedIds)
 		} catch (error) {
 			console.error(error);
 		}
@@ -124,15 +129,16 @@ const SemiFinals = ({ navigation }) => {
 
 	const compareFirstMatch = async (ids) => {
 		try {
-			if (ids[0] === null || ids[1] === null) {
+			if (ids[0] === null || ids[3] === null) {
 				console.error("Invalid player IDs for first match:", ids[0], ids[1]);
 				return;
 			}
+
 			const tournamentId = await getTournamentId();
 			const collectionName = "I_Semifinales";
 			const results = await compareScores(
 				ids[0],
-				ids[1],
+				ids[3],
 				tournamentId,
 				collectionName
 			);
@@ -144,15 +150,15 @@ const SemiFinals = ({ navigation }) => {
 
 	const compareSecondMatch = async (ids) => {
 		try {
-			if (ids[2] === null || ids[3] === null) {
+			if (ids[1] === null || ids[2] === null) {
 				console.error("Invalid player IDs for second match:", ids[2], ids[3]);
 				return;
 			}
 			const collectionName = "I_Semifinales";
 			const tournamentId = await getTournamentId();
 			const results = await compareScores(
+				ids[1],
 				ids[2],
-				ids[3],
 				tournamentId,
 				collectionName
 			);
