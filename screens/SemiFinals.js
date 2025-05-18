@@ -60,7 +60,7 @@ const SemiFinals = ({ navigation }) => {
 		setModalVisible(true);
 		try {
 			let tournamentId = await getTournamentId();
-			let collection = "I_Cuartos";
+			let collection = "I_Semifinales";
 
 			// Llamada al backend para obtener el scoresheet
 			const response = await getHoles(
