@@ -596,94 +596,104 @@ const Finals = ({ navigation }) => {
 				<View style={styles.modalContainer}>
 					<View style={styles.modalContent}>
 						<Text style={styles.modalTitle}>Scoresheet</Text>
-						<ScrollView>
-							{/* Encabezado */}
-							<View style={styles.gridRow}>
-								<Text
+
+						{loading ? (
+							<ActivityIndicator
+								style={styles.loader}
+								size="large"
+								color="#1f3a5c"
+							/>
+						) : (
+							<ScrollView>
+								{/* Encabezado */}
+								<View style={styles.gridRow}>
+									<Text
+										style={{
+											...styles.headearHole,
+											borderRightWidth: 1,
+										}}
+									>
+										Hole
+									</Text>
+									<Text
+										style={{
+											...styles.headerCell,
+											borderRightWidth: 1,
+										}}
+									>
+										{player1Name}
+									</Text>
+									<Text style={styles.headerCell}>{player2Name}</Text>
+								</View>
+
+								{/* Filas con datos */}
+								{holes.map((hole, index) => {
+									const score1 = player1Scores[index];
+									const score2 = player2Scores[index];
+
+									const playedByBoth = score1 && score2;
+									const sameScore =
+										playedByBoth && Number(score1) === Number(score2);
+
+									const bgColor1 = sameScore
+										? "transparent"
+										: playedByBoth && Number(score1) < Number(score2)
+											? "#ffcccc"
+											: "transparent";
+
+									const bgColor2 = sameScore
+										? "transparent"
+										: playedByBoth && Number(score2) < Number(score1)
+											? "#ffcccc"
+											: "transparent";
+
+									return (
+										<View key={hole} style={styles.gridRow}>
+											<Text
+												style={{
+													...styles.holeCell,
+													borderBottomWidth: 0,
+													borderRightWidth: 1,
+												}}
+											>
+												{hole}
+											</Text>
+											<Text
+												style={{
+													...styles.gridCell,
+													backgroundColor: bgColor1,
+													borderRightWidth: 1,
+												}}
+											>
+												{score1 || 0}
+											</Text>
+											<Text
+												style={{
+													...styles.gridCell,
+													backgroundColor: bgColor2,
+												}}
+											>
+												{score2 || 0}
+											</Text>
+										</View>
+									);
+								})}
+								<TouchableOpacity
+									onPress={() => setModalVisible(false)}
 									style={{
-										...styles.headearHole,
-										borderRightWidth: 1,
+										...styles.button,
+										marginVertical: 15,
+										backgroundColor: "#1f3a5c",
+										width: "97%",
+										padding: 3,
 									}}
 								>
-									Hole
-								</Text>
-								<Text
-									style={{
-										...styles.headerCell,
-										borderRightWidth: 1,
-									}}
-								>
-									{player1Name}
-								</Text>
-								<Text style={styles.headerCell}>{player2Name}</Text>
-							</View>
-
-							{/* Filas con datos */}
-							{holes.map((hole, index) => {
-								const score1 = player1Scores[index];
-								const score2 = player2Scores[index];
-
-								const playedByBoth = score1 && score2;
-								const sameScore =
-									playedByBoth && Number(score1) === Number(score2);
-
-								const bgColor1 = sameScore
-									? "#ffffcc" // Amarillo claro
-									: playedByBoth && Number(score1) < Number(score2)
-										? "#ffcccc" // Rojo claro
-										: "transparent";
-
-								const bgColor2 = sameScore
-									? "#ffffcc"
-									: playedByBoth && Number(score2) < Number(score1)
-										? "#ffcccc"
-										: "transparent";
-
-								return (
-									<View key={hole} style={styles.gridRow}>
-										<Text
-											style={{
-												...styles.holeCell,
-												borderBottomWidth: 0,
-												borderRightWidth: 1,
-											}}
-										>
-											{hole}
-										</Text>
-										<Text
-											style={{
-												...styles.gridCell,
-												backgroundColor: bgColor1,
-												borderRightWidth: 1,
-											}}
-										>
-											{score1 || 0}
-										</Text>
-										<Text
-											style={{
-												...styles.gridCell,
-												backgroundColor: bgColor2,
-											}}
-										>
-											{score2 || 0}
-										</Text>
-									</View>
-								);
-							})}
-						</ScrollView>
-
-						<TouchableOpacity
-							onPress={() => setModalVisible(false)}
-							style={{
-								...styles.button,
-								marginVertical: 15,
-								backgroundColor: "#1f3a5c",
-								width: "85%",
-								padding: 3,
-							}}
-						>
-							<Text style={{ ...styles.buttonText, color: "white" }}>Back</Text>
-						</TouchableOpacity>
+									<Text style={{ ...styles.buttonText, color: "white" }}>
+										Back
+									</Text>
+								</TouchableOpacity>
+							</ScrollView>
+						)}
 					</View>
 				</View>
 			</Modal>
@@ -716,6 +726,7 @@ const styles = StyleSheet.create({
 		fontFamily: "p-semibold",
 		borderWidth: 1,
 		borderColor: "black",
+		minHeight: 500,
 	},
 	modalTitle: {
 		fontSize: 18,
@@ -731,7 +742,7 @@ const styles = StyleSheet.create({
 		marginBottom: 0,
 		fontFamily: "p-semibold",
 		borderBottomWidth: 1,
-		paddingVertical: 1,
+		paddingVertical: 0.5,
 		paddingHorizontal: 1,
 		borderColor: "black",
 	},
