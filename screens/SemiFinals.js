@@ -1,6 +1,7 @@
 import {
 	createI_Semifinales,
 	getPlayerName,
+	getOrderByPlayer,
 } from "../server/firestore/players";
 import { getHoles } from "../server/firestore/utils";
 import {
@@ -101,12 +102,14 @@ const SemiFinals = ({ navigation }) => {
 
 			const sortedIds = qualifiers.map((q) => q.id_player);
 			const sortedNames = qualifiers.map((q) => q.name);
-			const orders = qualifiers.map((q) => q.order);
 			const fotos = qualifiers.map((q) => q.logo);
+
+			const orders = await Promise.all(
+				sortedIds.map((playerId) => getOrderByPlayer(tournamentId, playerId))
+			);
 
 			setFotos(fotos);
 			setOrder(orders);
-
 			setIds(sortedIds);
 			setNames(sortedNames);
 
@@ -797,13 +800,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		marginVertical: 15,
+		marginVertical: 0,
 	},
 	gameLogo: {
-		width: 50,
-		height: 50,
+		width: 60,
+		height: 60,
 		borderRadius: 20,
-		marginVertical: 2,
+		marginTop: 10,
+		marginBottom: 5,
 	},
 	middle: {
 		flex: 1,

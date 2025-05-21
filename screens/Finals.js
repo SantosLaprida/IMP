@@ -1,4 +1,4 @@
-import { getPlayerName } from "../server/firestore/players";
+import { getPlayerName, getOrderByPlayer } from "../server/firestore/players";
 import { getHoles } from "../server/firestore/utils";
 import {
 	fetchTournament,
@@ -102,7 +102,10 @@ const Finals = ({ navigation }) => {
 			const qualifiers = await fetchQualifiers(tournamentId, "I_Finales");
 			const names = qualifiers.map((qualifier) => qualifier.name);
 			const ids = qualifiers.map((qualifier) => qualifier.id_player);
-			const orders = qualifiers.map((q) => q.order);
+			const orders = await Promise.all(
+				ids.map((playerId) => getOrderByPlayer(tournamentId, playerId))
+			);
+
 			const fotos = qualifiers.map((q) => q.logo);
 
 			setFotos(fotos);
@@ -110,7 +113,9 @@ const Finals = ({ navigation }) => {
 			const lQualifiers = await fetchQualifiers(tournamentId, "I_TercerCuarto");
 			const lNames = lQualifiers.map((qualifier) => qualifier.name);
 			const lIds = lQualifiers.map((qualifier) => qualifier.id_player);
-			const ordersL = qualifiers.map((q) => q.order);
+			const ordersL = await Promise.all(
+				lIds.map((playerId) => getOrderByPlayer(tournamentId, playerId))
+			);
 			const fotosL = qualifiers.map((q) => q.logo);
 
 			setFotosL(fotosL);
@@ -474,7 +479,7 @@ const Finals = ({ navigation }) => {
 									>
 										Top {orderL[0]} Qualifier
 									</Text>
-									{fotos[0] && (
+									{fotosL[0] && (
 										<Image
 											source={{ uri: fotosL[0] }}
 											style={styles.gameLogo}
@@ -527,13 +532,23 @@ const Finals = ({ navigation }) => {
 								</Text>
 
 								<View style={styles.player}>
-									<MaterialCommunityIcons
-										name="golf-cart"
-										size={45}
-										color="black"
-										marginTop={15}
-										marginBottom={5}
-									/>
+									<Text
+										style={{
+											...styles.text,
+											marginTop: 15,
+											fontSize: 10,
+											paddingHorizontal: 0,
+											textAlign: "center",
+										}}
+									>
+										Top {orderL[1]} Qualifier
+									</Text>
+									{fotosL[1] && (
+										<Image
+											source={{ uri: fotosL[1] }}
+											style={styles.gameLogo}
+										/>
+									)}
 									<Text
 										style={{
 											...styles.text,
@@ -815,13 +830,14 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		marginVertical: 15,
+		marginVertical: 0,
 	},
 	gameLogo: {
-		width: 50,
-		height: 50,
+		width: 60,
+		height: 60,
 		borderRadius: 20,
-		marginVertical: 2,
+		marginTop: 10,
+		marginBottom: 5,
 	},
 	middle: {
 		flex: 1,
