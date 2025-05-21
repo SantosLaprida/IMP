@@ -53,11 +53,16 @@ const Finals = ({ navigation }) => {
 	const [player2Scores, setPlayer2Scores] = useState([]);
 	const [player1Name, setPlayer1Name] = useState(null);
 	const [player2Name, setPlayer2Name] = useState(null);
+	const [orderL, setOrderL] = useState(null);
+	const [fotosL, setFotosL] = useState(null);
+	const [order, setOrder] = useState(null);
+	const [fotos, setFotos] = useState(null);
 
 	const holes = Array.from({ length: 18 }, (_, i) => i + 1);
 
 	const showHoles = async (player1Id, player2Id) => {
 		setModalVisible(true);
+		setLoading(true);
 		try {
 			let tournamentId = await getTournamentId();
 			let collection = "I_Cuartos";
@@ -87,6 +92,7 @@ const Finals = ({ navigation }) => {
 		} catch (error) {
 			console.error("Error:", error);
 		}
+		setLoading(false);
 	};
 
 	const fetchPlayers = async () => {
@@ -96,9 +102,19 @@ const Finals = ({ navigation }) => {
 			const qualifiers = await fetchQualifiers(tournamentId, "I_Finales");
 			const names = qualifiers.map((qualifier) => qualifier.name);
 			const ids = qualifiers.map((qualifier) => qualifier.id_player);
+			const orders = qualifiers.map((q) => q.order);
+			const fotos = qualifiers.map((q) => q.logo);
+
+			setFotos(fotos);
+			setOrder(orders);
 			const lQualifiers = await fetchQualifiers(tournamentId, "I_TercerCuarto");
 			const lNames = lQualifiers.map((qualifier) => qualifier.name);
 			const lIds = lQualifiers.map((qualifier) => qualifier.id_player);
+			const ordersL = qualifiers.map((q) => q.order);
+			const fotosL = qualifiers.map((q) => q.logo);
+
+			setFotosL(fotosL);
+			setOrderL(ordersL);
 			setNames(names);
 			setNamesL(lNames);
 			setIds(ids);
@@ -324,13 +340,20 @@ const Finals = ({ navigation }) => {
 									{displayResultsLeft(results1)}
 								</Text>
 								<View style={styles.player}>
-									<MaterialCommunityIcons
-										name="golf-cart"
-										size={45}
-										color="black"
-										marginTop={15}
-										marginBottom={5}
-									/>
+									<Text
+										style={{
+											...styles.text,
+											marginTop: 15,
+											fontSize: 10,
+											paddingHorizontal: 0,
+											textAlign: "center",
+										}}
+									>
+										Top {order[0]} Qualifier
+									</Text>
+									{fotos[0] && (
+										<Image source={{ uri: fotos[0] }} style={styles.gameLogo} />
+									)}
 									<Text
 										style={{
 											...styles.text,
@@ -377,13 +400,20 @@ const Finals = ({ navigation }) => {
 									{displayResultsRight(results1)}
 								</Text>
 								<View style={styles.player}>
-									<MaterialCommunityIcons
-										name="golf-cart"
-										size={45}
-										color="black"
-										marginTop={15}
-										marginBottom={5}
-									/>
+									<Text
+										style={{
+											...styles.text,
+											marginTop: 15,
+											fontSize: 10,
+											paddingHorizontal: 0,
+											textAlign: "center",
+										}}
+									>
+										Top {order[1]} Qualifier
+									</Text>
+									{fotos[1] && (
+										<Image source={{ uri: fotos[1] }} style={styles.gameLogo} />
+									)}
 									<Text
 										style={{
 											...styles.text,
@@ -433,13 +463,23 @@ const Finals = ({ navigation }) => {
 									{displayResultsLeft(results2)}
 								</Text>
 								<View style={styles.player}>
-									<MaterialCommunityIcons
-										name="golf-cart"
-										size={45}
-										color="black"
-										marginTop={15}
-										marginBottom={5}
-									/>
+									<Text
+										style={{
+											...styles.text,
+											marginTop: 15,
+											fontSize: 10,
+											paddingHorizontal: 0,
+											textAlign: "center",
+										}}
+									>
+										Top {orderL[0]} Qualifier
+									</Text>
+									{fotos[0] && (
+										<Image
+											source={{ uri: fotosL[0] }}
+											style={styles.gameLogo}
+										/>
+									)}
 									<Text
 										style={{
 											...styles.text,
@@ -564,36 +604,57 @@ const Finals = ({ navigation }) => {
 							</View>
 
 							{/* Filas con datos */}
-							{holes.map((hole, index) => (
-								<View key={hole} style={styles.gridRow}>
-									<Text
-										style={{
-											...styles.holeCell,
+							{holes.map((hole, index) => {
+								const score1 = player1Scores[index];
+								const score2 = player2Scores[index];
 
-											borderBottomWidth: 0,
-											borderRightWidth: 1,
-										}}
-									>
-										{hole}
-									</Text>
-									<Text
-										style={{
-											...styles.gridCell,
+								const playedByBoth = score1 && score2;
+								const sameScore =
+									playedByBoth && Number(score1) === Number(score2);
 
-											borderRightWidth: 1,
-										}}
-									>
-										{player1Scores[index] || 0}
-									</Text>
-									<Text
-										style={{
-											...styles.gridCell,
-										}}
-									>
-										{player2Scores[index] || 0}
-									</Text>
-								</View>
-							))}
+								const bgColor1 = sameScore
+									? "#ffffcc" // Amarillo claro
+									: playedByBoth && Number(score1) < Number(score2)
+										? "#ffcccc" // Rojo claro
+										: "transparent";
+
+								const bgColor2 = sameScore
+									? "#ffffcc"
+									: playedByBoth && Number(score2) < Number(score1)
+										? "#ffcccc"
+										: "transparent";
+
+								return (
+									<View key={hole} style={styles.gridRow}>
+										<Text
+											style={{
+												...styles.holeCell,
+												borderBottomWidth: 0,
+												borderRightWidth: 1,
+											}}
+										>
+											{hole}
+										</Text>
+										<Text
+											style={{
+												...styles.gridCell,
+												backgroundColor: bgColor1,
+												borderRightWidth: 1,
+											}}
+										>
+											{score1 || 0}
+										</Text>
+										<Text
+											style={{
+												...styles.gridCell,
+												backgroundColor: bgColor2,
+											}}
+										>
+											{score2 || 0}
+										</Text>
+									</View>
+								);
+							})}
 						</ScrollView>
 
 						<TouchableOpacity
@@ -620,7 +681,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 	},
-
 	container: {
 		flex: 1,
 		alignItems: "center",
@@ -656,7 +716,8 @@ const styles = StyleSheet.create({
 		marginBottom: 0,
 		fontFamily: "p-semibold",
 		borderBottomWidth: 1,
-
+		paddingVertical: 1,
+		paddingHorizontal: 1,
 		borderColor: "black",
 	},
 	headerCell: {
@@ -669,14 +730,14 @@ const styles = StyleSheet.create({
 	headearHole: {
 		flex: 0.5,
 		textAlign: "center",
-		fontSize: 10,
+		fontSize: 12,
 		fontFamily: "p-semibold",
 		paddingVertical: 5,
 	},
 	gridCell: {
 		flex: 1,
 		textAlign: "center",
-		fontSize: 9,
+		fontSize: 12,
 		paddingVertical: 3,
 
 		fontFamily: "p-bold",
@@ -684,7 +745,7 @@ const styles = StyleSheet.create({
 	holeCell: {
 		flex: 0.5, // Más angosto para la columna de hoyos
 		textAlign: "center",
-		fontSize: 9,
+		fontSize: 12,
 		paddingVertical: 3,
 		fontFamily: "p-bold",
 	},

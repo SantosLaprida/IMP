@@ -53,11 +53,14 @@ const SemiFinals = ({ navigation }) => {
 	const [player2Scores, setPlayer2Scores] = useState([]);
 	const [player1Name, setPlayer1Name] = useState(null);
 	const [player2Name, setPlayer2Name] = useState(null);
+	const [order, setOrder] = useState(null);
+	const [fotos, setFotos] = useState(null);
 
 	const holes = Array.from({ length: 18 }, (_, i) => i + 1);
 
 	const showHoles = async (player1Id, player2Id) => {
 		setModalVisible(true);
+		setLoading(true);
 		try {
 			let tournamentId = await getTournamentId();
 			let collection = "I_Semifinales";
@@ -85,23 +88,29 @@ const SemiFinals = ({ navigation }) => {
 		} catch (error) {
 			console.error("Error:", error);
 		}
+		setLoading(false);
 	};
 
 	const fetchPlayers = async () => {
 		setLoading(true);
 		try {
 			const tournamentId = await getTournamentId();
-			const qualifiers = (await fetchQualifiers(tournamentId, "I_Semifinales")).sort(
-				(a, b) => a.order - b.order
-				);
+			const qualifiers = (
+				await fetchQualifiers(tournamentId, "I_Semifinales")
+			).sort((a, b) => a.order - b.order);
 
-			const sortedIds = qualifiers.map(q => q.id_player);
-			const sortedNames = qualifiers.map(q => q.name);
+			const sortedIds = qualifiers.map((q) => q.id_player);
+			const sortedNames = qualifiers.map((q) => q.name);
+			const orders = qualifiers.map((q) => q.order);
+			const fotos = qualifiers.map((q) => q.logo);
+
+			setFotos(fotos);
+			setOrder(orders);
 
 			setIds(sortedIds);
 			setNames(sortedNames);
 
-			await compareMatches(sortedIds)
+			await compareMatches(sortedIds);
 		} catch (error) {
 			console.error(error);
 		}
@@ -310,13 +319,20 @@ const SemiFinals = ({ navigation }) => {
 									{displayResultsLeft(results1)}
 								</Text>
 								<View style={styles.player}>
-									<MaterialCommunityIcons
-										name="golf-cart"
-										size={45}
-										color="black"
-										marginTop={15}
-										marginBottom={5}
-									/>
+									<Text
+										style={{
+											...styles.text,
+											marginTop: 15,
+											fontSize: 10,
+											paddingHorizontal: 0,
+											textAlign: "center",
+										}}
+									>
+										Top {order[0]} Qualifier
+									</Text>
+									{fotos[0] && (
+										<Image source={{ uri: fotos[0] }} style={styles.gameLogo} />
+									)}
 									<Text
 										style={{
 											...styles.text,
@@ -363,13 +379,20 @@ const SemiFinals = ({ navigation }) => {
 									{displayResultsRight(results1)}
 								</Text>
 								<View style={styles.player}>
-									<MaterialCommunityIcons
-										name="golf-cart"
-										size={45}
-										color="black"
-										marginTop={15}
-										marginBottom={5}
-									/>
+									<Text
+										style={{
+											...styles.text,
+											marginTop: 15,
+											fontSize: 10,
+											paddingHorizontal: 0,
+											textAlign: "center",
+										}}
+									>
+										Top {order[1]} Qualifier
+									</Text>
+									{fotos[1] && (
+										<Image source={{ uri: fotos[1] }} style={styles.gameLogo} />
+									)}
 									<Text
 										style={{
 											...styles.text,
@@ -407,13 +430,20 @@ const SemiFinals = ({ navigation }) => {
 									{displayResultsLeft(results2)}
 								</Text>
 								<View style={styles.player}>
-									<MaterialCommunityIcons
-										name="golf-cart"
-										size={45}
-										color="black"
-										marginTop={15}
-										marginBottom={5}
-									/>
+									<Text
+										style={{
+											...styles.text,
+											marginTop: 15,
+											fontSize: 10,
+											paddingHorizontal: 0,
+											textAlign: "center",
+										}}
+									>
+										Top {order[2]} Qualifier
+									</Text>
+									{fotos[2] && (
+										<Image source={{ uri: fotos[2] }} style={styles.gameLogo} />
+									)}
 									<Text
 										style={{
 											...styles.text,
@@ -461,13 +491,20 @@ const SemiFinals = ({ navigation }) => {
 								</Text>
 
 								<View style={styles.player}>
-									<MaterialCommunityIcons
-										name="golf-cart"
-										size={45}
-										color="black"
-										marginTop={15}
-										marginBottom={5}
-									/>
+									<Text
+										style={{
+											...styles.text,
+											marginTop: 15,
+											fontSize: 10,
+											paddingHorizontal: 0,
+											textAlign: "center",
+										}}
+									>
+										Top {order[3]} Qualifier
+									</Text>
+									{fotos[3] && (
+										<Image source={{ uri: fotos[3] }} style={styles.gameLogo} />
+									)}
 									<Text
 										style={{
 											...styles.text,
@@ -515,73 +552,103 @@ const SemiFinals = ({ navigation }) => {
 				<View style={styles.modalContainer}>
 					<View style={styles.modalContent}>
 						<Text style={styles.modalTitle}>Scoresheet</Text>
-						<ScrollView>
-							{/* Encabezado */}
-							<View style={styles.gridRow}>
-								<Text
-									style={{
-										...styles.headearHole,
-										borderRightWidth: 1,
-									}}
-								>
-									Hole
-								</Text>
-								<Text
-									style={{
-										...styles.headerCell,
-										borderRightWidth: 1,
-									}}
-								>
-									{player1Name}
-								</Text>
-								<Text style={styles.headerCell}>{player2Name}</Text>
-							</View>
-
-							{/* Filas con datos */}
-							{holes.map((hole, index) => (
-								<View key={hole} style={styles.gridRow}>
+						{loading ? (
+							<ActivityIndicator
+								style={styles.loader}
+								size="large"
+								color="#1f3a5c"
+							/>
+						) : (
+							<ScrollView>
+								{/* Encabezado */}
+								<View style={styles.gridRow}>
 									<Text
 										style={{
-											...styles.holeCell,
-
-											borderBottomWidth: 0,
+											...styles.headearHole,
 											borderRightWidth: 1,
 										}}
 									>
-										{hole}
+										Hole
 									</Text>
 									<Text
 										style={{
-											...styles.gridCell,
-
+											...styles.headerCell,
 											borderRightWidth: 1,
 										}}
 									>
-										{player1Scores[index] || 0}
+										{player1Name}
 									</Text>
-									<Text
-										style={{
-											...styles.gridCell,
-										}}
-									>
-										{player2Scores[index] || 0}
-									</Text>
+									<Text style={styles.headerCell}>{player2Name}</Text>
 								</View>
-							))}
-						</ScrollView>
 
-						<TouchableOpacity
-							onPress={() => setModalVisible(false)}
-							style={{
-								...styles.button,
-								marginVertical: 15,
-								backgroundColor: "#1f3a5c",
-								width: "85%",
-								padding: 3,
-							}}
-						>
-							<Text style={{ ...styles.buttonText, color: "white" }}>Back</Text>
-						</TouchableOpacity>
+								{/* Filas con datos */}
+								{holes.map((hole, index) => {
+									const score1 = player1Scores[index];
+									const score2 = player2Scores[index];
+
+									const playedByBoth = score1 && score2;
+									const sameScore =
+										playedByBoth && Number(score1) === Number(score2);
+
+									const bgColor1 = sameScore
+										? "transparent" // Amarillo claro
+										: playedByBoth && Number(score1) < Number(score2)
+											? "#ffcccc" // Rojo claro
+											: "transparent";
+
+									const bgColor2 = sameScore
+										? "transparent"
+										: playedByBoth && Number(score2) < Number(score1)
+											? "#ffcccc"
+											: "transparent";
+
+									return (
+										<View key={hole} style={styles.gridRow}>
+											<Text
+												style={{
+													...styles.holeCell,
+													borderBottomWidth: 0,
+													borderRightWidth: 1,
+												}}
+											>
+												{hole}
+											</Text>
+											<Text
+												style={{
+													...styles.gridCell,
+													backgroundColor: bgColor1,
+													borderRightWidth: 1,
+												}}
+											>
+												{score1 || 0}
+											</Text>
+											<Text
+												style={{
+													...styles.gridCell,
+													backgroundColor: bgColor2,
+												}}
+											>
+												{score2 || 0}
+											</Text>
+										</View>
+									);
+								})}
+								<TouchableOpacity
+									onPress={() => setModalVisible(false)}
+									style={{
+										...styles.button,
+										marginVertical: 15,
+										backgroundColor: "#1f3a5c",
+										width: "95%",
+										padding: 3,
+									}}
+								>
+									<Text style={{ ...styles.buttonText, color: "white" }}>
+										Back
+									</Text>
+								</TouchableOpacity>
+							</ScrollView>
+						)}
 					</View>
 				</View>
 			</Modal>
@@ -594,7 +661,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 	},
-
 	container: {
 		flex: 1,
 		alignItems: "center",
@@ -615,6 +681,7 @@ const styles = StyleSheet.create({
 		fontFamily: "p-semibold",
 		borderWidth: 1,
 		borderColor: "black",
+		minHeight: 500,
 	},
 	modalTitle: {
 		fontSize: 18,
@@ -630,7 +697,8 @@ const styles = StyleSheet.create({
 		marginBottom: 0,
 		fontFamily: "p-semibold",
 		borderBottomWidth: 1,
-
+		paddingVertical: 0.5,
+		paddingHorizontal: 1,
 		borderColor: "black",
 	},
 	headerCell: {
@@ -643,14 +711,14 @@ const styles = StyleSheet.create({
 	headearHole: {
 		flex: 0.5,
 		textAlign: "center",
-		fontSize: 10,
+		fontSize: 12,
 		fontFamily: "p-semibold",
 		paddingVertical: 5,
 	},
 	gridCell: {
 		flex: 1,
 		textAlign: "center",
-		fontSize: 9,
+		fontSize: 12,
 		paddingVertical: 3,
 
 		fontFamily: "p-bold",
@@ -658,7 +726,7 @@ const styles = StyleSheet.create({
 	holeCell: {
 		flex: 0.5, // Más angosto para la columna de hoyos
 		textAlign: "center",
-		fontSize: 9,
+		fontSize: 12,
 		paddingVertical: 3,
 		fontFamily: "p-bold",
 	},

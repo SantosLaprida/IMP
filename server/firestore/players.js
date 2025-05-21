@@ -169,3 +169,29 @@ export const getClasificationPlayers = async (tournamentId) => {
 		throw error;
 	}
 };
+
+export const getOrderByPlayer = async (tournamentId, playerId) => {
+	const currentYear = new Date().getFullYear().toString();
+	try {
+		const querySnapshot = await getDocs(
+			collection(
+				firestore,
+				"I_Torneos",
+				currentYear,
+				"Tournaments",
+				tournamentId,
+				"I_Cuartos"
+			)
+		);
+
+		const playerData = querySnapshot.docs.find((doc) => doc.id === playerId);
+		if (!playerData) {
+			throw new Error(`Player not found with id: `, playerId);
+		}
+
+		return playerData.data().order;
+	} catch (error) {
+		console.error("Error fetching player order:", error);
+		throw error;
+	}
+};
