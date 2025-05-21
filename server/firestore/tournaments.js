@@ -52,6 +52,7 @@ export const fetchQualifiers = async (TournamentId, collectionName) => {
 				id_player: doc.data().playerId,
 				name: doc.data().name,
 				order: doc.data().order,
+				logo: doc.data().logo,
 			}))
 			.sort((a, b) => a.order - b.order);
 
@@ -137,7 +138,6 @@ export const getActiveBracket = async (tournamentId) => {
 	}
 };
 
-
 export const isBracketActive = async (tournamentId, collectionName) => {
 	const currentYear = new Date().getFullYear().toString();
 	try {
@@ -219,4 +219,3 @@ export const getNumberPlayersBet = async (tournamentId) => {
 		throw error;
 	}
 };
-
