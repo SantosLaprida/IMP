@@ -94,13 +94,22 @@ const QuarterFinals = ({ navigation }) => {
 				const torneo = await fetchTournament();
 
 				let name = torneo[0].name;
-				let start_date = torneo[0].start_date;
-				let finish_date = torneo[0].finish_date;
 				let logo = torneo[0].logo;
+				let start_date = torneo[0].start_date.toDate(); // Firebase Timestamp -> JS Date
+				let finish_date = torneo[0].finish_date.toDate(); // Firebase Timestamp -> JS Date
+
+				const formattedFinishDate = finish_date.toLocaleString("es-AR", {
+					day: "2-digit",
+					month: "2-digit",
+					year: "numeric",
+					hour: "2-digit",
+					minute: "2-digit",
+					hour12: false,
+				});
 
 				setName(name);
 				setStart(start_date);
-				setEnd(finish_date);
+				setEnd(formattedFinishDate);
 				setLogo(logo);
 			} catch (error) {
 				console.error(error);
