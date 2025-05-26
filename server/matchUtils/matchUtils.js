@@ -18,9 +18,6 @@ import { firestore } from "../config/firebaseConfig";
 
 
 const isMatchOver = async (score) => {
-
-  
-
   if (score.holesRemaining < Math.abs(score.result)) {
     console.log("Score is: ", score);
     return true;
@@ -51,6 +48,8 @@ export const compareScores = async (
     holesRemaining: 18,
     result: 0,
     stillPlaying: true,
+    matchWonAtHole : null,
+    resultAtWin: null,
   };
 
   if (scoreSheet1 === null || scoreSheet2 === null) {
@@ -73,6 +72,8 @@ export const compareScores = async (
       score.currentHole++;
       if (await isMatchOver(score)) {
         score.stillPlaying = false;
+        score.matchWonAtHole = score.currentHole;
+        score.resultAtWin = score.result;
       }
       continue;
     }
