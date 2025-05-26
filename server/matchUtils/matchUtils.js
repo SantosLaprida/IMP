@@ -182,13 +182,11 @@ export const fetchResults = async (tournamentId) => {
 		);
 
 		const names = [];
-
-		// Fetch all documents in the I_Resultados collection
 		const querySnapshot = await getDocs(finalsCollectionRef);
 
 		if (querySnapshot.empty) {
 			console.log("No documents found in the I_Resultados collection.");
-			return names; // return empty array if no documents found
+			return names; 
 		}
 
 		querySnapshot.forEach((doc) => {
@@ -197,7 +195,6 @@ export const fetchResults = async (tournamentId) => {
 				names.push(matchData.name);
 			} else {
 				console.log(`No name field in document ${doc.id}.`);
-				// showPopup(`No name field in document ${doc.id}.`);
 			}
 		});
 

@@ -149,20 +149,14 @@ export const isBracketActive = async (tournamentId, collectionName) => {
 			tournamentId,
 			collectionName
 		);
+		
 		const querySnapshot = await getDocs(bracketRef);
-		let isActive = true;
 
-		querySnapshot.forEach((doc) => {
-			const data = doc.data();
-			if (!data.name || data.name.trim() === "") {
-				isActive = false;
-			}
-		});
-
-		return isActive;
+		return !querySnapshot.empty;
+		
 	} catch (error) {
 		console.error("Error checking bracket:", error);
-		throw error;
+		return false;
 	}
 };
 

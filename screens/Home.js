@@ -27,6 +27,7 @@ const screenToRoundMap = {
 	QuarterFinals: "round2",
 	SemiFinals: "round3",
 	Finals: "round4",
+	Results: "complete",
 };
 
 const Home = ({ navigation }) => {
@@ -62,7 +63,6 @@ const Home = ({ navigation }) => {
 		let tournamentId = await getTournamentId();
 		try {
 			const activeBracket = await getActiveBracket(tournamentId);
-			console.log("Active Bracket Stage:", activeBracket);
 			setActiveBracketStage(activeBracket);
 
 		} catch (error) {
