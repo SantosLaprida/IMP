@@ -165,6 +165,7 @@ const QuarterFinals = ({ navigation }) => {
 				collectionName
 			);
 			setResults1(results);
+			console.log(results);
 		} catch (error) {
 			console.error(error);
 		}
@@ -278,7 +279,7 @@ const QuarterFinals = ({ navigation }) => {
 			return "All Square";
 		}
 		if (!results.stillPlaying && results.result > 0) {
-			return name2 + " Won";
+			return name2 + results.matchWonAtHole;
 		}
 		if (!results.stillPlaying && results.result < 0) {
 			return name1 + " Won";
@@ -338,20 +339,20 @@ const QuarterFinals = ({ navigation }) => {
 				) : (
 					<>
 						<ScrollView showsVerticalScrollIndicator={false}>
-							{/* GAME 1 */}
+							{/* GAME 4*/}
 							<View style={styles.gameBox}>
-								<Text style={styles.tGame}>Game 1</Text>
+								<Text style={styles.tGame}>Game 4</Text>
 								<Text
 									style={[
 										styles.text_left,
 										{
-											backgroundColor: displayResultsLeft(results1)
+											backgroundColor: displayResultsLeft(results2)
 												? "red"
 												: "transparent",
 										},
 									]}
 								>
-									{displayResultsLeft(results1)}
+									{displayResultsLeft(results2)}
 								</Text>
 								<View style={styles.player}>
 									<Text
@@ -363,10 +364,10 @@ const QuarterFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										Top {order[0]} Qualifier
+										Top {order[1]} Qualifier
 									</Text>
-									{fotos[0] && (
-										<Image source={{ uri: fotos[0] }} style={styles.gameLogo} />
+									{fotos[1] && (
+										<Image source={{ uri: fotos[1] }} style={styles.gameLogo} />
 									)}
 									<Text
 										style={{
@@ -377,12 +378,12 @@ const QuarterFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{names[0]}
+										{names[1]}
 									</Text>
 								</View>
 								<View style={styles.middle}>
 									<Text style={{ ...styles.text, fontSize: 12 }}>
-										{displayMiddle(results1, names[0], names[7])}
+										{displayMiddle(results2, names[1], names[6])}
 									</Text>
 									<MaterialCommunityIcons
 										style={styles.vsIcon}
@@ -398,20 +399,20 @@ const QuarterFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{displayMiddleResult(results1, names[0], names[7])}
+										{displayMiddleResult(results2, names[1], names[6])}
 									</Text>
 								</View>
 								<Text
 									style={[
 										styles.text_right,
 										{
-											backgroundColor: displayResultsRight(results1)
+											backgroundColor: displayResultsRight(results2)
 												? "red"
 												: "transparent",
 										},
 									]}
 								>
-									{displayResultsRight(results1)}
+									{displayResultsRight(results2)}
 								</Text>
 								<View style={styles.player}>
 									<Text
@@ -423,10 +424,10 @@ const QuarterFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										Top {order[7]} Qualifier
+										Top {order[6]} Qualifier
 									</Text>
-									{fotos[7] && (
-										<Image source={{ uri: fotos[7] }} style={styles.gameLogo} />
+									{fotos[6] && (
+										<Image source={{ uri: fotos[6] }} style={styles.gameLogo} />
 									)}
 									<Text
 										style={{
@@ -437,12 +438,124 @@ const QuarterFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{names[7]}
+										{names[6]}
 									</Text>
 								</View>
 							</View>
 							<TouchableOpacity
-								onPress={() => showHoles(ids[0], ids[7])}
+								onPress={() => showHoles(ids[1], ids[6])}
+								style={styles.detailBtn}
+							>
+								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
+									Details
+								</Text>
+							</TouchableOpacity>
+
+							{/* GAME 3*/}
+							<View style={styles.gameBox}>
+								<Text style={styles.tGame}>Game 3</Text>
+								<Text
+									style={[
+										styles.text_left,
+										{
+											backgroundColor: displayResultsLeft(results3)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsLeft(results3)}
+								</Text>
+								<View style={styles.player}>
+									<Text
+										style={{
+											...styles.text,
+											marginTop: 15,
+											fontSize: 10,
+											paddingHorizontal: 0,
+											textAlign: "center",
+										}}
+									>
+										Top {order[2]} Qualifier
+									</Text>
+									{fotos[2] && (
+										<Image source={{ uri: fotos[2] }} style={styles.gameLogo} />
+									)}
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[2]}
+									</Text>
+								</View>
+								<View style={styles.middle}>
+									<Text style={{ ...styles.text, fontSize: 12 }}>
+										{displayMiddle(results3, names[2], names[5])}
+									</Text>
+									<MaterialCommunityIcons
+										style={styles.vsIcon}
+										name="sword-cross"
+										size={24}
+										color="#1f3a5c"
+									/>
+									<Text
+										style={{
+											...styles.text,
+											fontSize: 12,
+											color: "green",
+											textAlign: "center",
+										}}
+									>
+										{displayMiddleResult(results3, names[2], names[5])}
+									</Text>
+								</View>
+								<Text
+									style={[
+										styles.text_right,
+										{
+											backgroundColor: displayResultsRight(results3)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsRight(results3)}
+								</Text>
+								<View style={styles.player}>
+									<Text
+										style={{
+											...styles.text,
+											marginTop: 15,
+											fontSize: 10,
+											paddingHorizontal: 0,
+											textAlign: "center",
+										}}
+									>
+										Top {order[5]} Qualifier
+									</Text>
+									{fotos[5] && (
+										<Image source={{ uri: fotos[5] }} style={styles.gameLogo} />
+									)}
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[5]}
+									</Text>
+								</View>
+							</View>
+							<TouchableOpacity
+								onPress={() => showHoles(ids[2], ids[5])}
 								style={styles.detailBtn}
 							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
@@ -561,20 +674,20 @@ const QuarterFinals = ({ navigation }) => {
 									Details
 								</Text>
 							</TouchableOpacity>
-							{/* GAME 3*/}
+							{/* GAME 1 */}
 							<View style={styles.gameBox}>
-								<Text style={styles.tGame}>Game 3</Text>
+								<Text style={styles.tGame}>Game 1</Text>
 								<Text
 									style={[
 										styles.text_left,
 										{
-											backgroundColor: displayResultsLeft(results3)
+											backgroundColor: displayResultsLeft(results1)
 												? "red"
 												: "transparent",
 										},
 									]}
 								>
-									{displayResultsLeft(results3)}
+									{displayResultsLeft(results1)}
 								</Text>
 								<View style={styles.player}>
 									<Text
@@ -586,10 +699,10 @@ const QuarterFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										Top {order[2]} Qualifier
+										Top {order[0]} Qualifier
 									</Text>
-									{fotos[2] && (
-										<Image source={{ uri: fotos[2] }} style={styles.gameLogo} />
+									{fotos[0] && (
+										<Image source={{ uri: fotos[0] }} style={styles.gameLogo} />
 									)}
 									<Text
 										style={{
@@ -600,12 +713,12 @@ const QuarterFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{names[2]}
+										{names[0]}
 									</Text>
 								</View>
 								<View style={styles.middle}>
 									<Text style={{ ...styles.text, fontSize: 12 }}>
-										{displayMiddle(results3, names[2], names[5])}
+										{displayMiddle(results1, names[0], names[7])}
 									</Text>
 									<MaterialCommunityIcons
 										style={styles.vsIcon}
@@ -621,20 +734,20 @@ const QuarterFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{displayMiddleResult(results3, names[2], names[5])}
+										{displayMiddleResult(results1, names[0], names[7])}
 									</Text>
 								</View>
 								<Text
 									style={[
 										styles.text_right,
 										{
-											backgroundColor: displayResultsRight(results3)
+											backgroundColor: displayResultsRight(results1)
 												? "red"
 												: "transparent",
 										},
 									]}
 								>
-									{displayResultsRight(results3)}
+									{displayResultsRight(results1)}
 								</Text>
 								<View style={styles.player}>
 									<Text
@@ -646,10 +759,10 @@ const QuarterFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										Top {order[5]} Qualifier
+										Top {order[7]} Qualifier
 									</Text>
-									{fotos[5] && (
-										<Image source={{ uri: fotos[5] }} style={styles.gameLogo} />
+									{fotos[7] && (
+										<Image source={{ uri: fotos[7] }} style={styles.gameLogo} />
 									)}
 									<Text
 										style={{
@@ -660,123 +773,12 @@ const QuarterFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{names[5]}
+										{names[7]}
 									</Text>
 								</View>
 							</View>
 							<TouchableOpacity
-								onPress={() => showHoles(ids[2], ids[5])}
-								style={styles.detailBtn}
-							>
-								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
-									Details
-								</Text>
-							</TouchableOpacity>
-							{/* GAME 4*/}
-							<View style={styles.gameBox}>
-								<Text style={styles.tGame}>Game 4</Text>
-								<Text
-									style={[
-										styles.text_left,
-										{
-											backgroundColor: displayResultsLeft(results2)
-												? "red"
-												: "transparent",
-										},
-									]}
-								>
-									{displayResultsLeft(results2)}
-								</Text>
-								<View style={styles.player}>
-									<Text
-										style={{
-											...styles.text,
-											marginTop: 15,
-											fontSize: 10,
-											paddingHorizontal: 0,
-											textAlign: "center",
-										}}
-									>
-										Top {order[1]} Qualifier
-									</Text>
-									{fotos[1] && (
-										<Image source={{ uri: fotos[1] }} style={styles.gameLogo} />
-									)}
-									<Text
-										style={{
-											...styles.text,
-											marginBottom: 5,
-											fontSize: 10,
-											paddingHorizontal: 20,
-											textAlign: "center",
-										}}
-									>
-										{names[1]}
-									</Text>
-								</View>
-								<View style={styles.middle}>
-									<Text style={{ ...styles.text, fontSize: 12 }}>
-										{displayMiddle(results2, names[1], names[6])}
-									</Text>
-									<MaterialCommunityIcons
-										style={styles.vsIcon}
-										name="sword-cross"
-										size={24}
-										color="#1f3a5c"
-									/>
-									<Text
-										style={{
-											...styles.text,
-											fontSize: 12,
-											color: "green",
-											textAlign: "center",
-										}}
-									>
-										{displayMiddleResult(results2, names[1], names[6])}
-									</Text>
-								</View>
-								<Text
-									style={[
-										styles.text_right,
-										{
-											backgroundColor: displayResultsRight(results2)
-												? "red"
-												: "transparent",
-										},
-									]}
-								>
-									{displayResultsRight(results2)}
-								</Text>
-								<View style={styles.player}>
-									<Text
-										style={{
-											...styles.text,
-											marginTop: 15,
-											fontSize: 10,
-											paddingHorizontal: 0,
-											textAlign: "center",
-										}}
-									>
-										Top {order[6]} Qualifier
-									</Text>
-									{fotos[6] && (
-										<Image source={{ uri: fotos[6] }} style={styles.gameLogo} />
-									)}
-									<Text
-										style={{
-											...styles.text,
-											marginBottom: 5,
-											fontSize: 10,
-											paddingHorizontal: 20,
-											textAlign: "center",
-										}}
-									>
-										{names[6]}
-									</Text>
-								</View>
-							</View>
-							<TouchableOpacity
-								onPress={() => showHoles(ids[1], ids[6])}
+								onPress={() => showHoles(ids[0], ids[7])}
 								style={styles.detailBtn}
 							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
@@ -850,13 +852,13 @@ const QuarterFinals = ({ navigation }) => {
 									const bgColor1 = sameScore
 										? "transparent" // Amarillo claro
 										: playedByBoth && Number(score1) < Number(score2)
-											? "#ffcccc" // Rojo claro
+											? "#d32f2f" // Rojo claro
 											: "transparent";
 
 									const bgColor2 = sameScore
 										? "transparent"
 										: playedByBoth && Number(score2) < Number(score1)
-											? "#ffcccc"
+											? "#d32f2f"
 											: "transparent";
 
 									return (
@@ -875,17 +877,23 @@ const QuarterFinals = ({ navigation }) => {
 													...styles.gridCell,
 													backgroundColor: bgColor1,
 													borderRightWidth: 1,
+													color: bgColor1 !== "transparent" ? "white" : "black",
 												}}
 											>
-												{score1 || 0}
+												{!score1 || score1 === "0" || score1 === 0
+													? "-"
+													: score1}
 											</Text>
 											<Text
 												style={{
 													...styles.gridCell,
 													backgroundColor: bgColor2,
+													color: bgColor2 !== "transparent" ? "white" : "black",
 												}}
 											>
-												{score2 || 0}
+												{!score2 || score2 === "0" || score2 === 0
+													? "-"
+													: score2}
 											</Text>
 										</View>
 									);
@@ -1054,7 +1062,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		marginVertical: 0,
+		marginTop: 16,
 	},
 	gameLogo: {
 		width: 60,

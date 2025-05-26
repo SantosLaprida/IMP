@@ -1,7 +1,4 @@
-import {
-	getPlayerName,
-	getOrderByPlayer,
-} from "../server/firestore/players";
+import { getPlayerName, getOrderByPlayer } from "../server/firestore/players";
 import { getHoles } from "../server/firestore/utils";
 import {
 	fetchTournament,
@@ -156,8 +153,6 @@ const SemiFinals = ({ navigation }) => {
 				collectionName
 			);
 			setResults1(results);
-
-
 		} catch (error) {
 			console.error(error);
 		}
@@ -803,7 +798,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		marginVertical: 0,
+		marginTop: 16,
 	},
 	gameLogo: {
 		width: 60,

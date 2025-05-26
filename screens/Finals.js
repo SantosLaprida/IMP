@@ -840,7 +840,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		marginVertical: 0,
+		marginTop: 16,
 	},
 	gameLogo: {
 		width: 60,
