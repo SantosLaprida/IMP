@@ -57,6 +57,7 @@ const Finals = ({ navigation }) => {
 	const [fotosL, setFotosL] = useState(null);
 	const [order, setOrder] = useState(null);
 	const [fotos, setFotos] = useState(null);
+	const [currentMatchResults, setCurrentMatchResults] = useState(null);
 
 	const holes = Array.from({ length: 18 }, (_, i) => i + 1);
 
@@ -76,6 +77,14 @@ const Finals = ({ navigation }) => {
 
 			const name1 = await getPlayerName(player1Id, tournamentId);
 			const name2 = await getPlayerName(player2Id, tournamentId);
+
+			const matchResults = await compareScores(
+				player1Id,
+				player2Id,
+				tournamentId,
+				collection
+			);
+			setCurrentMatchResults(matchResults);
 
 			if (response) {
 				// Actualizamos el estado con los scores de los jugadores
@@ -266,11 +275,61 @@ const Finals = ({ navigation }) => {
 		if (results.stillPlaying && results.result === 0) {
 			return "All Square";
 		}
+		if (!results.matchWonAtHole && results.result > 0) {
+			return name2 + "\n" + "Won by Playoff";
+		}
+		if (!results.matchWonAtHole && results.result < 0) {
+			return name1 + "\n" + "Won by Playoff";
+		}
 		if (!results.stillPlaying && results.result > 0) {
-			return name2 + " Won";
+			return (
+				name2 +
+				"\n" +
+				(18 - results.matchWonAtHole + 1) +
+				" / " +
+				(18 - results.matchWonAtHole)
+			);
 		}
 		if (!results.stillPlaying && results.result < 0) {
-			return name1 + " Won";
+			return (
+				name1 +
+				"\n" +
+				(18 - results.matchWonAtHole + 1) +
+				" / " +
+				(18 - results.matchWonAtHole)
+			);
+		}
+	};
+	const displayModalResults = (results, name1, name2) => {
+		if (!results) {
+			return null;
+		}
+		if (results.stillPlaying && results.result === 0) {
+			return "All Square";
+		}
+		if (!results.matchWonAtHole && results.result > 0) {
+			return name2 + "\n" + "Won by Playoff";
+		}
+		if (!results.matchWonAtHole && results.result < 0) {
+			return name1 + "\n" + "Won by Playoff";
+		}
+		if (!results.stillPlaying && results.result > 0) {
+			return (
+				name2 +
+				"  " +
+				(18 - results.matchWonAtHole + 1) +
+				"/" +
+				(18 - results.matchWonAtHole)
+			);
+		}
+		if (!results.stillPlaying && results.result < 0) {
+			return (
+				name1 +
+				"  " +
+				(18 - results.matchWonAtHole + 1) +
+				"/" +
+				(18 - results.matchWonAtHole)
+			);
 		}
 	};
 
@@ -395,7 +454,7 @@ const Finals = ({ navigation }) => {
 										style={{
 											...styles.text,
 											fontSize: 12,
-											color: "green",
+											color: "red",
 											textAlign: "center",
 										}}
 									>
@@ -521,7 +580,7 @@ const Finals = ({ navigation }) => {
 										style={{
 											...styles.text,
 											fontSize: 12,
-											color: "green",
+											color: "red",
 											textAlign: "center",
 										}}
 									>
@@ -645,16 +704,21 @@ const Finals = ({ navigation }) => {
 									const sameScore =
 										playedByBoth && Number(score1) === Number(score2);
 
+									const isMatchEndingHole =
+										currentMatchResults &&
+										currentMatchResults.matchWonAtHole !== null &&
+										Number(hole) === currentMatchResults.matchWonAtHole;
+
 									const bgColor1 = sameScore
-										? "transparent"
+										? "transparent" // Amarillo claro
 										: playedByBoth && Number(score1) < Number(score2)
-											? "#ffcccc"
+											? "#d32f2f" // Rojo claro
 											: "transparent";
 
 									const bgColor2 = sameScore
 										? "transparent"
 										: playedByBoth && Number(score2) < Number(score1)
-											? "#ffcccc"
+											? "#d32f2f"
 											: "transparent";
 
 									return (
@@ -664,6 +728,10 @@ const Finals = ({ navigation }) => {
 													...styles.holeCell,
 													borderBottomWidth: 0,
 													borderRightWidth: 1,
+													backgroundColor: isMatchEndingHole
+														? "#d32f2f"
+														: "transparent",
+													color: isMatchEndingHole ? "white" : "black",
 												}}
 											>
 												{hole}
@@ -673,28 +741,49 @@ const Finals = ({ navigation }) => {
 													...styles.gridCell,
 													backgroundColor: bgColor1,
 													borderRightWidth: 1,
+													color: bgColor1 !== "transparent" ? "white" : "black",
 												}}
 											>
-												{score1 || 0}
+												{!score1 || score1 === "0" || score1 === 0
+													? "-"
+													: score1}
 											</Text>
 											<Text
 												style={{
 													...styles.gridCell,
 													backgroundColor: bgColor2,
+													color: bgColor2 !== "transparent" ? "white" : "black",
 												}}
 											>
-												{score2 || 0}
+												{!score2 || score2 === "0" || score2 === 0
+													? "-"
+													: score2}
 											</Text>
 										</View>
 									);
 								})}
+								<Text
+									style={{
+										...styles.buttonText,
+										color: "red",
+										textAlign: "center",
+										marginTop: 10,
+										fontWeight: "650",
+									}}
+								>
+									{displayModalResults(
+										currentMatchResults,
+										player1Name,
+										player2Name
+									)}
+								</Text>
 								<TouchableOpacity
 									onPress={() => setModalVisible(false)}
 									style={{
 										...styles.button,
 										marginVertical: 15,
 										backgroundColor: "#1f3a5c",
-										width: "97%",
+										width: "95%",
 										padding: 3,
 									}}
 								>

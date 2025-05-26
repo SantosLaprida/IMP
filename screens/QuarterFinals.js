@@ -4,7 +4,7 @@ import {
 	fetchTournament,
 	fetchQualifiers,
 } from "../server/firestore/tournaments";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { compareScores, showResults } from "../server/matchUtils/matchUtils";
 
 import {
@@ -52,6 +52,7 @@ const QuarterFinals = ({ navigation }) => {
 	const [player2Name, setPlayer2Name] = useState(null);
 	const [order, setOrder] = useState(null);
 	const [fotos, setFotos] = useState(null);
+	const [currentMatchResults, setCurrentMatchResults] = useState(null);
 
 	const holes = Array.from({ length: 18 }, (_, i) => i + 1);
 
@@ -72,6 +73,14 @@ const QuarterFinals = ({ navigation }) => {
 
 			const name1 = await getPlayerName(player1Id, tournamentId);
 			const name2 = await getPlayerName(player2Id, tournamentId);
+
+			const matchResults = await compareScores(
+				player1Id,
+				player2Id,
+				tournamentId,
+				collection
+			);
+			setCurrentMatchResults(matchResults); // <- nuevo estado
 
 			if (response) {
 				// Actualizamos el estado con los scores de los jugadores
@@ -281,18 +290,67 @@ const QuarterFinals = ({ navigation }) => {
 		}
 	};
 	const displayMiddleResult = (results, name1, name2) => {
-
 		if (!results) {
 			return null;
 		}
 		if (results.stillPlaying && results.result === 0) {
 			return "All Square";
 		}
+		if (!results.matchWonAtHole && results.result > 0) {
+			return name2 + "\n" + "Won by Playoff";
+		}
+		if (!results.matchWonAtHole && results.result < 0) {
+			return name1 + "\n" + "Won by Playoff";
+		}
 		if (!results.stillPlaying && results.result > 0) {
-			return name2 + "\n" + (18 - results.matchWonAtHole + 1) + " / " + (18 - results.matchWonAtHole);
+			return (
+				name2 +
+				"\n" +
+				(18 - results.matchWonAtHole + 1) +
+				" / " +
+				(18 - results.matchWonAtHole)
+			);
 		}
 		if (!results.stillPlaying && results.result < 0) {
-			return name1 + "\n" + (18 - results.matchWonAtHole + 1) + " / " + (18 - results.matchWonAtHole);
+			return (
+				name1 +
+				"\n" +
+				(18 - results.matchWonAtHole + 1) +
+				" / " +
+				(18 - results.matchWonAtHole)
+			);
+		}
+	};
+	const displayModalResults = (results, name1, name2) => {
+		if (!results) {
+			return null;
+		}
+		if (results.stillPlaying && results.result === 0) {
+			return "All Square";
+		}
+		if (!results.matchWonAtHole && results.result > 0) {
+			return name2 + "\n" + "Won by Playoff";
+		}
+		if (!results.matchWonAtHole && results.result < 0) {
+			return name1 + "\n" + "Won by Playoff";
+		}
+		if (!results.stillPlaying && results.result > 0) {
+			return (
+				name2 +
+				"  " +
+				(18 - results.matchWonAtHole + 1) +
+				"/" +
+				(18 - results.matchWonAtHole)
+			);
+		}
+		if (!results.stillPlaying && results.result < 0) {
+			return (
+				name1 +
+				"  " +
+				(18 - results.matchWonAtHole + 1) +
+				"/" +
+				(18 - results.matchWonAtHole)
+			);
 		}
 	};
 
@@ -351,7 +409,7 @@ const QuarterFinals = ({ navigation }) => {
 						<ScrollView showsVerticalScrollIndicator={false}>
 							{/* GAME 4*/}
 							<View style={styles.gameBox}>
-								<Text style={styles.tGame}>Game 4</Text>
+								<Text style={styles.tGame}>Game 1</Text>
 								<Text
 									style={[
 										styles.text_left,
@@ -405,7 +463,7 @@ const QuarterFinals = ({ navigation }) => {
 										style={{
 											...styles.text,
 											fontSize: 12,
-											color: "green",
+											color: "red",
 											textAlign: "center",
 										}}
 									>
@@ -463,7 +521,7 @@ const QuarterFinals = ({ navigation }) => {
 
 							{/* GAME 3*/}
 							<View style={styles.gameBox}>
-								<Text style={styles.tGame}>Game 3</Text>
+								<Text style={styles.tGame}>Game 2</Text>
 								<Text
 									style={[
 										styles.text_left,
@@ -517,7 +575,7 @@ const QuarterFinals = ({ navigation }) => {
 										style={{
 											...styles.text,
 											fontSize: 12,
-											color: "green",
+											color: "red",
 											textAlign: "center",
 										}}
 									>
@@ -574,7 +632,7 @@ const QuarterFinals = ({ navigation }) => {
 							</TouchableOpacity>
 							{/* GAME 2 */}
 							<View style={styles.gameBox}>
-								<Text style={styles.tGame}>Game 2</Text>
+								<Text style={styles.tGame}>Game 3</Text>
 								<Text
 									style={[
 										styles.text_left,
@@ -628,7 +686,7 @@ const QuarterFinals = ({ navigation }) => {
 										style={{
 											...styles.text,
 											fontSize: 12,
-											color: "green",
+											color: "red",
 											textAlign: "center",
 										}}
 									>
@@ -686,7 +744,7 @@ const QuarterFinals = ({ navigation }) => {
 							</TouchableOpacity>
 							{/* GAME 1 */}
 							<View style={styles.gameBox}>
-								<Text style={styles.tGame}>Game 1</Text>
+								<Text style={styles.tGame}>Game 4</Text>
 								<Text
 									style={[
 										styles.text_left,
@@ -740,7 +798,7 @@ const QuarterFinals = ({ navigation }) => {
 										style={{
 											...styles.text,
 											fontSize: 12,
-											color: "green",
+											color: "red",
 											textAlign: "center",
 										}}
 									>
@@ -859,6 +917,11 @@ const QuarterFinals = ({ navigation }) => {
 									const sameScore =
 										playedByBoth && Number(score1) === Number(score2);
 
+									const isMatchEndingHole =
+										currentMatchResults &&
+										currentMatchResults.matchWonAtHole !== null &&
+										Number(hole) === currentMatchResults.matchWonAtHole;
+
 									const bgColor1 = sameScore
 										? "transparent" // Amarillo claro
 										: playedByBoth && Number(score1) < Number(score2)
@@ -878,6 +941,10 @@ const QuarterFinals = ({ navigation }) => {
 													...styles.holeCell,
 													borderBottomWidth: 0,
 													borderRightWidth: 1,
+													backgroundColor: isMatchEndingHole
+														? "#d32f2f"
+														: "transparent",
+													color: isMatchEndingHole ? "white" : "black",
 												}}
 											>
 												{hole}
@@ -908,6 +975,21 @@ const QuarterFinals = ({ navigation }) => {
 										</View>
 									);
 								})}
+								<Text
+									style={{
+										...styles.buttonText,
+										color: "red",
+										textAlign: "center",
+										marginTop: 10,
+										fontWeight: "650",
+									}}
+								>
+									{displayModalResults(
+										currentMatchResults,
+										player1Name,
+										player2Name
+									)}
+								</Text>
 								<TouchableOpacity
 									onPress={() => setModalVisible(false)}
 									style={{
