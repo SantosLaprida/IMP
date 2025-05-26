@@ -272,6 +272,7 @@ const QuarterFinals = ({ navigation }) => {
 		}
 	};
 	const displayMiddleResult = (results, name1, name2) => {
+
 		if (!results) {
 			return null;
 		}
@@ -279,10 +280,10 @@ const QuarterFinals = ({ navigation }) => {
 			return "All Square";
 		}
 		if (!results.stillPlaying && results.result > 0) {
-			return name2 + results.matchWonAtHole;
+			return name2 + "\n" + (18 - results.matchWonAtHole + 1) + " / " + (18 - results.matchWonAtHole);
 		}
 		if (!results.stillPlaying && results.result < 0) {
-			return name1 + " Won";
+			return name1 + "\n" + (18 - results.matchWonAtHole + 1) + " / " + (18 - results.matchWonAtHole);
 		}
 	};
 
