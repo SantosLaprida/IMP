@@ -60,12 +60,11 @@ const Finals = ({ navigation }) => {
 
 	const holes = Array.from({ length: 18 }, (_, i) => i + 1);
 
-	const showHoles = async (player1Id, player2Id) => {
+	const showHoles = async (player1Id, player2Id, collection) => {
 		setModalVisible(true);
 		setLoading(true);
 		try {
 			let tournamentId = await getTournamentId();
-			let collection = "I_Cuartos";
 
 			// Llamada al backend para obtener el scoresheet
 			const response = await getHoles(
@@ -116,7 +115,7 @@ const Finals = ({ navigation }) => {
 			const ordersL = await Promise.all(
 				lIds.map((playerId) => getOrderByPlayer(tournamentId, playerId))
 			);
-			const fotosL = qualifiers.map((q) => q.logo);
+			const fotosL = lQualifiers.map((q) => q.logo);
 
 			setFotosL(fotosL);
 			setOrderL(ordersL);
@@ -433,7 +432,7 @@ const Finals = ({ navigation }) => {
 								</View>
 							</View>
 							<TouchableOpacity
-								onPress={() => showHoles(ids[0], ids[1])}
+								onPress={() => showHoles(ids[0], ids[1], "I_Finales")}
 								style={styles.detailBtn}
 							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
@@ -563,7 +562,7 @@ const Finals = ({ navigation }) => {
 								</View>
 							</View>
 							<TouchableOpacity
-								onPress={() => showHoles(idsL[0], idsL[1])}
+								onPress={() => showHoles(idsL[0], idsL[1], "I_TercerCuarto")}
 								style={styles.detailBtn}
 							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>

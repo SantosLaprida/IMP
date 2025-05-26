@@ -1,5 +1,4 @@
 import {
-	createI_Semifinales,
 	getPlayerName,
 	getOrderByPlayer,
 } from "../server/firestore/players";
@@ -108,6 +107,8 @@ const SemiFinals = ({ navigation }) => {
 				sortedIds.map((playerId) => getOrderByPlayer(tournamentId, playerId))
 			);
 
+			console.log(orders);
+
 			setFotos(fotos);
 			setOrder(orders);
 			setIds(sortedIds);
@@ -155,6 +156,8 @@ const SemiFinals = ({ navigation }) => {
 				collectionName
 			);
 			setResults1(results);
+
+
 		} catch (error) {
 			console.error(error);
 		}
@@ -350,7 +353,7 @@ const SemiFinals = ({ navigation }) => {
 								</View>
 								<View style={styles.middle}>
 									<Text style={{ ...styles.text, fontSize: 12 }}>
-										{displayMiddle(results1, names[0], names[1])}
+										{displayMiddle(results1, names[0], names[3])}
 									</Text>
 									<MaterialCommunityIcons
 										style={styles.vsIcon}
@@ -366,7 +369,7 @@ const SemiFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{displayMiddleResult(results1, names[0], names[1])}
+										{displayMiddleResult(results1, names[0], names[3])}
 									</Text>
 								</View>
 								<Text
@@ -391,10 +394,10 @@ const SemiFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										Top {order[1]} Qualifier
+										Top {order[3]} Qualifier
 									</Text>
 									{fotos[1] && (
-										<Image source={{ uri: fotos[1] }} style={styles.gameLogo} />
+										<Image source={{ uri: fotos[3] }} style={styles.gameLogo} />
 									)}
 									<Text
 										style={{
@@ -405,12 +408,12 @@ const SemiFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{names[1]}
+										{names[3]}
 									</Text>
 								</View>
 							</View>
 							<TouchableOpacity
-								onPress={() => showHoles(ids[0], ids[1])}
+								onPress={() => showHoles(ids[0], ids[3])}
 								style={styles.detailBtn}
 							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
@@ -442,10 +445,10 @@ const SemiFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										Top {order[2]} Qualifier
+										Top {order[1]} Qualifier
 									</Text>
 									{fotos[2] && (
-										<Image source={{ uri: fotos[2] }} style={styles.gameLogo} />
+										<Image source={{ uri: fotos[1] }} style={styles.gameLogo} />
 									)}
 									<Text
 										style={{
@@ -456,12 +459,12 @@ const SemiFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{names[2]}
+										{names[1]}
 									</Text>
 								</View>
 								<View style={styles.middle}>
 									<Text style={{ ...styles.text, fontSize: 12 }}>
-										{displayMiddle(results2, names[2], names[3])}
+										{displayMiddle(results2, names[1], names[2])}
 									</Text>
 									<MaterialCommunityIcons
 										style={styles.vsIcon}
@@ -477,7 +480,7 @@ const SemiFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{displayMiddleResult(results2, names[2], names[3])}
+										{displayMiddleResult(results2, names[1], names[2])}
 									</Text>
 								</View>
 								<Text
@@ -503,10 +506,10 @@ const SemiFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										Top {order[3]} Qualifier
+										Top {order[2]} Qualifier
 									</Text>
-									{fotos[3] && (
-										<Image source={{ uri: fotos[3] }} style={styles.gameLogo} />
+									{fotos[2] && (
+										<Image source={{ uri: fotos[2] }} style={styles.gameLogo} />
 									)}
 									<Text
 										style={{
@@ -517,12 +520,12 @@ const SemiFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										{names[3]}
+										{names[2]}
 									</Text>
 								</View>
 							</View>
 							<TouchableOpacity
-								onPress={() => showHoles(ids[2], ids[3])}
+								onPress={() => showHoles(ids[1], ids[2])}
 								style={styles.detailBtn}
 							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>

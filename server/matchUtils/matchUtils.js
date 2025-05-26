@@ -16,6 +16,18 @@ import {
 
 import { firestore } from "../config/firebaseConfig";
 
+
+const isMatchOver = async (score) => {
+
+  
+
+  if (score.holesRemaining < Math.abs(score.result)) {
+    console.log("Score is: ", score);
+    return true;
+  }
+  return false;
+}
+
 export const compareScores = async (
   id_player1,
   id_player2,
@@ -59,6 +71,9 @@ export const compareScores = async (
       score.holesPlayed++;
       score.holesRemaining--;
       score.currentHole++;
+      if (await isMatchOver(score)) {
+        score.stillPlaying = false;
+      }
       continue;
     }
 
@@ -67,6 +82,9 @@ export const compareScores = async (
       score.holesPlayed++;
       score.holesRemaining--;
       score.currentHole++;
+      if (await isMatchOver(score)) {
+        score.stillPlaying = false;
+      }
       continue;
     }
 
@@ -75,6 +93,9 @@ export const compareScores = async (
       score.holesPlayed++;
       score.holesRemaining--;
       score.currentHole++;
+      if (await isMatchOver(score)) {
+        score.stillPlaying = false;
+      }
       continue;
     }
 
