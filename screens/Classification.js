@@ -81,10 +81,13 @@ const Classification = ({ navigation }) => {
 					</Text>
 
 					<View style={styles.itemTitle}>
-						<Text style={{ ...styles.text, paddingLeft: 7 }}>N°</Text>
-						<Text style={{ ...styles.text, width: "72%" }}>Player</Text>
+						<Text style={{ ...styles.text, marginLeft: -7 }}>N°</Text>
+						<Text style={{ ...styles.text, width: "72%", marginLeft: 5 }}>
+							Player
+						</Text>
 
-						<Text style={styles.text}>score</Text>
+						<Text style={{ ...styles.text, marginRight: 7 }}>score</Text>
+						<Text style={styles.text}>thru</Text>
 					</View>
 					{loading ? (
 						<ActivityIndicator
@@ -120,13 +123,35 @@ const Classification = ({ navigation }) => {
 												{jugador.order}
 											</Text>
 											<Text
-												style={{ ...textStyle, fontSize: 11, width: "80%" }}
+												style={{
+													...textStyle,
+													fontSize: 11,
+													width: "80%",
+													marginLeft: 5,
+												}}
 											>
 												{jugador.name}
 											</Text>
 
-											<Text style={{ ...textStyle, fontSize: 11 }}>
+											<Text
+												style={{
+													...textStyle,
+													fontSize: 11,
+													position: "relative",
+													left: -22,
+												}}
+											>
 												{jugador.score}
+											</Text>
+											<Text
+												style={{
+													...textStyle,
+													fontSize: 11,
+													position: "relative",
+													left: -5,
+												}}
+											>
+												{jugador.holes_played}
 											</Text>
 										</View>
 									</TouchableOpacity>
@@ -149,7 +174,7 @@ const Classification = ({ navigation }) => {
 
 const styles = StyleSheet.create({
 	box: {
-		paddingHorizontal: 50,
+		paddingHorizontal: 30,
 		paddingVertical: 20,
 		borderRadius: 15,
 		alignItems: "center",
@@ -186,7 +211,7 @@ const styles = StyleSheet.create({
 		marginBottom: 5,
 		backgroundColor: "#f0f0f0",
 		borderRadius: 5,
-		width: 250,
+		width: 280,
 	},
 	container: {
 		flex: 1,
@@ -205,7 +230,7 @@ const styles = StyleSheet.create({
 		fontFamily: "Roboto",
 	},
 	scroll: {
-		width: 250,
+		width: "100%",
 	},
 	input: {
 		width: 250,

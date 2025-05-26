@@ -1,8 +1,4 @@
-import {
-	createI_Semifinales,
-	getPlayerName,
-	getOrderByPlayer,
-} from "../server/firestore/players";
+import { getPlayerName, getOrderByPlayer } from "../server/firestore/players";
 import { getHoles } from "../server/firestore/utils";
 import {
 	fetchTournament,
@@ -56,6 +52,7 @@ const SemiFinals = ({ navigation }) => {
 	const [player2Name, setPlayer2Name] = useState(null);
 	const [order, setOrder] = useState(null);
 	const [fotos, setFotos] = useState(null);
+	const [currentMatchResults, setCurrentMatchResults] = useState(null);
 
 	const holes = Array.from({ length: 18 }, (_, i) => i + 1);
 
@@ -76,6 +73,14 @@ const SemiFinals = ({ navigation }) => {
 
 			const name1 = await getPlayerName(player1Id, tournamentId);
 			const name2 = await getPlayerName(player2Id, tournamentId);
+
+			const matchResults = await compareScores(
+				player1Id,
+				player2Id,
+				tournamentId,
+				collection
+			);
+			setCurrentMatchResults(matchResults); // <- nuevo estado
 
 			if (response) {
 				// Actualizamos el estado con los scores de los jugadores
@@ -107,6 +112,8 @@ const SemiFinals = ({ navigation }) => {
 			const orders = await Promise.all(
 				sortedIds.map((playerId) => getOrderByPlayer(tournamentId, playerId))
 			);
+
+			console.log(orders);
 
 			setFotos(fotos);
 			setOrder(orders);
@@ -186,13 +193,24 @@ const SemiFinals = ({ navigation }) => {
 				const torneo = await fetchTournament();
 
 				let name = torneo[0].name;
-				let start_date = torneo[0].start_date;
-				let finish_date = torneo[0].finish_date;
+
 				let logo = torneo[0].logo;
+
+				let start_date = torneo[0].start_date.toDate(); // Firebase Timestamp -> JS Date
+				let finish_date = torneo[0].finish_date.toDate(); // Firebase Timestamp -> JS Date
+
+				const formattedFinishDate = finish_date.toLocaleString("es-AR", {
+					day: "2-digit",
+					month: "2-digit",
+					year: "numeric",
+					hour: "2-digit",
+					minute: "2-digit",
+					hour12: false,
+				});
 
 				setName(name);
 				setStart(start_date);
-				setEnd(finish_date);
+				setEnd(formattedFinishDate);
 				setLogo(logo);
 			} catch (error) {
 				console.error(error);
@@ -245,11 +263,61 @@ const SemiFinals = ({ navigation }) => {
 		if (results.stillPlaying && results.result === 0) {
 			return "All Square";
 		}
+		if (!results.matchWonAtHole && results.result > 0) {
+			return name2 + "\n" + "Won by Playoff";
+		}
+		if (!results.matchWonAtHole && results.result < 0) {
+			return name1 + "\n" + "Won by Playoff";
+		}
 		if (!results.stillPlaying && results.result > 0) {
-			return name2 + " Won";
+			return (
+				name2 +
+				"\n" +
+				(18 - results.matchWonAtHole + 1) +
+				" / " +
+				(18 - results.matchWonAtHole)
+			);
 		}
 		if (!results.stillPlaying && results.result < 0) {
-			return name1 + " Won";
+			return (
+				name1 +
+				"\n" +
+				(18 - results.matchWonAtHole + 1) +
+				" / " +
+				(18 - results.matchWonAtHole)
+			);
+		}
+	};
+	const displayModalResults = (results, name1, name2) => {
+		if (!results) {
+			return null;
+		}
+		if (results.stillPlaying && results.result === 0) {
+			return "All Square";
+		}
+		if (!results.matchWonAtHole && results.result > 0) {
+			return name2 + "\n" + "Won by Playoff";
+		}
+		if (!results.matchWonAtHole && results.result < 0) {
+			return name1 + "\n" + "Won by Playoff";
+		}
+		if (!results.stillPlaying && results.result > 0) {
+			return (
+				name2 +
+				"  " +
+				(18 - results.matchWonAtHole + 1) +
+				"/" +
+				(18 - results.matchWonAtHole)
+			);
+		}
+		if (!results.stillPlaying && results.result < 0) {
+			return (
+				name1 +
+				"  " +
+				(18 - results.matchWonAtHole + 1) +
+				"/" +
+				(18 - results.matchWonAtHole)
+			);
 		}
 	};
 
@@ -306,9 +374,122 @@ const SemiFinals = ({ navigation }) => {
 				) : (
 					<>
 						<ScrollView showsVerticalScrollIndicator={false}>
-							{/* GAME 1 */}
+							{/* GAME 2 */}
 							<View style={styles.gameBox}>
 								<Text style={styles.tGame}>Game 1</Text>
+								<Text
+									style={[
+										styles.text_left,
+										{
+											backgroundColor: displayResultsLeft(results2)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsLeft(results2)}
+								</Text>
+								<View style={styles.player}>
+									<Text
+										style={{
+											...styles.text,
+											marginTop: 15,
+											fontSize: 10,
+											paddingHorizontal: 0,
+											textAlign: "center",
+										}}
+									>
+										Top {order[1]} Qualifier
+									</Text>
+									{fotos[2] && (
+										<Image source={{ uri: fotos[1] }} style={styles.gameLogo} />
+									)}
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[1]}
+									</Text>
+								</View>
+								<View style={styles.middle}>
+									<Text style={{ ...styles.text, fontSize: 12 }}>
+										{displayMiddle(results2, names[1], names[2])}
+									</Text>
+									<MaterialCommunityIcons
+										style={styles.vsIcon}
+										name="sword-cross"
+										size={24}
+										color="#1f3a5c"
+									/>
+									<Text
+										style={{
+											...styles.text,
+											fontSize: 12,
+											color: "red",
+											textAlign: "center",
+										}}
+									>
+										{displayMiddleResult(results2, names[1], names[2])}
+									</Text>
+								</View>
+								<Text
+									style={[
+										styles.text_right,
+										{
+											backgroundColor: displayResultsRight(results2)
+												? "red"
+												: "transparent",
+										},
+									]}
+								>
+									{displayResultsRight(results2)}
+								</Text>
+
+								<View style={styles.player}>
+									<Text
+										style={{
+											...styles.text,
+											marginTop: 15,
+											fontSize: 10,
+											paddingHorizontal: 0,
+											textAlign: "center",
+										}}
+									>
+										Top {order[2]} Qualifier
+									</Text>
+									{fotos[2] && (
+										<Image source={{ uri: fotos[2] }} style={styles.gameLogo} />
+									)}
+									<Text
+										style={{
+											...styles.text,
+											marginBottom: 5,
+											fontSize: 10,
+											paddingHorizontal: 20,
+											textAlign: "center",
+										}}
+									>
+										{names[2]}
+									</Text>
+								</View>
+							</View>
+							<TouchableOpacity
+								onPress={() => showHoles(ids[1], ids[2])}
+								style={styles.detailBtn}
+							>
+								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
+									Details
+								</Text>
+							</TouchableOpacity>
+
+							{/* GAME 1 */}
+							<View style={styles.gameBox}>
+								<Text style={styles.tGame}>Game 2</Text>
 								<Text
 									style={[
 										styles.text_left,
@@ -350,7 +531,7 @@ const SemiFinals = ({ navigation }) => {
 								</View>
 								<View style={styles.middle}>
 									<Text style={{ ...styles.text, fontSize: 12 }}>
-										{displayMiddle(results1, names[0], names[1])}
+										{displayMiddle(results1, names[0], names[3])}
 									</Text>
 									<MaterialCommunityIcons
 										style={styles.vsIcon}
@@ -362,11 +543,11 @@ const SemiFinals = ({ navigation }) => {
 										style={{
 											...styles.text,
 											fontSize: 12,
-											color: "green",
+											color: "red",
 											textAlign: "center",
 										}}
 									>
-										{displayMiddleResult(results1, names[0], names[1])}
+										{displayMiddleResult(results1, names[0], names[3])}
 									</Text>
 								</View>
 								<Text
@@ -391,121 +572,9 @@ const SemiFinals = ({ navigation }) => {
 											textAlign: "center",
 										}}
 									>
-										Top {order[1]} Qualifier
-									</Text>
-									{fotos[1] && (
-										<Image source={{ uri: fotos[1] }} style={styles.gameLogo} />
-									)}
-									<Text
-										style={{
-											...styles.text,
-											marginBottom: 5,
-											fontSize: 10,
-											paddingHorizontal: 20,
-											textAlign: "center",
-										}}
-									>
-										{names[1]}
-									</Text>
-								</View>
-							</View>
-							<TouchableOpacity
-								onPress={() => showHoles(ids[0], ids[1])}
-								style={styles.detailBtn}
-							>
-								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
-									Details
-								</Text>
-							</TouchableOpacity>
-							{/* GAME 2 */}
-							<View style={styles.gameBox}>
-								<Text style={styles.tGame}>Game 2</Text>
-								<Text
-									style={[
-										styles.text_left,
-										{
-											backgroundColor: displayResultsLeft(results2)
-												? "red"
-												: "transparent",
-										},
-									]}
-								>
-									{displayResultsLeft(results2)}
-								</Text>
-								<View style={styles.player}>
-									<Text
-										style={{
-											...styles.text,
-											marginTop: 15,
-											fontSize: 10,
-											paddingHorizontal: 0,
-											textAlign: "center",
-										}}
-									>
-										Top {order[2]} Qualifier
-									</Text>
-									{fotos[2] && (
-										<Image source={{ uri: fotos[2] }} style={styles.gameLogo} />
-									)}
-									<Text
-										style={{
-											...styles.text,
-											marginBottom: 5,
-											fontSize: 10,
-											paddingHorizontal: 20,
-											textAlign: "center",
-										}}
-									>
-										{names[2]}
-									</Text>
-								</View>
-								<View style={styles.middle}>
-									<Text style={{ ...styles.text, fontSize: 12 }}>
-										{displayMiddle(results2, names[2], names[3])}
-									</Text>
-									<MaterialCommunityIcons
-										style={styles.vsIcon}
-										name="sword-cross"
-										size={24}
-										color="#1f3a5c"
-									/>
-									<Text
-										style={{
-											...styles.text,
-											fontSize: 12,
-											color: "green",
-											textAlign: "center",
-										}}
-									>
-										{displayMiddleResult(results2, names[2], names[3])}
-									</Text>
-								</View>
-								<Text
-									style={[
-										styles.text_right,
-										{
-											backgroundColor: displayResultsRight(results2)
-												? "red"
-												: "transparent",
-										},
-									]}
-								>
-									{displayResultsRight(results2)}
-								</Text>
-
-								<View style={styles.player}>
-									<Text
-										style={{
-											...styles.text,
-											marginTop: 15,
-											fontSize: 10,
-											paddingHorizontal: 0,
-											textAlign: "center",
-										}}
-									>
 										Top {order[3]} Qualifier
 									</Text>
-									{fotos[3] && (
+									{fotos[1] && (
 										<Image source={{ uri: fotos[3] }} style={styles.gameLogo} />
 									)}
 									<Text
@@ -522,7 +591,7 @@ const SemiFinals = ({ navigation }) => {
 								</View>
 							</View>
 							<TouchableOpacity
-								onPress={() => showHoles(ids[2], ids[3])}
+								onPress={() => showHoles(ids[0], ids[3])}
 								style={styles.detailBtn}
 							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
@@ -555,6 +624,7 @@ const SemiFinals = ({ navigation }) => {
 				<View style={styles.modalContainer}>
 					<View style={styles.modalContent}>
 						<Text style={styles.modalTitle}>Scoresheet</Text>
+
 						{loading ? (
 							<ActivityIndicator
 								style={styles.loader}
@@ -593,16 +663,21 @@ const SemiFinals = ({ navigation }) => {
 									const sameScore =
 										playedByBoth && Number(score1) === Number(score2);
 
+									const isMatchEndingHole =
+										currentMatchResults &&
+										currentMatchResults.matchWonAtHole !== null &&
+										Number(hole) === currentMatchResults.matchWonAtHole;
+
 									const bgColor1 = sameScore
 										? "transparent" // Amarillo claro
 										: playedByBoth && Number(score1) < Number(score2)
-											? "#ffcccc" // Rojo claro
+											? "#d32f2f" // Rojo claro
 											: "transparent";
 
 									const bgColor2 = sameScore
 										? "transparent"
 										: playedByBoth && Number(score2) < Number(score1)
-											? "#ffcccc"
+											? "#d32f2f"
 											: "transparent";
 
 									return (
@@ -612,6 +687,10 @@ const SemiFinals = ({ navigation }) => {
 													...styles.holeCell,
 													borderBottomWidth: 0,
 													borderRightWidth: 1,
+													backgroundColor: isMatchEndingHole
+														? "#d32f2f"
+														: "transparent",
+													color: isMatchEndingHole ? "white" : "black",
 												}}
 											>
 												{hole}
@@ -621,21 +700,42 @@ const SemiFinals = ({ navigation }) => {
 													...styles.gridCell,
 													backgroundColor: bgColor1,
 													borderRightWidth: 1,
+													color: bgColor1 !== "transparent" ? "white" : "black",
 												}}
 											>
-												{score1 || 0}
+												{!score1 || score1 === "0" || score1 === 0
+													? "-"
+													: score1}
 											</Text>
 											<Text
 												style={{
 													...styles.gridCell,
 													backgroundColor: bgColor2,
+													color: bgColor2 !== "transparent" ? "white" : "black",
 												}}
 											>
-												{score2 || 0}
+												{!score2 || score2 === "0" || score2 === 0
+													? "-"
+													: score2}
 											</Text>
 										</View>
 									);
 								})}
+								<Text
+									style={{
+										...styles.buttonText,
+										color: "red",
+										textAlign: "center",
+										marginTop: 10,
+										fontWeight: "650",
+									}}
+								>
+									{displayModalResults(
+										currentMatchResults,
+										player1Name,
+										player2Name
+									)}
+								</Text>
 								<TouchableOpacity
 									onPress={() => setModalVisible(false)}
 									style={{
@@ -800,7 +900,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		marginVertical: 0,
+		marginTop: 16,
 	},
 	gameLogo: {
 		width: 60,

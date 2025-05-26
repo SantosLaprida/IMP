@@ -57,15 +57,15 @@ const Finals = ({ navigation }) => {
 	const [fotosL, setFotosL] = useState(null);
 	const [order, setOrder] = useState(null);
 	const [fotos, setFotos] = useState(null);
+	const [currentMatchResults, setCurrentMatchResults] = useState(null);
 
 	const holes = Array.from({ length: 18 }, (_, i) => i + 1);
 
-	const showHoles = async (player1Id, player2Id) => {
+	const showHoles = async (player1Id, player2Id, collection) => {
 		setModalVisible(true);
 		setLoading(true);
 		try {
 			let tournamentId = await getTournamentId();
-			let collection = "I_Cuartos";
 
 			// Llamada al backend para obtener el scoresheet
 			const response = await getHoles(
@@ -77,6 +77,14 @@ const Finals = ({ navigation }) => {
 
 			const name1 = await getPlayerName(player1Id, tournamentId);
 			const name2 = await getPlayerName(player2Id, tournamentId);
+
+			const matchResults = await compareScores(
+				player1Id,
+				player2Id,
+				tournamentId,
+				collection
+			);
+			setCurrentMatchResults(matchResults);
 
 			if (response) {
 				// Actualizamos el estado con los scores de los jugadores
@@ -116,7 +124,7 @@ const Finals = ({ navigation }) => {
 			const ordersL = await Promise.all(
 				lIds.map((playerId) => getOrderByPlayer(tournamentId, playerId))
 			);
-			const fotosL = qualifiers.map((q) => q.logo);
+			const fotosL = lQualifiers.map((q) => q.logo);
 
 			setFotosL(fotosL);
 			setOrderL(ordersL);
@@ -197,13 +205,24 @@ const Finals = ({ navigation }) => {
 				const torneo = await fetchTournament();
 
 				let name = torneo[0].name;
-				let start_date = torneo[0].start_date;
-				let finish_date = torneo[0].finish_date;
+
 				let logo = torneo[0].logo;
+
+				let start_date = torneo[0].start_date.toDate(); // Firebase Timestamp -> JS Date
+				let finish_date = torneo[0].finish_date.toDate(); // Firebase Timestamp -> JS Date
+
+				const formattedFinishDate = finish_date.toLocaleString("es-AR", {
+					day: "2-digit",
+					month: "2-digit",
+					year: "numeric",
+					hour: "2-digit",
+					minute: "2-digit",
+					hour12: false,
+				});
 
 				setName(name);
 				setStart(start_date);
-				setEnd(finish_date);
+				setEnd(formattedFinishDate);
 				setLogo(logo);
 			} catch (error) {
 				console.error(error);
@@ -256,11 +275,61 @@ const Finals = ({ navigation }) => {
 		if (results.stillPlaying && results.result === 0) {
 			return "All Square";
 		}
+		if (!results.matchWonAtHole && results.result > 0) {
+			return name2 + "\n" + "Won by Playoff";
+		}
+		if (!results.matchWonAtHole && results.result < 0) {
+			return name1 + "\n" + "Won by Playoff";
+		}
 		if (!results.stillPlaying && results.result > 0) {
-			return name2 + " Won";
+			return (
+				name2 +
+				"\n" +
+				(18 - results.matchWonAtHole + 1) +
+				" / " +
+				(18 - results.matchWonAtHole)
+			);
 		}
 		if (!results.stillPlaying && results.result < 0) {
-			return name1 + " Won";
+			return (
+				name1 +
+				"\n" +
+				(18 - results.matchWonAtHole + 1) +
+				" / " +
+				(18 - results.matchWonAtHole)
+			);
+		}
+	};
+	const displayModalResults = (results, name1, name2) => {
+		if (!results) {
+			return null;
+		}
+		if (results.stillPlaying && results.result === 0) {
+			return "All Square";
+		}
+		if (!results.matchWonAtHole && results.result > 0) {
+			return name2 + "\n" + "Won by Playoff";
+		}
+		if (!results.matchWonAtHole && results.result < 0) {
+			return name1 + "\n" + "Won by Playoff";
+		}
+		if (!results.stillPlaying && results.result > 0) {
+			return (
+				name2 +
+				"  " +
+				(18 - results.matchWonAtHole + 1) +
+				"/" +
+				(18 - results.matchWonAtHole)
+			);
+		}
+		if (!results.stillPlaying && results.result < 0) {
+			return (
+				name1 +
+				"  " +
+				(18 - results.matchWonAtHole + 1) +
+				"/" +
+				(18 - results.matchWonAtHole)
+			);
 		}
 	};
 
@@ -385,7 +454,7 @@ const Finals = ({ navigation }) => {
 										style={{
 											...styles.text,
 											fontSize: 12,
-											color: "green",
+											color: "red",
 											textAlign: "center",
 										}}
 									>
@@ -433,7 +502,7 @@ const Finals = ({ navigation }) => {
 								</View>
 							</View>
 							<TouchableOpacity
-								onPress={() => showHoles(ids[0], ids[1])}
+								onPress={() => showHoles(ids[0], ids[1], "I_Finales")}
 								style={styles.detailBtn}
 							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
@@ -511,7 +580,7 @@ const Finals = ({ navigation }) => {
 										style={{
 											...styles.text,
 											fontSize: 12,
-											color: "green",
+											color: "red",
 											textAlign: "center",
 										}}
 									>
@@ -563,7 +632,7 @@ const Finals = ({ navigation }) => {
 								</View>
 							</View>
 							<TouchableOpacity
-								onPress={() => showHoles(idsL[0], idsL[1])}
+								onPress={() => showHoles(idsL[0], idsL[1], "I_TercerCuarto")}
 								style={styles.detailBtn}
 							>
 								<Text style={{ ...styles.text, fontSize: 12, marginTop: 3 }}>
@@ -635,16 +704,21 @@ const Finals = ({ navigation }) => {
 									const sameScore =
 										playedByBoth && Number(score1) === Number(score2);
 
+									const isMatchEndingHole =
+										currentMatchResults &&
+										currentMatchResults.matchWonAtHole !== null &&
+										Number(hole) === currentMatchResults.matchWonAtHole;
+
 									const bgColor1 = sameScore
-										? "transparent"
+										? "transparent" // Amarillo claro
 										: playedByBoth && Number(score1) < Number(score2)
-											? "#ffcccc"
+											? "#d32f2f" // Rojo claro
 											: "transparent";
 
 									const bgColor2 = sameScore
 										? "transparent"
 										: playedByBoth && Number(score2) < Number(score1)
-											? "#ffcccc"
+											? "#d32f2f"
 											: "transparent";
 
 									return (
@@ -654,6 +728,10 @@ const Finals = ({ navigation }) => {
 													...styles.holeCell,
 													borderBottomWidth: 0,
 													borderRightWidth: 1,
+													backgroundColor: isMatchEndingHole
+														? "#d32f2f"
+														: "transparent",
+													color: isMatchEndingHole ? "white" : "black",
 												}}
 											>
 												{hole}
@@ -663,28 +741,49 @@ const Finals = ({ navigation }) => {
 													...styles.gridCell,
 													backgroundColor: bgColor1,
 													borderRightWidth: 1,
+													color: bgColor1 !== "transparent" ? "white" : "black",
 												}}
 											>
-												{score1 || 0}
+												{!score1 || score1 === "0" || score1 === 0
+													? "-"
+													: score1}
 											</Text>
 											<Text
 												style={{
 													...styles.gridCell,
 													backgroundColor: bgColor2,
+													color: bgColor2 !== "transparent" ? "white" : "black",
 												}}
 											>
-												{score2 || 0}
+												{!score2 || score2 === "0" || score2 === 0
+													? "-"
+													: score2}
 											</Text>
 										</View>
 									);
 								})}
+								<Text
+									style={{
+										...styles.buttonText,
+										color: "red",
+										textAlign: "center",
+										marginTop: 10,
+										fontWeight: "650",
+									}}
+								>
+									{displayModalResults(
+										currentMatchResults,
+										player1Name,
+										player2Name
+									)}
+								</Text>
 								<TouchableOpacity
 									onPress={() => setModalVisible(false)}
 									style={{
 										...styles.button,
 										marginVertical: 15,
 										backgroundColor: "#1f3a5c",
-										width: "97%",
+										width: "95%",
 										padding: 3,
 									}}
 								>
@@ -841,7 +940,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		marginVertical: 0,
+		marginTop: 16,
 	},
 	gameLogo: {
 		width: 60,
