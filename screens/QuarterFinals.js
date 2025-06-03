@@ -296,10 +296,18 @@ const QuarterFinals = ({ navigation }) => {
 		if (results.stillPlaying && results.result === 0) {
 			return "All Square";
 		}
-		if (!results.matchWonAtHole && results.result > 0) {
+		if (
+			!results.matchWonAtHole &&
+			!results.stillPlaying &&
+			results.result > 0
+		) {
 			return name2 + "\n" + "Won by Playoff";
 		}
-		if (!results.matchWonAtHole && results.result < 0) {
+		if (
+			!results.matchWonAtHole &&
+			!results.stillPlaying &&
+			results.result < 0
+		) {
 			return name1 + "\n" + "Won by Playoff";
 		}
 		if (!results.stillPlaying && results.result > 0) {
@@ -328,10 +336,18 @@ const QuarterFinals = ({ navigation }) => {
 		if (results.stillPlaying && results.result === 0) {
 			return "All Square";
 		}
-		if (!results.matchWonAtHole && results.result > 0) {
+		if (
+			!results.matchWonAtHole &&
+			!results.stillPlaying &&
+			results.result > 0
+		) {
 			return name2 + "\n" + "Won by Playoff";
 		}
-		if (!results.matchWonAtHole && results.result < 0) {
+		if (
+			!results.matchWonAtHole &&
+			!results.stillPlaying &&
+			results.result < 0
+		) {
 			return name1 + "\n" + "Won by Playoff";
 		}
 		if (!results.stillPlaying && results.result > 0) {
