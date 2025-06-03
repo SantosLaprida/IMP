@@ -151,7 +151,7 @@ const Classification = ({ navigation }) => {
 													left: -5,
 												}}
 											>
-												{jugador.holes_played}
+												{jugador.holesPlayed}
 											</Text>
 										</View>
 									</TouchableOpacity>
