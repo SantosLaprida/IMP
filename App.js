@@ -90,47 +90,19 @@ function BetStackScreen() {
 	);
 }
 
-function CustomTabBarButton({ children, onPress, isFocused }) {
-	return (
-		<TouchableOpacity
-			onPress={onPress}
-			style={{
-				backgroundColor: isFocused ? "black" : "black",
-				borderColor: isFocused ? "#2296F3" : "grey",
-				height: 80,
-				justifyContent: "center",
-				alignItems: "center",
-				borderRadius: 60,
-				marginHorizontal: 10,
-				width: 80,
-				position: "relative",
-				top: -20,
-				borderWidth: 3,
-			}}
-		>
-			{children}
-		</TouchableOpacity>
-	);
-}
-
-function BetTabBarButton(props) {
-	const isFocused = useIsFocused();
-	return <CustomTabBarButton {...props} isFocused={isFocused} />;
-}
-
 function TabNavigator() {
 	return (
 		<Tab.Navigator
-			initialRouteName="Bet"
+			initialRouteName="Home"
 			screenOptions={({ route }) => ({
 				tabBarIcon: ({ focused, color, size }) => {
 					let iconName;
-					if (route.name === "Home") {
+					if (route.name === "Tournaments") {
+						iconName = focused ? "trophy" : "trophy-outline";
+					} else if (route.name === "Home") {
 						iconName = focused ? "home" : "home-outline";
-					} else if (route.name === "Bet") {
+					} else if (route.name === "Wallet") {
 						iconName = focused ? "cash" : "cash-outline";
-					} else if (route.name === "Account") {
-						iconName = focused ? "person" : "person-outline";
 					}
 					return <Ionicons name={iconName} size={22} color={color} />;
 				},
@@ -138,7 +110,7 @@ function TabNavigator() {
 					paddingBottom: 20,
 					paddingTop: 10,
 					height: 80,
-					backgroundColor: "black",
+					backgroundColor: "white",
 					borderColor: "transparent",
 				},
 				tabBarLabelStyle: {
@@ -149,42 +121,20 @@ function TabNavigator() {
 		>
 			<Tab.Screen
 				options={{ headerShown: false }}
-				name="Home"
-				component={Home}
+				name="Tournaments"
+				component={Tournaments}
 			/>
 
 			<Tab.Screen
-				options={{
-					headerShown: false,
-					tabBarButton: (props) => <BetTabBarButton {...props} />,
-					tabBarIcon: ({ focused, color, size }) => (
-						<>
-							<Ionicons
-								name="cash"
-								size={30}
-								color={focused ? "#2296F3" : "grey"}
-							/>
-							<Text
-								style={{
-									color: focused ? "#2296F3" : "grey",
-									fontFamily: "p-bold",
-									fontSize: 12,
-								}}
-							>
-								Bet
-							</Text>
-						</>
-					),
-					tabBarLabel: () => null, // Remove default label
-				}}
-				name="Bet"
+				options={{ headerShown: false }}
+				name="Home"
 				component={BetStackScreen}
 			/>
 
 			<Tab.Screen
 				options={{ headerShown: false }}
-				name="Account"
-				component={Settings}
+				name="Wallet"
+				component={Wallet}
 			/>
 		</Tab.Navigator>
 	);

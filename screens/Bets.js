@@ -27,8 +27,10 @@ import {
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Finals from "./Finals";
 
 const Bets = ({ navigation, route }) => {
@@ -244,7 +246,7 @@ const Bets = ({ navigation, route }) => {
 
 	const showText = () => {
 		if (canBet && hasBet) {
-			return "Change your bet";
+			return "Manage bet";
 		}
 		if (hasBet && !canBet) {
 			return "See your bet";
@@ -306,118 +308,203 @@ const Bets = ({ navigation, route }) => {
 			locations={[0, 15]}
 			style={styles.container}
 		>
-			<View style={styles.box}>
-				<Text
-					style={{
-						...styles.text,
-						fontSize: 18,
-						textDecorationLine: "underline",
-						fontFamily: "p-bold",
-					}}
-				>
-					Tournament of the week
-				</Text>
-
-				<View style={styles.logoBox}>
-					<Text
-						style={{
-							...styles.text,
-							paddingBottom: 5,
-							fontSize: 15,
-							marginTop: 0,
-						}}
-					>
-						{name}
-					</Text>
-					<Image source={{ uri: logo }} style={styles.logo} />
-					<View>
-						<Text style={{ ...styles.text, fontSize: 10, marginTop: 5 }}>
-							{"Starting date: " + start}
-						</Text>
-						<Text style={{ ...styles.text, fontSize: 10 }}>
-							{"Finish date: " + end}
-						</Text>
-					</View>
-				</View>
+			<View
+				style={{
+					width: "100%",
+					backgroundColor: "white",
+					height: 70,
+					flexDirection: "row",
+					alignItems: "center",
+				}}
+			>
+				<Image
+					source={require("../assets/images/IMP-02.png")}
+					style={{ ...styles.impLogo, marginHorizontal: 25, marginTop: 10 }}
+				/>
 				<Text
 					style={{
 						...styles.text,
 						fontSize: 10,
-						marginTop: 5,
-						textDecorationLine: "underline",
+						fontFamily: "p-bold",
+						paddingHorizontal: 5,
+						marginLeft: "auto",
+						marginTop: 10,
 					}}
 				>
-					IMPORTANT: Available until Wednesday 9pm.
+					Name, LastName
 				</Text>
-				<TouchableOpacity
-					style={{ ...styles.btnClick, marginTop: 15 }}
-					onPress={async () => {
-						setLoadingButton(true);
+				<MaterialIcons
+					style={{ marginRight: 15, position: "relative", bottom: -3.5 }}
+					name="account-circle"
+					size={30}
+					color="#1f3a5c"
+				/>
+			</View>
 
-						try {
-							if (canBet) {
-								navigation.navigate("Players");
-							} else {
-								setModalVisible1(true);
-							}
-						} finally {
-							setLoadingButton(false);
-						}
-					}}
-					disabled={loadingButton}
-				>
-					{loadingButton || loadingBetStatus ? (
-						<ActivityIndicator size="small" color="white" />
-					) : (
-						<Text style={styles.btnClickText}>{showText()}</Text>
-					)}
+			<View
+				style={{
+					...styles.box,
+					flexDirection: "row",
+					padding: 12,
+					paddingTop: 5,
+					flexWrap: "wrap",
+					justifyContent: "space-around",
+				}}
+			>
+				<TouchableOpacity style={styles.buttonContainer}>
+					<View style={styles.button}>
+						<Ionicons name="golf" size={20} color="#1f3a5c" />
+					</View>
+					<Text style={{ ...styles.buttonText, marginTop: -8 }}>Games</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={styles.buttonContainer}>
+					<View style={styles.button}>
+						<Ionicons name="golf" size={20} color="#1f3a5c" />
+					</View>
+					<Text style={{ ...styles.buttonText, marginTop: -8 }}>
+						Rules of Play
+					</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={styles.buttonContainer}>
+					<View style={styles.button}>
+						<Ionicons name="golf" size={20} color="#1f3a5c" />
+					</View>
+					<Text style={{ ...styles.buttonText, marginTop: -8 }}>
+						Leaderboard
+					</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={styles.buttonContainer}>
+					<View style={styles.button}>
+						<Ionicons name="golf" size={20} color="#1f3a5c" />
+					</View>
+					<Text style={{ ...styles.buttonText, marginTop: -8 }}>
+						Top Winners
+					</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={styles.buttonContainer}>
+					<View style={styles.button}>
+						<Ionicons name="golf" size={20} color="#1f3a5c" />
+					</View>
+					<Text style={{ ...styles.buttonText, marginTop: -8 }}>
+						Bet History
+					</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={styles.buttonContainer}>
+					<View style={styles.button}>
+						<Ionicons name="golf" size={20} color="#1f3a5c" />
+					</View>
+					<Text style={{ ...styles.buttonText, marginTop: -8 }}>
+						Highlights
+					</Text>
 				</TouchableOpacity>
 			</View>
 
-			<View style={styles.box}>
-				<View style={styles.order}>
+			<View style={{ ...styles.box, maxHeight: 480 }}>
+				<View
+					style={{
+						width: "100%",
+						backgroundColor: "#1f3a5c",
+						borderTopRightRadius: 15,
+						borderTopLeftRadius: 15,
+					}}
+				>
 					<Text
 						style={{
 							...styles.text,
-							paddingBottom: 5,
-							fontSize: 18,
-							textDecorationLine: "underline",
-							fontFamily: "p-bold",
+							fontSize: 12,
+							padding: 7,
+							color: "white",
+							textAlign: "center",
 						}}
 					>
-						Your Bet
+						Tournament of the week
 					</Text>
 				</View>
-				<View style={{ ...styles.content, marginTop: 0 }}>
-					<TouchableOpacity
-						style={styles.buttonContainer}
-						onPress={handleEditBet}
-					>
-						<View style={styles.button}>
-							<FontAwesome6 name="people-line" size={22} color="#1f3a5c" />
-						</View>
-						<Text style={styles.buttonText}>My bet</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.buttonContainer}
-						onPress={handleSeeBets}
-					>
-						<View style={styles.button}>
-							<FontAwesome6 name="people-line" size={22} color="#1f3a5c" />
-						</View>
-						<Text style={styles.buttonText}>See bets</Text>
-					</TouchableOpacity>
-				</View>
-
-				<TouchableOpacity
-					style={styles.btnClick}
-					onPress={() => handleRouting("Bets")}
+				<View
+					style={{ flexDirection: "row", marginTop: 10, alignItems: "center" }}
 				>
-					<View style={styles.btnDot}>
-						<Text style={styles.btnClickText}>Watch games live</Text>
-						{activeBracketStage && <BlinkDot />}
+					<Image source={{ uri: logo }} style={{ ...styles.logo }} />
+					<View style={{ marginHorizontal: 20 }}>
+						<Text
+							style={{
+								...styles.text,
+								fontSize: 15,
+							}}
+						>
+							{name}
+						</Text>
+
+						<Text style={{ ...styles.text, fontSize: 10, marginTop: -5 }}>
+							{"Starting date: " + start + " at 09:00 PM"}
+						</Text>
 					</View>
-				</TouchableOpacity>
+				</View>
+				<View>
+					{equipo.length > 1 ? (
+						<ScrollView
+							showsVerticalScrollIndicator={false}
+							style={{ marginTop: 10 }}
+						>
+							<Text
+								style={{
+									...styles.text,
+									fontSize: 12,
+									textAlign: "center",
+									marginBottom: 5,
+								}}
+							>
+								Your players
+							</Text>
+							{equipo.map((jugador) => (
+								<TouchableOpacity key={jugador.idPlayer}>
+									<View
+										style={{
+											...styles.jugadorItem,
+											flexDirection: "row",
+											justifyContent: "space-between",
+										}}
+									>
+										<Text style={{ ...styles.text, fontSize: 11 }}>
+											{jugador.name}
+										</Text>
+										<Text style={{ ...styles.text, fontSize: 11 }}>
+											{jugador.rank}
+										</Text>
+									</View>
+								</TouchableOpacity>
+							))}
+							<TouchableOpacity
+								style={{ ...styles.btnClick }}
+								onPress={async () => {
+									setLoadingButton(true);
+
+									try {
+										if (canBet) {
+											navigation.navigate("Players");
+										} else {
+											setModalVisible1(true);
+										}
+									} finally {
+										setLoadingButton(false);
+									}
+								}}
+								disabled={loadingButton}
+							>
+								{loadingButton || loadingBetStatus ? (
+									<ActivityIndicator size="small" color="white" />
+								) : (
+									<Text style={styles.btnClickText}>{showText()}</Text>
+								)}
+							</TouchableOpacity>
+						</ScrollView>
+					) : (
+						<Text
+							style={{ ...styles.text, textAlign: "center", marginTop: 10 }}
+						>
+							No bet
+						</Text>
+					)}
+				</View>
 			</View>
 
 			<Modal
@@ -544,41 +631,47 @@ const Bets = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
 	box: {
-		padding: 20,
 		alignItems: "center",
 		borderRadius: 20,
-		width: 350,
+		width: "90%",
 		marginTop: 15,
-		backgroundColor: "rgb(255, 252, 241)",
-		shadowColor: "#000", // Color de la sombra
-		shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
-		shadowOpacity: 0.3, // Opacidad de la sombra
-		shadowRadius: 6, // Radio de la sombra
-		// Para Android
-		elevation: 10, // Elevación para la sombra
-	},
-	logo: {
-		width: 150,
-		height: 100,
-		borderRadius: 10,
-		backgroundColor: "black",
-		padding: 5,
-	},
-	logoBox: {
-		backgroundColor: "rgb(255, 252, 241)",
+		backgroundColor: "white",
 		shadowColor: "#000",
 		shadowOffset: { width: 0, height: 4 },
 		shadowOpacity: 0.3,
 		shadowRadius: 6,
 		elevation: 10,
-		borderRadius: 10,
-
-		padding: 10,
-		paddingHorizontal: 40,
-		justifyContent: "center",
-		alignItems: "center",
-		marginVertical: 10,
 	},
+	buttonContainer: {
+		alignItems: "center",
+		marginHorizontal: 7,
+		backgroundColor: "white",
+	},
+	button: {
+		backgroundColor: "transparent",
+		marginHorizontal: 10,
+		borderRadius: 50,
+		width: 50,
+		height: 50,
+		alignItems: "center",
+		justifyContent: "center",
+		borderWidth: 0,
+		borderColor: "#17628b94",
+		borderBottomColor: "rgba(0, 0, 0, 0.2)",
+	},
+	impLogo: {
+		width: 50,
+		height: 50,
+		backgroundColor: "transparent",
+	},
+	logo: {
+		width: 60,
+		height: 60,
+		borderRadius: 50,
+		backgroundColor: "black",
+		padding: 5,
+	},
+
 	miniBox: {
 		backgroundColor: "rgb(255, 252, 241)",
 		shadowColor: "#000",
@@ -698,10 +791,10 @@ const styles = StyleSheet.create({
 	},
 	btnClick: {
 		backgroundColor: "#1f3a5c",
-		padding: 6,
-		margin: 5,
+		padding: 5,
+		marginTop: 7,
 		borderRadius: 10,
-		width: 300,
+		width: "100%",
 		alignItems: "center",
 		borderWidth: 0,
 		borderColor: "#17628b94",
@@ -752,33 +845,7 @@ const styles = StyleSheet.create({
 		justifyContent: "space-between",
 		marginBottom: 0,
 	},
-	buttonContainer: {
-		alignItems: "center",
-		margin: 8,
-		backgroundColor: "rgb(255, 252, 241)",
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 4 },
-		shadowOpacity: 0.3,
-		shadowRadius: 6,
-		elevation: 10,
-		borderRadius: 15,
-		padding: 5,
-		marginHorizontal: 20,
-	},
-	button: {
-		backgroundColor: "#17628b34",
-		padding: 0,
-		margin: 5,
-		marginHorizontal: 20,
-		borderRadius: 50,
-		width: 50,
-		height: 50,
-		alignItems: "center",
-		justifyContent: "center",
-		borderWidth: 0,
-		borderColor: "#17628b94",
-		borderBottomColor: "rgba(0, 0, 0, 0.2)",
-	},
+
 	buttonText: {
 		color: "#1f3a5c",
 		fontSize: 12,
