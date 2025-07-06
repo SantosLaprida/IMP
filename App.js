@@ -47,6 +47,7 @@ import Finals from "./screens/Finals";
 import ThirdPlace from "./screens/ThirdPlace";
 import Results from "./screens/Results";
 import Classification from "./screens/Classification";
+import UpcomingTournaments from "./screens/UpcomingTournaments";
 
 // Configure LogBox
 LogBox.ignoreAllLogs(true);
@@ -205,6 +206,7 @@ function MainStackScreen() {
 			<MainStack.Screen name="Results" component={Results} />
 			<MainStack.Screen name="Classification" component={Classification} />
 			<MainStack.Screen name="Tournaments" component={Tournaments} />
+			<MainStack.Screen name="UpcomingTournaments" component={UpcomingTournaments} />
 		</MainStack.Navigator>
 	);
 }

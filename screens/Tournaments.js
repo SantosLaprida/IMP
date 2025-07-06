@@ -61,25 +61,38 @@ const Tournaments = ({ navigation }) => {
       locations={[0, 15]}
       style={styles.container}
     >
-      <View style={{ ...styles.box, marginTop: -20 }}>
-        <Text style={{ ...styles.text, fontSize: 20, paddingBottom: 50 }}>
-          Upcoming Tournaments
-        </Text>
-        <Image
-          source={require("../assets/images/IMP-02.png")}
-          style={styles.logo}
-        />
-      </View>
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={() => navigation.navigate("UpcomingTournaments")}
+      >
+        <View style={{ ...styles.box, marginTop: -20 }}>
+          <Text style={{ ...styles.text, fontSize: 20, paddingBottom: 50 }}>
+            Upcoming Tournaments
+          </Text>
+          <Image
+            source={require("../assets/images/icon.png")}
+            style={styles.logo}
+          />
+        </View>
+      </TouchableOpacity>
 
-      <View style={styles.box}>
-        <Text style={{ ...styles.text, paddingBottom: 50, fontSize: 20 }}>
-          Recent Tournaments
-        </Text>
-        <Image
-          source={require("../assets/images/IMP-02.png")}
-          style={styles.logo}
-        />
-      </View>
+      <TouchableOpacity>
+        <View style={styles.box}>
+          <Text style={{ ...styles.text, paddingBottom: 50, fontSize: 20 }}>
+            Past Tournaments
+          </Text>
+          <Image
+            source={require("../assets/images/icon.png")}
+            style={styles.logo}
+          />
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Text style={styles.backButtonText}>Back</Text>
+      </TouchableOpacity>
     </LinearGradient>
   );
 };
@@ -220,6 +233,43 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 0,
     marginHorizontal: 15,
+  },
+  backButtonContainer: {
+    width: 300,
+    alignItems: "center",
+    margin: 8,
+    backgroundColor: "rgb(255, 252, 241)",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 10,
+    borderRadius: 15,
+    padding: 5,
+    marginHorizontal: 20,
+    marginTop: 20,
+  },
+
+  backButton: {
+    backgroundColor: "#1f3a5c",
+    padding: 6,
+    margin: 5,
+    marginTop: 30,
+    borderRadius: 10,
+    width: 300,
+    alignItems: "center",
+    borderWidth: 0,
+    borderColor: "#17628b94",
+    borderBottomWidth: 7,
+    borderBottomColor: "rgba(0, 0, 0, 0.2)",
+  },
+
+  backButtonText: {
+    color: "white",
+    fontSize: 14,
+    fontFamily: "p-semibold",
+    position: "relative",
+    bottom: -2,
   },
 });
 
