@@ -76,7 +76,10 @@ const Tournaments = ({ navigation }) => {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity>
+      <TouchableOpacity
+        style={styles.buttonContainer}
+        onPress={() => navigation.navigate("PastTournaments")}
+      >
         <View style={styles.box}>
           <Text style={{ ...styles.text, paddingBottom: 50, fontSize: 20 }}>
             Past Tournaments

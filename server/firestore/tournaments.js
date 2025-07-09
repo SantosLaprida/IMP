@@ -10,6 +10,7 @@ import {
   getDoc,
   addDoc,
   getFirestore,
+  orderBy,
 } from "firebase/firestore";
 
 import { firestore } from "../config/firebaseConfig";
@@ -66,11 +67,32 @@ export const fetchQualifiers = async (TournamentId, collectionName) => {
 export const fetchPastTournaments = async () => {
   const currentYear = new Date().getFullYear().toString();
   try {
-    const querySnapshot = await getDocs(
-      collection(firestore, "I_Torneos", currentYear, "Tournaments")
+    const tournamentRef = collection(
+      firestore,
+      "I_Torneos",
+      currentYear,
+      "Tournaments"
     );
-    //TODO
-    return;
+
+    const q = query(tournamentRef, orderBy("start_date", "asc"));
+    const querySnapshot = await getDocs(q);
+    const allTournaments = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    const activeIndex = allTournaments.findIndex((t) => t.activo === 1);
+
+    if (activeIndex === -1) {
+      console.warn("No active tournament found.");
+      return [];
+    }
+
+    const pastTournaments = allTournaments.slice(
+      Math.max(0, activeIndex - 5),
+      activeIndex
+    );
+    return pastTournaments.reverse();
   } catch (error) {
     console.error("Error fetching past tournaments:", error);
     throw error;
