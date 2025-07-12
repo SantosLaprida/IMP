@@ -1,4 +1,5 @@
-import React from "react";
+import React, { use } from "react";
+import { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,6 +9,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import { fetchBracketPlayers } from "../server/firestore/players";
+
 const MatchBlock = ({ player1, player2 }) => (
   <View style={styles.matchBlock}>
     <Text style={styles.player}>{player1}</Text>
@@ -15,8 +18,37 @@ const MatchBlock = ({ player1, player2 }) => (
   </View>
 );
 
+const renderMatches = (players) => {
+  const matches = [];
+  for (let i = 0; i < players.length; i += 2) {
+    const player1 = players[i]?.name || "TBD";
+    const player2 = players[i + 1]?.name || "TBD";
+    matches.push(<MatchBlock key={i} player1={player1} player2={player2} />);
+  }
+  return matches;
+};
+
 const PastTournament = ({ route, navigation }) => {
   const { tournament } = route.params;
+  const [quarterFinals, setQuarterFinals] = useState([]);
+  const [semiFinals, setSemiFinals] = useState([]);
+  const [finals, setFinals] = useState([]);
+
+  useEffect(() => {
+    const loadMatches = async () => {
+      try {
+        const qf = await fetchBracketPlayers(tournament.id, "I_Cuartos");
+        const sf = await fetchBracketPlayers(tournament.id, "I_Semifinales");
+        const final = await fetchBracketPlayers(tournament.id, "I_Finales");
+        setQuarterFinals(qf);
+        setSemiFinals(sf);
+        setFinals(final);
+      } catch (error) {
+        console.error("Error loading matches:", error);
+      }
+    };
+    loadMatches();
+  }, []);
 
   return (
     <View style={{ flex: 1, backgroundColor: "#fff" }}>
@@ -33,26 +65,22 @@ const PastTournament = ({ route, navigation }) => {
         <ScrollView horizontal contentContainerStyle={styles.bracketContainer}>
           <View style={styles.bracketSection}>
             <Text style={styles.roundTitle}>Quarterfinals</Text>
-            <MatchBlock player1="Player A1" player2="Player A2" />
-            <MatchBlock player1="Player B1" player2="Player B2" />
-            <MatchBlock player1="Player C1" player2="Player C2" />
-            <MatchBlock player1="Player D1" player2="Player D2" />
+            {renderMatches(quarterFinals)}
           </View>
 
           <View style={styles.bracketSection}>
             <Text style={styles.roundTitle}>Semifinals</Text>
-            <MatchBlock player1="Winner A" player2="Winner B" />
-            <MatchBlock player1="Winner C" player2="Winner D" />
+            {renderMatches(semiFinals)}
           </View>
 
           <View style={styles.bracketSection}>
             <Text style={styles.roundTitle}>Final</Text>
-            <MatchBlock player1="Winner SF1" player2="Winner SF2" />
+            {renderMatches(finals)}
           </View>
         </ScrollView>
       </ScrollView>
 
-      {/* Back Button OUTSIDE scroll view */}
+      {/* Back Button BELOW scroll view */}
       <View style={styles.backButtonContainer}>
         <TouchableOpacity
           style={styles.backButton}

@@ -194,7 +194,7 @@ const Home = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.buttonContainer}
-              onPress={() => navigation.navigate("Settings")}
+              onPress={() => navigation.navigate("Account")}
             >
               <View style={styles.button}>
                 <Ionicons name="settings" size={30} color="#1f3a5c" />

@@ -214,6 +214,7 @@ function MainStackScreen() {
       />
       <MainStack.Screen name="PastTournaments" component={PastTournaments} />
       <MainStack.Screen name="PastTournament" component={PastTournament} />
+      <MainStack.Screen name="Settings" component={Settings} />
     </MainStack.Navigator>
   );
 }
