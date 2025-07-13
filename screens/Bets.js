@@ -244,10 +244,10 @@ const Bets = ({ navigation, route }) => {
 
 	const showText = () => {
 		if (canBet && hasBet) {
-			return "Change your bet";
+			return "Change your team";
 		}
 		if (hasBet && !canBet) {
-			return "See your bet";
+			return "See your team";
 		} else {
 			return "Participate";
 		}
@@ -396,7 +396,7 @@ const Bets = ({ navigation, route }) => {
 						<View style={styles.button}>
 							<FontAwesome6 name="people-line" size={22} color="#1f3a5c" />
 						</View>
-						<Text style={styles.buttonText}>My bet</Text>
+						<Text style={styles.buttonText}>My team</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
 						style={styles.buttonContainer}
@@ -405,7 +405,7 @@ const Bets = ({ navigation, route }) => {
 						<View style={styles.button}>
 							<FontAwesome6 name="people-line" size={22} color="#1f3a5c" />
 						</View>
-						<Text style={styles.buttonText}>See bets</Text>
+						<Text style={styles.buttonText}>See players</Text>
 					</TouchableOpacity>
 				</View>
 
@@ -470,7 +470,7 @@ const Bets = ({ navigation, route }) => {
 							<Text
 								style={{ ...styles.text, textAlign: "center", marginTop: 10 }}
 							>
-								No bet
+								No team selected
 							</Text>
 						)}
 
@@ -507,7 +507,7 @@ const Bets = ({ navigation, route }) => {
 								marginBottom: 12,
 							}}
 						>
-							Player Bets
+							Players Selected
 						</Text>
 						{loading ? (
 							<Text>Loading...</Text>

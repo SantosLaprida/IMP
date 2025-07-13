@@ -50,6 +50,7 @@ import Classification from "./screens/Classification";
 import UpcomingTournaments from "./screens/UpcomingTournaments";
 import PastTournaments from "./screens/PastTournaments";
 import PastTournament from "./screens/PastTournament";
+import RulesOfPlay from "./screens/RulesofPlay";
 
 // Configure LogBox
 LogBox.ignoreAllLogs(true);
@@ -116,7 +117,7 @@ function CustomTabBarButton({ children, onPress, isFocused }) {
   );
 }
 
-function BetTabBarButton(props) {
+function PlayersTabBarButton(props) {
   const isFocused = useIsFocused();
   return <CustomTabBarButton {...props} isFocused={isFocused} />;
 }
@@ -124,16 +125,16 @@ function BetTabBarButton(props) {
 function TabNavigator() {
   return (
     <Tab.Navigator
-      initialRouteName="Bet"
+      initialRouteName="Players"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
           if (route.name === "Home") {
             iconName = focused ? "home" : "home-outline";
-          } else if (route.name === "Bet") {
-            iconName = focused ? "cash" : "cash-outline";
-          } else if (route.name === "Account") {
-            iconName = focused ? "person" : "person-outline";
+          } else if (route.name === "Players") {
+            iconName = focused ? "people" : "people-outline";
+          } else if (route.name === "Settings") {
+            iconName = focused ? "settings" : "settings-outline";
           }
           return <Ionicons name={iconName} size={22} color={color} />;
         },
@@ -159,11 +160,11 @@ function TabNavigator() {
       <Tab.Screen
         options={{
           headerShown: false,
-          tabBarButton: (props) => <BetTabBarButton {...props} />,
+          tabBarButton: (props) => <PlayersTabBarButton {...props} />,
           tabBarIcon: ({ focused, color, size }) => (
             <>
               <Ionicons
-                name="cash"
+                name="people"
                 size={30}
                 color={focused ? "#2296F3" : "grey"}
               />
@@ -174,19 +175,19 @@ function TabNavigator() {
                   fontSize: 12,
                 }}
               >
-                Bet
+                Players
               </Text>
             </>
           ),
-          tabBarLabel: () => null, // Remove default label
+          tabBarLabel: () => null,
         }}
-        name="Bet"
-        component={BetStackScreen}
+        name="Players"
+        component={BetStackScreen} // Asegurate que este sea el nuevo componente
       />
 
       <Tab.Screen
         options={{ headerShown: false }}
-        name="Account"
+        name="Settings"
         component={Settings}
       />
     </Tab.Navigator>
@@ -215,6 +216,8 @@ function MainStackScreen() {
       <MainStack.Screen name="PastTournaments" component={PastTournaments} />
       <MainStack.Screen name="PastTournament" component={PastTournament} />
       <MainStack.Screen name="Settings" component={Settings} />
+      <MainStack.Screen name="RulesOfPlay" component={RulesOfPlay} />
+
     </MainStack.Navigator>
   );
 }

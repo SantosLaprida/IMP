@@ -125,9 +125,9 @@ const Players = ({ navigation }) => {
   };
   const getButtonText = () => {
     if (hasBet) {
-      return "Change my bet";
+      return "Change my team";
     } else {
-      return "Place my bet";
+      return "Place my team";
     }
   };
 
@@ -179,7 +179,7 @@ const Players = ({ navigation }) => {
 
   const handleDelete = async () => {
     if (!hasBet) {
-      alert("You don't have a bet to delete");
+      alert("You don't have a team to delete");
       return;
     }
 
@@ -193,7 +193,7 @@ const Players = ({ navigation }) => {
     try {
       const tournamentId = await getTournamentId();
       await deleteBet(tournamentId, playerIds, userId);
-      alert("Bet deleted succesfully");
+      alert("Team deleted succesfully");
       setEquipo([]);
       setJugadores(originalJugadores);
       setLoadingSubmit(false);
@@ -364,7 +364,7 @@ const Players = ({ navigation }) => {
               <ActivityIndicator color="#fff" />
             ) : (
               <Text style={{ ...styles.buttonText, color: "white" }}>
-                Delete Bet
+                Delete Team
               </Text>
             )}
           </TouchableOpacity>
