@@ -306,7 +306,7 @@ const Bets = ({ navigation, route }) => {
 			locations={[0, 15]}
 			style={styles.container}
 		>
-			<View style={styles.box}>
+			<View style={{ ...styles.box, marginTop: 40 }}>
 				<Text
 					style={{
 						...styles.text,

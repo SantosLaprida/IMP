@@ -158,6 +158,9 @@ const Home = ({ navigation }) => {
 				source={require("../assets/images/IMP-02.png")}
 				style={styles.logo}
 			/>
+			<Text style={{ ...styles.buttonText, position: "relative", top: -10 }}>
+				Version 1.1
+			</Text>
 			<View style={styles.row}>
 				<View style={styles.rowContainer}>
 					<View style={{ ...styles.content, marginTop: 10 }}>
