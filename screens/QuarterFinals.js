@@ -376,32 +376,8 @@ const QuarterFinals = ({ navigation }) => {
 			locations={[0, 15]}
 			style={styles.container}
 		>
-			{/* CONTAINER DE ARRIBA */}
-			<View style={styles.box}>
-				<Text
-					style={{
-						...styles.text,
-						paddingBottom: 5,
-						fontSize: 15,
-						marginTop: 0,
-						fontSize: 18,
-						fontFamily: "p-bold",
-						textDecorationLine: "underline",
-					}}
-				>
-					{name}
-				</Text>
-				<View style={styles.logoBox}>
-					<Image source={{ uri: logo }} style={styles.logo} />
-				</View>
-				<View>
-					<Text style={{ ...styles.text, fontSize: 10 }}>
-						{"Finish date: " + end}
-					</Text>
-				</View>
-			</View>
 			{/* CONTAINER DE ABAJO */}
-			<View style={{ ...styles.box, height: 450 }}>
+			<View style={{ ...styles.box }}>
 				<Text
 					style={{
 						...styles.text,
@@ -1120,6 +1096,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		borderRadius: 20,
 		width: "90%",
+		height: "80%",
 		marginTop: 15,
 		backgroundColor: "rgb(255, 252, 241)",
 		shadowColor: "#000", // Color de la sombra
