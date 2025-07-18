@@ -9,7 +9,10 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import { fetchBracketPlayers } from "../server/firestore/players";
+import {
+  fetchBracketPlayers,
+  fetchTournamentWinner,
+} from "../server/firestore/players";
 
 const MatchBlock = ({ player1, player2 }) => (
   <View style={styles.matchBlock}>
@@ -33,6 +36,7 @@ const PastTournament = ({ route, navigation }) => {
   const [quarterFinals, setQuarterFinals] = useState([]);
   const [semiFinals, setSemiFinals] = useState([]);
   const [finals, setFinals] = useState([]);
+  const [winner, setWinner] = useState([]);
 
   useEffect(() => {
     const loadMatches = async () => {
@@ -40,9 +44,11 @@ const PastTournament = ({ route, navigation }) => {
         const qf = await fetchBracketPlayers(tournament.id, "I_Cuartos");
         const sf = await fetchBracketPlayers(tournament.id, "I_Semifinales");
         const final = await fetchBracketPlayers(tournament.id, "I_Finales");
+        const winner = await fetchTournamentWinner(tournament.id);
         setQuarterFinals(qf);
         setSemiFinals(sf);
         setFinals(final);
+        setWinner(winner);
       } catch (error) {
         console.error("Error loading matches:", error);
       }
@@ -57,9 +63,21 @@ const PastTournament = ({ route, navigation }) => {
         <Text style={styles.name}>{tournament.name}</Text>
         <Text style={styles.date}>
           {tournament.start_date?.toDate?.().toLocaleDateString()} –{" "}
-          {tournament.end_date?.toDate?.().toLocaleDateString()}
+          {tournament.finish_date?.toDate?.().toLocaleDateString()}
         </Text>
 
+        {winner && (
+          <View style={{ marginVertical: 20, alignItems: "center" }}>
+            <Text style={{ fontSize: 16, fontWeight: "600", color: "#1f3a5c" }}>
+              🏆 Winner:
+            </Text>
+            <Text
+              style={{ fontSize: 18, fontWeight: "bold", color: "#00796b" }}
+            >
+              {winner}
+            </Text>
+          </View>
+        )}
         <Text style={styles.bracketTitle}>Tournament Bracket</Text>
 
         <ScrollView horizontal contentContainerStyle={styles.bracketContainer}>

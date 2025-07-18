@@ -228,3 +228,30 @@ export const fetchBracketPlayers = async (tournamentId, collectionName) => {
     throw error;
   }
 };
+
+export const fetchTournamentWinner = async (tournamentId) => {
+  try {
+    const year = new Date().getFullYear().toString();
+    const winnerDocRef = query(
+      collection(
+        firestore,
+        "I_Torneos",
+        year,
+        "Tournaments",
+        tournamentId,
+        "I_Resultados"
+      ),
+      orderBy("rank", "asc")
+    );
+
+    const querySnapshot = await getDocs(winnerDocRef);
+    if (querySnapshot.empty) {
+      throw new Error("No winner found");
+    }
+    const winnerDoc = querySnapshot.docs[0];
+    return winnerDoc.data().name;
+  } catch (error) {
+    console.error("Error fetching tournament winner:", error);
+    throw error;
+  }
+};
