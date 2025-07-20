@@ -18,7 +18,6 @@ export const storeTeam = async (userId, team, tournamentId) => {
   const currentYear = new Date().getFullYear().toString();
   try {
     const teamDocRef = doc(
-      
       firestore,
       "I_Torneos",
       currentYear,
@@ -61,7 +60,6 @@ export const fetchTeam = async (tournamentId, userId) => {
     const teamDoc = await getDoc(teamDocRef);
 
     if (teamDoc.exists()) {
-
       return teamDoc.data(); // Return the team data if the document exists
     } else {
       console.log("No team found for this user.");
@@ -69,6 +67,35 @@ export const fetchTeam = async (tournamentId, userId) => {
     }
   } catch (error) {
     console.error("Error fetching team:", error);
+    throw error;
+  }
+};
+
+export const getAmountOfUserBets = async (tournamentId) => {
+  const year = new Date().getFullYear().toString();
+  try {
+    const querySnapshot = await getDocs(
+      collection(
+        firestore,
+        "I_Torneos",
+        year,
+        "Tournaments",
+        tournamentId,
+        "I_Apuestas"
+      )
+    );
+    const userBets = querySnapshot.size;
+    if (userBets === 0) {
+      console.log("No bets found for this tournament.");
+    }
+
+    console.log(
+      `Number of user bets for tournament ${tournamentId}:`,
+      userBets
+    );
+    return userBets;
+  } catch (error) {
+    console.error("Error fetching user bets:", error);
     throw error;
   }
 };
