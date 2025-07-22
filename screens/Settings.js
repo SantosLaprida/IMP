@@ -17,12 +17,16 @@ import { Ionicons } from "@expo/vector-icons";
 import { Modal } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 
+import { logoutUser, deleteAccount } from "../server/auth/authFunctions";
+
 const Settings = ({ navigation }) => {
   const [user, setUser] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [supportModalVisible, setSupportModalVisible] = useState(false);
   const [accountModalVisible, setAccountModalVisible] = useState(false);
   const [notifyToggle, setNotifyToggle] = useState(false);
+  const [notificationInfoVisible, setNotificationInfoVisible] = useState(false);
+  const [reportModalVisible, setReportModalVisible] = useState(false);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -50,7 +54,7 @@ const Settings = ({ navigation }) => {
           <View style={{ ...styles.content, marginTop: 10 }}>
             <TouchableOpacity
               style={styles.buttonContainer}
-              onPress={() => setModalVisible(true)}
+              // onPress={() => setModalVisible(true)}
             >
               <View style={styles.button}>
                 <Ionicons name="people" size={28} color="#1f3a5c" />
@@ -145,24 +149,22 @@ const Settings = ({ navigation }) => {
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>Account Options</Text>
 
-            <View style={{ width: "100%" }}>
-              <TouchableOpacity
-                style={[styles.modalActionButton, styles.editButton]}
-                onPress={() => setNotifyToggle(!notifyToggle)}
-              >
-                <Text style={styles.editButtonText}>
-                  {notifyToggle
-                    ? "Notifications On"
-                    : "Notify me when a tournament starts"}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            {/* <TouchableOpacity
+              style={[styles.modalActionButton, styles.editButton]}
+              onPress={() => reportBugOrImprovement()}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.editButtonText}>
+                {"Report a bug or improvement"}
+              </Text>
+            </TouchableOpacity> */}
 
             <TouchableOpacity
               style={[styles.modalActionButton, styles.editButton]}
               onPress={() => {
                 setAccountModalVisible(false);
-                console.log("Edit Account pressed");
+                logoutUser();
+                navigation.navigate("Login");
               }}
             >
               <Text style={styles.editButtonText}>Log out</Text>
@@ -172,6 +174,8 @@ const Settings = ({ navigation }) => {
               style={[styles.modalActionButton, styles.deleteButton]}
               onPress={() => {
                 setAccountModalVisible(false);
+                deleteAccount();
+                navigation.navigate("Login");
                 console.log("Delete Account pressed");
               }}
             >
@@ -183,6 +187,29 @@ const Settings = ({ navigation }) => {
               style={styles.modalCloseButton}
             >
               <Text style={styles.modalCloseText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        visible={notificationInfoVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setNotificationInfoVisible(false)}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Notifications</Text>
+            <Text style={styles.modalText}>
+              Turning notifications on will allow the app to send you important
+              updates like tournament start alerts, bet confirmations, and
+              results. You can always turn it off later.
+            </Text>
+            <TouchableOpacity
+              onPress={() => setNotificationInfoVisible(false)}
+              style={styles.modalCloseButton}
+            >
+              <Text style={styles.modalCloseText}>Got it</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -278,7 +305,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    width: 300,
+    width: 340,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 20,
@@ -316,7 +343,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   modalActionButton: {
-    width: "100%",
+    width: "90%",
     paddingVertical: 14,
     paddingHorizontal: 20,
     borderRadius: 12,
