@@ -16,8 +16,12 @@ import {
 
 const MatchBlock = ({ player1, player2 }) => (
   <View style={styles.matchBlock}>
-    <Text style={styles.player}>{player1}</Text>
-    <Text style={styles.player}>{player2}</Text>
+    <View style={styles.playerRow}>
+      <Text style={styles.playerName}>{player1}</Text>
+    </View>
+    <View style={styles.playerRow}>
+      <Text style={styles.playerName}>{player2}</Text>
+    </View>
   </View>
 );
 
@@ -114,19 +118,18 @@ const PastTournament = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 24,
-    marginTop: 50,
+    marginTop: 30,
     alignItems: "center",
   },
   logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 16,
+    width: 200,
+    height: 150,
     resizeMode: "contain",
   },
   name: {
-    fontSize: 22,
+    fontSize: 15,
     fontWeight: "bold",
-    marginBottom: 8,
+    marginBottom: 3,
   },
   date: {
     fontSize: 16,
@@ -188,6 +191,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "p-semibold",
   },
+
+  playerRow: {
+  flexDirection: "row",
+  justifyContent: "flex-start",
+},
+
+playerName: {
+  fontSize: 14,
+  fontWeight: "500",
+  minWidth: 120, // ensures names align in the same column
+  textAlign: "left",
+},
 });
 
 export default PastTournament;

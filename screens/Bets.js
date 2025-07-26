@@ -311,7 +311,7 @@ const Bets = ({ navigation, route }) => {
       locations={[0, 15]}
       style={styles.container}
     >
-      <View style={{ ...styles.box, marginTop: 40 }}>
+      <View style={{ ...styles.box, marginTop: 80 }}>
         <Text
           style={{
             ...styles.text,
@@ -390,7 +390,7 @@ const Bets = ({ navigation, route }) => {
               fontFamily: "p-bold",
             }}
           >
-            Your Bet
+            Your team
           </Text>
         </View>
         <View style={{ ...styles.content, marginTop: 0 }}>
@@ -410,7 +410,7 @@ const Bets = ({ navigation, route }) => {
             <View style={styles.button}>
               <FontAwesome6 name="people-line" size={22} color="#1f3a5c" />
             </View>
-            <Text style={styles.buttonText}>See players</Text>
+            <Text style={styles.buttonText}>See Selections</Text>
           </TouchableOpacity>
         </View>
 
