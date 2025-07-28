@@ -51,6 +51,7 @@ import UpcomingTournaments from "./screens/UpcomingTournaments";
 import PastTournaments from "./screens/PastTournaments";
 import PastTournament from "./screens/PastTournament";
 import RulesOfPlay from "./screens/RulesofPlay";
+import Account from "./screens/Account";
 
 // Configure LogBox
 LogBox.ignoreAllLogs(true);
@@ -217,6 +218,7 @@ function MainStackScreen() {
 			<MainStack.Screen name="PastTournament" component={PastTournament} />
 			<MainStack.Screen name="Settings" component={Settings} />
 			<MainStack.Screen name="RulesOfPlay" component={RulesOfPlay} />
+			<MainStack.Screen name="Account" component={Account} />
 		</MainStack.Navigator>
 	);
 }

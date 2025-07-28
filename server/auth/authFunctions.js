@@ -126,3 +126,36 @@ export const deleteAccount = async () => {
     throw error;
   }
 };
+
+export const checkNotifiactionToggle = async (userId) => {
+  try {
+    const userRef = doc(firestore, "I_Members", userId);
+    const userDoc = await getDoc(userRef);
+
+    if (userDoc.exists()) {
+      const data = userDoc.data();
+
+      if (data.emailNotifications === undefined) {
+        await updateDoc(userRef, { emailNotifications: false });
+        return false;
+      }
+      return data.emailNotifications;
+    } else {
+      console.log("No such user document!");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error checking notification toggle:", error);
+  }
+  return false;
+};
+
+export const updateEmailNotificationPreference = async (userId, newValue) => {
+  try {
+    const userRef = doc(firestore, "I_Members", userId);
+    await updateDoc(userRef, { emailNotifications: newValue });
+    console.log("Email notification preference updated:", newValue);
+  } catch (error) {
+    console.error("Error updating email notification preference:", error);
+  }
+};

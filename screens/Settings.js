@@ -24,9 +24,9 @@ const Settings = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [supportModalVisible, setSupportModalVisible] = useState(false);
   const [accountModalVisible, setAccountModalVisible] = useState(false);
-  const [notifyToggle, setNotifyToggle] = useState(false);
+  const [emailNotifications, setEmailNotifications] = useState(false);
   const [notificationInfoVisible, setNotificationInfoVisible] = useState(false);
-  const [reportModalVisible, setReportModalVisible] = useState(false);
+  const [emailInfoModalVisible, setEmailInfoModalVisible] = useState(false);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -38,6 +38,30 @@ const Settings = ({ navigation }) => {
 
     loadUser();
   }, []);
+
+  useEffect(() => {
+  const loadEmailPreference = async () => {
+    try {
+      const storedPreference = await AsyncStorage.getItem('emailNotifications');
+      if (storedPreference !== null) {
+        setEmailNotifications(JSON.parse(storedPreference));
+      }
+    } catch (error) {
+      console.error('Error loading email preference:', error);
+    }
+  };
+  
+  loadEmailPreference();
+}, []);
+
+  const handleEmailToggle = async (value) => {
+    try {
+      setEmailNotifications(value);
+      await AsyncStorage.setItem('emailNotifications', JSON.stringify(value));
+    } catch (error) {
+      console.error('Error saving email preference:', error);
+    }
+  };
 
   return (
     <LinearGradient
@@ -84,7 +108,8 @@ const Settings = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.buttonContainer}
-              onPress={() => setAccountModalVisible(true)}
+              // onPress={() => setAccountModalVisible(true)}
+              onPress={() => navigation.navigate("Account")}
             >
               <View style={styles.button}>
                 <Ionicons name="person-circle" size={28} color="#1f3a5c" />
@@ -139,7 +164,7 @@ const Settings = ({ navigation }) => {
           </View>
         </View>
       </Modal>
-      <Modal
+     <Modal
         visible={accountModalVisible}
         transparent={true}
         animationType="slide"
@@ -148,16 +173,41 @@ const Settings = ({ navigation }) => {
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitle}>Account Options</Text>
+            
+            {/* Email Notifications Toggle */}
+            <View style={styles.toggleWithInfoContainer}>
+              <View style={styles.toggleContainer}>
+                <View style={styles.toggleLabelContainer}>
+                  <Text style={styles.toggleLabel}>Tournament emails</Text>
+                </View>
+                <TouchableOpacity
+                  style={[
+                    styles.toggleSwitch,
+                    emailNotifications ? styles.toggleSwitchOn : styles.toggleSwitchOff
+                  ]}
+                  onPress={() => handleEmailToggle(!emailNotifications)}
+                >
+                  <View
+                    style={[
+                      styles.toggleThumb,
+                      emailNotifications ? styles.toggleThumbOn : styles.toggleThumbOff
+                    ]}
+                  />
+                </TouchableOpacity>
+              </View>
+              
+              {/* Info Icon */}
+              <TouchableOpacity 
+                style={styles.infoIconContainer}
+                onPress={() => {
+                  console.log("Info icon pressed");
+                  setEmailInfoModalVisible(true);
+                }}
+              >
+                <Ionicons name="information-circle" size={24} color="#1f3a5c" />
+              </TouchableOpacity>
+            </View>
 
-            {/* <TouchableOpacity
-              style={[styles.modalActionButton, styles.editButton]}
-              onPress={() => reportBugOrImprovement()}
-              activeOpacity={0.7}
-            >
-              <Text style={styles.editButtonText}>
-                {"Report a bug or improvement"}
-              </Text>
-            </TouchableOpacity> */}
 
             <TouchableOpacity
               style={[styles.modalActionButton, styles.editButton]}
@@ -214,9 +264,39 @@ const Settings = ({ navigation }) => {
           </View>
         </View>
       </Modal>
+
+      <Modal
+        visible={emailInfoModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setEmailInfoModalVisible(false)}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.infoModalContainer}>
+            <View style={styles.infoModalHeader}>
+              <Ionicons name="mail" size={24} color="#1f3a5c" />
+              <Text style={styles.infoModalTitle}>Email Notifications</Text>
+            </View>
+            <Text style={styles.infoModalText}>
+              When enabled, you'll receive a weekly email notification when new tournaments are available to join. 
+              This helps you stay updated on upcoming competitions and never miss an opportunity to participate.
+            </Text>
+            <Text style={styles.infoModalText}>
+              You can turn this off at any time from your account settings.
+            </Text>
+            <TouchableOpacity
+              onPress={() => setEmailInfoModalVisible(false)}
+              style={styles.infoModalCloseButton}
+            >
+              <Text style={styles.modalCloseText}>Got it</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </LinearGradient>
   );
 };
+
 
 const styles = StyleSheet.create({
   row: {
@@ -305,7 +385,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    width: 340,
+    width: 375,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 20,
@@ -334,6 +414,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 10,
+    marginTop: 8,
   },
   modalCloseText: {
     color: "white",
@@ -355,25 +436,126 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-
   editButton: {
     backgroundColor: "#1f3a5c",
   },
-
   deleteButton: {
     backgroundColor: "#f44336",
   },
-
   editButtonText: {
     color: "white",
     fontSize: 16,
     fontWeight: "600",
   },
-
   deleteButtonText: {
     color: "white",
     fontSize: 16,
     fontWeight: "600",
+  },
+  toggleWithInfoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '90%',
+    marginVertical: 8,
+  },
+  toggleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 1,
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    backgroundColor: "#1f3a5c",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#efe9eaff',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  toggleLabelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  toggleLabel: {
+    fontSize: 16,
+    color: 'white',
+    marginLeft: 10,
+    fontWeight: '600',
+  },
+  toggleSwitch: {
+    width: 50,
+    height: 28,
+    borderRadius: 14,
+    paddingHorizontal: 2,
+    justifyContent: 'center',
+  },
+  toggleSwitchOn: {
+    backgroundColor: '#4CAF50',
+  },
+  toggleSwitchOff: {
+    backgroundColor: '#ccc',
+  },
+  toggleThumb: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+  toggleThumbOn: {
+    alignSelf: 'flex-end',
+  },
+  toggleThumbOff: {
+    alignSelf: 'flex-start',
+  },
+  infoIconContainer: {
+    marginLeft: 10,
+    padding: 5,
+  },
+  infoModalContainer: {
+    width: 320,
+    backgroundColor: "white",
+    borderRadius: 16,
+    padding: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  infoModalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  infoModalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#1f3a5c",
+    marginLeft: 8,
+  },
+  infoModalText: {
+    fontSize: 14,
+    color: "#333",
+    textAlign: "center",
+    marginBottom: 12,
+    lineHeight: 20,
+  },
+  infoModalCloseButton: {
+    backgroundColor: "#1f3a5c",
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+    borderRadius: 12,
+    marginTop: 10,
   },
 });
 
