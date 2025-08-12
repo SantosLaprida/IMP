@@ -224,6 +224,9 @@ function MainStackScreen() {
 }
 
 function App() {
+
+	
+
 	// Log for apk build testing
 
 	// Call useFonts at the top level of the functional component

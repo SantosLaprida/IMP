@@ -35,6 +35,7 @@ const Players = ({ navigation }) => {
   const [ordenado, setOrdenado] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [numberPlayers, setNumberPlayers] = useState([]);
+  const [sortMode, setSortMode] = useState("rank");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -98,6 +99,25 @@ const Players = ({ navigation }) => {
       throw error;
     }
   };
+
+  // const applySort = (mode) => {
+  //   setSortMode(mode);
+  //   if (mode === "rank") {
+  //     const jugadoresOrdenados = [...jugadores].sort((a, b) => {
+  //       if (a.rank === 0) return 1;
+  //       if (b.rank === 0) return -1;
+  //       return a.rank - b.rank;
+  //     });
+  //     setJugadores(jugadoresOrdenados);
+  //   } else {
+  //     //scramble
+  //     const jugadoresDesordenados = [...jugadores].sort(
+  //       () => Math.random() - 0.5
+  //     );
+  //     setJugadores(jugadoresDesordenados);
+  //   }
+  // };
+
   const ordenarPorRank = () => {
     if (ordenado) {
       setJugadores(originalJugadores);
@@ -235,7 +255,7 @@ const Players = ({ navigation }) => {
         contentContainerStyle={styles.scrollViewContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.box}>
+        <View style={styles.topBox}>
           <Text
             style={{
               ...styles.text,
@@ -386,8 +406,32 @@ const Players = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  topBox: {
+    width: "97%",
+    maxWidth: 400,
+    alignSelf: "center",
+
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    borderRadius: 15,
+    alignItems: "center",
+    backgroundColor: "rgb(255, 252, 241)",
+    height: 340,
+    marginBottom: 10,
+    shadowColor: "#000", // Color de la sombra
+    shadowOffset: { width: 0, height: 4 }, // Desplazamiento de la sombra
+    shadowOpacity: 0.3, // Opacidad de la sombra
+    shadowRadius: 6, // Radio de la sombra
+    // Para Android
+    elevation: 10, // Elevación para la sombra
+  },
+
   box: {
-    paddingHorizontal: 50,
+    width: "97%",
+    maxWidth: 450,
+    alignSelf: "center",
+
+    paddingHorizontal: 20,
     paddingVertical: 20,
     borderRadius: 15,
     alignItems: "center",
@@ -403,10 +447,11 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     borderRadius: 5,
-    width: 250,
+    width: "90%",
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: 10,
+    backgroundColor: "rgb(255, 252, 241)",
   },
   scrollViewContent: {
     flexGrow: 1,
@@ -424,7 +469,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     backgroundColor: "#f0f0f0",
     borderRadius: 5,
-    width: 250,
+    width: "100%",
   },
   container: {
     flex: 1,
@@ -443,10 +488,10 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
   },
   scroll: {
-    width: 250,
+    width: "92%",
   },
   input: {
-    width: 250,
+    width: "90%",
     borderColor: "#1f3a5c",
     borderWidth: 1,
     padding: 5,
@@ -489,7 +534,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     backgroundColor: "transparent",
-    width: 250,
+    width: "88%",
   },
   element: {
     padding: 5,

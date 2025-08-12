@@ -81,34 +81,8 @@ const Account = ({ navigation }) => {
     <>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>Account Settings</Text>
-
-        <View style={styles.settingItem}>
-          <TouchableOpacity
-            style={styles.infoIcon}
-            onPress={() =>
-              Alert.alert(
-                "Email Notifications",
-                "Receive weekly emails when new tournaments are available to join."
-              )
-            }
-          >
-            <Ionicons name="information-circle" size={24} color="white" />
-          </TouchableOpacity>
-          <View style={styles.labelContainer}>
-            <Text style={styles.label}>Tournament Emails</Text>
-          </View>
-          <TouchableOpacity
-            onPress={handleEmailToggle}
-            style={styles.toggleButton}
-          >
-            <View
-              style={[
-                styles.toggleCircle,
-                emailNotifications ? styles.toggleOn : styles.toggleOff,
-              ]}
-            />
-          </TouchableOpacity>
-        </View>
+        {/* <View style={styles.settingItem}>
+        </View> */}
         <TouchableOpacity
           style={[styles.actionButton, styles.logoutButton]}
           onPress={handleLogout}

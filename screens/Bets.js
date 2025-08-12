@@ -32,6 +32,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import Finals from "./Finals";
+import { ensureWeeklyNotification } from "../NotificationManager";
 
 const Bets = ({ navigation, route }) => {
   const { team } = route.params || {};
@@ -56,6 +57,10 @@ const Bets = ({ navigation, route }) => {
   const [canBet, setCanBet] = useState(true);
   const [loadingButton, setLoadingButton] = useState(false);
   const [loadingBetStatus, setLoadingBetStatus] = useState(true);
+
+  React.useEffect(() => {
+    ensureWeeklyNotification();
+  	}, []);
 
   useEffect(() => {
     if (Array.isArray(team)) {
