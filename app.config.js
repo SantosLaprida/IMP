@@ -16,8 +16,8 @@ export default {
     assetBundlePatterns: ["**/*"],
     android: {
       package: "com.IMPprototype.IMPprototype",
-      versionCode: 12,
-      "permissions": ["POST_NOTIFICATIONS"],
+      versionCode: 13,
+      permissions: ["POST_NOTIFICATIONS"],
       adaptiveIcon: {
         foregroundImage: "./assets/images/icon.png",
         backgroundColor: "#ffffff",
@@ -27,10 +27,10 @@ export default {
     ios: {
       bundleIdentifier: "com.charlie1203.internetmatchplay",
       googleServicesFile: "./GoogleService-Info.plist",
-      buildNumber: "1.0.3",
+      buildNumber: "1.0.4",
       supportsTablet: true,
       infoPlist: {
-        "NSUserNotificationsUsageDescription": "We send a weekly reminder.",
+        NSUserNotificationsUsageDescription: "We send a weekly reminder.",
         ITSAppUsesNonExemptEncryption: false,
       },
     },

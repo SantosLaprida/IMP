@@ -22,6 +22,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { set } from "firebase/database";
 
 const Players = ({ navigation }) => {
   const [equipo, setEquipo] = useState([]);
@@ -32,54 +33,74 @@ const Players = ({ navigation }) => {
   const [hasBet, setHasBet] = useState(false);
   const [limit, setLimit] = useState(null);
   const [classification, setClassification] = useState(null);
-  const [ordenado, setOrdenado] = useState(false);
+  // const [ordenado, setOrdenado] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [numberPlayers, setNumberPlayers] = useState([]);
   const [sortMode, setSortMode] = useState("rank");
+
+  const sortByRank = (list) => {
+    const arr = [...list];
+    arr.sort((a, b) => {
+      if (a.rank === 0 && b.rank !== 0) return 1;
+      if (b.rank === 0 && a.rank !== 0) return -1;
+      return a.rank - b.rank;
+    });
+    return arr;
+  };
+
+  const picks = (list) => {
+    const arr = [...list];
+    // sort by apuestas field
+    arr.sort((a, b) => {
+      if (a.apuestas === 0 && b.apuestas !== 0) return 1;
+      if (b.apuestas === 0 && a.apuestas !== 0) return -1;
+      return a.apuestas - b.apuestas;
+    });
+    return arr;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const tournamentId = await getTournamentId();
-        const data = await fetchPlayersFromFirestore(tournamentId);
-        const limit = await getNumberPlayersBet(tournamentId);
+
+        const [data, limit] = await Promise.all([
+          fetchPlayersFromFirestore(tournamentId),
+          getNumberPlayersBet(tournamentId),
+        ]);
+
         setLimit(limit);
-        setJugadores(data);
         setOriginalJugadores(data);
         setNumberPlayers(data.length);
+
+        let available = data;
+        let mappedTeam = [];
 
         const user = auth.currentUser;
         if (user) {
           const userId = user.uid;
 
-          // Verificar si el usuario ya hizo una apuesta
-          const betMade = await userMadeBet(tournamentId, userId);
-          setHasBet(betMade); // Actualiza el estado hasBet
+          const [betFlag, userTeam] = await Promise.all([
+            userMadeBet(tournamentId, userId),
+            fetchTeam(tournamentId, userId),
+          ]);
 
-          const userTeam = await fetchTeam(tournamentId, userId);
+          setHasBet(!!betFlag);
 
           if (userTeam) {
             const teamArray = Object.values(userTeam);
+            mappedTeam = teamArray
+              .map((id) => data.find((p) => p.idPlayer === id))
+              .filter(Boolean);
 
-            const mappedTeam = teamArray
-              .map((idPlayer) => {
-                return data.find((player) => player.idPlayer === idPlayer);
-              })
-              .filter((player) => player); // Filtrar resultados undefined
-
-            setEquipo(mappedTeam);
-
-            // Remover jugadores del equipo de la lista de jugadores disponibles
-            setJugadores((prevJugadores) =>
-              prevJugadores.filter(
-                (jugador) =>
-                  !mappedTeam.some(
-                    (player) => player.idPlayer === jugador.idPlayer
-                  )
-              )
-            );
+            const teamIds = new Set(mappedTeam.map((p) => p.idPlayer));
+            available = data.filter((p) => !teamIds.has(p.idPlayer));
           }
         }
+
+        setEquipo(mappedTeam);
+        setJugadores(sortByRank(available));
+        setSortMode("rank");
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -100,39 +121,30 @@ const Players = ({ navigation }) => {
     }
   };
 
-  // const applySort = (mode) => {
-  //   setSortMode(mode);
-  //   if (mode === "rank") {
-  //     const jugadoresOrdenados = [...jugadores].sort((a, b) => {
-  //       if (a.rank === 0) return 1;
-  //       if (b.rank === 0) return -1;
-  //       return a.rank - b.rank;
-  //     });
-  //     setJugadores(jugadoresOrdenados);
+  // const applySort = () => {
+  //   if (sortMode === "scramble") {
+  //     ordenarPorRank();
+  //     setSortMode("rank");
   //   } else {
   //     //scramble
-  //     const jugadoresDesordenados = [...jugadores].sort(
-  //       () => Math.random() - 0.5
-  //     );
+  //     const jugadoresDesordenados = [...jugadores].sort(() => {
+  //       return Math.random() - 0.5;
+  //     });
   //     setJugadores(jugadoresDesordenados);
+  //     setSortMode("scramble");
   //   }
   // };
 
   const ordenarPorRank = () => {
-    if (ordenado) {
-      setJugadores(originalJugadores);
-    } else {
-      const jugadoresOrdenados = [...jugadores].sort((a, b) => {
-        // Si `a.rank` es 0, lo mueve al final
-        if (a.rank === 0) return 1;
-        // Si `b.rank` es 0, lo mueve al final
-        if (b.rank === 0) return -1;
-        // Orden normal de menor a mayor
-        return a.rank - b.rank;
-      });
-      setJugadores(jugadoresOrdenados);
-    }
-    setOrdenado(!ordenado);
+    const jugadoresOrdenados = [...jugadores].sort((a, b) => {
+      // Si `a.rank` es 0, lo mueve al final
+      if (a.rank === 0) return 1;
+      // Si `b.rank` es 0, lo mueve al final
+      if (b.rank === 0) return -1;
+      // Orden normal de menor a mayor
+      return a.rank - b.rank;
+    });
+    setJugadores(jugadoresOrdenados);
   };
 
   const agregarJugadorAlEquipo = (jugador, limit) => {
@@ -275,7 +287,9 @@ const Players = ({ navigation }) => {
           />
           <View style={styles.itemTitle}>
             <Text style={styles.text}>Player</Text>
-            <Text style={styles.text}>Ranking</Text>
+            <Text style={styles.text}>
+              {sortMode === "rank" ? "Ranking" : "Picks"}
+            </Text>
           </View>
           {loading ? (
             <ActivityIndicator
@@ -304,7 +318,7 @@ const Players = ({ navigation }) => {
                       {jugador.name}
                     </Text>
                     <Text style={{ ...styles.text, fontSize: 11 }}>
-                      {jugador.rank}
+                      {sortMode === "rank" ? jugador.rank : jugador.apuestas}
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -322,10 +336,19 @@ const Players = ({ navigation }) => {
               position: "absolute",
               bottom: 0,
             }}
-            onPress={ordenarPorRank}
+            // On press either scramble or sort by rank
+            onPress={() => {
+              setJugadores((prev) => {
+                const nextMode = sortMode === "rank" ? "scramble" : "rank";
+                const nextList =
+                  nextMode === "rank" ? sortByRank(prev) : picks(prev);
+                setSortMode(nextMode);
+                return nextList;
+              });
+            }}
           >
             <Text style={{ ...styles.buttonText, color: "white" }}>
-              Sort by Rank
+              {sortMode === "rank" ? "Sort by Picks" : "Sort by Rank"}
             </Text>
           </TouchableOpacity>
         </View>
