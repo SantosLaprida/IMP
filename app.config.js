@@ -16,7 +16,7 @@ export default {
     assetBundlePatterns: ["**/*"],
     android: {
       package: "com.IMPprototype.IMPprototype",
-      versionCode: 13,
+      versionCode: 14,
       permissions: ["POST_NOTIFICATIONS"],
       adaptiveIcon: {
         foregroundImage: "./assets/images/icon.png",

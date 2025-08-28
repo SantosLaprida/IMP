@@ -32,7 +32,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import Finals from "./Finals";
-import { ensureWeeklyNotification } from "../NotificationManager";
+import {
+  requestIfUndetermined,
+  openSystemSettings,
+} from "../notification-permission";
+import { registerPushTokenForUser } from "../server/push-register";
+import { Platform, Alert } from "react-native";
 
 const Bets = ({ navigation, route }) => {
   const { team } = route.params || {};
@@ -58,9 +63,51 @@ const Bets = ({ navigation, route }) => {
   const [loadingButton, setLoadingButton] = useState(false);
   const [loadingBetStatus, setLoadingBetStatus] = useState(true);
 
-  React.useEffect(() => {
-    ensureWeeklyNotification();
-  	}, []);
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      const res = await requestIfUndetermined();
+      if (!mounted) return;
+
+      if (res.granted) {
+        const user = auth.currentUser;
+        if (user) {
+          try {
+            const token = await registerPushTokenForUser(user.uid);
+            if (!mounted) return;
+            console.log("Saved Expo push token:", token);
+          } catch (e) {
+            console.warn("Failed saving push token:", e);
+          }
+        } else {
+          console.log("No signed-in user yet; will save token later.");
+        }
+        return;
+      }
+
+      if (res.status !== "undetermined") {
+        const user = auth.currentUser;
+        if (user) {
+          await handleNotificationDenial(user.uid);
+          if (!mounted) return;
+
+          Alert.alert(
+            "Enable notifications",
+            "Turn on notifications to get the Wednesday 9pm reminder.",
+            [
+              { text: "Not now", style: "cancel" },
+              { text: "Open Settings", onPress: openSystemSettings },
+            ]
+          );
+        }
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (Array.isArray(team)) {
