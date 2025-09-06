@@ -35,6 +35,32 @@ export const fetchTournament = async () => {
   }
 };
 
+export const fetchQualifiersIds = async (TournamentId, collectionName) => {
+  const currentYear = new Date().getFullYear().toString();
+  try {
+    const querySnapshot = await getDocs(collection(
+      firestore,
+      "I_Torneos",
+      currentYear,
+      "Tournaments",
+      TournamentId,
+      collectionName
+    ));
+
+    let ids = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      ids.push(data.playerId);
+    });
+    return ids;
+
+    
+  } catch (error) {
+    console.error("Error fetching qualifiers:", error);
+    throw error;
+  }
+};
+
 export const fetchQualifiers = async (TournamentId, collectionName) => {
   const currentYear = new Date().getFullYear().toString();
   try {

@@ -24,8 +24,10 @@ const firestore = getFirestore();
  */
 
 export const getMinimumClassification = async (tournamentId) => {
+  
+  const currentYear = new Date().getFullYear().toString();
   try {
-    const tournamentDocRef = doc(db, "I_Torneos", tournamentId);
+    const tournamentDocRef = doc(db, "I_Torneos", currentYear, "Tournaments", tournamentId);
 
     const tournamentDoc = await getDoc(tournamentDocRef);
 

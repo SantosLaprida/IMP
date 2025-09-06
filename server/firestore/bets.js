@@ -12,7 +12,73 @@ import {
   getFirestore,
 } from "firebase/firestore";
 
+import { fetchQualifiersIds } from "./tournaments";
+
 import { firestore } from "../config/firebaseConfig";
+
+
+const fetchApuestasIds = async (tournamentId, userId) => {
+  const currentYear = new Date().getFullYear().toString();
+  try {
+    const querySnapshot = doc(firestore, "I_Torneos", currentYear, "Tournaments", tournamentId, "I_Apuestas", userId);
+    const q = await getDoc(querySnapshot);
+    let ids = [];
+    if (q.exists()) {
+      const data = q.data();
+      for (const key in data) {
+        ids.push(data[key]);
+      }
+    }
+    return ids;
+
+  } catch (error) {
+    console.error("Error fetching bets:", error);
+    return;
+  }
+}
+
+export const hasUserClassified = async (tournamentId, userId) => {
+  const currentYear = new Date().getFullYear().toString();
+  try {
+    const tournamentRef = doc(firestore, "I_Torneos", currentYear, "Tournaments", tournamentId);
+    const tournamentRefDoc = await getDoc(tournamentRef);
+
+    if (!tournamentRefDoc.exists()) {
+      console.log("Tournament not found.");
+      return null;
+    }
+
+    const apuestasRef = doc(tournamentRef, "I_Apuestas", userId);
+    const apuestasDoc = await getDoc(apuestasRef);
+1
+    if (!apuestasDoc.exists()) {
+      console.log("User has not placed a bet.");
+      return false;
+    }
+    const minimoClasificacion = tournamentRefDoc.data().minimoClasificacion || 0;
+    
+    if (minimoClasificacion === 0) {
+      console.log("No minimum classification set.");
+      return null;
+    }
+
+    const ids = await fetchQualifiersIds(tournamentId, "I_Cuartos");
+    const apuestasIds = await fetchApuestasIds(tournamentId, userId);
+    let result = [];
+
+    apuestasIds.forEach((id) => {
+      if (ids.includes(id)) {
+        result.push(id);
+      }
+    });
+
+    return [result.length >= minimoClasificacion, result];
+
+  } catch (error) {
+    console.error("Error checking user classification:", error);
+    return [false, []];
+  }
+};
 
 export const userMadeBet = async (tournamentId, userId) => {
   const currentYear = new Date().getFullYear().toString();

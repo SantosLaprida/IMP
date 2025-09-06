@@ -1,3 +1,5 @@
+import { auth } from "../server/config/firebaseConfig";
+
 import { getPlayerName } from "../server/firestore/players";
 import { getHoles } from "../server/firestore/utils";
 import {
@@ -6,6 +8,7 @@ import {
 } from "../server/firestore/tournaments";
 import React, { useState, useEffect, use } from "react";
 import { compareScores, showResults } from "../server/matchUtils/matchUtils";
+import { hasUserClassified } from "../server/firestore/bets";
 
 import {
 	View,
@@ -53,6 +56,9 @@ const QuarterFinals = ({ navigation }) => {
 	const [order, setOrder] = useState(null);
 	const [fotos, setFotos] = useState(null);
 	const [currentMatchResults, setCurrentMatchResults] = useState(null);
+	const [user, setUser] = useState(null);
+	const [hasClassified, setHasClassified] = useState(false);
+	const [classifiedIds, setClassifiedIds] = useState(new Set());
 
 	const holes = Array.from({ length: 18 }, (_, i) => i + 1);
 
@@ -97,6 +103,8 @@ const QuarterFinals = ({ navigation }) => {
 		setLoading(false);
 	};
 
+	const isPicked = (playerId) => hasClassified && classifiedIds.has(playerId);
+
 	useEffect(() => {
 		const getTournamentData = async () => {
 			try {
@@ -137,6 +145,12 @@ const QuarterFinals = ({ navigation }) => {
 			const ids = qualifiers.map((q) => q.id_player);
 			const orders = qualifiers.map((q) => q.order);
 			const fotos = qualifiers.map((q) => q.logo);
+			setUser(auth.currentUser);
+
+			const [status, idsPicked] = await hasUserClassified(tournamentId, auth.currentUser.uid);
+
+			setHasClassified(status);            
+			setClassifiedIds(new Set(idsPicked)); 
 
 			setFotos(fotos);
 			setOrder(orders);
@@ -1243,6 +1257,12 @@ const styles = StyleSheet.create({
 		padding: 3,
 		color: "#1f3a5c",
 		paddingHorizontal: 10,
+	},
+	pickedPlayer: {
+		borderWidth: 2,
+		borderColor: "#d32f2f", // red border (or your theme color)
+		borderRadius: 12,
+		backgroundColor: "rgba(211, 47, 47, 0.1)", // light red tint
 	},
 });
 
