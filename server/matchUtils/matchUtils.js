@@ -182,7 +182,7 @@ export const fetchResults = async (tournamentId) => {
       "I_Resultados"
     );
 
-    const q = query(finalsCollectionRef, orderBy("Rank"));
+    const q = query(finalsCollectionRef, orderBy("rank"));
     const querySnapshot = await getDocs(q);
     const names = [];
 

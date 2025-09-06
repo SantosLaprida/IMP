@@ -48,16 +48,22 @@ const Players = ({ navigation }) => {
     return arr;
   };
 
-  const picks = (list) => {
+  const sortByPicks = (list) => {
     const arr = [...list];
-    // sort by apuestas field
     arr.sort((a, b) => {
-      if (a.apuestas === 0 && b.apuestas !== 0) return 1;
-      if (b.apuestas === 0 && a.apuestas !== 0) return -1;
-      return a.apuestas - b.apuestas;
+      const av = a.apuestas ?? 0;
+      const bv = b.apuestas ?? 0;
+
+      if (av === 0 && bv !== 0) return 1;
+      if (bv === 0 && av !== 0) return -1;
+
+      if (av !== bv) return bv - av;
+
+      return a.rank - b.rank;
     });
     return arr;
   };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -341,7 +347,7 @@ const Players = ({ navigation }) => {
               setJugadores((prev) => {
                 const nextMode = sortMode === "rank" ? "scramble" : "rank";
                 const nextList =
-                  nextMode === "rank" ? sortByRank(prev) : picks(prev);
+                  nextMode === "rank" ? sortByRank(prev) : sortByPicks(prev);
                 setSortMode(nextMode);
                 return nextList;
               });
