@@ -5,6 +5,7 @@ import {
 	fetchQualifiers,
 } from "../server/firestore/tournaments";
 import { compareScores, showResults } from "../server/matchUtils/matchUtils";
+import { hasUserClassified } from "../server/firestore/bets";
 import { set } from "firebase/database";
 
 import React, { useState, useEffect } from "react";
@@ -24,6 +25,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { reload } from "firebase/auth";
 import { useRoute } from "@react-navigation/native";
 import { FunctionDeclarationSchemaType } from "firebase/vertexai-preview";
+
+import { auth } from "../server/config/firebaseConfig";
 
 const SemiFinals = ({ navigation }) => {
 	const route = useRoute();
@@ -53,6 +56,9 @@ const SemiFinals = ({ navigation }) => {
 	const [order, setOrder] = useState(null);
 	const [fotos, setFotos] = useState(null);
 	const [currentMatchResults, setCurrentMatchResults] = useState(null);
+	const [user, setUser] = useState(null);
+	const [hasClassified, setHasClassified] = useState(false);
+	const [classifiedIds, setClassifiedIds] = useState(new Set());
 
 	const holes = Array.from({ length: 18 }, (_, i) => i + 1);
 
@@ -97,8 +103,11 @@ const SemiFinals = ({ navigation }) => {
 		setLoading(false);
 	};
 
+	const isPicked = (playerId) => hasClassified && classifiedIds.has(playerId);
+
 	const fetchPlayers = async () => {
 		setLoading(true);
+		setUser(auth.currentUser);
 		try {
 			const tournamentId = await getTournamentId();
 			const qualifiers = (
@@ -113,7 +122,12 @@ const SemiFinals = ({ navigation }) => {
 				sortedIds.map((playerId) => getOrderByPlayer(tournamentId, playerId))
 			);
 
-			console.log(orders);
+			
+
+			const [status, idsPicked] = await hasUserClassified(tournamentId, auth.currentUser.uid);
+
+			setHasClassified(status);            
+			setClassifiedIds(new Set(idsPicked)); 
 
 			setFotos(fotos);
 			setOrder(orders);
@@ -381,7 +395,7 @@ const SemiFinals = ({ navigation }) => {
 								>
 									{displayResultsLeft(results2)}
 								</Text>
-								<View style={styles.player}>
+								<View style={[styles.player, isPicked(ids[1]) && styles.pickedPlayer]}>
 									<Text
 										style={{
 											...styles.text,
@@ -442,7 +456,7 @@ const SemiFinals = ({ navigation }) => {
 									{displayResultsRight(results2)}
 								</Text>
 
-								<View style={styles.player}>
+								<View style={[styles.player, isPicked(ids[2]) && styles.pickedPlayer]}>
 									<Text
 										style={{
 											...styles.text,
@@ -494,7 +508,7 @@ const SemiFinals = ({ navigation }) => {
 								>
 									{displayResultsLeft(results1)}
 								</Text>
-								<View style={styles.player}>
+								<View style={[styles.player, isPicked(ids[0]) && styles.pickedPlayer]}>
 									<Text
 										style={{
 											...styles.text,
@@ -554,7 +568,7 @@ const SemiFinals = ({ navigation }) => {
 								>
 									{displayResultsRight(results1)}
 								</Text>
-								<View style={styles.player}>
+								<View style={[styles.player, isPicked(ids[3]) && styles.pickedPlayer]}>
 									<Text
 										style={{
 											...styles.text,
@@ -989,6 +1003,12 @@ const styles = StyleSheet.create({
 		padding: 3,
 		color: "#1f3a5c",
 		paddingHorizontal: 10,
+	},
+	pickedPlayer: {
+		borderWidth: 2,
+		borderColor: "#2fcdd3ff", // red border (or your theme color)
+		borderRadius: 12,
+		backgroundColor: "rgba(47, 192, 211, 0.1)", // light red tint
 	},
 });
 

@@ -138,6 +138,7 @@ const QuarterFinals = ({ navigation }) => {
 
 	const fetchPlayers = async () => {
 		setLoading(true);
+		setUser(auth.currentUser);
 		try {
 			const tournamentId = await getTournamentId();
 			const qualifiers = await fetchQualifiers(tournamentId, "I_Cuartos");
@@ -145,7 +146,6 @@ const QuarterFinals = ({ navigation }) => {
 			const ids = qualifiers.map((q) => q.id_player);
 			const orders = qualifiers.map((q) => q.order);
 			const fotos = qualifiers.map((q) => q.logo);
-			setUser(auth.currentUser);
 
 			const [status, idsPicked] = await hasUserClassified(tournamentId, auth.currentUser.uid);
 
@@ -428,7 +428,7 @@ const QuarterFinals = ({ navigation }) => {
 								>
 									{displayResultsLeft(results2)}
 								</Text>
-								<View style={styles.player}>
+								<View style={[styles.player, isPicked(ids[1]) && styles.pickedPlayer]}>
 									<Text
 										style={{
 											...styles.text,
@@ -488,7 +488,7 @@ const QuarterFinals = ({ navigation }) => {
 								>
 									{displayResultsRight(results2)}
 								</Text>
-								<View style={styles.player}>
+								<View style={[styles.player, isPicked(ids[6]) && styles.pickedPlayer]}>
 									<Text
 										style={{
 											...styles.text,
@@ -540,7 +540,7 @@ const QuarterFinals = ({ navigation }) => {
 								>
 									{displayResultsLeft(results3)}
 								</Text>
-								<View style={styles.player}>
+								<View style={[styles.player, isPicked(ids[2]) && styles.pickedPlayer]}>
 									<Text
 										style={{
 											...styles.text,
@@ -600,7 +600,7 @@ const QuarterFinals = ({ navigation }) => {
 								>
 									{displayResultsRight(results3)}
 								</Text>
-								<View style={styles.player}>
+								<View style={[styles.player, isPicked(ids[5]) && styles.pickedPlayer]}>
 									<Text
 										style={{
 											...styles.text,
@@ -651,7 +651,7 @@ const QuarterFinals = ({ navigation }) => {
 								>
 									{displayResultsLeft(results4)}
 								</Text>
-								<View style={styles.player}>
+								<View style={[styles.player, isPicked(ids[3]) && styles.pickedPlayer]}>
 									<Text
 										style={{
 											...styles.text,
@@ -712,7 +712,7 @@ const QuarterFinals = ({ navigation }) => {
 									{displayResultsRight(results4)}
 								</Text>
 
-								<View style={styles.player}>
+								<View style={[styles.player, isPicked(ids[4]) && styles.pickedPlayer]}>
 									<Text
 										style={{
 											...styles.text,
@@ -763,7 +763,7 @@ const QuarterFinals = ({ navigation }) => {
 								>
 									{displayResultsLeft(results1)}
 								</Text>
-								<View style={styles.player}>
+								<View style={[styles.player, isPicked(ids[0]) && styles.pickedPlayer]}>
 									<Text
 										style={{
 											...styles.text,
@@ -823,7 +823,7 @@ const QuarterFinals = ({ navigation }) => {
 								>
 									{displayResultsRight(results1)}
 								</Text>
-								<View style={styles.player}>
+								<View style={[styles.player, isPicked(ids[7]) && styles.pickedPlayer]}>
 									<Text
 										style={{
 											...styles.text,
@@ -1260,9 +1260,9 @@ const styles = StyleSheet.create({
 	},
 	pickedPlayer: {
 		borderWidth: 2,
-		borderColor: "#d32f2f", // red border (or your theme color)
+		borderColor: "#2fcdd3ff", // red border (or your theme color)
 		borderRadius: 12,
-		backgroundColor: "rgba(211, 47, 47, 0.1)", // light red tint
+		backgroundColor: "rgba(47, 192, 211, 0.1)", // light red tint
 	},
 });
 
