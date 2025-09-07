@@ -2,6 +2,7 @@ import { registerUser } from "../server/auth/authFunctions";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import React, { useState, useEffect } from "react";
+import { KeyboardAvoidingView, Platform } from "react-native";
 import {
 	View,
 	Text,
@@ -83,6 +84,10 @@ export default function Register({ navigation }) {
 	};
 
 	return (
+		<KeyboardAvoidingView
+			style={{ flex: 1 }}
+			behavior={Platform.OS === "ios" ? "padding" : "height"}
+		>
 		<LinearGradient
 			colors={["#17628b34", "white"]}
 			locations={[0, 15]}
@@ -207,6 +212,8 @@ export default function Register({ navigation }) {
 				</>
 			)}
 		</LinearGradient>
+		</KeyboardAvoidingView>
+		
 	);
 }
 
@@ -241,7 +248,7 @@ const styles = StyleSheet.create({
 		minHeight: 250, // Altura mínima para container2
 		width: "100%", // Asegurar que ocupe el ancho completo
 		alignItems: "center",
-		paddingVertical: 40,
+		paddingVertical: 25,
 	},
 	text: {
 		color: "#1f3a5c",

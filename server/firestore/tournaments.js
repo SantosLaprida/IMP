@@ -28,6 +28,11 @@ export const fetchTournament = async () => {
       ...doc.data(),
     }));
 
+    if (activeTournamentsData.length === 0) {
+      console.warn("No active tournament found.");
+      return null;
+    }
+
     return activeTournamentsData;
   } catch (error) {
     console.error("Error fetching active tournament:", error);

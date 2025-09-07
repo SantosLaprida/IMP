@@ -1,7 +1,7 @@
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { db } from "./config/firebaseConfig";
+import { firestore } from "./config/firebaseConfig";
 
 export async function registerPushTokenForUser(userId) {
   const projectId =
@@ -32,13 +32,13 @@ export async function registerPushTokenForUser(userId) {
 }
 
 export async function handleNotificationDenial(userId) {
-  const userDoc = await getDoc(doc(db, "I_Members", userId));
+  const userDoc = await getDoc(doc(firestore, "I_Members", userId));
   const hasBeenPrompted =
     userDoc.exists() && userDoc.data()?.hasBeenPromptedForNotifications;
 
   if (!hasBeenPrompted) {
     await setDoc(
-      doc(db, "I_Members", userId),
+      doc(firestore, "I_Members", userId),
       {
         hasBeenPromptedForNotifications: true,
         notificationPermissionStatus: "denied",

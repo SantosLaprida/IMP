@@ -11,6 +11,7 @@ import {
 import { userMadeBet } from "../server/firestore/bets";
 import { getPlayerBets } from "../server/firestore/players";
 import { auth } from "../server/config/firebaseConfig";
+import { handleNotificationDenial } from "../server/push-register";
 
 import { getAmountOfUserBets } from "../server/firestore/teams";
 
