@@ -16,7 +16,7 @@ export default {
     assetBundlePatterns: ["**/*"],
     android: {
       package: "com.IMPprototype.IMPprototype",
-      versionCode: 14,
+      versionCode: 15,
       permissions: ["POST_NOTIFICATIONS"],
       adaptiveIcon: {
         foregroundImage: "./assets/images/icon.png",
@@ -49,7 +49,7 @@ export default {
         projectId: "ddbc7b69-bd19-494b-84f9-61b43891b302",
       },
     },
-    plugins: [["expo-font"]],
+    plugins: [["expo-font"], "expo-notifications"],
     owner: "charlie1203",
     userInterfaceStyle: "light",
   },
